@@ -666,8 +666,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 
 		int totalIndications = indicationsOnDriverView2.size();   // Indications collected in the end will have all the indications shown in UI.
-		Log.info(String.format("Indications detected in Driver view = %d", totalIndications));
 		indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
+		Log.info(String.format("Indications detected in Driver view 2 = %d", totalIndications));
 		indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
 
 		// confirm correct number of indication. Totally 6 peaks generated. 2 generated right after setting iGPS to bad.

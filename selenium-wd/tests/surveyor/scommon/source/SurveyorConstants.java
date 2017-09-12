@@ -644,6 +644,23 @@ public final class SurveyorConstants {
 		}
 	};
 
+	public static enum UserLanguage {
+		ENGLISH ("en-US"),
+		SPANISHSPAIN ("es-ES"),
+		SPANISHMEXICO ("es-MX"),
+		FRENCH ("fr-FR"),
+		CHINESE ("zh-CN");
+
+		private final String value;
+		UserLanguage(String value){
+			this.value = value;
+		}
+
+		public String toString(){
+			return value;
+		}
+	};
+	
 	public static enum ReportColorOption {
 		LIGHTBLUE(0),
 		BLUE(1),

@@ -1,0 +1,3 @@
+Id,CustomerId,FeatureClassDescription,Color,LineWeight,IsDotted,Zoomlevel,IsReportable
+0d265d93-ecf1-4127-b04d-0f489e70a37c,42C38C4F-C7FD-F177-D577-39E1896F2E57,Small Boundary,#B5DBF4,2,0,5,1
+67730ae3-6065-4ed4-9611-3478c914d936,42C38C4F-C7FD-F177-D577-39E1896F2E57,Big Boundary,#B5DBF4,2,0,5,1

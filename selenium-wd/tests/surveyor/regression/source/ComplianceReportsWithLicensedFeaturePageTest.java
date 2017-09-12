@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 
 import common.source.Constants;
@@ -14,15 +15,23 @@ import common.source.RetryUtil;
 import common.source.Screenshotter;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
@@ -30,9 +39,14 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerLicenses;
+import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.CustomerLicenses.License;
+import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.actions.LoginPageActions;
+
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 
@@ -42,13 +56,38 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 	private static final String EMPTY = "";
 	private static ManageCustomerPageActions manageCustomerPageAction;
+	private static ManageLocationPageActions manageLocationPageActions;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static DriverViewPage driverViewPage;
-	private static Map<String, String> testAccount, testSurvey, testReport;
+	private static Map<String, String> testAccount, testSurvey, testSurvey2, testReport;
+	private static String userName;
+	private static String userPassword;
+	private static String customerName;
+	private static String locationName;
+	private static String analyzerSharedKey;
+	private static String analyzerName;
+	private static String analyzerType;
+	private static String surveyorName;
+	private static String surveyTag;
+	private static String customerId;
+	private static String surveyMinAmplitude;
+	private static String rankingMinAmplitude;
+
+
+	@Rule
+	public TestName testName = new TestName();
 
 	@BeforeClass
 	public static void beforeClass() {
+		testAccount = null;
 		initializeTestObjects();
+	}
+
+	@AfterClass
+	public static void afterClass() {
+		if(testAccount!=null && customerId!=null){
+//			cleanUpGisData(customerId);
+		}
 	}
 
 	@Before
@@ -62,16 +101,28 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 
-		if(testAccount == null){
-			testAccount = createTestAccount("LicFeature");
-			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"));
-		}else{
-			getLoginPage().open();
-			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-			manageCustomerPageAction.open(EMPTY, NOTSET);
-			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
-		}
+//		if(testAccount == null){
+//			testAccount = createTestAccount("LicFeature");	
+//		userName = testAccount.get("userName");
+//		userPassword = testAccount.get("userPassword");
+//		customerName = testAccount.get("customerName");
+//		locationName = testAccount.get("locationName");
+//		analyzerSharedKey = testAccount.get("analyzerSharedKey");
+//		analyzerName = testAccount.get("analyzerName");
+//		analyzerType = testAccount.get("analyzerType");
+//		surveyorName = testAccount.get("surveyorName");
+//		customerId = testAccount.get("customerId");
+//		pushGisData(customerId);	
+//			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword);
+//			testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
+//      		"Surveyor_FEDS2067_std.db3", "replay-db3.defn", userName, userPassword, 150, SurveyType.Standard);
+//			
+//		}else{
+//			getLoginPage().open();
+//			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+//			manageCustomerPageAction.open(EMPTY, NOTSET);
+//			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.values());
+//		}
 	}
 
 	private void initializePageObjects() {
@@ -92,7 +143,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-
+		manageLocationPageActions = new ManageLocationPageActions(getDriver(), getBaseURL(), getTestSetup());
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -108,6 +159,87 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 
+	/**
+	 * Test Case ID: TC1496_AddLISABoxOptonToExistingCustomer
+	 * Test Description: Add LISA Box option to existing customer
+	 * Script: 
+	 *	- A customer that does not have LISA Box 1.0 option enabled
+	 *	- Customer has license for GIS Layers, Highlight LISA Assets
+	 *	- Log into PCubed as Picarro Admin
+	 *	- Navigate to Picarro Administration -> Manage Customers page
+	 *	- Select a customer and click the Edit button
+	 *	- Check LISA Box 1.0 checkbox, and make sure that the Report Shape File box is checked and click OK
+	 *	- Navigate to Reports -> Compliance Reports and click on the New Compliance Report button
+	 *	- Fill out the necessary fields and select LISAs in the Views section.
+	 *	- Click OK
+	 *	- Once the report has completed generation, click on the Compliance Viewer button and then the View thumbnail
+	 *	- Click on the Shape File button
+	 *	- Run the Shape Files through GIS software like ArcGIS
+	 * Results: 
+	 *	- In the report view, the LISA box should be rectagular in shape and circumscribe the LISA itself
+	 *	- All LISA boxes should have a minimum width of 100 feet, regardless of the shape of the LISA itself
+	 *	- There should be a 50 foot buffer between the LISA bubble and the side of the box perpendicular to the line bisecting the LISA
+	 *	- The segment of Main contained within the LISA box should be highlighted
+	 *	-  Any Service assets that are contained in or touch a LISA box should be highlighted along its entire length 
+	 *	- The main to which each of the highlighted Services are attached should also be highlighted, up to 25 feet on either side of the "T" connected to the Service
+	 *	- Overlapping LISA boxes should not be combined into a single box. Each LISA should have its own LISA box drawn as a distinct box unto itself
+	 *	- The report View should have all LISAs in the shape of boxes, not fans or circles
+	 *	- The shapes drawn by the GIS software should match those of the Compliance Report views
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496, location = ComplianceReportDataProvider.class)
+	public void TC1496_AddLISABoxOptonToExistingCustomer(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning  TC1496_AddLISABoxOptonToExistingCustomer...");
+		
+		String surveyTag1 = testSurvey.get(SurveyType.Standard.toString()+"Tag");
+		String surveyTag2 = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
+	
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		/* UnSelect LisaBox1.0 */
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.LISABOX10);
+		getHomePage().logout();
+		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);		
+		addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID2, SurveyModeFilter.Standard);
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID2));		
+        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID2));
+        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID2));
+        complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+		
+		assertTrue(complianceReportsPageAction.verifyNumberOfLISAsInShapeFilesEquals("2", getReportRowID(reportDataRowID2)));
+        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID2)));
+        
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		/* Select LisaBox1.0 */
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.LISABOX10);
+		getHomePage().logout();
+		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);		
+		addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID1, SurveyModeFilter.Standard);
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));		
+        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		assertTrue(complianceReportsPageAction.verifyNumberOfLISAsInShapeFilesEquals("2", getReportRowID(reportDataRowID1)));
+        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID1)));
+        
+		getHomePage().logout();
+	}
+	
 	/* * Test Case ID: TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense
 	 * Script:
 	 * 	 * - Log into UI as Picarro admin and navigate to Manage Customers page

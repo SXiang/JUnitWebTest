@@ -526,9 +526,18 @@ public class BasePage {
     }
 
 	protected boolean selectDropdownOption(WebElement dropdown, String option){
+		By optBy = By.xpath("option[text()='"+option.trim()+"']");
+		return selectDropdownOption(dropdown, optBy, option);
+	}
+	
+	protected boolean selectDropdownOptionByValue(WebElement dropdown, String value){
+		By optBy = By.xpath("option[@value='"+value.trim()+"']");
+		return selectDropdownOption(dropdown, optBy, value);
+	}
+	
+	protected boolean selectDropdownOption(WebElement dropdown, By optBy, String option){
 		boolean selected = false;
 		int numTry = 0;
-		By optBy = By.xpath("option[text()='"+option.trim()+"']");
 		do{
 			try{
 				WebElement opt =  dropdown.findElement(optBy);

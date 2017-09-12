@@ -1,20 +1,14 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 
 import common.source.Log;
-import common.source.WebElementExtender;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,31 +17,28 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.entities.ComplianceReportEntity;
-import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.SurveyorConstants.UserLanguage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
+import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
-import surveyor.dataprovider.EQReportDataProvider;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;
 
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static LatLongSelectionControl latLongSelectionControl = null;
-	private static Map<String, String> testReport;
+	private static PreferencesPage preferencesPage;
+	private static String i18nUserName,customerName = SQACUS, userPassword=USERPASSWORD, locationName=SQACUSLOC, userRole=SQACUSUA;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -64,6 +55,10 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
+		
+		if(i18nUserName == null){
+			i18nUserName = addTestUser(customerName, userPassword, userRole, locationName);
+		}
 	}
 
 	private void initializeTestPageObjects() {
@@ -75,7 +70,10 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 		HomePage homePage = pageObjectFactory.getHomePage();
 		setHomePage(homePage);
 		PageFactory.initElements(getDriver(), homePage);
-		
+
+		preferencesPage = pageObjectFactory.getPreferencesPage();
+		PageFactory.initElements(getDriver(), preferencesPage);
+
 		latLongSelectionControl = new LatLongSelectionControl(getDriver());
 		PageFactory.initElements(getDriver(), latLongSelectionControl);
 	}
@@ -120,7 +118,26 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 		Log.info("\nRunning  TC1380_I18NGenerateComplianceReportAndDownloadSSRSAndViews...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(i18nUserName+":"+userPassword, getUserRowID(userDataRowID));
+		preferencesPage.open();
+		preferencesPage.setSelectedCulture(UserLanguage.CHINESE);
+		
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+
+        assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ComplianceReportsPageActions.workingDataRow.get().timezone, getReportRowID(reportDataRowID1)));
+        assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+
+		
+		
 	}
 	
 	/**

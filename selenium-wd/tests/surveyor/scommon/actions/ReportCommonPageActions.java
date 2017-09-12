@@ -3121,6 +3121,28 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes verifyViewsImagesWithBaselines_Static action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyViewsImagesWithBaselines_Static(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
+		boolean retVal = true;
+		boolean inZipFolder = data.equalsIgnoreCase("false")?false:true;
+		ReportsCommonDataRow reportsDataRow = getReportsCommonDataRow(dataRowID);
+
+		// for each view in the test case verify that the view image is present.
+		List<Integer> viewRowIDs = ActionArguments.getNumericList(reportsDataRow.reportViewRowIDs);
+		for (int i=0; i<viewRowIDs.size(); i++) {
+			String viewName = workingReportViewsDataRows.get().get(i).name;
+			retVal = retVal && this.getReportsCommonPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+					reportsDataRow.title, reportsDataRow.tCID, viewName, inZipFolder, true);
+		}
+		return retVal;
+	}
+	/**
 	 * Executes verifyComplianceViewerDialogIsClosed action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
