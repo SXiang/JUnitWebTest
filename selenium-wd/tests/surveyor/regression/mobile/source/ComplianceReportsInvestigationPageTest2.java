@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -99,14 +100,42 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 * Results: 
 	 *	- Assets Intersecting LISA are not highlighted in mobile app
 	 */
-	@Test  //TBD
-	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961, location = ComplianceReportDataProvider.class)
+	@Test
+	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961, location = InvestigationReportDataProvider.class)
 	public void TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning  TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected...");
 
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Picarro Admin
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
+		
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
+		
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		reportInvestigationsPage.waitForPageLoad();
+		
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
+		mobileInvestigatePage.clickOnFollow();
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "mobileIntersectingLisa-1", new Rectangle(500, 100, 500, 350), true));
+
+		mobileLoginPage.logout();
 	}
 	
 	/**
@@ -164,7 +193,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 * - Investigation PDF and csv files should not show deleted leak information
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, Leak source type, etc
 	 */
-	@Test
+	@Ignore @Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC234, location = InvestigationReportDataProvider.class)
 	public void TC234_InvestigateLisaRandomlyAsDriverUser(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -494,7 +523,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - Investigation Data csv file should have LISANumber header and value as LISA 1, LISA 2,..
 	 *  - Lisa number, amplitude, status, Investigator, leak time, notes, investigation Date/Time, etc. values in CSV should match UI values
 	 */
-	@Test
+	@Ignore @Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC518, location = InvestigationReportDataProvider.class)
 	public void TC518_GenerateInvestigationReportAsCustomerSupervisorAndAssignLISAToMultiplePeople(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -657,7 +686,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - Supervisor user can see above investigated Lisa as Investigation Completed - Found Other Source
 	 *  - Status and other values displayed should persist
 	 */
-	@Test
+	@Ignore @Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1573, location = InvestigationReportDataProvider.class)
 	public void TC1573_DriverUserCannotViewUnassignedLISAOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,Integer mobileUserDataRowID2) throws Exception {
@@ -789,7 +818,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - On map, assets intersecting Lisa are highlighted
 	 *  - Lisa will be shown as Found Gas Leak on Lisa list screen
 	 */
-	@Test
+	@Ignore @Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1574, location = InvestigationReportDataProvider.class)
 	public void TC1574_UtilityAdminCanViewAssignedLISAOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {

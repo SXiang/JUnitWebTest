@@ -25,13 +25,10 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import surveyor.scommon.actions.ManageCustomerPageActions;
-import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
@@ -39,14 +36,11 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
-import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerLicenses;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.CustomerLicenses.License;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.scommon.actions.LoginPageActions;
-
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 
@@ -56,24 +50,15 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 	private static final String EMPTY = "";
 	private static ManageCustomerPageActions manageCustomerPageAction;
-	private static ManageLocationPageActions manageLocationPageActions;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static DriverViewPage driverViewPage;
 	private static Map<String, String> testAccount, testSurvey, testSurvey2, testReport;
 	private static String userName;
 	private static String userPassword;
 	private static String customerName;
-	private static String locationName;
 	private static String analyzerSharedKey;
 	private static String analyzerName;
-	private static String analyzerType;
-	private static String surveyorName;
-	private static String surveyTag;
 	private static String customerId;
-	private static String surveyMinAmplitude;
-	private static String rankingMinAmplitude;
-
-
 	@Rule
 	public TestName testName = new TestName();
 
@@ -101,28 +86,25 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 
-//		if(testAccount == null){
-//			testAccount = createTestAccount("LicFeature");	
-//		userName = testAccount.get("userName");
-//		userPassword = testAccount.get("userPassword");
-//		customerName = testAccount.get("customerName");
-//		locationName = testAccount.get("locationName");
-//		analyzerSharedKey = testAccount.get("analyzerSharedKey");
-//		analyzerName = testAccount.get("analyzerName");
-//		analyzerType = testAccount.get("analyzerType");
-//		surveyorName = testAccount.get("surveyorName");
-//		customerId = testAccount.get("customerId");
-//		pushGisData(customerId);	
-//			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword);
-//			testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
-//      		"Surveyor_FEDS2067_std.db3", "replay-db3.defn", userName, userPassword, 150, SurveyType.Standard);
-//			
-//		}else{
-//			getLoginPage().open();
-//			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-//			manageCustomerPageAction.open(EMPTY, NOTSET);
-//			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.values());
-//		}
+		if(testAccount == null){
+			testAccount = createTestAccount("LicFeature");	
+			userName = testAccount.get("userName");
+			userPassword = testAccount.get("userPassword");
+			customerName = testAccount.get("customerName");
+			analyzerSharedKey = testAccount.get("analyzerSharedKey");
+			analyzerName = testAccount.get("analyzerName");
+			customerId = testAccount.get("customerId");
+			pushGisData(customerId);	
+			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword);
+			testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
+					"Surveyor_FEDS2067_std.db3", "replay-db3.defn", userName, userPassword, 150, SurveyType.Standard);
+
+		}else{
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.values());
+		}
 	}
 
 	private void initializePageObjects() {
@@ -143,7 +125,6 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		manageLocationPageActions = new ManageLocationPageActions(getDriver(), getBaseURL(), getTestSetup());
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
