@@ -16,6 +16,7 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	private static final String MARKER_INVESTIGATION_STATUS_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]";
+	private static final String FOOTER_INVESTIGATE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]/android.view.ViewGroup[1]";
 
 	private static final String ADD_CGI_BTN_UISELECTOR = "new UiSelector().text(\"Add CGI\")";
 
@@ -78,6 +79,9 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[4]")
 	@CacheLookup
 	private WebElement velocity;
+
+	@AndroidFindBy(xpath = FOOTER_INVESTIGATE_BUTTON_XPATH)
+	private WebElement footerInvestigateButton;
 
 	public AndroidInvestigateMapScreen(WebDriver driver) {
 		super(driver);
@@ -167,6 +171,17 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		tap(getInvestigateButton());
 	}
 
+	public WebElement getFooterInvestigateButton() {
+		Log.method("getFooterInvestigateButton");
+		footerInvestigateButton = getAndroidDriver().findElementByXPath(FOOTER_INVESTIGATE_BUTTON_XPATH);
+		return footerInvestigateButton;
+	}
+
+	public void clickOnFooterInvestigate() {
+		Log.method("clickOnFooterInvestigate");
+		tap(getFooterInvestigateButton());
+	}
+
 	/****** Label Methods ******/
 
 	public String getMarkerInvestigationStatusText() {
@@ -227,6 +242,16 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		} else {
 			Log.info("Skipping map shows Picarro user current location verification. Run test targetting backpack simulator to enable this verification");
 		}
+	}
+
+	public void assertFollowButtonStateIsSelected() {
+		Log.method("assertFollowButtonStateIsSelected");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonWhenSelected);
+	}
+
+	public void assertFollowButtonStateIsNotSelected() {
+		Log.method("assertFollowButtonStateIsNotSelected");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonNotSelected);
 	}
 
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {

@@ -6,12 +6,20 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
+
+import com.android.ddmlib.AdbCommandRejectedException;
+import com.android.ddmlib.ShellCommandUnresponsiveException;
+import com.android.ddmlib.TimeoutException;
+
 import common.source.AccessibilityLabel;
 import common.source.BaseHelper;
 import common.source.BaselineImages;
+import common.source.Constants;
 import common.source.ExceptionUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.RegexUtility;
+import common.source.RetryUtil;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.MobileBy;
@@ -131,7 +139,19 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void clickOnMenuButton() {
 		Log.method("clickOnMenuButton");
-		getMenuButton().click();
+		RetryUtil.retryOnException(
+			() -> {
+				try {
+					getMenuButton().click();
+					return true;
+				} catch (org.openqa.selenium.NoSuchElementException ex) {
+					Log.warn(ExceptionUtility.getStackTraceString(ex));
+					return false;
+				}
+			},
+			() -> {return true;},
+			Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES * 2,
+			Constants.DEFAULT_MAX_RETRIES, false /*takeScreenshotOnFailure*/);
 	}
 
 	public void clickOnInvestigate() {

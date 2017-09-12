@@ -137,7 +137,6 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 	 *	- - Map correctly shows location of selected LISA (or Gap). Investigation item is highlighted. Follow button changes color from green to white
 	 *	- - Map is redirected back to user's location
 	 */
-	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2445, location = LeakScreenDataProvider.class)
 	public void TC2445_EnergyBackpack_FollowButtonShowsUserItemInvestigation(
@@ -178,9 +177,12 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertFollowButtonStateIsSelected();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2445, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
+
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.assertFollowButtonStateIsNotSelected();
 			investigateMapScreen.assertMapShowsPicarroUserCurrentLocation();
 
 			// mark investigation complete.
