@@ -25,7 +25,7 @@ public class ScreenVerifier {
 
 	public static ScreenVerifier getInstance() {
 		ScreenVerifier screenVerifier = new ScreenVerifier();
-		NetworkEmulation networkEmulation = TestContext.INSTANCE.getTestSetup().getAndroidNetworkEmulation();
+		NetworkEmulation networkEmulation = (NetworkEmulation)TestContext.INSTANCE.getTestSetup().getNetworkEmulation();
 		if (networkEmulation != null) {
 			if (!networkEmulation.getNetworkDelay().equals(NetworkDelay.HSDPA) && !networkEmulation.getNetworkDelay().equals(NetworkDelay.EVDO)
 					&& !networkEmulation.getNetworkDelay().equals(NetworkDelay.LTE) && !networkEmulation.getNetworkDelay().equals(NetworkDelay.NONE)) {

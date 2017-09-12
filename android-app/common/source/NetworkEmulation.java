@@ -3,7 +3,7 @@ package common.source;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class NetworkEmulation {
+public class NetworkEmulation implements INetworkEmulation {
 	public enum NetworkDelay {
 		GSM ("gsm"),
 		HSCSD ("hscsd"),

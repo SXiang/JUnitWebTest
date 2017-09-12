@@ -200,7 +200,7 @@ public class TestSetup {
 	private String androidNetworkDelay;
 	private String androidNetworkSpeed;
 
-	private NetworkEmulation androidNetworkEmulation;
+	private INetworkEmulation networkEmulation;
 
 	private String androidPerfTestResultStoreLocation;
 
@@ -1814,11 +1814,11 @@ public class TestSetup {
 		this.androidNetworkSpeed = androidNetworkSpeed;
 	}
 
-	public NetworkEmulation getAndroidNetworkEmulation() {
-		return androidNetworkEmulation;
+	public INetworkEmulation getNetworkEmulation() {
+		return networkEmulation;
 	}
 
-	public void setAndroidNetworkEmulation(NetworkEmulation androidNetworkEmulation) {
-		this.androidNetworkEmulation = androidNetworkEmulation;
+	public void setNetworkEmulation(INetworkEmulation networkEmulation) {
+		this.networkEmulation = networkEmulation;
 	}
 }

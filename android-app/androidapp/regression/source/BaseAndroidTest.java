@@ -195,7 +195,7 @@ public class BaseAndroidTest extends BaseTest {
 		}
 
 		NetworkEmulation emulation = createNetworkEmulation(tcpDumpFile, delayValue, speedValue, iDelay, iMinDelay, iMaxDelay, iSpeed, iUpSpeed, iDownSpeed);
-		TestContext.INSTANCE.getTestSetup().setAndroidNetworkEmulation(emulation);
+		TestContext.INSTANCE.getTestSetup().setNetworkEmulation(emulation);
 		return emulation;
 	}
 
