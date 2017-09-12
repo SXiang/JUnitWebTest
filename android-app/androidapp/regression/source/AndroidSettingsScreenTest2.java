@@ -83,12 +83,15 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	 *	- - Tablet displays the Map screen. The Concentration Chart appears in a small box at top left and current CH4 value appears in another box at top right.
 	 *  - - At the top left of the latter box, HR appears, indicating that it is measuring High Range (CH4). The maximum CH4 value appears at the top right of this box.
 	 */
-	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	public void TC2548_EnergyBackpack_ScreenShowsCH4MeasurementByDefault() throws Exception {
 		Log.info("\nRunning TC2548_EnergyBackpack_ScreenShowsCH4MeasurementByDefault ...");
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
+			if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				mapScreen.ensureAnalyzerIsInMethaneMode();
+			}
+
 			mapScreen.assertConcentrationChartIsShown();
 			mapScreen.assertMapIsLoaded();
 			Log.info("Map screen loaded successfully!");
