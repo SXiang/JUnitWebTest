@@ -10,7 +10,6 @@
 #       -ArtifactoryFolder "AndroidApp" `
 #       -APKVersion "1.0.0" `   
 #       -APKFlavor "debug" `   
-#       -APKClassifier "SNAPSHOT" `   
 #       -APKBuildNumber "25"
 # ---------------------------------------------------------------
 
@@ -39,9 +38,6 @@ param
 
   [Parameter(Mandatory=$true)]
   [String] $APKFlavor,                             # For eg. debug, release
-
-  [Parameter(Mandatory=$true)]
-  [String] $APKClassifier,                         # For eg. SNAPSHOT, BETA, etc.
 
   [Parameter(Mandatory=$false)]
   [String] $APKBuildNumber                         # For eg. "25". If NOT specified latest build number will be searched and used.
@@ -107,7 +103,7 @@ $Headers = @{
 }
 
 $apkPrefix = "app-"
-$apkToSearch = "${apkPrefix}$APKFlavor-$APKVersion-$APKClassifier"
+$apkToSearch = "${apkPrefix}$APKFlavor-$APKVersion"
 
 $aql = "items.find     " + 
         "(                " + 
