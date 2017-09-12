@@ -133,7 +133,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "mobileIntersectingLisa-1", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileIntersectingLisa-1"));
 
 		mobileLoginPage.logout();
 	}
