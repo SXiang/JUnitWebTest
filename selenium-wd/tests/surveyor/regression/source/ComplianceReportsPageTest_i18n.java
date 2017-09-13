@@ -10,7 +10,7 @@ import org.junit.Before;
 
 import common.source.Log;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
@@ -111,7 +111,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 	 *	- SSRS PDF should have all appropriate text (field names, column names, etc) in the selected language
 	 *	- Map view footer should be translated in selected language
 	 */
-	@Test //TBD
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1380, location = ComplianceReportDataProvider.class)
 	public void TC1380_I18NGenerateComplianceReportAndDownloadSSRSAndViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -154,7 +154,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 	 *	- SSRS PDF should have all appropriate text (field names, column names, etc) in the selected language
 	 *	- Map view footer should be translated in selected language
 	 */
-	@Test//TBD
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1381, location = ComplianceReportDataProvider.class)
 	public void TC1381_I18NGenerateComplianceReportUsingCopyAndDownloadSSRSAndViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -177,7 +177,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 	 *	- SSRS PDF should have all appropriate text (field names, column names, etc) in the selected language
 	 *	- Map view footer should be translated in selected language
 	 */
-	@Test//TBD
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1382, location = ComplianceReportDataProvider.class)
 	public void TC1382_I18NReprocessSSRSReports(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
