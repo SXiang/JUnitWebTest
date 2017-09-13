@@ -175,7 +175,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		
 		String surveyTag1 = testSurvey.get(SurveyType.Standard.toString()+"Tag");
 		String surveyTag2 = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
-	
+
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		/* UnSelect LisaBox1.0 */

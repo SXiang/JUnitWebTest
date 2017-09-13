@@ -3634,7 +3634,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
+				if (!verifyScreenshotWithBase(actualViewPath, baseViewFile, generateBaseline)) {
 					return false;
 				}
 				Files.delete(Paths.get(actualViewPath));
