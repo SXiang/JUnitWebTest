@@ -665,8 +665,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		Log.info("Stopping Analyzer...");
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 
-		indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
 		int totalIndications = indicationsOnDriverView2.size();   // Indications collected in the end will have all the indications shown in UI.
+		indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
 		Log.info(String.format("Indications detected in Driver view 2 = %d", totalIndications));
 		indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
 

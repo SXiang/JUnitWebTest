@@ -71,7 +71,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	@AfterClass
 	public static void afterClass() {
 		if(testAccount!=null && customerId!=null){
-//			cleanUpGisData(customerId);
+			cleanUpGisData(customerId);
 		}
 	}
 
