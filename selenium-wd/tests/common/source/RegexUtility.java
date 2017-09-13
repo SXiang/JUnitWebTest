@@ -44,7 +44,10 @@ public class RegexUtility {
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
 	public static final String LISA_REGEX = "(LISA)\\s+\\d+";
-	public static final String PICARRO_APP_MAX_AMPLITUDE_REGEX = "Max:\\s+(\\d+\\.\\d+)\\s+ppm";
+	public static final String PICARRO_APP_MAX_AMPLITUDE_REGEX = "Max\\s+(\\d+\\.\\d+)\\s+ppm";
+	public static final String PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN = "Latitude\\s+:\\s+(-?\\d+\\.\\d+)\\s+Longitude\\s+:\\s+(-?\\d+\\.\\d+)";
+	public static final String PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN = "Precison\\s+:\\s+(\\d+(\\.\\d+)?)(\\s+)?m";
+	public static final String PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN = "Velocity\\s+:\\s+(\\d+(\\.\\d+)?)(\\s+)?m/s";
 
 	public static final String INV_ADD_LEAK_STATUS_HEADER_REGEX = "(.+)\\s+\\((.+)\\)";
 
@@ -500,6 +503,5 @@ public class RegexUtility {
 			Log.error(e.toString());
 
 		}
-
 	}
 }

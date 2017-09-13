@@ -32,6 +32,8 @@ import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.Log;
+import common.source.RegexUtility;
+import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -128,7 +130,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - User will see a list of Compliance Reports
 	 *	- - User will see a list of LISAs for investigation
 	 *	- -  User will see a map centered on the backpack's location. Pipe data is  displayed on the map Follow and Directions buttons are present on  the right and Investigate button is present at the bottom left
-	 *	- - Map is now centered on selected LISA. Pipe data is displayed on the map
+	 *	- - Map is now centered on selected LISA. Pipe data is displayed on the map. Bubble indicates LISA number and bubble color indicates investigation status.
 	 *	- -  Add Source and Add CGI buttons are added on the right.  Investigate button disappears and is replaced by Mark As Complete  and Pause buttons
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - A form appears where user can log details of the leak
@@ -146,7 +148,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -174,12 +176,40 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+
+			// Verify 'not investigated' LISA and bubble color
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			investigateMapScreen.clickOnFooterInvestigate();
+			investigationScreen.waitForScreenLoad();
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			return true;
+		});
+
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+
+			// Verify 'in-progress' LISA and bubble color.
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaInProgressScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
@@ -213,6 +243,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
 
+			return true;
+		});
+
+		// Re-open the investigated marker and verify LISA and bubble color are for an investigated marker.
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaFoundGasLeakScreenshotWithIndexPlaceholder, markerNum));
 			return true;
 		});
 	}
@@ -235,9 +274,9 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - User is navigated to the map
 	 *	- - User will see a list of Compliance Reports
 	 *	- - User will see a list of LISAs for investigation
-	 *	- - User will see a map centered on the backpack's location. Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
-	 *	- - Map is now centered on selected LISA Asset Box. Box is outlined in red and pipe is highlighted in green
-	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons
+	 *	- - User will see a map centered on the backpack's location. Follow and Directions buttons are present on the right and Investigate button is present at the bottom left. LISA name is present at top left along with Status of "Not Investigated", Precision, Velocity and Lat Long. Assets are displayed in purple
+	 *	- - Map is now centered on selected LISA Asset Box. Box is outlined in red and pipe is highlighted in green. Bubble indicates LISA asset box number and bubble color indicates investigation status. Border around highlighted pipe matches color of bubble. Lat Long, Precision and Velocity disappear
+	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons. Status at top left changes to "In Progress"
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - A form appears where user can log details of the leak
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
@@ -254,7 +293,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -276,14 +315,40 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return true;
 		});
 
+		final String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
+
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 		int markerNum = getMarkerNumber(investigationMarkers, idx-1);
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, notInvestigated);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+
+			String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
+			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
+					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+
+			String actualPrecisonText = investigateMapScreen.getPrecisonText().trim();
+			assertTrue(String.format("Precison text - [%s] did NOT match expression - [%s]", actualPrecisonText,
+					RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN), RegexUtility.matchesPattern(actualPrecisonText, RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN));
+
+			String actualVelocityText = investigateMapScreen.getVelocityText().trim();
+			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
+					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
+
+			// Verify Box color for 'Not-Investigated' state
 			investigateMapScreen.clickOnFollow();
-			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
+
+			// TBD: Post product defect DE3340 fixed, add correct verification as per screen updates in the fix.
+			//assertTrue(investigateMapScreen.verifyLatLongPrecisonVelocityLabelsAreNotShown());
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
@@ -291,6 +356,38 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue("Follow button NOT displayed", investigateMapScreen.getFollowButton().isDisplayed());
 			assertTrue("Directions button NOT displayed", investigateMapScreen.getDirectionsButton().isDisplayed());
 			investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
+
+			// Status changes to 'In-Progress'
+			actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+
+			investigateMapScreen.clickOnFooterInvestigate();
+			investigationScreen.waitForScreenLoad();
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			return true;
+		});
+
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+
+			investigateMapScreen.clickOnInvestigate();
+
+			// Verify Box color in 'In-Progress' state
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxInProgressScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
@@ -324,6 +421,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
 
+			return true;
+		});
+
+		// Re-open the investigated marker and verify assetbox and bubble color are for an investigated marker.
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxFoundGasLeakScreenshotWithIndexPlaceholder, markerNum));
 			return true;
 		});
 	}
@@ -348,14 +454,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - User will see a list of Compliance Reports
 	 *	- - User will see a list of LISAs for investigation
 	 *	- - User will see a list of Gaps for investigation
-	 *	- - User will see a map centered on the backpack's location. Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
-	 *	- - Map is now centered on selected Gap Box. Box is outlined in red and pipe is highlighted in green
+	 *	- - User will see a map centered on the backpack's location. "Follow" and "Directions" buttons are present on the right and "Investigate" button is present at the bottom left. Gap name is present at top left along with Status of "Not Investigated", Precision, Velocity and Lat Long. Assets are displayed in purple
+	 *	- - Map is now centered on selected Gap Asset Box. Box is outlined in red and pipe is highlighted in green. Bubble indicates Gap box number and bubble color indicates investigation status. Border around highlighted pipe matches color of bubble. Lat Long, Precision and Velocity disappear
 	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - A form appears where user can log details of the leak
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
-	 *	- - User is navigated back to the list of Gaps
+	 *	- - User is navigated back to the list of Gapss
 	 */
+	// PARTIAL: Pending product defect DE3340 fix for Lat/Long, Precison, Velocity labels NOT shown in follow screen.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2640, location = LeakScreenDataProvider.class)
 	public void TC2640_EnergyBackpack_InvestigateGapBox(
@@ -367,7 +474,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -395,16 +502,70 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-
+		int markerNum = getMarkerNumber(investigationMarkers, idx-1);
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			final String selectedGap = investigationMarkers.get(idx-1).getMarkerNumber();
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedGap, notInvestigated);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+
+			String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
+			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
+					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+
+			String actualPrecisonText = investigateMapScreen.getPrecisonText().trim();
+			assertTrue(String.format("Precison text - [%s] did NOT match expression - [%s]", actualPrecisonText,
+					RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN), RegexUtility.matchesPattern(actualPrecisonText, RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN));
+
+			String actualVelocityText = investigateMapScreen.getVelocityText().trim();
+			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
+					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
+
+			// Verify 'not-investigated' Gap and bubble color.
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapScreenshotWithIndexPlaceholder, idx));
+			investigateMapScreen.clickOnFollow();
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			investigateMapScreen.clickOnFooterInvestigate();
+			investigationScreen.waitForScreenLoad();
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.clickOnInvestigationMarkerType();
+			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			initializeInvestigateReportScreen();
+			return true;
+		});
+
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+
+			// TBD: Post product defect DE3340 fixed, add correct verification as per screen updates in the fix.
+			//assertTrue(investigateMapScreen.verifyLatLongPrecisonVelocityLabelsAreNotShown());
+
+			investigateMapScreen.clickOnInvestigate();
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			// Verify 'in-progress' Gap and bubble color.
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapInProgressScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
@@ -441,6 +602,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
 
+			return true;
+		});
+
+		// Re-open the investigated marker and verify Gap and bubble color are for an investigated marker.
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapFoundGasLeakScreenshotWithIndexPlaceholder, markerNum));
 			return true;
 		});
 	}

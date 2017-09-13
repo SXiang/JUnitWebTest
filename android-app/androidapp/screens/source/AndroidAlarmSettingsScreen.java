@@ -9,6 +9,9 @@ import common.source.Log;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
+	private static final String APPLY_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Apply\")";
+	private static final String CLOSE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Close\")";
+
 	public enum SliderType {
 		Amplitude ("Amplitude"),
 		Volume ("Volume"),
@@ -56,15 +59,12 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 		}
 	}
 
-
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = APPLY_BUTTON_UI_SELECTOR)
 	private WebElement apply;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = CLOSE_BUTTON_UI_SELECTOR)
 	private WebElement close;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
@@ -129,6 +129,7 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	public WebElement getApply() {
 		Log.method("getApply");
+		apply = getAndroidDriver().findElementByAndroidUIAutomator(APPLY_BUTTON_UI_SELECTOR);
 		return apply;
 	}
 
@@ -139,6 +140,7 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	public WebElement getClose() {
 		Log.method("getClose");
+		close = getAndroidDriver().findElementByAndroidUIAutomator(CLOSE_BUTTON_UI_SELECTOR);
 		return close;
 	}
 

@@ -82,8 +82,9 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	 * Script: -
 	 *	- - Log into Backpack tablet
 	 *	- - Launch Backpack app
-	 *	- - Click Edit Settings button
-	 *	- - Enter Backpack Server, Picarro Server and Username and click OK
+	 *  - - Click Menu button at bottom right
+	 *	- - Click App Settings button
+	 *	- - Enter valid Backpack Server, Picarro Server and Username and click OK
 	 * Results: -
 	 *	- - If connecting to the Backpack server for the first time, or if network configuration is incorrect, user is prompted to configure settings
 	 *	- - PicarroApp Settings screen appears.
@@ -94,7 +95,7 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	public void TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
@@ -102,6 +103,8 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 		final String invalidPort = "3001";
 		final String backpackAddressInvalidPort = backpackAddress.replace(validPort, invalidPort);
 		mainLoginScreen.saveSettings(backpackAddressInvalidPort, picServerAddress, userDataRow.username);
+
+		// successful connection verification happening in multiple other tests.
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
@@ -129,7 +132,7 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	public void TC2444_EnergyBackpackNetworkConfigurationSettingsCorrect(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2444_EnergyBackpackNetworkConfigurationSettingsCorrect ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {

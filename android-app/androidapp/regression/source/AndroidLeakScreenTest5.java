@@ -134,7 +134,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 	 *	- - List of LISAs (if any) for that report is displayed
 	 *	- - (List of Gaps (if any) for that report is displayed)
 	 *	- - User is navigated to map centered on user's location
-	 *	- - Map correctly shows location of selected LISA (or Gap). Investigation item is highlighted
+	 *	- - Map correctly shows location of selected LISA (or Gap). Investigation item is highlighted. Follow button changes color from green to white
 	 *	- - Map is redirected back to user's location
 	 */
 	@Test
@@ -148,7 +148,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -177,9 +177,12 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertFollowButtonStateIsSelected();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2445, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
+
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.assertFollowButtonStateIsNotSelected();
 			investigateMapScreen.assertMapShowsPicarroUserCurrentLocation();
 
 			// mark investigation complete.
@@ -241,7 +244,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -319,7 +322,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 
 		// In web view download investigation PDF and CSV and verify data.
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, userDataRowID);
+		loginPageAction.login(EMPTY, defaultUserDataRowID);
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.updateWorkingDataRowReportTitle(reportDataRowID1, generatedInvReportTitle);
 		complianceReportsPageAction.findReport(EMPTY, reportDataRowID1);
@@ -387,7 +390,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {

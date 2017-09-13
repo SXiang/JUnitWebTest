@@ -140,7 +140,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
 		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
@@ -245,7 +245,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
 		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
@@ -338,7 +338,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
 		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
@@ -415,7 +415,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	 *  - - The Toggle Mode, Reset Max and Investigate buttons at the bottom of the page all appear with black buttons and white font
 	 *	- The GPS indicator at bottom left is green when GPS signal is good, red with a line through it when no GPS signal is received
 	 *	- - Menu items Clear Heatmap, Alarm Settings, App Settings and Shutdown Instrument appear. Menu background is black, buttons are grey and font is white
-	 *	- - Alarm Settings include only Volume and Threshold
+	 *	- - Alarm Settings include only Volume, Amplitude and Threshold
 	 */
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2687, location = LeakScreenDataProvider.class)
@@ -427,6 +427,10 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			Log.info("Map screen loaded successfully!");
 
+			if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				mapScreen.ensureAnalyzerIsInMethaneMode();
+			}
+
 			mapScreen.assertConcentrationChartIsShown();
 			mapScreen.assertBottomPaneButtonsAreCorrect();
 			mapScreen.assertMethaneModeIsShownInTopPanel();
@@ -434,7 +438,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			mapScreen.assertDefaultMethaneValueShownInTopPanelIsCorrect();
 			mapScreen.assertGpsLabelIsGreen();
 
-			// As discussed with Praki, Gps is RED check skipped. Turn off GPS on emulator does not simulate this condition.
+			// PARTIAL: As discussed with Praki, Gps is RED check skipped. Turn off GPS on emulator does not simulate this condition.
 			// Currently no known way to simulate this condition from code. Skipping the GPS is red check.
 
 			mapScreen.clickOnMenuButton();

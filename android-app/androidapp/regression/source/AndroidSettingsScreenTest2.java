@@ -88,6 +88,10 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 		Log.info("\nRunning TC2548_EnergyBackpack_ScreenShowsCH4MeasurementByDefault ...");
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
+			if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				mapScreen.ensureAnalyzerIsInMethaneMode();
+			}
+
 			mapScreen.assertConcentrationChartIsShown();
 			mapScreen.assertMapIsLoaded();
 			Log.info("Map screen loaded successfully!");
@@ -120,8 +124,8 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	 *	- - Launch the Backpack app
 	 *	- - Click the Toggle Mode button at the bottom of the screen
 	 * Results: -
-	 *	- - Tablet displays the Map screen. The current CH4 value appears in a box at top right. HR appears at the top right inside this box
-	 *	- - HR changes to HP
+	 *	- - Tablet displays the Map screen. The current CH4 value appears in a box at top right. "Methane Mode" appears at the top left inside this box. At the top right is the maximum recorded methane concentration for this session, "Max: x.x ppm". In the middle is the currently measured methane concentration, "x.x Methane (ppm)". At the bottom of this box, "n/a Ethane" appears
+	 *	- - "Methane Mode" is replaced by activity indicator spinning until mode change is complete, then changes to "Ethane Mode". "Ethane N/A"  changes to either "--.--% Ethane" or some numerical value like "02.32% Ethane". Max concentration and current concentration are unchanged
 	 */
 	@Test
 	public void TC2549_EnergyBackpack_UserCanToggleBetweenHighRangeHighPrecisionModes() throws Exception {
@@ -176,7 +180,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	public void TC2551_EnergyBackpack_InvestigationScreenTablet(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2551_EnergyBackpack_InvestigationScreenTablet ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {

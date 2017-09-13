@@ -32,17 +32,25 @@ public class BaselineImages {
 		public static final String TopPanelMaxValue2ppm = "max-value-2-0-ppm.png";
 		public static final String TopPanelMethaneValue2ppm = "methane-value-2-0-ppm.png";
 		public static final String LisaScreenshotWithIndexPlaceholder = "LISA%d_Screenshot.png";
+		public static final String LisaInProgressScreenshotWithIndexPlaceholder = "LISA%d-InProgress_Screenshot.png";
+		public static final String LisaFoundGasLeakScreenshotWithIndexPlaceholder = "LISA%d-FoundGasLeak_Screenshot.png";
 		public static final String LisaHighlightScreenshotWithIndexPlaceholder = "LISAHighlight%d_Screenshot.png";
+		public static final String AssetBoxScreenshotWithIndexPlaceholder = "ASSETBOX%d_Screenshot.png";
+		public static final String AssetBoxInProgressScreenshotWithIndexPlaceholder = "ASSETBOX-InProgress%d_Screenshot.png";
+		public static final String AssetBoxFoundGasLeakScreenshotWithIndexPlaceholder = "ASSETBOX-FoundGasLeak%d_Screenshot.png";
 		public static final String GapScreenshotWithIndexPlaceholder = "GAP%d_Screenshot.png";
+		public static final String GapInProgressScreenshotWithIndexPlaceholder = "GAP-InProgress%d_Screenshot.png";
+		public static final String GapFoundGasLeakScreenshotWithIndexPlaceholder = "GAP-FoundGasLeak%d_Screenshot.png";
 		public static final String LoginErrorRedText = "login-error-red-text.png";
 		public static final String LoginFailedError = "login-failed.png";
-		public static final String ErrorMissingHttpOrHttps = "error-missing-http-or-https.png";
 		public static final String ErrorSpecifyPortNumber = "error-specify-port-number.png";
-		public static final String ErrorUrlMustStartWithHttpOrHttps = "url-must-start-with-http-or-https.png";
+		public static final String InvalidInputUrlIsMalformed = "invalid-input-url-malformed.png";
 		public static final String PleaseEnterYourPassword = "please-enter-your-password.png";
 		public static final String PleaseEnterUsername = "please-enter-username.png";
 		public static final String PleaseEnterUsernameAndPassword = "please-enter-username-and-password.png";
 		public static final String PavedWallToWallChecked = "paved-wall-to-wall-checked.png";
 		public static final String PavedWallToWallUnChecked = "paved-wall-to-wall-unchecked.png";
+		public static final String FollowButtonNotSelected = "follow-button-not-selected.png";
+		public static final String FollowButtonWhenSelected = "follow-button-when-selected.png";
 	}
 }

@@ -60,12 +60,21 @@ public class CollectionsUtil {
 		Log.method("isEqualsArrayMap", LogHelper.arrayOfArrayToString(arrayValues), LogHelper.mapToString(mapValues));
 		for(int i=0;i<arrayValues[0].length; i++) {
 			String actual = mapValues.get(arrayValues[0][i]).toLowerCase().trim();
-			String expect = arrayValues[1][i].toLowerCase();
-			if(!actual.equals(expect)){
-				Log.error("NOT matching value found.");
-				Log.error("Map value: "+arrayValues[0][i]+" = "+actual);
-				Log.error("Array value: "+arrayValues[0][i]+" = "+expect);
-				return false;
+			String expected = arrayValues[1][i].toLowerCase();
+			if (NumberUtility.isFloatCsvPair(actual) && NumberUtility.isFloatCsvPair(expected)) {
+				if (!NumberUtility.equalsFloatCsvPairs(actual, expected)) {
+					Log.error("NOT matching float csv pairs found.");
+					Log.error("Map float csv pair value: "+arrayValues[0][i]+" = "+actual);
+					Log.error("Array float csv pair value: "+arrayValues[0][i]+" = "+expected);
+					return false;
+				}
+			} else {
+				if(!actual.equals(expected)){
+					Log.error("NOT matching value found.");
+					Log.error("Map value: "+arrayValues[0][i]+" = "+actual);
+					Log.error("Array value: "+arrayValues[0][i]+" = "+expected);
+					return false;
+				}
 			}
 		}
 
