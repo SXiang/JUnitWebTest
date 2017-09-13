@@ -865,6 +865,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			inputSurveyTag(reportsSurveyInfo.getTag());
 			selectSurveyInfoStartDate(reportsSurveyInfo.getStartDate());
 			selectSurveyInfoEndDate(reportsSurveyInfo.getEndDate());
+			handleExtraAddSurveyInfoParameters(reports);
 			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
 
 			// Click on Search survey button.

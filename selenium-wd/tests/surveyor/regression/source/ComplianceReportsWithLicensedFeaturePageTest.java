@@ -419,15 +419,11 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense() throws Exception {
 		Log.info("\nRunning TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense");
 
-		String userName = testAccount.get("userName");
-		String userPassword = testAccount.get("userPassword");
-		String customerName = testAccount.get("customerName");
-
 		LicensedFeatures[] lfs = {LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL};
 		SurveyModeFilter[] surveyModeFilter = {SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		String errorPattern = ComplianceReportsPage.ComplianceReport_LicenseMissing;
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
-		String strCreatedBy = testReport.get("userName");
+		testReport = addTestReport(userName, userPassword);
+		String strCreatedBy = userName;
 
 		for(int i=0; i<lfs.length; i++){
 			getLoginPage().open();

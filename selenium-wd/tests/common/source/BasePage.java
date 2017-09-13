@@ -125,11 +125,12 @@ public class BasePage {
 	@FindBy(how = How.CSS, using = "body.login-background div.panel-body > p")
 	private List<WebElement> siteErrorMessage;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-body > p")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-body > p")
 	private List<WebElement> licenseMissingText;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-footer > a.btn")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn")
 	private WebElement licenseMissingModalOKBtn;
+	private By licenseMissingModalBy = By.cssSelector("[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn");
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
@@ -639,6 +640,7 @@ public class BasePage {
     }
 
     public List<String> getLicenseMissingText(){
+    	WebElementExtender.waitForElementToBeDisplayed(10, driver, licenseMissingModalBy);
     	List<String> licenseMissingMsg = new ArrayList<String>();
     	for(WebElement p:licenseMissingText){
     		String text = getElementText(p).trim();
