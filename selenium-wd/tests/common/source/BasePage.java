@@ -525,7 +525,7 @@ public class BasePage {
     	}
     }
 
-	protected boolean selectDropdownOption(WebElement dropdown, String option){
+	protected boolean selectDropdownOptionByText(WebElement dropdown, String option){
 		By optBy = By.xpath("option[text()='"+option.trim()+"']");
 		return selectDropdownOption(dropdown, optBy, option);
 	}

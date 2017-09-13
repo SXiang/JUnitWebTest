@@ -178,7 +178,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	public boolean assignPeaks(String username){
 		buttonAssignPeaks.click();
-		boolean userSelected = selectDropdownOption(assignToUserDropdown, username);
+		boolean userSelected = selectDropdownOptionByText(assignToUserDropdown, username);
 		buttonAssignOk.click();
 		return userSelected;
 	}

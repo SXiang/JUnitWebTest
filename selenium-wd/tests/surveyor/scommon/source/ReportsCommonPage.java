@@ -651,7 +651,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
 				String thisMap = viewMap.get(KEYBASEMAP);
 				Log.info(String.format("Select base map - '%s'", thisMap));
-				selectDropdownOption(dropdownBaseMap, thisMap);
+				selectDropdownOptionByText(dropdownBaseMap, thisMap);
 			}
 		}
 	}
