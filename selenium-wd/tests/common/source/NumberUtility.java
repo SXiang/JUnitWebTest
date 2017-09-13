@@ -193,6 +193,46 @@ public class NumberUtility {
 		return getDecimalFormat(maxDecimalsToKeep).format(number);
 	}
 
+	public static boolean areFloatValues(String value1, String value2) {
+		Log.method("areFloatValues", value1, value2);
+		if (value1.length()==0 || value2.length()==0) {
+			return false;
+		}
+
+		if (!value1.contains(".") || !value2.contains(".")) {
+			return false;
+		}
+
+		if ((!Character.isDigit(value1.charAt(0)) && (value1.charAt(0)!='-')) || (!Character.isDigit(value2.charAt(0)) && (value2.charAt(0)!='-'))) {
+			return false;
+		}
+
+		Float fValue1 = NumberUtility.getFloatValueOf(value1);
+		Float fValue2 = NumberUtility.getFloatValueOf(value2);
+		return (fValue1.compareTo(0f)!=0 && fValue2.compareTo(0f)!=0);
+	}
+
+	public static boolean equalsFloatCsvPairs(String csvPair1, String csvPair2) {
+		Log.method("compareFloatCsvPairs", csvPair1, csvPair2);
+		List<String> pair1 = RegexUtility.split(csvPair1, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+		List<String> pair2 = RegexUtility.split(csvPair2, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+		Float fPair11 = NumberUtility.getFloatValueOf(pair1.get(0).trim());
+		Float fPair12 = NumberUtility.getFloatValueOf(pair1.get(1).trim());
+		Float fPair21 = NumberUtility.getFloatValueOf(pair2.get(0).trim());
+		Float fPair22 = NumberUtility.getFloatValueOf(pair2.get(1).trim());
+		return fPair11.compareTo(fPair21)==0 && fPair12.compareTo(fPair22)==0;
+	}
+
+	public static boolean isFloatCsvPair(String value) {
+		Log.method("isFloatCsvPair", value);
+		List<String> pairs = RegexUtility.split(value, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+		if (pairs == null || pairs.size() != 2) {
+			return false;
+		}
+
+		return areFloatValues(pairs.get(0).trim(), pairs.get(1).trim());
+	}
+
 	private static DecimalFormat getDecimalFormat(Integer maxDecimalsToKeep) {
 		StringBuilder formatBldr = new StringBuilder();
 		String formatPattern = "#.%s";
@@ -241,6 +281,9 @@ public class NumberUtility {
 		testMovingAverage_MultipleNumbers_AllSame();
 		Log.info("Running test - testMovingAverage_MultipleNumbers_AllDifferent() ...");
 		testMovingAverage_MultipleNumbers_AllDifferent();
+
+		Log.info("Running test - testFloatCsvPairs() ...");
+		testFloatCsvPairs();
 	}
 
 	private static void testFormatString_NoDecimals_InputHasDecimals() {
@@ -378,5 +421,13 @@ public class NumberUtility {
 		Log.info(String.format("Moving Average is: %d", movingAverage));
 		Log.info("Verifying moving average is equal to expected average...");
 		Assert.assertTrue(movingAverage == expectedAvg);
+	}
+
+	private static void testFloatCsvPairs() {
+		String value1 = "37.39801,-121.983573";
+		String value2 = "37.398010, -121.983573";
+		Assert.assertTrue(NumberUtility.isFloatCsvPair(value1));
+		Assert.assertTrue(NumberUtility.isFloatCsvPair(value2));
+		Assert.assertTrue(NumberUtility.equalsFloatCsvPairs(value1, value2));
 	}
 }
