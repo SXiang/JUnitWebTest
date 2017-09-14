@@ -159,7 +159,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		}
 		
 		Log.info("Select surveyor '"+strCusName + " - " + strLocName + " - " + strSurveyor+"'");
-		selectDropdownOption(this.dropdownSurveyor, strCusName + " - " + strLocName + " - " + strSurveyor);
+		selectDropdownOptionByText(this.dropdownSurveyor, strCusName + " - " + strLocName + " - " + strSurveyor);
 		
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();

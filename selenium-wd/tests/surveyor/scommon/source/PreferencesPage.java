@@ -21,6 +21,7 @@ import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.SurveyorConstants.UserLanguage;
 
 /**
  * @author zlu
@@ -105,6 +106,11 @@ public class PreferencesPage extends SurveyorBasePage {
 		select.selectByVisibleText(culture);
 	}
 
+	public void setSelectedCulture(UserLanguage culture) {
+		Log.info(String.format("Select culture %s", culture));
+		selectDropdownOptionByValue(this.dropDownCulture, culture.toString());
+	}
+	
 	public WebElement getBtnOk() {
 		return this.btnOk;
 	}

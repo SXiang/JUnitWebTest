@@ -108,7 +108,7 @@ public class FacilityEQReportsPage extends ReportsCommonPage {
 	}
 	
 	protected void selectFacilityEQLocationParameter(String feqLocationParameter) {
-		selectDropdownOption(feqLocationSelector, feqLocationParameter);
+		selectDropdownOptionByText(feqLocationSelector, feqLocationParameter);
 	}
 
 	protected void openShapeSelector() {

@@ -649,9 +649,17 @@ public class SurveyorBasePage extends BasePage {
 			if(currentOrder!=null){
 				isAscending = !currentOrder.equals("ascending");
 			}
+			
 			headerLink.click();
 			waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
 			waitForTableDataToLoad();
+			
+			headerLink = tableContext.findElement(By.cssSelector(String.format(headerCss, headerLabel)));
+			String sortedOrder = headerLink.getAttribute("aria-sort");
+			if(currentOrder==null&&sortedOrder!=null){
+				isAscending = sortedOrder.equals("ascending");
+			}
+			
 			try{
 				if(isAscending){
 					return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);

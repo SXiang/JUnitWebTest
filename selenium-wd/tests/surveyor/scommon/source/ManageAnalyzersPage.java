@@ -114,7 +114,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		this.inputSharedKey.sendKeys(sharedKey);
 
 		Log.info("Select surveyor '"+customerName + " - " + locationName + " - " + surveyor+"'");
-		selectDropdownOption(this.dropDownSurveyor, customerName + " - " + locationName + " - " + surveyor);
+		selectDropdownOptionByText(this.dropDownSurveyor, customerName + " - " + locationName + " - " + surveyor);
 
 		Log.clickElementInfo("OK");
 		this.btnOk.click();
@@ -252,7 +252,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				this.waitForEditPageLoad();
 
 				Log.info("Select surveyor '"+cuslocsur+"'");
-				if(!selectDropdownOption(this.dropDownSurveyor, cuslocsur)){
+				if(!selectDropdownOptionByText(this.dropDownSurveyor, cuslocsur)){
 					Log.error("Failed to select surveyor for analyzer '"+cuslocsur+"'");
 				}
 

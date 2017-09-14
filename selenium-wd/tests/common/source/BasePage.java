@@ -125,11 +125,12 @@ public class BasePage {
 	@FindBy(how = How.CSS, using = "body.login-background div.panel-body > p")
 	private List<WebElement> siteErrorMessage;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-body > p")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-body > p")
 	private List<WebElement> licenseMissingText;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-footer > a.btn")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn")
 	private WebElement licenseMissingModalOKBtn;
+	private By licenseMissingModalBy = By.cssSelector("[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn");
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
@@ -525,10 +526,19 @@ public class BasePage {
     	}
     }
 
-	protected boolean selectDropdownOption(WebElement dropdown, String option){
+	protected boolean selectDropdownOptionByText(WebElement dropdown, String option){
+		By optBy = By.xpath("option[text()='"+option.trim()+"']");
+		return selectDropdownOption(dropdown, optBy, option);
+	}
+	
+	protected boolean selectDropdownOptionByValue(WebElement dropdown, String value){
+		By optBy = By.xpath("option[@value='"+value.trim()+"']");
+		return selectDropdownOption(dropdown, optBy, value);
+	}
+	
+	protected boolean selectDropdownOption(WebElement dropdown, By optBy, String option){
 		boolean selected = false;
 		int numTry = 0;
-		By optBy = By.xpath("option[text()='"+option.trim()+"']");
 		do{
 			try{
 				WebElement opt =  dropdown.findElement(optBy);
@@ -630,6 +640,7 @@ public class BasePage {
     }
 
     public List<String> getLicenseMissingText(){
+    	WebElementExtender.waitForElementToBeDisplayed(10, driver, licenseMissingModalBy);
     	List<String> licenseMissingMsg = new ArrayList<String>();
     	for(WebElement p:licenseMissingText){
     		String text = getElementText(p).trim();

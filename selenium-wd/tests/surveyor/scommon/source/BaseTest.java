@@ -48,6 +48,7 @@ import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.DriverViewPageActions.DrivingSurveyType;
 import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.actions.TestEnvironmentActions;
@@ -424,13 +425,20 @@ public class BaseTest {
 		return Collections.synchronizedMap(testAccount);
 	}
 
-	public void addTestUser(String customerName, String userName, String userPassword, String userRole, String locationName){
+	public String addTestUser(String customerName,String userPassword, String userRole, String locationName){
+		String uniqueNumber = getTestSetup().getNewFixedSizeRandomNumber(6);
+		String userName = uniqueNumber + REGBASEUSERNAME;
+		addTestUser(customerName, userName, userPassword, userRole, locationName);
+		return userName;
+	}
+	public String addTestUser(String customerName, String userName, String userPassword, String userRole, String locationName){
 		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), manageUsersPage);
 		manageUsersPage.open();
 		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
 			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
+		return userName;
 	}
 
 	public Map<String, String> addTestReport() throws Exception{
@@ -463,8 +471,10 @@ public class BaseTest {
 		}
 		HashMap<String, String> testReport = new HashMap<String, String>();
 
+		LoginPageActions loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, Password);
+		loginPageAction.login(userName+":"+Password, null);
+		
 		testReport.put("userName", userName);
 
 		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
@@ -550,7 +560,11 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
-		String replayScriptDB3File = "Surveyor.db3";
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, "", db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+	
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3file, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
+        String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		String replayEQScriptDB3File = "Surveyor.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62, 65};
@@ -595,13 +609,16 @@ public class BaseTest {
 				continue;
 			}
 
-			String db3file = replayScriptDB3File;
-			if(st.equals(SurveyType.Analytics)){
-				db3file = replayAnalyticsScriptDB3File;
-			}else if(st.equals(SurveyType.EQ)){
-				db3file = replayEQScriptDB3File;
-				drivingSurveyType = DrivingSurveyType.EQ;
+			if(db3file.isEmpty()){
+				db3file = replayScriptDB3File;
+				if(st.equals(SurveyType.Analytics)){
+					db3file = replayAnalyticsScriptDB3File;
+				}else if(st.equals(SurveyType.EQ)){
+					db3file = replayEQScriptDB3File;
+					drivingSurveyType = DrivingSurveyType.EQ;
+				}
 			}
+
 			int surveyRowID = surveyRowIDs[0];
 			for(int j=0; j<surveyType.length; j++){
 				if(st.equals(surveyType[j])){
