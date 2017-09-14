@@ -82,6 +82,61 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	}
 
 	/**
+	 * Test Case ID: TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected
+	 * Test Description: Verify mobile view when only LISA, Gaps and Assets are selected and no assets are highlighted
+	 * Script: 
+	 *	- Survey that includes LISA and customer has Assets
+	 *	- Log in as Picarro Admin
+	 *	- On the Compliance Reports page, click the New Compliance Report" button.
+	 *	- Fill out the required fields
+	 *	- Select a survey that includes LISA boxes that have Assets running through them
+	 *	- In the Views section, select LISAs from the Search Area Preference
+	 *	- Select LISAs, Gaps and  Assets and generate the report
+	 *	- Assign LISA for investigation
+	 *	- Log in to mobile view
+	 *	- Click on above assigned LISA
+	 * Results: 
+	 *	- Assets Intersecting LISA are not highlighted in mobile app
+	 */
+	@Test
+	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961, location = InvestigationReportDataProvider.class)
+	public void TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected(
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		Log.info("\nRunning  TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected...");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Picarro Admin
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
+		
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
+		
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		reportInvestigationsPage.waitForPageLoad();
+		
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
+		mobileInvestigatePage.clickOnFollow();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileIntersectingLisa-1"));
+
+		mobileLoginPage.logout();
+	}
+	
+	/**
 	 * Test Case ID: TC234_InvestigateLisaRandomlyAsDriverUser
 	 * Test Description: Investigate Lisa randomly as driver user and check the lisa number on views and pdf reports
 	 * Script:

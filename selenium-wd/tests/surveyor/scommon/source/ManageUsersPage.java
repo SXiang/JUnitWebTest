@@ -1164,7 +1164,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	private void selectCustomerLocationDropdown(String customerName, String location) {
 		Log.method("selectCustomerLocationDropdown", customerName, location);
 		String custLoc = customerName + " - " + location;
-		selectDropdownOption(this.dropDownCustomer, custLoc);
+		selectDropdownOptionByText(this.dropDownCustomer, custLoc);
 	}
 
 	private void selectLocationDropdown(String customerLocation) {

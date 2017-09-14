@@ -112,7 +112,7 @@ public class EQReportsPage extends ReportsCommonPage {
 	}
 
 	public void selectEQLocationParameter(String locationParameter) {
-		selectDropdownOption(getEqLocationSelector(), locationParameter);
+		selectDropdownOptionByText(getEqLocationSelector(), locationParameter);
 	}
 
 	protected void openLineSegmentsSelector() {
