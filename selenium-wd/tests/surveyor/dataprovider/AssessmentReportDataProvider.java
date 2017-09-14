@@ -136,7 +136,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1435() {
 		return new Object[][] {
-			{ "TC1435" /*TestCaseID*/, 6 /*userDataRowID*/,  2 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
+			{ "TC1435" /*TestCaseID*/, 6 /*userDataRowID*/,  2 /*reportDataRowID1*/, 18/*reportDataRowID2*/,
 				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10_MethaneSurveyTC1435)}
 		};
 	}
@@ -152,7 +152,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1594() {
 		return new Object[][] {
-			{ "TC1594" /*TestCaseID*/, 6 /*userDataRowID*/,  15 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
+			{ "TC1594" /*TestCaseID*/, 6 /*userDataRowID*/,  15 /*reportDataRowID1*/, 19/*reportDataRowID2*/,
 				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10_MethaneSurveyTC1594)}
 		};
 	}
