@@ -492,9 +492,7 @@ public class BaseTest {
 			if(!found){
 				continue;
 			}
-if(sm.equals(SurveyModeFilter.Operator)){
-	Log.warn("Warning");
-}
+
 			complianceReportsPageAction.open("", -1);
 			ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(testRowID);
 			if(customer!=null){
