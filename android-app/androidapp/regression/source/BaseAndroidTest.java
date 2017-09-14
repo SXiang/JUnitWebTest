@@ -29,14 +29,20 @@ import common.source.AppConstants;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
+import common.source.EnumUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogCollector;
 import common.source.MobileActions;
+import common.source.NetworkEmulation;
+import common.source.NetworkEmulation.NetworkDelay;
+import common.source.NetworkEmulation.NetworkSpeed;
+import common.source.NumberUtility;
 import common.source.PerfmonDataCollector;
 import common.source.ProcessUtility;
+import common.source.RegexUtility;
 import common.source.ScreenRecorder;
 import common.source.ServiceCorrector;
 import common.source.ServiceCorrector.ServiceInfo;
@@ -142,9 +148,81 @@ public class BaseAndroidTest extends BaseTest {
 			if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
 				AndroidAutomationTools.startAppiumServer();
 			} else {
-				AndroidAutomationTools.start();
+				NetworkEmulation networkEmulation = detectCreateNetworkEmulation();
+				if (networkEmulation == null) {
+					AndroidAutomationTools.start();
+				} else {
+					AndroidAutomationTools.start(networkEmulation);
+				}
+
 			    AndroidAutomationTools.disableAnimations();  // perf optimization.
 			}
+		}
+	}
+
+	private static NetworkEmulation detectCreateNetworkEmulation() {
+		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
+		if (!testSetup.isAndroidNetworkThrottleEnabled()) {
+			return null;
+		}
+
+		String tcpDumpFile = String.format("%s\\%d-%s.tcpdump.cap", LOGS_BASE_FOLDER, getRunUUID(), TestSetup.getUUIDString());
+
+		String delayValue = testSetup.getAndroidNetworkDelay().trim();
+		String speedValue = testSetup.getAndroidNetworkSpeed().trim();
+
+		Integer iDelay = 0;
+		Integer iMinDelay = 0;
+		Integer iMaxDelay = 0;
+		Integer iSpeed = 0;
+		Integer iUpSpeed = 0;
+		Integer iDownSpeed = 0;
+
+		if (delayValue.contains(":")) {
+			List<String> delayValueParts = RegexUtility.split(delayValue, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+			iMinDelay = NumberUtility.getIntegerValueOf(delayValueParts.get(0));
+			iMaxDelay = NumberUtility.getIntegerValueOf(delayValueParts.get(1));
+		} else {
+			iDelay = NumberUtility.getIntegerValueOf(delayValue);
+		}
+
+		if (speedValue.contains(":")) {
+			List<String> speedValueParts = RegexUtility.split(speedValue, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+			iUpSpeed = NumberUtility.getIntegerValueOf(speedValueParts.get(0));
+			iDownSpeed = NumberUtility.getIntegerValueOf(speedValueParts.get(1));
+		} else {
+			iSpeed = NumberUtility.getIntegerValueOf(speedValue);
+		}
+
+		NetworkEmulation emulation = createNetworkEmulation(tcpDumpFile, delayValue, speedValue, iDelay, iMinDelay, iMaxDelay, iSpeed, iUpSpeed, iDownSpeed);
+		TestContext.INSTANCE.getTestSetup().setNetworkEmulation(emulation);
+		return emulation;
+	}
+
+	private static NetworkEmulation createNetworkEmulation(String tcpDumpFile, String delayValue, String speedValue, Integer iDelay,
+			Integer iMinDelay, Integer iMaxDelay, Integer iSpeed, Integer iUpSpeed, Integer iDownSpeed) {
+		NetworkDelay delay = NetworkDelay.NONE;
+		NetworkSpeed speed = NetworkSpeed.FULL;
+		if (iMinDelay>0 && iMaxDelay>0 && iUpSpeed>0 && iDownSpeed>0) {
+			return NetworkEmulation.createNew(iMinDelay, iMaxDelay, iUpSpeed, iDownSpeed, tcpDumpFile);
+		} else if (iMinDelay>0 && iMaxDelay>0) {
+			speed = EnumUtility.fromName(speedValue, () -> NetworkEmulation.NetworkSpeed.values());
+			return NetworkEmulation.createNew(speed, iMinDelay, iMaxDelay, tcpDumpFile);
+		} else if (iUpSpeed>0 && iDownSpeed>0) {
+			delay = EnumUtility.fromName(delayValue, () -> NetworkEmulation.NetworkDelay.values());
+			return NetworkEmulation.createNew(delay, iUpSpeed, iDownSpeed, tcpDumpFile);
+		} else if (iDelay>0 && iSpeed>0) {
+			return NetworkEmulation.createNew(iDelay, iSpeed, tcpDumpFile);
+		} else if (iDelay>0) {
+			speed = EnumUtility.fromName(speedValue, () -> NetworkEmulation.NetworkSpeed.values());
+			return NetworkEmulation.createNew(speed, iDelay, tcpDumpFile);
+		} else if (iSpeed>0) {
+			delay = EnumUtility.fromName(delayValue, () -> NetworkEmulation.NetworkDelay.values());
+			return NetworkEmulation.createNew(delay, iSpeed, tcpDumpFile);
+		} else {
+			delay = EnumUtility.fromName(delayValue, () -> NetworkEmulation.NetworkDelay.values());
+			speed = EnumUtility.fromName(speedValue, () -> NetworkEmulation.NetworkSpeed.values());
+			return NetworkEmulation.createNew(delay, speed, tcpDumpFile);
 		}
 	}
 
@@ -266,7 +344,7 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
-	private Long getRunUUID() {
+	private static Long getRunUUID() {
 		Long runUUID = TestContext.INSTANCE.getTestSetup().getRunUUID();
 		if (runUUID == null) {
 			return 0L;

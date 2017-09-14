@@ -196,10 +196,16 @@ public class TestSetup {
 	private boolean isAndroidTestPerfProfileVisualBarsEnabled;
 	private boolean isAndroidTestPerfProfileDumpSysEnabled;
 
+	private boolean isAndroidNetworkThrottleEnabled;
+	private String androidNetworkDelay;
+	private String androidNetworkSpeed;
+
+	private INetworkEmulation networkEmulation;
+
 	private String androidPerfTestResultStoreLocation;
 
 	private Integer androidStabilityTestMaxHrs;
-	private Integer androidStabilityTestMaxMins;
+	private Integer androidStabilityTestMaxMinutes;
 
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
@@ -670,6 +676,9 @@ public class TestSetup {
 			this.setAndroidTestPerfProfileDumpSysEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfProfile.DumpSys.Enabled")));
 			this.setAndroidPerfTestResultStoreLocation(this.testProp.getProperty("androidTests.PerfResults.Store.Location"));
 			this.setAndroidDevicePin(this.testProp.getProperty("androidDevicePin"));
+			this.setAndroidNetworkThrottleEnabled(Boolean.valueOf(this.testProp.getProperty("androidEmulator.Network.Throttle.Enabled")));
+			this.setAndroidNetworkDelay(this.testProp.getProperty("androidEmulator.Network.Delay"));
+			this.setAndroidNetworkSpeed(this.testProp.getProperty("androidEmulator.Network.Speed"));
 
 			this.setAndroidStabilityTestProperties();
 			this.setBackPackServerProperties();
@@ -995,7 +1004,7 @@ public class TestSetup {
 
 		String stabilityTestMaxMins = this.testProp.getProperty("androidTests.StabilityTests.MaxMinutes");
 		if (stabilityTestMaxMins != null && stabilityTestMaxMins != "") {
-			this.setAndroidStabilityTestMaxMins(Integer.valueOf(stabilityTestMaxMins));
+			this.setAndroidStabilityTestMaxMinutes(Integer.valueOf(stabilityTestMaxMins));
 		}
 	}
 
@@ -1805,11 +1814,43 @@ public class TestSetup {
 		this.androidStabilityTestMaxHrs = androidStabilityTestMaxHrs;
 	}
 
-	public Integer getAndroidStabilityTestMaxMins() {
-		return androidStabilityTestMaxMins;
+	public Integer getAndroidStabilityTestMaxMinutes() {
+		return androidStabilityTestMaxMinutes;
 	}
 
-	public void setAndroidStabilityTestMaxMins(Integer androidStabilityTestMaxMins) {
-		this.androidStabilityTestMaxMins = androidStabilityTestMaxMins;
+	public void setAndroidStabilityTestMaxMinutes(Integer androidStabilityTestMaxMins) {
+		this.androidStabilityTestMaxMinutes = androidStabilityTestMaxMins;
+	}
+
+	public boolean isAndroidNetworkThrottleEnabled() {
+		return isAndroidNetworkThrottleEnabled;
+	}
+
+	public void setAndroidNetworkThrottleEnabled(boolean isAndroidNetworkThrottleEnabled) {
+		this.isAndroidNetworkThrottleEnabled = isAndroidNetworkThrottleEnabled;
+	}
+
+	public String getAndroidNetworkDelay() {
+		return androidNetworkDelay;
+	}
+
+	public void setAndroidNetworkDelay(String androidNetworkDelay) {
+		this.androidNetworkDelay = androidNetworkDelay;
+	}
+
+	public String getAndroidNetworkSpeed() {
+		return androidNetworkSpeed;
+	}
+
+	public void setAndroidNetworkSpeed(String androidNetworkSpeed) {
+		this.androidNetworkSpeed = androidNetworkSpeed;
+	}
+
+	public INetworkEmulation getNetworkEmulation() {
+		return networkEmulation;
+	}
+
+	public void setNetworkEmulation(INetworkEmulation networkEmulation) {
+		this.networkEmulation = networkEmulation;
 	}
 }

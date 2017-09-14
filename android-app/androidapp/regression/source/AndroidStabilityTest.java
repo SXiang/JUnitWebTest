@@ -96,11 +96,11 @@ public class AndroidStabilityTest extends BaseReportTest {
 	}
 
 	private static void createNewTimer() {
-		timer = Timer.createNew(TestContext.INSTANCE.getTestSetup().getAndroidStabilityTestMaxHrs(), TestContext.INSTANCE.getTestSetup().getAndroidStabilityTestMaxMins(), 0);
+		timer = Timer.createNew(TestContext.INSTANCE.getTestSetup().getAndroidStabilityTestMaxHrs(), TestContext.INSTANCE.getTestSetup().getAndroidStabilityTestMaxMinutes(), 0);
 	}
 
 	/**
-	 *	Test Case: TC2811_StabilityTestVerifyContinuousUseOfPicarroAppAndLoadingDataFromPcubedWorksWithoutErrors
+	 *	Test Case: TC2811_StabilityTestVerifyContinuousUseOfPicarroAppWorksWithoutErrors
 	 *	Script:
 	 *	 - Log into Backpack tablet
 	 *	 - Press Investigation button
@@ -114,9 +114,9 @@ public class AndroidStabilityTest extends BaseReportTest {
 	**/
 	@Test
 	@UseDataProvider(value = StabilityTestDataProvider.STABILITY_TEST_DATA_PROVIDER_TC2811, location = StabilityTestDataProvider.class)
-	public void TC2811_StabilityTestVerifyContinuousUseOfPicarroAppAndLoadingDataFromPcubedWorksWithoutErrors(
+	public void TC2811_StabilityTestVerifyContinuousUseOfPicarroAppWorksWithoutErrors(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC2811_StabilityTestVerifyContinuousUseOfPicarroAppAndLoadingDataFromPcubedWorksWithoutErrors ...");
+		Log.info("\nRunning TC2811_StabilityTestVerifyContinuousUseOfPicarroAppWorksWithoutErrors ...");
 
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
