@@ -373,7 +373,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		waitForNewPageLoad();
 
 		Log.info("Select customer - '"+customer+"'");
-		selectDropdownOption(this.dropDownCustomer, customer);
+		selectDropdownOptionByText(this.dropDownCustomer, customer);
 		changeCustomerDialog.confirmInChangeCustomerDialog();
 
 		Log.info("Enter location description - '" + locationDesc + "'");

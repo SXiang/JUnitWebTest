@@ -186,7 +186,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.waitForDropdownToBePopulated(this.dropDownLocation);
 
 		Log.info("Select Location - '"+customerName + " - " + locationName+"'");
-		selectDropdownOption(this.dropDownLocation, customerName + " - " + locationName);
+		selectDropdownOptionByText(this.dropDownLocation, customerName + " - " + locationName);
 
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();

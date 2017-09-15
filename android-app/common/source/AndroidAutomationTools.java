@@ -66,9 +66,14 @@ public class AndroidAutomationTools {
 
 	public static void start() throws IOException {
 		Log.method("start");
+		start(NetworkEmulation.createDefault());
+	}
+
+	public static void start(NetworkEmulation networkEmulation) throws IOException {
+		Log.method("start", (networkEmulation==null) ? "null" : networkEmulation);
 
 		// start emulator.
-		startEmulator();
+		startEmulator(networkEmulation.toEmulatorArgs());
 
 		// start appium server.
 		startAppiumServer();
@@ -133,11 +138,12 @@ public class AndroidAutomationTools {
 		AppiumServerInterface.stopAppiumServer();
 	}
 
-	private static void startEmulator() throws IOException {
-		Log.method("startEmulator");
+	private static void startEmulator(String networkArgs) throws IOException {
+		Log.method("startEmulator", networkArgs);
 		String startAndroidToolsCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 		String repoRootFolder = TestSetup.getRootPath();
-		String startAndroidToolsCmd = START_ANDROID_TOOLS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"") + " \"" + DEFAULT_EMULATOR_AVD_NAME + "\"";
+		String startAndroidToolsCmd = START_ANDROID_TOOLS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"") + " \"" + DEFAULT_EMULATOR_AVD_NAME + "\""
+				+ " \"" + networkArgs + "\"";
 		String command = "cd \"" + startAndroidToolsCmdFolder + "\" && " + startAndroidToolsCmd;
 		Log.info("Executing start android automation tools command. Command -> " + command);
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);

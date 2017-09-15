@@ -23,6 +23,7 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC518 = "dataProviderPageActionsInvestigationReports_TC518";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1573 = "dataProviderPageActionsInvestigationReports_TC1573";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1574 = "dataProviderPageActionsInvestigationReports_TC1574";
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961 = "dataProviderPageActionsInvestigationReports_TC1961";
 	
 	/* ComplianceReportInvestigationPageTest3 */
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1722 = "dataProviderPageActionsInvestigationReports_TC1722";
@@ -142,5 +143,10 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1767() {
 		return new Object[][] { { "TC1767" /* TestCaseID */, 1 /* userDataRowID */,2 /* mobileUserDataRowID */, 245 /* reportDataRowID1 */, 3 /* mobileUserDataRowID2 */} };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC1961() {
+		return new Object[][] { { "TC1961" /* TestCaseID */, 4 /* userDataRowID */, 4 /* mobileUserDataRowID */, 273 /* reportDataRowID1 */} };
 	}
 }

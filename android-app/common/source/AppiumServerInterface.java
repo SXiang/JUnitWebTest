@@ -18,6 +18,8 @@ public class AppiumServerInterface {
 		Log.method("ensureAppiumServerIsRunning");
 		if (!ProcessUtility.isProcessRunning(NODE_EXE, APPIUM)) {
 			startAppiumServer();
+			waitForAppiumServerToStart();
+			waitForAppiumServerToCatchUp();
 		}
 	}
 

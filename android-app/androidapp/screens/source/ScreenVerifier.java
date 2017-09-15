@@ -11,6 +11,9 @@ import java.util.List;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.NetworkEmulation;
+import common.source.NetworkEmulation.NetworkDelay;
+import common.source.NetworkEmulation.NetworkSpeed;
 import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -21,7 +24,30 @@ public class ScreenVerifier {
 	private ScreenVerifier() {}
 
 	public static ScreenVerifier getInstance() {
-		return new ScreenVerifier();
+		ScreenVerifier screenVerifier = new ScreenVerifier();
+		NetworkEmulation networkEmulation = (NetworkEmulation)TestContext.INSTANCE.getTestSetup().getNetworkEmulation();
+		if (networkEmulation != null) {
+			if (!networkEmulation.getNetworkDelay().equals(NetworkDelay.HSDPA) && !networkEmulation.getNetworkDelay().equals(NetworkDelay.EVDO)
+					&& !networkEmulation.getNetworkDelay().equals(NetworkDelay.LTE) && !networkEmulation.getNetworkDelay().equals(NetworkDelay.NONE)) {
+				screenVerifier.setTurnedOff(true);
+			}
+
+			if (!networkEmulation.getNetworkSpeed().equals(NetworkSpeed.HSDPA) && !networkEmulation.getNetworkSpeed().equals(NetworkSpeed.EVDO)
+					&& !networkEmulation.getNetworkSpeed().equals(NetworkSpeed.LTE) && !networkEmulation.getNetworkSpeed().equals(NetworkSpeed.FULL)) {
+				screenVerifier.setTurnedOff(true);
+			}
+		}
+
+		return screenVerifier;
+	}
+
+	private boolean isTurnedOff = false;
+	private boolean isTurnedOff() {
+		return isTurnedOff;
+	}
+
+	private void setTurnedOff(boolean isTurnedOff) {
+		this.isTurnedOff = isTurnedOff;
 	}
 
 	public void assertImageFoundOnScreen(AndroidBaseScreen screen, String imageFolderName, String imageFileName) {
@@ -43,6 +69,11 @@ public class ScreenVerifier {
 		Log.method("assertAtleastOneImageFoundOnScreen", screen, LogHelper.listToString(imageFolderNames), LogHelper.listToString(imageFileNames), attempts);
 		if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
 			Log.info("To be implemented. Currently image verification is supported only in Emulator runs. Skipping verification...");
+			return;
+		}
+
+		if (isTurnedOff()) {
+			Log.info("Screen verifier is turned OFF due to bandwidth restriction set in Network Emulation. Skipping verification...");
 			return;
 		}
 
@@ -72,6 +103,11 @@ public class ScreenVerifier {
 
 	public boolean verifyImageFoundOnScreen(AndroidBaseScreen screen, String imageFolderName, String imageFileName) throws IOException {
 		Log.method("verifyImageFoundOnScreen", screen, imageFolderName, imageFileName);
+		if (isTurnedOff()) {
+			Log.info("Screen verifier is turned OFF due to bandwidth restriction set in Network Emulation. Skipping verification...");
+			return true;
+		}
+
 		final File imageFile = new File(TestSetup.getRootPath() + File.separator + "android-app" + File.separator + "data" + File.separator + "test-expected-data" +
 				File.separator + "clips" + File.separator + imageFolderName + File.separator + imageFileName);
 		final Integer waitTimeInSecs = 30;

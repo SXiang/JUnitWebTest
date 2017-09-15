@@ -19,7 +19,7 @@ import common.source.TestSetup;
 public class AndroidAutomationToolsTest {
 
 	private static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
-	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-82.apk";
+	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-82.apk";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

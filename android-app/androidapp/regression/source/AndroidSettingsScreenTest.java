@@ -97,7 +97,7 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 	}
 
 	/**
-	 *	Test Case: TC2386_EnergyBackpackAlarmSettings
+	 *	Test Case: TC2386_EnergyBackpackAlarmSettingsVolume
 	 *	Script:
 	 *	- Log into Backpack tablet
 	 *	- Click on the menu icon at bottom right of the screen
@@ -112,14 +112,14 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 	 *	- Window will appear with the following choices - Alarm Settings, App Settings and Shutdown Instrument
 	 *	- Window will pop up with the following settings - Volume , Amplitude and Threshold
 	 *	- Alarm should sound with faint beeping when sample is taken
-	 *  - Alarm should sound with louder beeping
+	 *	- Alarm should sound with louder beeping
 	 *	- Alarm should sound with still louder beeping
-	 *	- Alarm should sound with fainter beeping	 *
+	 *	- Alarm should sound with fainter beeping
 	**/
 	// PARTIAL: Analyzer device sound verifications NOT included.
 	@Test
-	public void TC2386_EnergyBackpackAlarmSettings() throws Exception {
-		Log.info("\nRunning TC2386_EnergyBackpackAlarmSettings ...");
+	public void TC2386_EnergyBackpackAlarmSettingsVolume() throws Exception {
+		Log.info("\nRunning TC2386_EnergyBackpackAlarmSettingsVolume ...");
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			Log.info("Map screen loaded successfully!");
@@ -134,10 +134,27 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 			settingsScreen.clickOnAlarmSettings();
 			alarmSettingsScreen.waitForScreenLoad();
 			alarmSettingsScreen.slideToVolume(5.0f);
-			alarmSettingsScreen.slideToThresholdppm(20.0f);
+			alarmSettingsScreen.slideToAmplitudeppm(50.0f); // adjusted to higher value to verify slider move.
+			alarmSettingsScreen.slideToThresholdppm(2.0f);
 			alarmSettingsScreen.clickOnApply();
+
+			reopenAlarmSettingsAndSetVolume(10.0f);
+			reopenAlarmSettingsAndSetVolume(15.0f);
+			reopenAlarmSettingsAndSetVolume(10.0f);
+
 			return true;
 		});
+	}
+
+	private void reopenAlarmSettingsAndSetVolume(Float volume) {
+		initializeMapScreen();
+		mapScreen.clickOnMenuButton();
+		initializeSettingsScreen();
+		settingsScreen.clickOnAlarmSettings();
+		initializeAlarmSettingsScreen();
+		alarmSettingsScreen.waitForScreenLoad();
+		alarmSettingsScreen.slideToVolume(volume);
+		alarmSettingsScreen.clickOnApply();
 	}
 
 	private void initializeTestScreenObjects() {
