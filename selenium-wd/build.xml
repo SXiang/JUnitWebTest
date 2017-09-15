@@ -586,6 +586,7 @@
           <include name="**/SimulatorGeneralTests.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
+          <include name="**/AssessmentReportsWithNewSurveyPageTest.class" />
           <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
           <include name="**/ObserverViewPageTest_EQ.class" />
           <include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
@@ -706,9 +707,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-			  <include name="**/DriverViewPageTest_Analytics.class" />
-			  <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
-			  <include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+			  <include name="**/AssessmentReportsWithNewSurveyPageTest.class" />
 			</fileset>
       </batchtest>
     </junit>
