@@ -204,6 +204,9 @@ public class TestSetup {
 
 	private String androidPerfTestResultStoreLocation;
 
+	private Integer androidStabilityTestMaxHrs;
+	private Integer androidStabilityTestMaxMinutes;
+
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
 
@@ -677,7 +680,8 @@ public class TestSetup {
 			this.setAndroidNetworkDelay(this.testProp.getProperty("androidEmulator.Network.Delay"));
 			this.setAndroidNetworkSpeed(this.testProp.getProperty("androidEmulator.Network.Speed"));
 
-			setBackPackServerProperties(this.testProp);
+			this.setAndroidStabilityTestProperties();
+			this.setBackPackServerProperties();
 
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
@@ -778,7 +782,7 @@ public class TestSetup {
 		}
 	}
 
-	private void setBackPackServerProperties(Properties testProp2) {
+	private void setBackPackServerProperties() {
 		this.setBackPackServerIpAddress(this.testProp.getProperty("backPackServerIpAddress"));
 		this.setBackPackServerMachineIp(this.testProp.getProperty("backPackServerMachineIp"));
 		this.setBackPackServerMachineUser(this.testProp.getProperty("backPackServerMachineUser"));
@@ -989,6 +993,18 @@ public class TestSetup {
 				&& executionTimesForLargeAreaPipesBaselineCollection != "") {
 			this.setExecutionTimesForLargeAreaPipesReportJobPerfBaseline(
 					Integer.valueOf(executionTimesForLargeAreaPipesBaselineCollection));
+		}
+	}
+
+	private void setAndroidStabilityTestProperties() {
+		String stabilityTestMaxHrs = this.testProp.getProperty("androidTests.StabilityTests.MaxHours");
+		if (stabilityTestMaxHrs != null && stabilityTestMaxHrs != "") {
+			this.setAndroidStabilityTestMaxHrs(Integer.valueOf(stabilityTestMaxHrs));
+		}
+
+		String stabilityTestMaxMins = this.testProp.getProperty("androidTests.StabilityTests.MaxMinutes");
+		if (stabilityTestMaxMins != null && stabilityTestMaxMins != "") {
+			this.setAndroidStabilityTestMaxMinutes(Integer.valueOf(stabilityTestMaxMins));
 		}
 	}
 
@@ -1788,6 +1804,22 @@ public class TestSetup {
 
 	public void setAndroidPerfTestResultStoreLocation(String androidPerfTestResultStoreLocation) {
 		this.androidPerfTestResultStoreLocation = androidPerfTestResultStoreLocation;
+	}
+
+	public Integer getAndroidStabilityTestMaxHrs() {
+		return androidStabilityTestMaxHrs;
+	}
+
+	public void setAndroidStabilityTestMaxHrs(Integer androidStabilityTestMaxHrs) {
+		this.androidStabilityTestMaxHrs = androidStabilityTestMaxHrs;
+	}
+
+	public Integer getAndroidStabilityTestMaxMinutes() {
+		return androidStabilityTestMaxMinutes;
+	}
+
+	public void setAndroidStabilityTestMaxMinutes(Integer androidStabilityTestMaxMins) {
+		this.androidStabilityTestMaxMinutes = androidStabilityTestMaxMins;
 	}
 
 	public boolean isAndroidNetworkThrottleEnabled() {
