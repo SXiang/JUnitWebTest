@@ -47,7 +47,7 @@ public class AndroidBaseScreen implements Screen {
 	public AndroidBaseScreen(WebDriver driver) {
 		this.driver = driver;
 		this.size = getAndroidDriver().manage().window().getSize();
-		this.screenVerifier = ScreenVerifier.getInstance();
+		this.screenVerifier = ScreenVerifier.newDefaultVerifier();
 	}
 
 	@SuppressWarnings("rawtypes")

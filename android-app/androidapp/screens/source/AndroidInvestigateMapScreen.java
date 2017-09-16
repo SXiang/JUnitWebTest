@@ -68,17 +68,9 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement markerInvestigationStatus;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[3]")
-	@CacheLookup
-	private WebElement latitudeLongitude;
-
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
-	private WebElement precision;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[4]")
-	@CacheLookup
-	private WebElement velocity;
+	private WebElement latitudeLongitude;
 
 	@AndroidFindBy(xpath = FOOTER_INVESTIGATE_BUTTON_XPATH)
 	private WebElement footerInvestigateButton;
@@ -195,16 +187,6 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	public String getLatitudeLongitudeText() {
 		Log.method("getLatitudeLongitudeText");
 		return latitudeLongitude.getText();
-	}
-
-	public String getPrecisonText() {
-		Log.method("getPrecisonText");
-		return precision.getText();
-	}
-
-	public String getVelocityText() {
-		Log.method("getVelocityText");
-		return velocity.getText();
 	}
 
 	public WebElement getGoogleMapView() {
