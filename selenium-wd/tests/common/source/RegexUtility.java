@@ -287,6 +287,28 @@ public class RegexUtility {
 		return isMatch;
 	}
 
+	/**
+	 * Compare strings by equals or matches
+	 * @param line
+	 * @param expectedLine
+	 * @return
+	 */
+	public static boolean equalsOrEmpty(String actualValue, String expectedValue){
+		actualValue = actualValue==null?"":actualValue;
+		expectedValue = expectedValue==null?"":expectedValue;
+		actualValue = actualValue.trim();
+		expectedValue= expectedValue.trim();
+		
+		if(actualValue.equals(expectedValue)){
+			return true;
+		}
+		
+		boolean isEmpty = false;
+		String emptyPattern = "(?i)(N\\/A|0[\\.]?[0]*[%]?|\\s?)";
+		isEmpty = actualValue.matches(emptyPattern) && expectedValue.matches(emptyPattern);
+		return isEmpty;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		Log.info("Running test - testMaxAmplitude_Success() ...");
 		testMaxAmplitude_Success();

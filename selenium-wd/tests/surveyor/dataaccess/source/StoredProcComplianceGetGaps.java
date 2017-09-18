@@ -25,10 +25,22 @@ public class StoredProcComplianceGetGaps extends BaseEntity {
 		super();
 	}
 
+	@Override
 	public String toString() {
 		return this.getColA().concat(this.getColB().concat(this.getColC()).concat(this.getColD()).concat(this.getColE()).concat(this.getColF()).concat(this.getColG()).concat(this.getColH()).concat(this.getColI()).concat(this.getColJ()).concat(this.getColK()).concat(this.getColL()));
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		StoredProcComplianceGetGaps gaps = (StoredProcComplianceGetGaps) obj;
+		return this.toString().equals(gaps.toString());
+	}
+
+	@Override
+	public int hashCode(){
+		return this.toString().hashCode();
+	}
+	
 	public String getRowNumber() {
 		String returnVal = (rowNumber != null) ? rowNumber : "";
 		return returnVal;

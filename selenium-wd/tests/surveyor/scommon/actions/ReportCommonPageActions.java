@@ -2794,6 +2794,46 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes verifyReportSurveyMetaDataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyReportSurveyMetaDataFile(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyReportSurveyMetaDataFile", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		return this.getReportsCommonPage().verifyReportSurveyMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
+	}
+	
+	/**
+	 * Executes verifyLISASAnalyticsMetaDataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyLISASAnalyticsMetaDataFile(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyLISASAnalyticsMetaDataFile", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		return this.getReportsCommonPage().verifyLISASAnalyticsMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
+	}
+	
+	/**
+	 * Executes verifyReportSpecificMetadataFiles action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyReportSpecificMetadataFiles(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyReportSpecificMetadataFiles", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		Predicate<ReportsCommonPage> verifyMetadataFilesPredicate = this.getReportSpecificVerifyMetadataFilesPredicate(downloadPath, getWorkingReportsDataRow().title);
+		return verifyMetadataFilesPredicate.test(getReportsCommonPage());
+	}
+	
+	/**
 	 * Executes verifyAllSSRSTableInfos action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2919,6 +2959,20 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 	}
 
+	/**
+	 * Executes verifyGapMetaDataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyGapMetaDataFile(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyGapMetaDataFile", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+
+		return this.getReportsCommonPage().verifyGAPMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
+	}
+	
 	/**
 	 * Executes verifyReportDeletedSuccessfully action.
 	 * @param data - specifies the input data passed to the action.
