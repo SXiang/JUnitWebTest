@@ -3,12 +3,20 @@ package androidapp.screens.source;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import org.sikuli.api.DefaultScreenRegion;
+import org.sikuli.api.ScreenRegion;
+
 import common.source.ExceptionUtility;
+import common.source.FileUtility;
+import common.source.ImagePixelMatcher;
+import common.source.ImagingUtility;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.NetworkEmulation;
@@ -23,7 +31,15 @@ public class ScreenVerifier {
 
 	private ScreenVerifier() {}
 
-	public static ScreenVerifier getInstance() {
+	public static ScreenVerifier newDefaultVerifier() {
+		return createInstance();
+	}
+
+	public static ScreenVerifier newVerifierWithPixelMatch() {
+		return createInstance().setPixelMatch(true);
+	}
+
+	private static ScreenVerifier createInstance() {
 		ScreenVerifier screenVerifier = new ScreenVerifier();
 		NetworkEmulation networkEmulation = (NetworkEmulation)TestContext.INSTANCE.getTestSetup().getNetworkEmulation();
 		if (networkEmulation != null) {
@@ -39,6 +55,16 @@ public class ScreenVerifier {
 		}
 
 		return screenVerifier;
+	}
+
+	private boolean pixelMatch = false;
+	public boolean isPixelMatchEnabled() {
+		return pixelMatch;
+	}
+
+	public ScreenVerifier setPixelMatch(boolean pixelMatch) {
+		this.pixelMatch = pixelMatch;
+		return this;
 	}
 
 	private boolean isTurnedOff = false;
@@ -65,6 +91,7 @@ public class ScreenVerifier {
 		assertAtleastOneImageFoundOnScreen(screen, imageFolderNames, imageFileNames, 1 /*attempts*/);
 	}
 
+	@SuppressWarnings("null")
 	public void assertAtleastOneImageFoundOnScreen(AndroidBaseScreen screen, List<String> imageFolderNames, List<String> imageFileNames, Integer attempts) {
 		Log.method("assertAtleastOneImageFoundOnScreen", screen, LogHelper.listToString(imageFolderNames), LogHelper.listToString(imageFileNames), attempts);
 		if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
@@ -79,15 +106,41 @@ public class ScreenVerifier {
 
 		try {
 			boolean found = false;
+			ScreenRegion screenRegion = null;
+			int foundImgIdx = -1;
 			for (int i = 0; i < imageFolderNames.size(); i++) {
 				String imageFolderName = imageFolderNames.get(i);
 				String imageFileName = imageFileNames.get(i);
 				for (int j = 0; j < attempts; j++) {
-					found = verifyImageFoundOnScreen(screen, imageFolderName, imageFileName);
-					if (found) {
+					screenRegion = findMatchingRegionOnScreen(screen, imageFolderName, imageFileName);
+					if (screenRegion != null) {
+						found = true;
+						foundImgIdx = i;
 						break;
 					}
 				}
+			}
+
+			if (found && isPixelMatchEnabled()) {
+				final String findImgFolderName = imageFolderNames.get(foundImgIdx);
+				final String findImgFileName = imageFileNames.get(foundImgIdx);
+				final File findImageFile = new File(TestSetup.getRootPath() + File.separator + "android-app" + File.separator + "data" + File.separator + "test-expected-data" +
+						File.separator + "clips" + File.separator + findImgFolderName + File.separator + findImgFileName);
+
+				Rectangle findImageBounds = ImagingUtility.getImageBounds(findImageFile);
+				Rectangle screenImageBounds = screenRegion.getBounds();
+
+				BufferedImage bufferedFindImage = ImagingUtility.imageToBufferedImage(findImageFile.getAbsolutePath(), BufferedImage.TYPE_4BYTE_ABGR);
+				String fullScreenImage = Screenshotter.captureWebDriverScreenshot(screen.getAndroidDriver(), TextUtility.removeNonAsciiSpecialChars(findImgFolderName + "_" + findImgFileName));
+				BufferedImage bufferedScreenImage = ImagingUtility.imageToBufferedImage(fullScreenImage, BufferedImage.TYPE_4BYTE_ABGR);
+				FileUtility.deleteFile(Paths.get(fullScreenImage));
+
+				boolean pixelMatch = ImagePixelMatcher.defaultMatcher().matches(bufferedScreenImage, bufferedFindImage, screenImageBounds, findImageBounds);
+				if (!pixelMatch) {
+					Log.warn("PIXEL MATCH FAILURE - Matching image found on screen. However pixel match failed!");
+				}
+
+				found = pixelMatch;
 			}
 
 			if (!found) {
@@ -108,18 +161,29 @@ public class ScreenVerifier {
 			return true;
 		}
 
+		ScreenRegion screenRegion = findMatchingRegionOnScreen(screen, imageFolderName, imageFileName);
+		return screenRegion != null;
+	}
+
+	private ScreenRegion findMatchingRegionOnScreen(AndroidBaseScreen screen, String imageFolderName, String imageFileName) throws IOException {
+		Log.method("findMatchingRegionOnScreen", screen, imageFolderName, imageFileName);
+		ScreenRegion screenRegion = getMatchingRegionOnScreen(screen, imageFolderName, imageFileName);
+		if (screenRegion != null) {
+			Rectangle imageBounds = screenRegion.getBounds();
+			Log.info(String.format("Found image on screen at bounds -> [x=%,.2f, y=%,.2f, width=%,.2f, height=%,.2f]",
+					imageBounds.getX(), imageBounds.getY(), imageBounds.getWidth(), imageBounds.getHeight()));
+		}
+
+		return screenRegion;
+	}
+
+	private ScreenRegion getMatchingRegionOnScreen(AndroidBaseScreen screen, String imageFolderName, String imageFileName)
+			throws IOException {
 		final File imageFile = new File(TestSetup.getRootPath() + File.separator + "android-app" + File.separator + "data" + File.separator + "test-expected-data" +
 				File.separator + "clips" + File.separator + imageFolderName + File.separator + imageFileName);
 		final Integer waitTimeInSecs = 30;
 		Log.info(String.format("Detecting presence of image-'%s' on screen. Max wait time = %d secs.", imageFile, waitTimeInSecs));
-		Rectangle imageBounds = screen.getSikuliDriver().getImageBounds(imageFile, waitTimeInSecs);
-		if (imageBounds != null) {
-			Log.info(String.format("Found image on screen at bounds -> [x=%,.2f, y=%,.2f, width=%,.2f, height=%,.2f]",
-					imageBounds.getX(), imageBounds.getY(), imageBounds.getWidth(), imageBounds.getHeight()));
-			return true;
-		}
-
-		return false;
+		return screen.getSikuliDriver().getMatchingRegion(imageFile, waitTimeInSecs);
 	}
 
 	private String getImageNotFoundLog(List<String> imageFolderNames, List<String> imageFileNames) {
@@ -131,14 +195,16 @@ public class ScreenVerifier {
 		return builder.toString();
 	}
 
-	private void logScreenShot(AndroidBaseScreen screen, List<String> imageFolderNames, List<String> imageFileNames) {
+	private String logScreenShot(AndroidBaseScreen screen, List<String> imageFolderNames, List<String> imageFileNames) {
 		Log.info(getImageNotFoundLog(imageFolderNames, imageFileNames));
 		try {
 			String imageFolderName = imageFolderNames.get(0);
 			String imageFileName = imageFileNames.get(0);
-			Screenshotter.captureWebDriverScreenshot(screen.getAndroidDriver(), TextUtility.removeNonAsciiSpecialChars(imageFolderName + "_" + imageFileName));
+			return Screenshotter.captureWebDriverScreenshot(screen.getAndroidDriver(), TextUtility.removeNonAsciiSpecialChars(imageFolderName + "_" + imageFileName));
 		} catch (IOException ex) {
 			Log.error(ExceptionUtility.getStackTraceString(ex));
 		}
+
+		return null;
 	}
 }

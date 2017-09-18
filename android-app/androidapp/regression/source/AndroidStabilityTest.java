@@ -152,6 +152,7 @@ public class AndroidStabilityTest extends BaseReportTest {
 				investigateMapScreen.waitForScreenLoad();
 				investigateMapScreen.clickOnFooterInvestigate();
 				investigationScreen.waitForScreenLoad();
+				investigationScreen.refreshListViewElements();
 				assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 				searchForReportId(investigationScreen, generatedInvReportTitle);
 				initializeInvestigationScreen();

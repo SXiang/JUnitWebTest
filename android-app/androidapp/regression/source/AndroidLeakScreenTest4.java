@@ -33,7 +33,6 @@ import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.Log;
 import common.source.RegexUtility;
-import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -334,14 +333,6 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
 					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
 
-			String actualPrecisonText = investigateMapScreen.getPrecisonText().trim();
-			assertTrue(String.format("Precison text - [%s] did NOT match expression - [%s]", actualPrecisonText,
-					RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN), RegexUtility.matchesPattern(actualPrecisonText, RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN));
-
-			String actualVelocityText = investigateMapScreen.getVelocityText().trim();
-			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
-					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
-
 			// Verify Box color for 'Not-Investigated' state
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxScreenshotWithIndexPlaceholder, markerNum));
@@ -515,14 +506,6 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
 			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
 					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
-
-			String actualPrecisonText = investigateMapScreen.getPrecisonText().trim();
-			assertTrue(String.format("Precison text - [%s] did NOT match expression - [%s]", actualPrecisonText,
-					RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN), RegexUtility.matchesPattern(actualPrecisonText, RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN));
-
-			String actualVelocityText = investigateMapScreen.getVelocityText().trim();
-			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
-					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
 
 			// Verify 'not-investigated' Gap and bubble color.
 			investigateMapScreen.clickOnFollow();
