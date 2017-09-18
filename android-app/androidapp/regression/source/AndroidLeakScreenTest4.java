@@ -33,7 +33,6 @@ import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.Log;
 import common.source.RegexUtility;
-import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -334,21 +333,12 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
 					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
 
-			String actualPrecisonText = investigateMapScreen.getPrecisonText().trim();
-			assertTrue(String.format("Precison text - [%s] did NOT match expression - [%s]", actualPrecisonText,
-					RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN), RegexUtility.matchesPattern(actualPrecisonText, RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN));
-
-			String actualVelocityText = investigateMapScreen.getVelocityText().trim();
-			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
-					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
-
 			// Verify Box color for 'Not-Investigated' state
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxScreenshotWithIndexPlaceholder, markerNum));
 			investigateMapScreen.clickOnFollow();
 
-			// TBD: Post product defect DE3340 fixed, add correct verification as per screen updates in the fix.
-			//assertTrue(investigateMapScreen.verifyLatLongPrecisonVelocityLabelsAreNotShown());
+			// TBD: Waiting on response from Suvir's communication with Aaron for DE3340 if Lat/Long needs to be shown or NOT after Follow button click.
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
@@ -462,7 +452,6 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
 	 *	- - User is navigated back to the list of Gapss
 	 */
-	// PARTIAL: Pending product defect DE3340 fix for Lat/Long, Precison, Velocity labels NOT shown in follow screen.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2640, location = LeakScreenDataProvider.class)
 	public void TC2640_EnergyBackpack_InvestigateGapBox(
@@ -516,14 +505,6 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
 					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
 
-			String actualPrecisonText = investigateMapScreen.getPrecisonText().trim();
-			assertTrue(String.format("Precison text - [%s] did NOT match expression - [%s]", actualPrecisonText,
-					RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN), RegexUtility.matchesPattern(actualPrecisonText, RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN));
-
-			String actualVelocityText = investigateMapScreen.getVelocityText().trim();
-			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
-					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
-
 			// Verify 'not-investigated' Gap and bubble color.
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapScreenshotWithIndexPlaceholder, idx));
@@ -555,9 +536,6 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 
-			// TBD: Post product defect DE3340 fixed, add correct verification as per screen updates in the fix.
-			//assertTrue(investigateMapScreen.verifyLatLongPrecisonVelocityLabelsAreNotShown());
-
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
@@ -566,6 +544,8 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapInProgressScreenshotWithIndexPlaceholder, markerNum));
 			investigateMapScreen.clickOnFollow();
+
+			// TBD: Waiting on response from Suvir's communication with Aaron for DE3340 if Lat/Long needs to be shown or NOT after Follow button click.
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();

@@ -27,6 +27,7 @@ import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 
 public class AndroidReportListScreenTest extends BaseReportTest {
@@ -91,7 +92,7 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 	 *	- Touching a report in the list should navigate to the list of investigation items in that report
 	 *	Pre-Conditions:
 	 *	- Compliance Reports with both LISAs and Gaps to be investigated
-	 *	Validation:
+	 *	Script:
 	 *	- Log into the tablet
 	 *	- Click on the Investigate button at the bottom of the screen
 	 *	- Log in with PCubed credentials
@@ -99,9 +100,9 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 	 *	- Click on the Indications button near the top right. Select Gaps from the pop up menu
 	 *	Expected Result:
 	 *	- User is navigated to the map
-	 *	- User will see a list of Compliance Reports
-	 *	- User will see a list of LISAs for investigation, if any
-	 *	- User will see a list of Gaps for investigation, if any
+	 *	- User will see a list of Compliance Reports. Only those reports with LISAs assigned to the user will be displayed
+	 *	- User will see a list of LISAs for investigation assigned to the user only. LISAs unassigned or assigned to other users are not displayed
+	 *	- User will see a list of Gaps for investigation assigned to the user only. Gaps unassigned or assigned to other users are not displayed
 	**/
 	@Test
 	@UseDataProvider(value = ReportListDataProvider.REPORT_LIST_DATA_PROVIDER_TC2429, location = ReportListDataProvider.class)
@@ -114,10 +115,15 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			return;
 		}
 
-		final Integer EXPECTED_LISA_MARKERS = 9;
+		final Integer EXPECTED_LISA_MARKERS = 5;
+		final Integer EXPECTED_GAP_MARKERS = 11;
+
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
+
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -126,7 +132,12 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 		clickOnFirstInvestigationReport(investigationScreen);
 
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
+			investigateReportScreen.clickOnInvestigationMarkerType();
+			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			initializeInvestigateReportScreen();
+			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, true /*refetchListItems (changed on Marker=GAP)*/, EXPECTED_GAP_MARKERS));
 			return true;
 		});
 	}
@@ -241,11 +252,11 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2429[0][1];
 			reportDataRowID1 = (Integer)tc2429[0][2];
 			tcId = "TC2429";
-			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					defaultUserDataRowID, userDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2430_")) {
 			Object[][] tc2430 = ReportListDataProvider.dataProviderReportList_TC2430();

@@ -25,7 +25,7 @@ public class ReportListDataProvider extends AndroidDataProvider {
 
 	@DataProvider
 	public static Object[][] dataProviderReportList_TC2429() {
-		return new Object[][] { { "TC2429" /* TestCaseID */, 6 /* userDataRowID */, 230 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC2429" /* TestCaseID */, 16 /* userDataRowID */, 230 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
 	@DataProvider

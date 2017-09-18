@@ -121,7 +121,8 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	 * Results: -
 	 *	- - User is navigated to the map
 	 *	- - User will be prompted for PCubed password
-	 *  - - User will see a list of Compliance Reports- User will see a list of LISAs for investigation
+	 *  - - User will see a list of Compliance Reports
+	 *  - - User will see a list of LISAs for investigation
 	 *  - - User will see a map centered on the backpack's location. Status is shown at top left of the map as Not Investigated. Pipe data is displayed on the map Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
 	 *	- - Status at top left changes to In Progress. Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons.
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons.
