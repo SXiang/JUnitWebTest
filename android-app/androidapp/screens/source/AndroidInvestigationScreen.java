@@ -203,7 +203,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		return firstRowReportTitle != null && firstRowReportTitle.isDisplayed();
 	}
 
-	private void refreshListViewElements() {
+	public void refreshListViewElements() {
 		Log.method("refreshListViewElements");
 		this.listViewElements = getAndroidDriver().findElementsByXPath(LIST_VIEW_ELEMENTS_XPATH);
 	}
