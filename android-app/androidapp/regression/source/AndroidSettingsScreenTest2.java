@@ -23,6 +23,7 @@ import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -80,8 +81,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	 * Script: -
 	 *	- - Launch the Backpack app
 	 * Results: -
-	 *	- - Tablet displays the Map screen. The Concentration Chart appears in a small box at top left and current CH4 value appears in another box at top right.
-	 *  - - At the top left of the latter box, HR appears, indicating that it is measuring High Range (CH4). The maximum CH4 value appears at the top right of this box.
+	 *	- - Tablet displays the Map screen. The Concentration Chart appears in a small box at top left and current CH4 value appears in another box at top right. At the top left of the latter box, HR appears, indicating that it is measuring High Range (CH4). The maximum CH4 value appears at the top right of this box.
 	 */
 	@Test
 	public void TC2548_EnergyBackpack_ScreenShowsCH4MeasurementByDefault() throws Exception {
@@ -124,8 +124,8 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	 *	- - Launch the Backpack app
 	 *	- - Click the Toggle Mode button at the bottom of the screen
 	 * Results: -
-	 *	- - Tablet displays the Map screen. The current CH4 value appears in a box at top right. "Methane Mode" appears at the top left inside this box. At the top right is the maximum recorded methane concentration for this session, "Max: x.x ppm". In the middle is the currently measured methane concentration, "x.x Methane (ppm)". At the bottom of this box, "n/a Ethane" appears
-	 *	- - "Methane Mode" is replaced by activity indicator spinning until mode change is complete, then changes to "Ethane Mode". "Ethane N/A"  changes to either "--.--% Ethane" or some numerical value like "02.32% Ethane". Max concentration and current concentration are unchanged
+	 *	- - Tablet displays the Map screen. The current CH4 value appears in a box at top right. Methane Mode appears at the top left inside this box. Directly under this is the maximum recorded methane concentration for this session, Max: x.x ppm. Directly under this is n/a Ethane, as it is currently not in Ethane mode.To the right of these is the currently measured methane concentration inside a black circle with the methane concentration value and , Methane (ppm) under it.
+	 *	- - Methane Mode is replaced by activity indicator spinning until mode change is complete, then changes to Ethane Mode. Ethane N/A  changes to either --.--% Ethane or some numerical value like 02.32% Ethane. Max concentration and current concentration are unchanged, but the color of the circle may change based on the disposition of the measured gas (green for Not Natural Gas, red for Natural Gas and black for unknown)
 	 */
 	@Test
 	public void TC2549_EnergyBackpack_UserCanToggleBetweenHighRangeHighPrecisionModes() throws Exception {
@@ -145,11 +145,13 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 					assertTrue(String.format("Amplitude should be greater than 0.9. Actual=[%s]", actualAmplitudeText), Float.valueOf(actualAmplitudeText) > 0.9f);
 				} else {
 					assertTrue(String.format("Amplitude text is NOT correct. Expected=[%s]; Actual=[%s]", expectedAmplitudeText, actualAmplitudeText), actualAmplitudeText.equals(expectedAmplitudeText));
+					mapScreen.assertDefaultTopPanelElementsAreCorrect();
 				}
 
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 					mapScreen.assertEthaneModeIsShownInTopPanel();
 				}
+
 			} catch (Exception ex) {
 				fail(String.format("Test failed on exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 			} finally {

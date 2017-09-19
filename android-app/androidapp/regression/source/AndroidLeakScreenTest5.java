@@ -135,7 +135,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 	 *	- - (List of Gaps (if any) for that report is displayed)
 	 *	- - User is navigated to map centered on user's location
 	 *	- - Map correctly shows location of selected LISA (or Gap). Investigation item is highlighted. Follow button changes color from green to white
-	 *	- - Map is redirected back to user's location
+	 *	- - Map is redirected back to user's location. Follow button changes color back from white to green.
 	 */
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2445, location = LeakScreenDataProvider.class)
