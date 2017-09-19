@@ -1122,13 +1122,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void inputSurveyStartDateTime(String dateTime) {
 		Log.info(String.format("Input survey Start Date/Time - '%s'", dateTime));
 		jsSendKeys(inputStartDate, dateTime);
-		inputStartDate.click();
+		jsClick(inputStartDate);
+		inputStartDate.sendKeys(Keys.RETURN);
+		
 	}
 
 	public void inputSurveyEndDateTime(String dateTime) {
 		Log.info(String.format("Input survey End Date/Time - '%s'", dateTime));
 		jsSendKeys(inputEndDate, dateTime);
-		inputEndDate.click();
+		jsClick(inputEndDate);
+		inputEndDate.sendKeys(Keys.RETURN);
 	}
 
 	public void selectStartDateForSurvey(String startDate) {
