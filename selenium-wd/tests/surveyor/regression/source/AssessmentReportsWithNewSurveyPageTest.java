@@ -1,6 +1,10 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+
+import java.util.function.Predicate;
+
+import common.source.FunctionUtil;
 import common.source.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,12 +15,14 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
+import surveyor.scommon.actions.ReportCommonPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.AssessmentReportsPageActions;
 import surveyor.dataprovider.AssessmentReportDataProvider;
 import surveyor.scommon.source.AssessmentReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.ReportsCommonPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -103,25 +109,28 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				loginPageAction.open(EMPTY, NOTSET);
 				loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 
-				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 				createNewReport(pageAction, getReportRowID(reportDataRowID1));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
 
-				pageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
-				pageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 
-				//Assert.assertTrue(pageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
-
-		        //assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-				//assertTrue(pageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+				//Generate new shape files and Enable the step once DE3355 gets fixed
+				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+				assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 			} catch (Exception ex) {
 				return false;
 			}
@@ -170,25 +179,31 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				loginPageAction.open(EMPTY, NOTSET);
 				loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 
-				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-				createNewReport(pageAction, getReportRowID(reportDataRowID1));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
-				modifyReport(pageAction, getReportRowID(reportDataRowID2));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+				modifyReport(assessmentReportsPageAction, getReportRowID(reportDataRowID2));
+				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID2));
 
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForViewDownloadToCompleteByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
-				assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-				assertTrue(pageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+				assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID2));
+
+				assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID2));
+
+				//Generate new shape files and Enable the step once DE3355 gets fixed 
+				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
+				assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
 				return false;
 			}
@@ -231,18 +246,18 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				loginPageAction.open(EMPTY, NOTSET);
 				loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 
-				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-				createNewReport(pageAction, getReportRowID(reportDataRowID1));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-				// TODO: Generate shapefile baselines
-				// CONFIRM: LISA shapes drawn by the GIS software should be in the shapes of fans or circles, not boxes
-				// CONFIRM: LISA shape file's attribute table should have Label (LISA 1, LISA 2, etc), Lat and Long Co-ordinates
-				// assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+				assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
+
+				//Generate new shape files and Enable the step once DE3355 gets fixed 
+				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
 				return false;
 			}
@@ -276,9 +291,6 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		Log.info("\nRunning TC1594_AssessmentReport_CopyLISABoxReportClassicLISAReport ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		// Create new customer with survey + GIS data and then execute test steps.
@@ -288,16 +300,20 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				loginPageAction.open(EMPTY, NOTSET);
 				loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 
-				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-				createNewReport(pageAction, getReportRowID(reportDataRowID1));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				modifyReport(pageAction, getReportRowID(reportDataRowID2));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-				assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+				assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+				assessmentReportsPageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+				modifyReport(assessmentReportsPageAction, getReportRowID(reportDataRowID2));
+				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID2));
+
+				assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+				assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
+
+				//Generate new shape files and Enable the step once DE3355 gets fixed 
+				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
 				return false;
 			}
