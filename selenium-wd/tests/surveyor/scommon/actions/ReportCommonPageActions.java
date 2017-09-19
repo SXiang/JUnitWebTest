@@ -2813,7 +2813,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
 	 */
-	public boolean verifyLISASAnalyticsMetaDataFile(String data, Integer dataRowID) throws Exception {
+	public boolean verifyLISAsAnalyticsMetaDataFile(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyLISASAnalyticsMetaDataFile", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
 		return this.getReportsCommonPage().verifyLISASAnalyticsMetaDataFile(downloadPath, getWorkingReportsDataRow().title);

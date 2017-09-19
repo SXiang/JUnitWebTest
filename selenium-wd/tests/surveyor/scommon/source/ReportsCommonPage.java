@@ -2667,7 +2667,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 							.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
 					aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
 				} else {
-					aggregatedClassificationconfidence = "N/A";
+					aggregatedClassificationconfidence = "0%";
 				}
 			} catch (Exception e) {
 				Log.warn(e.toString());

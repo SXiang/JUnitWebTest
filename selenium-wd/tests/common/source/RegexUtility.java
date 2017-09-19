@@ -293,7 +293,7 @@ public class RegexUtility {
 	 * @param expectedLine
 	 * @return
 	 */
-	public static boolean equalsOrEmpty(String actualValue, String expectedValue){
+	public static boolean equalsIgnoreEmptyString(String actualValue, String expectedValue){
 		actualValue = actualValue==null?"":actualValue;
 		expectedValue = expectedValue==null?"":expectedValue;
 		actualValue = actualValue.trim();
