@@ -120,7 +120,7 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 
 		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
-		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
 			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
