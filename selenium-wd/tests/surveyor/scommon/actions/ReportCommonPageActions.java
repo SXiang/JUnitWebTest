@@ -1934,6 +1934,21 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes verifyShapeZipFilesAreCorrect action.
+	 * Verifies that the correct PDF files are present in the ZIP by checking files with expected file names.
+	 * NOTE: This method does NOT check that the data inside the PDFs is correct.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyShapeZipFilesArePresent(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyShapeZipFilesAreCorrect", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.ShapeZIP);
+		return this.getReportsCommonPage().verifyShapeFilesArePresent(downloadPath, getWorkingReportsDataRow().title, data);
+	}
+
+	/**
 	 * Executes verifyPDFZipFilesArePresent action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.

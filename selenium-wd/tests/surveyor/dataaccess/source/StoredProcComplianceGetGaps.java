@@ -32,6 +32,9 @@ public class StoredProcComplianceGetGaps extends BaseEntity {
 
 	@Override
 	public boolean equals(Object obj){
+		if (!(obj instanceof StoredProcComplianceGetGaps)) {
+			return false;
+		}
 		StoredProcComplianceGetGaps gaps = (StoredProcComplianceGetGaps) obj;
 		return this.toString().equals(gaps.toString());
 	}

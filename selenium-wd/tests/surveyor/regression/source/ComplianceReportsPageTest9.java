@@ -371,7 +371,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - All downloaded files should have Report Name : CR-first_6_report_id_characters
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC771, location = ComplianceReportDataProvider.class)
 	public void TC771_VerifyReportNameSpecifiedComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -393,9 +393,14 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-		// TODO: Enable after actions are implemented.
-		//assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("BreadCrumb", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("FOV", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAPBox", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("LISA", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("PipeAll", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("PipeIntersectingGAP", getReportRowID(reportDataRowID1)));
 	}
 
 	/**
