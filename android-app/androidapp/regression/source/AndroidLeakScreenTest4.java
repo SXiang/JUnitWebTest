@@ -329,16 +329,22 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
 
-			String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
-			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
-					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+			if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+				String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
+				assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
+						RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+			}
 
 			// Verify Box color for 'Not-Investigated' state
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxScreenshotWithIndexPlaceholder, markerNum));
 			investigateMapScreen.clickOnFollow();
 
-			// TBD: Waiting on response from Suvir's communication with Aaron for DE3340 if Lat/Long needs to be shown or NOT after Follow button click.
+			if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+				String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
+				assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
+						RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+			}
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
@@ -444,8 +450,8 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - User will see a list of Compliance Reports
 	 *	- - User will see a list of LISAs for investigation
 	 *	- - User will see a list of Gaps for investigation
-	 *	- - User will see a map centered on the backpack's location. "Follow" and "Directions" buttons are present on the right and "Investigate" button is present at the bottom left. Gap name is present at top left along with Status of "Not Investigated", Precision, Velocity and Lat Long. Assets are displayed in purple
-	 *	- - Map is now centered on selected Gap Asset Box. Box is outlined in red and pipe is highlighted in green. Bubble indicates Gap box number and bubble color indicates investigation status. Border around highlighted pipe matches color of bubble. Lat Long, Precision and Velocity disappear
+	 *	- - User will see a map centered on the backpack's location. "Follow" and "Directions" buttons are present on the right and "Investigate" button is present at the bottom left. Gap name is present at top left along with Status of "Not Investigated" and Lat Long coordinates. Assets are displayed in purple
+	 *	- - Map is now centered on selected Gap Asset Box. Box is outlined in red and pipe is highlighted in green. Bubble indicates Gap box number and bubble color indicates investigation status. Border around highlighted pipe matches color of bubble.
 	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - A form appears where user can log details of the leak
@@ -482,6 +488,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
@@ -501,9 +508,11 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
 
-			String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
-			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
-					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+			if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+				String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
+				assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
+						RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+			}
 
 			// Verify 'not-investigated' Gap and bubble color.
 			investigateMapScreen.clickOnFollow();
@@ -527,6 +536,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			return true;
 		});
@@ -545,7 +555,11 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapInProgressScreenshotWithIndexPlaceholder, markerNum));
 			investigateMapScreen.clickOnFollow();
 
-			// TBD: Waiting on response from Suvir's communication with Aaron for DE3340 if Lat/Long needs to be shown or NOT after Follow button click.
+			if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+				String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
+				assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
+						RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+			}
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();

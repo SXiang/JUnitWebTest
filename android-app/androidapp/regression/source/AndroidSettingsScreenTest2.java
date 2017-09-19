@@ -23,6 +23,7 @@ import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -144,11 +145,13 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 					assertTrue(String.format("Amplitude should be greater than 0.9. Actual=[%s]", actualAmplitudeText), Float.valueOf(actualAmplitudeText) > 0.9f);
 				} else {
 					assertTrue(String.format("Amplitude text is NOT correct. Expected=[%s]; Actual=[%s]", expectedAmplitudeText, actualAmplitudeText), actualAmplitudeText.equals(expectedAmplitudeText));
+					mapScreen.assertDefaultTopPanelElementsAreCorrect();
 				}
 
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 					mapScreen.assertEthaneModeIsShownInTopPanel();
 				}
+
 			} catch (Exception ex) {
 				fail(String.format("Test failed on exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 			} finally {
