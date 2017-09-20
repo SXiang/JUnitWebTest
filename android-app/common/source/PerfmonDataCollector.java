@@ -16,6 +16,7 @@ public class PerfmonDataCollector {
 	public static class PerfmonDumpsys implements Runnable {
 		private List<String> cpuInfos = new ArrayList<String>();
 		private List<String> gfxInfos = new ArrayList<String>();
+		private List<String> memInfos = new ArrayList<String>();
 		private boolean cancelled;
 
 		public PerfmonDumpsys() {
@@ -43,10 +44,15 @@ public class PerfmonDataCollector {
 		public void flushMetrics() throws Exception {
 			flushCpuInfo();
 			flushGfxInfo();
+			flushMemInfo();
 		}
 
 		private void flushGfxInfo() throws Exception {
 			getGfxInfos().add(AndroidAutomationTools.getGraphicsInfo());
+		}
+
+		private void flushMemInfo() throws Exception {
+			getMemInfos().add(AndroidAutomationTools.getMemInfo());
 		}
 
 		private void flushCpuInfo() throws Exception {
@@ -63,6 +69,10 @@ public class PerfmonDataCollector {
 
 		public List<String> getCpuInfos() {
 			return cpuInfos;
+		}
+
+		public List<String> getMemInfos() {
+			return memInfos;
 		}
 
 		public List<String> getGfxInfos() {
@@ -84,6 +94,11 @@ public class PerfmonDataCollector {
 	public List<String> getCpuMetrics() throws Exception {
 		this.perfDumpsys.flushCpuInfo();
 		return this.perfDumpsys.getCpuInfos();
+	}
+
+	public List<String> getMemMetrics() throws Exception {
+		this.perfDumpsys.flushMemInfo();
+		return this.perfDumpsys.getMemInfos();
 	}
 
 	public List<String> getGfxMetrics() throws Exception {

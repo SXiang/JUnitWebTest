@@ -392,35 +392,24 @@ public class BaseAndroidTest extends BaseTest {
 		Log.method("collectPerfmonMetrics", testName);
 		String gfxDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.gfx.dat", testName));
 		String cpuDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.cpu.dat", testName));
+		String memDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.mem.dat", testName));
 
-		if(FileUtility.fileExists(gfxDataFile)) {
-			FileUtility.deleteFile(Paths.get(gfxDataFile));
-		}
-
-		if(FileUtility.fileExists(cpuDataFile)) {
-			FileUtility.deleteFile(Paths.get(cpuDataFile));
+		String[] pFiles = {gfxDataFile, cpuDataFile, memDataFile};
+		for (String pFile : pFiles) {
+			if(FileUtility.fileExists(pFile)) {
+				FileUtility.deleteFile(Paths.get(pFile));
+			}
 		}
 
 		List<String> gfxMetrics = this.perfmonCollector.getGfxMetrics();
+		List<String> memMetrics = this.perfmonCollector.getMemMetrics();
 		List<String> cpuMetrics = this.perfmonCollector.getCpuMetrics();
 
-		List<String> allGfxMetrics = new ArrayList<String>();
-		gfxMetrics.stream()
-			.map(e -> e.split(BaseHelper.getLineSeperator()))
-			.forEach(arr -> {
-				for (String str : arr) {
-					allGfxMetrics.add(str);
-				}
-			});
+		List<String> allGfxMetrics = gatherPMetricsToList(gfxMetrics);
+		List<String> allMemMetrics = gatherPMetricsToList(memMetrics);
+		List<String> allCpuMetrics = gatherPMetricsToList(cpuMetrics);
 
-		List<String> allCpuMetrics = new ArrayList<String>();
-		cpuMetrics.stream()
-			.map(e -> e.split(BaseHelper.getLineSeperator()))
-			.forEach(arr -> {
-				for (String str : arr) {
-					allCpuMetrics.add(str);
-				}
-			});
+		generateHeapDump(testName);
 
 		Log.info("Stop perfmon data collectors");
 		perfmonCollector.stopCollectors();
@@ -428,8 +417,31 @@ public class BaseAndroidTest extends BaseTest {
 		Log.info(String.format("Writing gfx metrics data to - '%s'", gfxDataFile));
 		FileUtility.writeToFile(gfxDataFile, allGfxMetrics.toArray(new String[allGfxMetrics.size()]));
 
+		Log.info(String.format("Writing mem metrics data to - '%s'", cpuDataFile));
+		FileUtility.writeToFile(memDataFile, allMemMetrics.toArray(new String[allMemMetrics.size()]));
+
 		Log.info(String.format("Writing cpu metrics data to - '%s'", cpuDataFile));
 		FileUtility.writeToFile(cpuDataFile, allCpuMetrics.toArray(new String[allCpuMetrics.size()]));
+	}
+
+	private void generateHeapDump(String testName) throws Exception {
+		Log.method("generateHeapDump", testName);
+
+		MobileActions action = MobileActions.newAction();
+		String heapFileName = String.format("%s-%d.hprof", testName, getRunUUID());
+		String saveFileLocation = String.format(LOGS_BASE_FOLDER + "\\%s", heapFileName);
+		if(FileUtility.fileExists(saveFileLocation)) {
+			FileUtility.deleteFile(Paths.get(saveFileLocation));
+		}
+
+		Log.info(String.format("Dump heap to device at -'%s/%s'", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName));
+		action.dumpHeap(heapFileName);
+
+		Log.info(String.format("Pulling heapdump file-'%s' from device to '%s'", heapFileName, saveFileLocation));
+		AdbInterface.pullFile(String.format("%s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName), saveFileLocation);
+
+		Log.info(String.format("Removing heapdump file-'%s' from device", heapFileName));
+		action.removeHeapFile(heapFileName);
 	}
 
 	private void collectServiceInfos(String testName) throws Exception {
@@ -481,6 +493,19 @@ public class BaseAndroidTest extends BaseTest {
 
 		Log.info(String.format("Removing recording-'%s' from device", videoFileName));
 		action.removeSdcardFile(videoFileName);
+	}
+
+	private List<String> gatherPMetricsToList(List<String> metricsList) {
+		List<String> outputList = new ArrayList<String>();
+		metricsList.stream()
+			.map(e -> e.split(BaseHelper.getLineSeperator()))
+			.forEach(arr -> {
+				for (String str : arr) {
+					outputList.add(str);
+				}
+			});
+
+		return outputList;
 	}
 
 	// Perf optimization. pause simulator processes to prevent delay in fetching element using Appium driver.
