@@ -136,6 +136,7 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, true /*refetchListItems (changed on Marker=GAP)*/, EXPECTED_GAP_MARKERS));
 			return true;
@@ -185,6 +186,7 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			assertTrue("No investigation markers of type=LISA expected in this report", investigateReportScreen.verifyNoInvestigationMarkersFoundInReport());
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, true /*refetchListItems (changed on Marker=GAP)*/, EXPECTED_GAP_MARKERS));
 			return true;
@@ -234,6 +236,7 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			assertTrue("No investigation markers of type=GAP expected in this report", investigateReportScreen.verifyNoInvestigationMarkersFoundInReport());
 			return true;

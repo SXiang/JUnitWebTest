@@ -246,6 +246,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			return true;
 		});
@@ -442,6 +443,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			return true;
 		});
