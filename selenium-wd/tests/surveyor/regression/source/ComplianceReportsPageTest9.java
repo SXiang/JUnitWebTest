@@ -86,7 +86,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - A window will pop up displaying all of the available files for download. Included among them should be a Compliance ZIP (Shape) button.
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC709, location = ComplianceReportDataProvider.class)
 	public void TC709_ShapefileButtonAvailableComplianceReport_CustomerUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -102,30 +102,6 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled
-	 * Test Description: Shapefile button not available for Customer user if Customer does not have Shapefile generation option enabled
-	 * Script: -
-	 *	- - Log in with a Customer Utility Admin user account
-	 *	- - On the Compliance Reports page, click the thumbnail preview button
-	 * Results: -
-	 *	- - The Shapefile button should not appear
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC710, location = ComplianceReportDataProvider.class)
-	public void TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC711_MetadataExport_CSVFileSingleSurvey_PicarroAdmin_OneLISAOneIsoCapture
 	 * Test Description: MetaData Export -CSV file (Single survey - Picarro admin - one LISA and one Iso capture)
 	 * Script: -
@@ -136,9 +112,25 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 *	- 5. Open LISA.csv file.
 	 *	- 6. Open gap.csv file.
 	 * Results: -
-	 *	- Verify that download is successful and Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv are presentVerify that there is only one record present inReport.csv. All the information forReport Title, Report Name, Report ID, Report Creation Date, Report Author, Software Version, Exclusion Radius, Report Mode, NE Lat &amp; NE Long map boundary, SW Lat &amp; SW Long map boundary, Map Boundary ID, Percent coverage Assets, Percent Coverage Report Area is correct.Verify that additional columns ReportSurveyCount, ReportIsotopicAnalysisCount, ReportLISAsCount,ReportGapCount has numbers depending upon surveys, LISAs , ISo's, Gaps in the report.Data should be same as SSRS PDFVerify that there are multiple records (same as number of survey) present inReportSurvey.csv. All the information forReportSurvey Start Date/Time, Survey End Date/Time,Survey Duration, User Name, Surveyor, Analyzer, Tag, Stability Classis correct and matches with driving survey in the report.Date present in ReportSurvey.csv should be same as SSRS PDF survey sectionVerify that there are multiple recordspresent inReportIsotopic.csv. All the information forIsotopic Analysis Surveyor,Isotopic Analysis Date/Time,Isotopic Analysis Result,Isotopic Value and Uncertainty,Isotopic Analysis Field Notesis correct and matches with driving survey in the report.Data present in ReportIsotopic.csv should be same as SSRS PDF isotopic tableVerify that there are multiple record present inReportLISAS.csv. All the information for ReportId, ReportName, Lisa Number,Surveyor, LISA Date/Time, Amplitude, Concentration,Lat/Long co-ordinates,Field Notesis correct and matches with driving survey in the report.Data present in ReportLisa.csv should be same as SSRS PDF indication tableVerify that there is only the record present inReportGap.csvmatches with the information in thedriving survey in the report.Data present in ReportGap.csv should be same as SSRS PDF gap table
+	 *	- Verify that download is successful and Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv are present
+	 *	- Verify that there is only one record present inReport.csv. 
+	 *	- All the information forReport Title, Report Name, Report ID, Report Creation Date, Report Author, 
+	 *	- Software Version, Exclusion Radius, Report Mode, NE Lat &amp; NE Long map boundary, SW Lat &amp; SW Long map boundary, 
+	 *	- Map Boundary ID, Percent coverage Assets, Percent Coverage Report Area is correct.Verify that additional columns ReportSurveyCount, 
+	 *	- ReportIsotopicAnalysisCount, ReportLISAsCount,ReportGapCount has numbers depending upon surveys, LISAs , 
+	 *	- ISo's, Gaps in the report.Data should be same as SSRS PDFVerify that there are multiple records (same as number of survey) present inReportSurvey.csv. 
+	 *	- All the information forReportSurvey Start Date/Time, Survey End Date/Time,Survey Duration, User Name, Surveyor, Analyzer, Tag, 
+	 *	- Stability Classis correct and matches with driving survey in the report.Date present in ReportSurvey.csv should be same as SSRS PDF 
+	 *	- survey sectionVerify that there are multiple recordspresent inReportIsotopic.csv. 
+	 *	- All the information forIsotopic Analysis Surveyor,Isotopic Analysis Date/Time,Isotopic Analysis Result,Isotopic Value and Uncertainty,
+	 *	- Isotopic Analysis Field Notesis correct and matches with driving survey in the report.Data present in ReportIsotopic.csv 
+	 *	- should be same as SSRS PDF isotopic tableVerify that there are multiple record present inReportLISAS.csv. 
+	 *	- All the information for ReportId, ReportName, Lisa Number,Surveyor, LISA Date/Time, Amplitude, 
+	 *	- Concentration,Lat/Long co-ordinates,Field Notesis correct and matches with driving survey in the report.Data present in ReportLisa.csv 
+	 *	- should be same as SSRS PDF indication tableVerify that there is only the record present inReportGap.csvmatches with the information in the driving survey 
+	 *	- in the report.Data present in ReportGap.csv should be same as SSRS PDF gap table
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC711, location = ComplianceReportDataProvider.class)
 	public void TC711_MetadataExport_CSVFileSingleSurvey_PicarroAdmin_OneLISAOneIsoCapture(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -150,13 +142,14 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyGapMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("true:true:true:true", getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -174,7 +167,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - In the report view, the segment of Main not contained within the LISA box (and not connected to a service inside the LISA box) should not be highlighted
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC713, location = ComplianceReportDataProvider.class)
 	public void TC713_LISABox10_MainsOutsideLISABoxAreNotHighlighted(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -189,7 +182,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -202,9 +195,12 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 *	- 4. Open LISA.csv file.
 	 *	- 5. Open gap.csv file.
 	 * Results: -
-	 *	- Verify that download is successful andReport.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv are present.Verify that there is only one record present in Report.csv. All the information forReport Title,Report ID,Report Creation Date,Report Author,Software Version,Exclusion Radius,Report Mode,NE Lat &amp; NE Long map boundary,SW Lat &amp; SW Long map boundary,Map Boundary ID,Percent ,overage Assets,Percent Coverage Report Area is correct.Verify that additional columns ReportSurveyCount, ReportIsotopicAnalysisCount, ReportLISAsCount,ReportGapCount has numbers depending upon surveys, LISAs , ISo's, Gaps in the report.Data should be same as SSRS PDFVerify that there are multiple records (same as number of survey) present inReportSurvey.csv. All the information forReportSurvey Start Date/Time,Survey End Date/Time,Survey Duration,User Name,Surveyor,Analyzer,Tag,Stability Classis correct and matches with driving survey in the report.Date present in ReportSurvey.csv should be same as SSRS PDF survey sectionVerify that there are multiple record present in ReportLISAs.csv. All the information forSurveyor,Date/Time,Amplitude,Concentration,Field Notesis correct and matches with driving survey in the report.Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.Data present in ReportLisa.csv should be same as SSRS PDF indication tableVerify that there is only the record present in Reportgap.csvmatches with the information in thedriving survey in the report.Data present in ReportGap.csv should be same as SSRS PDF gap table
+	 *	- Verify that download is successful andReport.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv are present.Verify that there is only one record present in Report.csv. 
+	 *	- All the information forReport Title,Report ID,Report Creation Date,Report Author,Software Version,Exclusion Radius,Report Mode,NE Lat &amp; NE Long map boundary,SW Lat &amp; SW Long map boundary,Map Boundary ID,Percent ,overage Assets,Percent Coverage Report Area is correct.Verify that additional columns ReportSurveyCount, ReportIsotopicAnalysisCount, ReportLISAsCount,ReportGapCount has numbers depending upon surveys, LISAs , ISo's, Gaps in the report.Data should be same as SSRS PDFVerify that there are multiple records (same as number of survey) present inReportSurvey.csv. 
+	 *  - All the information forReportSurvey Start Date/Time,Survey End Date/Time,Survey Duration,User Name,Surveyor,Analyzer,Tag,Stability Classis correct and matches with driving survey in the report.Date present in ReportSurvey.csv should be same as SSRS PDF survey sectionVerify that there are multiple record present in ReportLISAs.csv. All the information forSurveyor,Date/Time,Amplitude,Concentration,Field Notesis correct and matches with driving survey in the report.Verify that unique LISA numbers in the format of XXXXXX-L#, 
+	 *  - where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.Data present in ReportLisa.csv should be same as SSRS PDF indication tableVerify that there is only the record present in Reportgap.csvmatches with the information in thedriving survey in the report.Data present in ReportGap.csv should be same as SSRS PDF gap table
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC715, location = ComplianceReportDataProvider.class)
 	public void TC715_MetadataExport_CSVFileMultipleSurvey_PicarroSupport_MultipleLisasNoIso(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -221,8 +217,9 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyReportSurveyMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyLISASMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("true:true:true:false", getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -238,7 +235,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- Verify that download is successful and Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv are present.Verify that there is only one record present in Report.csv. All the information forReport Title, Report Name, Report ID, Report Creation Date, Report Author, Software Version, Exclusion Radius, Report Mode, NE Lat &amp; NE Long map boundary, SW Lat &amp; SW Long map boundary, Map Boundary ID, Percent coverage Assets, Percent Coverage Report Area is correct.Verify that additional columns ReportSurveyCount, ReportIsotopicAnalysisCount, ReportLISAsCount,ReportGapCount has numbers depending upon surveys, LISAs , ISo's, Gaps in the report.Data should be same as SSRS PDFVerify that there are multiple records (same as number of survey) present in ReportSurvey.csv. All the information forReportSurvey Start Date/Time, Survey End Date/Time,Survey Duration, User Name, Surveyor, Analyzer, Tag, Stability Classis correct and matches with driving survey in the report.Date present in ReportSurvey.csv should be same as SSRS PDF survey sectionVerify that there are multiple recordspresent inReportIsotopic.csv. All the information forIsotopic Analysis Surveyor,Isotopic Analysis Date/Time,Isotopic Analysis Result,Isotopic Value and Uncertainty,Isotopic Analysis Field Notesis correct and matches with driving survey in the report.Data present in ReportIsotopic.csv should be same as SSRS PDF isotopic tableVerify that there are multiple record present inReportLISAS.csv. All the information for ReportId, ReportName, Lisa Number,Surveyor, LISA Date/Time, Amplitude, Concentration,Lat/Long co-ordinates,Field Notesis correct and matches with driving survey in the report.Data present in ReportLisa.csv should be same as SSRS PDF indication tableVerify that there is only the record present inReportGap.csvmatches with the information in thedriving survey in the report.Data present in ReportGap.csv should be same as SSRS PDF gap table
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC716, location = ComplianceReportDataProvider.class)
 	public void TC716_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -256,6 +253,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyGapMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
@@ -270,7 +268,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- Verify that download is successful and Report.csv,ReportSurvey.csv,ReportGap.csv are present.Verify that there is only one record present in Report.csv. All the information forReport Title,Report ID,Report Creation Date,Report Author,Software Version,Exclusion Radius,Report Mode,NE Lat &amp; NE Long map boundary,SW Lat &amp; SW Long map boundary,Map Boundary ID,Percent ,overage Assets,Percent Coverage Report Area is correct.Verify that additional columns ReportSurveyCount, ReportIsotopicAnalysisCount, ReportLISAsCount,ReportGapCount has numbers depending upon surveys, LISAs , ISo's, Gaps in the report.Verify that there are multiple records (same as number of survey) present in ReportSurvey.csv. All the information forReportSurvey Start Date/Time,Survey End Date/Time,Survey Duration,User Name,Surveyor,Analyzer,Tag,Stability Classis correct and matches with driving survey in the report.Verify that there is only the record present in ReportGap.csvmatches with the information in thedriving survey in the report.ReportIsotopic.csv,ReportLISAS.csv files are not present
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC718, location = ComplianceReportDataProvider.class)
 	public void TC718_MetadataExport_CSVFileSingleSurvey_NoLISAOrISO(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -287,46 +285,9 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification
-	 * Test Description: Remove shape file and meta data feature permission from existing customer - New Compliance report verification
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer that has Shape file and Meta data permission options enabled and click the Edit button (eg. PG&amp;E's)
-	 *	- - Confirm that the Account Enabled box is checked and uncheck the Report Shape file and meta data buttons
-	 *	- - Click OK
-	 *	- - Log in as Customer user
-	 *	- - Go to compliance report page and generate a new report
-	 *	- - Click on Compliance Viewer button
-	 * Results: -
-	 *	- - Compliance Viewer dialog does not have Shape (ZIP) and Meta data (ZIP) export buttons
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC721, location = ComplianceReportDataProvider.class)
-	public void TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyReportSurveyMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyGapMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("true:false:true:false", getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -344,7 +305,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - In the report view, the segment of assets contained within the Gap should be highlighted
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC723, location = ComplianceReportDataProvider.class)
 	public void TC723_LISABOX10_AssetsWithinGapAreHighlighted(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -359,7 +320,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -378,7 +339,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 *	- - The Gap numbers in the SSRS report should correspond to their location on the grid
 	 *	- - The grid cells should be approximately 200 feet square
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC727, location = ComplianceReportDataProvider.class)
 	public void TC727_GapBoxesUniqueNumbersPrescribedFormat(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -390,12 +351,14 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**

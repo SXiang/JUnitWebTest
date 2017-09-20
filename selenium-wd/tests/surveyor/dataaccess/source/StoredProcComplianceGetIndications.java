@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 
 import common.source.BaseHelper;
 import common.source.Log;
+import common.source.RegexUtility;
 
 public class StoredProcComplianceGetIndications extends BaseEntity {
 	private String peakNumber;
@@ -133,7 +134,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			return false;
 		}
 
-		if(!this.getAggregatedClassificationConfidence().equals(obj.getAggregatedClassificationConfidence())){
+		if(!RegexUtility.equalsIgnoreEmptyString(this.getAggregatedClassificationConfidence(), (obj.getAggregatedClassificationConfidence()))){
 			Log.warn(String.format("[isEquals=FALSE] : AggregatedClassificationConfidence is not match, Expect '%s', Actual '%s'", obj.getAggregatedClassificationConfidence().trim(), getAggregatedClassificationConfidence().trim()));
 			return false;
 		}

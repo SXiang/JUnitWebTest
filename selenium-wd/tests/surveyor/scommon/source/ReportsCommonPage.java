@@ -2702,6 +2702,82 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
+	public boolean verifyGAPMetaDataFile(String actualPath, String reportTitle)
+			throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyGapMetaDataFile", actualPath, reportTitle);
+		return verifyGAPMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
+	}
+
+	public boolean verifyGAPMetaDataFile(String actualPath, String reportTitle, String reportId)
+			throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyGAPMetaDataFile", actualPath, reportTitle, reportId);
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToMetaDataUnZip = actualPath;
+		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
+		String unZipFolder = File.separator + metaDataZipFileName;
+		if (!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportGAP.csv";
+		String reportName = "CR-" + reportId;
+		if (actualPath.endsWith("-ReportGAP.csv")) {
+			pathToCsv = actualPath;
+		}
+		setReportName(reportName);
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
+		List<StoredProcComplianceGetGaps> reportList = new ArrayList<StoredProcComplianceGetGaps>();
+		
+		int rowNumber = 0;
+		int numRows = (csvRows.size()+11)/12;
+		for(int i=0; i<numRows; i++){
+			StoredProcComplianceGetGaps reportGAPObj = new StoredProcComplianceGetGaps();
+			while (csvIterator.hasNext()) {
+				Map<String, String> csvRow = csvIterator.next();
+				if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
+					Log.info("ReportId does NOT match. GAP Meta data file verification failed");
+					return false;
+				}
+				if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
+					Log.info("ReportName does NOT match. GAP Meta data file verification failed");
+					return false;
+				}
+				String gapNumber = csvRow.get("GapNumber");
+				switch(rowNumber%12){
+				case 0: reportGAPObj.setColA(gapNumber);
+				case 1: reportGAPObj.setColB(gapNumber);
+				case 2: reportGAPObj.setColC(gapNumber);
+				case 3: reportGAPObj.setColD(gapNumber);
+				case 4: reportGAPObj.setColE(gapNumber);
+				case 5: reportGAPObj.setColF(gapNumber);
+				case 6: reportGAPObj.setColG(gapNumber);
+				case 7: reportGAPObj.setColH(gapNumber);
+				case 8: reportGAPObj.setColI(gapNumber);
+				case 9: reportGAPObj.setColJ(gapNumber);
+				case 10: reportGAPObj.setColK(gapNumber);
+				case 11: reportGAPObj.setColL(gapNumber);
+				}
+				rowNumber++;
+			}
+			reportGAPObj.setRowNumber(String.valueOf(rowNumber));
+			reportList.add(reportGAPObj);
+		}
+
+		ArrayList<StoredProcComplianceGetGaps> storedPodList = StoredProcComplianceGetGaps.getReportGaps(reportId);
+
+		if (!storedPodList.equals(reportList)) {
+			Log.info(String.format("GAP Meta data file verification failed. Report object from database -> [%s] NOT found in CSV.",
+					storedPodList.toString()));
+				return false;
+		}
+		Log.info("GAP Meta data file verification passed");
+		return true;
+	}
 	public Map<Integer, Integer> getLISASAnalyticsRankingMap(String reportTitle) throws Exception{
 		Log.method("ReportsCommonPage.getLISASAnalyticsRankingMap", reportTitle);
 		Map<Integer, Integer> rankingMap = new HashMap<Integer, Integer>();
@@ -3283,8 +3359,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		try {
 			ArrayList<String> reportGapsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\w+\\d+.*")) {
-					reportGapsList.add(line.replaceAll("\\?", "").replaceAll("\\s", "").trim());
+				line = PDFTableUtility.trimTableRow(line).replaceAll("\\?", "").replaceAll("\\s", "");
+				if (line.trim().matches("^[\\d]+$")) {
+					reportGapsList.add(line);
 				}
 			}
 			ArrayList<StoredProcComplianceGetGaps> storedProcGapsList = StoredProcComplianceGetGaps

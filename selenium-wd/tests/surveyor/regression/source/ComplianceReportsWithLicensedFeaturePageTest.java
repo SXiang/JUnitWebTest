@@ -141,6 +141,70 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	}
 
 	/**
+	 * Test Case ID: TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled
+	 * Test Description: Shapefile button not available for Customer user if Customer does not have Shapefile generation option enabled
+	 * Script: -
+	 *	- - Log in with a Customer Utility Admin user account
+	 *	- - On the Compliance Reports page, click the thumbnail preview button
+	 * Results: -
+	 *	- - The Shapefile button should not appear
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC710, location = ComplianceReportDataProvider.class)
+	public void TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled ...");
+		
+		String surveyTag = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE);
+		getHomePage().logout();
+		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);		
+		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+	}
+
+	/**
+	 * Test Case ID: TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification
+	 * Test Description: Remove shape file and meta data feature permission from existing customer - New Compliance report verification
+	 * Script: -
+	 *	- - Log in as Picarro Admin
+	 *	- - On Manage Customers page, select a customer that has Shape file and Meta data permission options enabled and click the Edit button (eg. PG&amp;E's)
+	 *	- - Confirm that the Account Enabled box is checked and uncheck the Report Shape file and meta data buttons
+	 *	- - Click OK
+	 *	- - Log in as Customer user
+	 *	- - Go to compliance report page and generate a new report
+	 *	- - Click on Compliance Viewer button
+	 * Results: -
+	 *	- - Compliance Viewer dialog does not have Shape (ZIP) and Meta data (ZIP) export buttons
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC721, location = ComplianceReportDataProvider.class)
+	public void TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification ...");
+
+		String surveyTag = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		getHomePage().logout();
+		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);		
+		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+	}
+
+	/**
 	 * Test Case ID: TC1496_AddLISABoxOptonToExistingCustomer
 	 * Test Description: Add LISA Box option to existing customer
 	 * Script: 
@@ -504,4 +568,5 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		getHomePage().clickOnFirstMatchingDrivingSurvey(surveyTag);
 		assertFalse(driverViewPage.isCurtainButtonPresent());
 	}
+
 }
