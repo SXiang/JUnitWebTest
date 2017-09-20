@@ -256,6 +256,17 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("screencap /sdcard/%s.png", screenshotFileNameWithoutExt));
 	}
 
+	public void dumpHeap(String fileName) throws Exception {
+		Log.method("dumpHeap", fileName);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("am dumpheap %s %s/%s", AppConstants.APP_PACKAGE_NAME,
+				AppConstants.APP_HEAPDUMP_SAVE_LOCATION, fileName));
+	}
+
+	public void removeHeapFile(String fileName) throws Exception {
+		Log.method("removeHeapFile", fileName);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("rm -f %s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, fileName));
+	}
+
 	/**
 	 * Executes swipe action using TouchAction.
 	 */
