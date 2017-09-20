@@ -278,6 +278,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMaxValue2ppm);
 	}
 
+	public void assertDefaultTopPanelElementsAreCorrect() {
+		Log.method("assertDefaultTopPanelElementsAreCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelBackPackSimDefaultValues);
+	}
+
 	public void assertBottomPaneButtonsAreCorrect() {
 		Log.method("assertBottomPaneButtonsAreCorrect");
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.BottomPaneButtons);

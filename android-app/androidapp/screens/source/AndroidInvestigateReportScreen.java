@@ -21,6 +21,8 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	private static final String MARKER_NAME_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[%d]/android.widget.TextView[1]";
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
 	private static final String LIST_ITEMS_XPATH = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup";
+	private static final String LISA = "LISA";
+	private static final String GAP = "Gap";
 
 	@AndroidFindBy(xpath = LIST_ITEMS_XPATH)
 	private List<WebElement> listViewElements;
@@ -44,6 +46,10 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement markerTypeSelector;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement markerTypeSelectorText;
 
 	public AndroidInvestigateReportScreen(WebDriver driver) {
 		super(driver);
@@ -190,6 +196,14 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 			});
 
 		return match;
+	}
+
+	public Boolean waitForMarkerTypeLisaToBeSelected() {
+		return waitForScreenLoad(10 /*timeout*/, (driver) -> markerTypeSelectorText.isDisplayed() && markerTypeSelectorText.getText().equals(LISA));
+	}
+
+	public Boolean waitForMarkerTypeGapToBeSelected() {
+		return waitForScreenLoad(10 /*timeout*/, (driver) -> markerTypeSelectorText.isDisplayed() && markerTypeSelectorText.getText().equals(GAP));
 	}
 
 	@Override
