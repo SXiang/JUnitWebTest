@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import common.source.Log;
-import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMarkerTypeListControl extends AndroidBaseScreen {
@@ -41,8 +40,5 @@ public class AndroidMarkerTypeListControl extends AndroidBaseScreen {
 		} else if (markerType == MarkerType.Gap) {
 			gapListItem.click();
 		}
-
-		// allow time for dropdown value to get selected on screen.
-		TestContext.INSTANCE.stayIdle(2);
 	}
 }

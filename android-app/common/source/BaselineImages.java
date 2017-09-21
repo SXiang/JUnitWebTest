@@ -31,6 +31,7 @@ public class BaselineImages {
 		public static final String VolumeAmplitudeThresholdSliders = "volume-amplitude-threshold.png";
 		public static final String TopPanelMaxValue2ppm = "max-value-2-0-ppm.png";
 		public static final String TopPanelMethaneValue2ppm = "methane-value-2-0-ppm.png";
+		public static final String TopPanelBackPackSimDefaultValues = "top-panel-backpacksim-default-values.png";
 		public static final String LisaScreenshotWithIndexPlaceholder = "LISA%d_Screenshot.png";
 		public static final String LisaInProgressScreenshotWithIndexPlaceholder = "LISA%d-InProgress_Screenshot.png";
 		public static final String LisaFoundGasLeakScreenshotWithIndexPlaceholder = "LISA%d-FoundGasLeak_Screenshot.png";

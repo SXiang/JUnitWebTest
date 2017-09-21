@@ -137,7 +137,11 @@ public class AndroidStabilityTest extends BaseReportTest {
 			return true;
 		});
 
+		int i = 0;
 		do {
+
+			Log.info(String.format("Stability Test. Iteration - %d", ++i));
+
 			clickOnFirstInvestigationReport(investigationScreen);
 			executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 				investigateReportScreen.waitForScreenLoad();
