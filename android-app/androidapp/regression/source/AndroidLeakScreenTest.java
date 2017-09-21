@@ -604,7 +604,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		// click first matching report from search. click first matching marker of type.
 		clickOnFirstInvestigationReport(investigationScreen);
-		initializeAddLeakSourceFormDialog();
+		initializeInvestigateReportScreen();
 		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		// open last edited leak info and verify data is correct.
