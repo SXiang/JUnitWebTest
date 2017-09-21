@@ -1,5 +1,6 @@
 ﻿# ---------------------------------------------------------------
 # SCRIPT: This is helper script to check status of hostednetwork and reset if stopped.
+#         Script executes in a loop and will pause for number of seconds specified in 'CheckInterval' before next check.
 #         
 # USAGE:
 #   .\Ensure-HostedNetworkAlive.ps1 -CheckInterval 2

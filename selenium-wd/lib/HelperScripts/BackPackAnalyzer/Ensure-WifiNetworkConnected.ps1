@@ -1,12 +1,13 @@
 ﻿# ---------------------------------------------------------------
 # SCRIPT: This is helper script to check if machine is connected to a wifi network and connect if not connected.
+#         Script executes in a loop and will pause for number of seconds specified in 'CheckInterval' before next check.
 #         
 # USAGE:
 #   .\Ensure-WifiNetworkConnected.ps1 -CheckInterval 3 -wifiSSID "Nomad4001v"
 # ---------------------------------------------------------------
 
 param (
-    [Int32] $CheckInterval = 3,         # seconds to pause before performing next check.  
+    [Int32] $CheckInterval = 3,           # seconds to pause before performing next check.  
     [String]$WifiSSID = "Nomad4001v"      # ssid of network
 )
 
