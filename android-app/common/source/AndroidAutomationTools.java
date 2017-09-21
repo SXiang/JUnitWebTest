@@ -21,6 +21,7 @@ public class AndroidAutomationTools {
 		public static final String SET_TRANSITION_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"transition_animation_scale\"'";
 		public static final String SET_ANIMATOR_DURATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"animator_duration_scale\"'";
 		public static final String DUMPSYS_GFXINFO = "dumpsys gfxinfo %s";     // provide app package name
+		public static final String DUMPSYS_MEMINFO = "dumpsys meminfo %s";     // provide app package name
 		public static final String DUMPSYS_CPUINFO = "dumpsys cpuinfo";
 		public static final String TURN_ON_GPS = "settings put secure location_providers_allowed +gps";
 		public static final String TURN_OFF_GPS = "settings put secure location_providers_allowed -gps";
@@ -94,6 +95,12 @@ public class AndroidAutomationTools {
 		Log.method("getGraphicsInfo");
 		return AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(),
 				String.format(ShellCommands.DUMPSYS_GFXINFO, AppConstants.APP_PACKAGE_NAME));
+	}
+
+	public static String getMemInfo() throws Exception {
+		Log.method("getMemInfo");
+		return AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(),
+				String.format(ShellCommands.DUMPSYS_MEMINFO, AppConstants.APP_PACKAGE_NAME));
 	}
 
 	public static String getCpuInfo() throws Exception {

@@ -10,5 +10,5 @@ public class AppConstants {
 	        "android.permission.WRITE_EXTERNAL_STORAGE"
 		};
 
-	
+	public static final String APP_HEAPDUMP_SAVE_LOCATION = "/data/local/tmp";
 }
