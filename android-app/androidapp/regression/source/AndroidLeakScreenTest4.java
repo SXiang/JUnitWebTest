@@ -590,6 +590,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));

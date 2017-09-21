@@ -410,6 +410,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
