@@ -92,6 +92,21 @@ public class ImagingUtility {
 	        ARGBPixel rhs = ((ARGBPixel) other);
 	        return new EqualsBuilder().append(alpha, rhs.alpha).append(red, rhs.red).append(green,  rhs.green).append(blue, rhs.blue).isEquals();
 		}
+
+		public boolean equalsWithPixelDelta(ARGBPixel otherPixel, Integer pixelDelta) {
+	        if (otherPixel == this) {
+	            return true;
+	        }
+
+	        if ((Math.abs(this.getAlpha()-otherPixel.getAlpha())>pixelDelta) ||
+	        		(Math.abs(this.getRed()-otherPixel.getRed())>pixelDelta) ||
+	        		(Math.abs(this.getGreen()-otherPixel.getGreen())>pixelDelta) ||
+	        		(Math.abs(this.getBlue()-otherPixel.getBlue())>pixelDelta)) {
+	        	return false;
+	        }
+
+	        return true;
+		}
 	}
 
 	public ImagingUtility() {
