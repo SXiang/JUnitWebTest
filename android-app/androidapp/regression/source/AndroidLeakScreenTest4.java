@@ -29,6 +29,7 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
+import androidapp.screens.source.ScreenVerifier;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.Log;

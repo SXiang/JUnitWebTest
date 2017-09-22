@@ -127,6 +127,46 @@ public class SikuliDecoratedDriverTest {
 	}
 
 	@Test
+	public void sikuliDriverGetBoundsTest_SameImage_Not100PercentMatch_LessMisMatchWithinTolerance_Success() throws Exception {
+		Log.info("Executing test -> sikuliDriverGetBoundsTest_SameImage_Not100PercentMatch_LessMisMatchWithinTolerance_Success() ...");
+
+		String INPUT_IMAGE = Paths.get(rootPath, "android-app\\data\\test-expected-data\\unit-tests\\sikuli-tests\\TC2432_LISA1_Full_Screenshot.png").toString();
+		String findImageFile = Paths.get(rootPath, "android-app\\data\\test-expected-data\\unit-tests\\sikuli-tests\\TC2432_LISA1_Screenshot.png").toString();
+		SikuliDecoratedDriver sikuliDriver = SikuliDecoratedDriver.getInstance(null, createImageScreen(INPUT_IMAGE));
+		sikuliDriver.setSimilarityScore(1.0);
+		Rectangle imageBounds = sikuliDriver.getImageBounds(new File(findImageFile), 30 /*waitTimeInSeconds*/);
+		if (imageBounds != null) {
+			Log.info(String.format("Found image on screen at bounds -> [x=%,.2f, y=%,.2f, width=%,.2f, height=%,.2f]",
+					imageBounds.getX(), imageBounds.getY(), imageBounds.getWidth(), imageBounds.getHeight()));
+		}
+
+		assertTrue(String.format("Image Bounds is expected to be found for - '%s'.", findImageFile), imageBounds != null);
+		Rectangle findImageBounds = ImagingUtility.getImageBounds(findImageFile);
+		boolean colorMatch = ImagePixelMatcher.matcherWithTolerance(10.0f, 15).matches(INPUT_IMAGE, findImageFile, imageBounds, findImageBounds);
+		assertTrue(String.format("Pixels expected to match for - '%s'.", findImageFile), colorMatch == true);
+	}
+
+	@Test
+	public void sikuliDriverGetBoundsTest_SameImage_Not100PercentMatch_MoreMisMatchWithinTolerance_Success() throws Exception {
+		Log.info("Executing test -> sikuliDriverGetBoundsTest_SameImage_Not100PercentMatch_MoreMisMatchWithinTolerance_Success() ...");
+
+		String INPUT_IMAGE = Paths.get(rootPath, "android-app\\data\\test-expected-data\\unit-tests\\sikuli-tests\\TC2640_GAP8_Full_Screenshot.png").toString();
+		String findImageFile = Paths.get(rootPath, "android-app\\data\\test-expected-data\\unit-tests\\sikuli-tests\\TC2640_GAP8_Screenshot.png").toString();
+		SikuliDecoratedDriver sikuliDriver = SikuliDecoratedDriver.getInstance(null, createImageScreen(INPUT_IMAGE));
+		sikuliDriver.setSimilarityScore(1.0);
+		Rectangle imageBounds = sikuliDriver.getImageBounds(new File(findImageFile), 30 /*waitTimeInSeconds*/);
+		if (imageBounds != null) {
+			Log.info(String.format("Found image on screen at bounds -> [x=%,.2f, y=%,.2f, width=%,.2f, height=%,.2f]",
+					imageBounds.getX(), imageBounds.getY(), imageBounds.getWidth(), imageBounds.getHeight()));
+		}
+
+		assertTrue(String.format("Image Bounds is expected to be found for - '%s'.", findImageFile), imageBounds != null);
+		Rectangle findImageBounds = ImagingUtility.getImageBounds(findImageFile);
+		boolean colorMatch = ImagePixelMatcher.matcherWithTolerance(10.0f, 15).matches(INPUT_IMAGE, findImageFile, imageBounds, findImageBounds);
+		assertTrue(String.format("Pixels expected to match for - '%s'.", findImageFile), colorMatch == true);
+	}
+
+	@Test
 	public void sikuliDriverGetBoundsTest_SameImageDiffBackground_Failure() throws Exception {
 		Log.info("Executing test -> sikuliDriverGetBoundsTest_SameImageDiffBackground_Failure() ...");
 

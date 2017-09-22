@@ -94,6 +94,11 @@ public class AndroidBaseScreen implements Screen {
 		MobileActions.newAction().sendKeys(element, text);
 	}
 
+	private void setScreenVerifier(ScreenVerifier screenVerifier) {
+		Log.method("setScreenVerifier", screenVerifier);
+		this.screenVerifier = screenVerifier;
+	}
+
 	public void slideBy(WebElement element, WebElement elementContainer, Float value) {
 		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, value);
 	}

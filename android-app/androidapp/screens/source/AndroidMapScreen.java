@@ -226,17 +226,17 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void assertIncorrectCredentialsMessageIsShownInRed() {
 		Log.method("assertIncorrectCredentialsMessageIsShownInRed");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.LoginErrorRedText);
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.LoginErrorRedText);
 	}
 
 	public void assertPleaseEnterYourPasswordMessageIsShownInRed() {
 		Log.method("assertPleaseEnterYourPasswordMessageIsShownInRed");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PleaseEnterYourPassword);
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PleaseEnterYourPassword);
 	}
 
 	public void assertPleaseEnterYourUsernameMessageIsShownInRed() {
 		Log.method("assertPleaseEnterYourUsernameMessageIsShownInRed");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PleaseEnterUsername);
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PleaseEnterUsername);
 	}
 
 	public void assertMapIsLoaded() {
