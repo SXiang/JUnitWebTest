@@ -20,6 +20,9 @@ import surveyor.scommon.source.RunExecutionListener;
 
 /**
  * This is a custom test runner created to retry tests on failure.
+ * Tests will be re-run if following exceptions are encountered:
+ *    RetryException (Custom) | UnreachableBrowserException | SessionNotFoundException
+ * Retry attempts will be logged as additional instance in test report.
  *
  * @author spulikkal
  *
