@@ -17,6 +17,7 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import androidapp.entities.source.InvestigationMarkerEntity;
 
 public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
+	private static final String MARKER_TYPE_SELECTOR_TEXT_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]";
 	private static final String MARKER_STATUS_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[%d]/android.widget.TextView[2]";
 	private static final String MARKER_NAME_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[%d]/android.widget.TextView[1]";
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
@@ -47,8 +48,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement markerTypeSelector;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
-	@CacheLookup
+	@AndroidFindBy(xpath = MARKER_TYPE_SELECTOR_TEXT_XPATH)
 	private WebElement markerTypeSelectorText;
 
 	public AndroidInvestigateReportScreen(WebDriver driver) {
@@ -151,6 +151,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
 		Log.method("getInvestigationReports");
+		waitForProgressComplete();
 		reInitializeListItems();
 		List<InvestigationMarkerEntity> invMarkersList = new ArrayList<InvestigationMarkerEntity>();
 		for (WebElement el : this.listViewElements) {
@@ -199,11 +200,21 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	}
 
 	public Boolean waitForMarkerTypeLisaToBeSelected() {
-		return waitForScreenLoad(10 /*timeout*/, (driver) -> markerTypeSelectorText.isDisplayed() && markerTypeSelectorText.getText().equals(LISA));
+		Log.method("waitForMarkerTypeLisaToBeSelected");
+		waitForProgressComplete();
+		return waitForScreenLoad(10 /*timeout*/, (driver) -> {
+			refetchMarkerTypeSelectorText();
+			return markerTypeSelectorText.isDisplayed() && markerTypeSelectorText.getText().equals(LISA);
+		});
 	}
 
 	public Boolean waitForMarkerTypeGapToBeSelected() {
-		return waitForScreenLoad(10 /*timeout*/, (driver) -> markerTypeSelectorText.isDisplayed() && markerTypeSelectorText.getText().equals(GAP));
+		Log.method("waitForMarkerTypeGapToBeSelected");
+		waitForProgressComplete();
+		return waitForScreenLoad(10 /*timeout*/, (driver) -> {
+			refetchMarkerTypeSelectorText();
+			return markerTypeSelectorText.isDisplayed() && markerTypeSelectorText.getText().equals(GAP);
+		});
 	}
 
 	@Override
@@ -215,5 +226,10 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	public Boolean screenLoadCondition() {
 		Log.method("AndroidInvestigateReportScreen.screenLoadCondition");
 		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed() && waitForProgressComplete();
+	}
+
+	private void refetchMarkerTypeSelectorText() {
+		Log.method("refetchMarkerTypeSelectorText");
+		markerTypeSelectorText = getAndroidDriver().findElementByXPath(MARKER_TYPE_SELECTOR_TEXT_XPATH);
 	}
 }

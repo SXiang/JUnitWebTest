@@ -23,7 +23,6 @@ import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;

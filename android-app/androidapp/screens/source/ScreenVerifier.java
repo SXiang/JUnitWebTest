@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import org.sikuli.api.DefaultScreenRegion;
 import org.sikuli.api.ScreenRegion;
 
 import common.source.ExceptionUtility;
@@ -28,6 +27,9 @@ import common.source.TestSetup;
 import common.source.TextUtility;
 
 public class ScreenVerifier {
+
+	private static final Float PIXEL_MATCH_TOLERANCE = 10.0f;
+	private static final Integer PIXEL_MISMATCH_ALLOWED_DELTA = 15;
 
 	private ScreenVerifier() {}
 
@@ -135,7 +137,7 @@ public class ScreenVerifier {
 				BufferedImage bufferedScreenImage = ImagingUtility.imageToBufferedImage(fullScreenImage, BufferedImage.TYPE_4BYTE_ABGR);
 				FileUtility.deleteFile(Paths.get(fullScreenImage));
 
-				boolean pixelMatch = ImagePixelMatcher.defaultMatcher().matches(bufferedScreenImage, bufferedFindImage, screenImageBounds, findImageBounds);
+				boolean pixelMatch = ImagePixelMatcher.matcherWithTolerance(PIXEL_MATCH_TOLERANCE, PIXEL_MISMATCH_ALLOWED_DELTA).matches(bufferedScreenImage, bufferedFindImage, screenImageBounds, findImageBounds);
 				if (!pixelMatch) {
 					Log.warn("PIXEL MATCH FAILURE - Matching image found on screen. However pixel match failed!");
 				}

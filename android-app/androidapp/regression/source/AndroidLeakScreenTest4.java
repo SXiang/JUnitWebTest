@@ -29,6 +29,7 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
+import androidapp.screens.source.ScreenVerifier;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.Log;
@@ -590,6 +591,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));

@@ -176,6 +176,12 @@ public class Box extends BaseEntity {
 		return load(SQL);
 	}
 
+	public void updateInvestigationStatusTypeId(String reportId, Integer boxTypeId, Integer investigationStatusTypeId) {
+		String SQL = String.format("UPDATE [dbo].[Box] SET InvestigationStatusTypeId=%d WHERE ReportID='%s' AND BoxTypeId=%d",
+				investigationStatusTypeId, reportId, boxTypeId);
+		executeNonQuery(SQL);
+	}
+
 	public ArrayList<Box> load(String SQL) {
 		ArrayList<Box> objBoxList = new ArrayList<Box>();
 
