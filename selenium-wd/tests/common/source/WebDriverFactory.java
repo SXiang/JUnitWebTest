@@ -8,10 +8,12 @@ import java.util.List;
 
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class WebDriverFactory {
 	private static final String CHROME_EXE = "chromedriver.exe";
 	private static final String CHROMEDRIVER_EXE = "chromedriver.exe";
+	private static final Integer ANDROID_NATIVE_DRIVER_CREATION_MAX_ATTEMPTS = 3;
 
 	private static List<ThreadLocal<WebDriverWrapper>> threadLocalDriverList = Collections.synchronizedList(new ArrayList<ThreadLocal<WebDriverWrapper>>());
 
@@ -21,9 +23,23 @@ public class WebDriverFactory {
 		return webDriverWrapper;
 	}
 
-	protected static WebDriverWrapper createAndroidAppNativeDriver(boolean isDevice) throws IOException {
+	protected static WebDriverWrapper createAndroidAppNativeDriver(boolean isDevice) throws Exception {
+		return createAndroidAppNativeDriverWithRetry(isDevice, ANDROID_NATIVE_DRIVER_CREATION_MAX_ATTEMPTS);
+	}
+
+	private static WebDriverWrapper createAndroidAppNativeDriverWithRetry(boolean isDevice, int attempt) throws Exception {
+		if (attempt <= 0) {
+			throw new RetryException(String.format("Failed to create android native driver in max attempts = %d", ANDROID_NATIVE_DRIVER_CREATION_MAX_ATTEMPTS));
+		}
+
 		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
-		webDriverWrapper.createAndroidAppNativeDriver(isDevice);
+		try {
+			webDriverWrapper.createAndroidAppNativeDriver(isDevice);
+		} catch (UnreachableBrowserException | IOException e) {
+			Log.warn(ExceptionUtility.getStackTraceString(e));
+			return createAndroidAppNativeDriverWithRetry(isDevice, --attempt);
+		}
+
 		return webDriverWrapper;
 	}
 
@@ -72,7 +88,9 @@ public class WebDriverFactory {
 					} else {
 						webDriver = createAndroidAppWebDriver(isDevice);
 					}
-				} catch (IOException ex) {
+				} catch (RetryException ex) {
+					throw ex;
+				} catch (Exception ex) {
 					Log.error(ExceptionUtility.getStackTraceString(ex));
 				}
 		        return webDriver;
