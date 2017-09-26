@@ -87,32 +87,32 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-		userName = "168955@email.com";
-		userPassword = PICADMINPSWD;
-		customerName = "regcus168955LicFeature";
-		analyzerName = "AutoTestAnalyzer032";
-		analyzerSharedKey = "4053f82e92fb496";
-		surveyTag = "0cdf1527f19147a";
-//		if(testAccount == null){
-//			testAccount = createTestAccount("LicFeature");	
-//			userName = testAccount.get("userName");
-//			userPassword = testAccount.get("userPassword");
-//			customerName = testAccount.get("customerName");
-//			analyzerSharedKey = testAccount.get("analyzerSharedKey");
-//			analyzerName = testAccount.get("analyzerName");
-//			customerId = testAccount.get("customerId");
-//			pushGisData(customerId);	
-//			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword);
-//			testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
-//					"Surveyor_FEDS2067_std.db3", "replay-db3.defn", userName, userPassword, 150, SurveyType.Standard);
-//   		surveyTag = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
-//
-//		}else{
-//			getLoginPage().open();
-//			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-//			manageCustomerPageAction.open(EMPTY, NOTSET);
-//			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.values());
-//		}
+//		userName = "168955@email.com";
+//		userPassword = PICADMINPSWD;
+//		customerName = "regcus168955LicFeature";
+//		analyzerName = "AutoTestAnalyzer032";
+//		analyzerSharedKey = "4053f82e92fb496";
+//		surveyTag = "0cdf1527f19147a";
+		if(testAccount == null){
+			testAccount = createTestAccount("LicFeature");	
+			userName = testAccount.get("userName");
+			userPassword = testAccount.get("userPassword");
+			customerName = testAccount.get("customerName");
+			analyzerSharedKey = testAccount.get("analyzerSharedKey");
+			analyzerName = testAccount.get("analyzerName");
+			customerId = testAccount.get("customerId");
+			pushGisData(customerId);	
+			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword);
+			testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
+					"Surveyor_FEDS2067_std.db3", "replay-db3.defn", userName, userPassword, 150, SurveyType.Standard);
+			surveyTag = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
+
+		}else{
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.values());
+		}
 	}
 
 	private void initializePageObjects() {
@@ -157,7 +157,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 * Results: -
 	 *	- - The Shapefile button should not appear
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC710, location = ComplianceReportDataProvider.class)
 	public void TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -190,7 +190,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 * Results: -
 	 *	- - Compliance Viewer dialog does not have Shape (ZIP) and Meta data (ZIP) export buttons
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC721, location = ComplianceReportDataProvider.class)
 	public void TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -225,7 +225,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 *	- - Compliance Viewer dialog has Shape (ZIP) and Meta data (ZIP) export buttons
 	 *	- - User can download the Shape files and meta data files successfully
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC787, location = ComplianceReportDataProvider.class)
 	public void TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -542,7 +542,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 *	- - Compliance Viewer dialog hasCompliance ZIP (Meta)export button
 	 *	- - User can download the Meta Data files successfully.Report.csv, ReportSurvey.csv, ReportIsotopic.csv, ReportLISAS.csv, ReportGap.csv should be present as per survey data included to generate the report
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC796, location = ComplianceReportDataProvider.class)
 	public void TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -599,7 +599,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 *	- The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496, location = ComplianceReportDataProvider.class)
 	public void TC1496_AddLISABoxOptonToExistingCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -669,7 +669,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 * - Rapid Response should be present in both sections
 	 * - Manual should be present in both sections
 	 */
-	@Test
+	@Ignore@Test
 	public void TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense() throws Exception {
 		Log.info("\nRunning TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense");
 
@@ -757,7 +757,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 * - Rapid Response should be present in both sections
 	 * - Manual should be present in both sections
 	 */
-	@Test
+	@Ignore@Test
 	public void TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance() throws Exception {
 		Log.info("\nRunning TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance");
 
@@ -847,7 +847,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 * - User will see customer details
 	 * - Customer user will get an error message �The original report was created with the following survey mode licenses: {0}. Your account currently does not have access to these modes." {0} will contain a list of modes that were available at the time the report was generated
 	 */
-	@Test
+	@Ignore@Test
 	public void TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense() throws Exception {
 		Log.info("\nRunning TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense");
 
@@ -915,7 +915,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 * - User is navigated to selected survey
 	 * - Curtain View button should not be present
 	 */
-	@Test
+	@Ignore@Test
 	public void TC2134_CurtainViewNotAvailableWithoutLicense() throws Exception {
 		Log.info("\nRunning TC2134_CurtainViewNotAvailableWithoutLicense");
 
