@@ -92,7 +92,7 @@ public class BaseTest {
 		@Override
 		public void finished(Description description) {
 			Log.method("BaseTest.finished");
-			BaseTest.reportTestFinished(description.getClassName());
+			BaseTest.reportTestFinished(description);
 			TestSetup.simulatorTestFinishing(description);
 		}
 
@@ -100,7 +100,7 @@ public class BaseTest {
 		protected void failed(Throwable e, Description description) {
 			Log.method("BaseTest.failed");
 			onTestFailureProcessing();
-			BaseTest.reportTestFailed(e, description.getClassName());
+			BaseTest.reportTestFailed(e, description);
 			postTestMethodProcessing();
 		}
 
@@ -108,7 +108,7 @@ public class BaseTest {
 		 protected void succeeded(Description description) {
 			Log.method("BaseTest.succeeded");
 			onTestSuccessProcessing();
-			BaseTest.reportTestSucceeded(description.getClassName());
+			BaseTest.reportTestSucceeded(description);
 			postTestMethodProcessing();
 		}
 	};
@@ -176,11 +176,33 @@ public class BaseTest {
 		return extentReport;
 	}
 
+	private static boolean isTestRetried(Description description) {
+		return ThreadLocalStore.getRetriedTests().contains(String.format("%s.%s", description.getClassName(), description.getMethodName()));
+	}
+
+	protected static void captureAdditionalDriverScreenshots(String className) {
+		Log.method("captureAdditionalDriverScreenshots", className);
+		int driverCount = WebDriverFactory.getDriversCount();
+		if (driverCount > 1) {
+			for (int i = 1; i < driverCount; i++) {
+				if (WebDriverFactory.getDriver(i) != null) {
+					if (!WebDriverFactory.hasDriverQuit(WebDriverFactory.getDriver(i))) {
+						getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+					}
+				}
+			}
+		}
+	}
+
 	public static void reportTestStarting(Description description) {
-		reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
+		Log.method("reportTestStarting", description);
+		if (!isTestRetried(description)) {
+			reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
+		}
 	}
 
 	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
+		Log.method("reportTestStarting", className, methodName, firstLogLine);
 		ExtentReports report = getExtentReport(className);
 		setExtentTest(report.startTest(methodName), className);
 		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
@@ -188,6 +210,14 @@ public class BaseTest {
 		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
 				DateUtility.getCurrentDate()));
 		TestContext.INSTANCE.setTestClassName(className);
+	}
+
+	public static void reportTestFinished(Description description) {
+		Log.method("reportTestFinished", description);
+		String className = description.getClassName();
+		if (!isTestRetried(description)) {
+			reportTestFinished(className);
+		}
 	}
 
 	public static void reportTestFinished(String className) {
@@ -199,10 +229,11 @@ public class BaseTest {
 		report.flush();
 	}
 
-	public static void reportTestLogMessage(String className) {
-		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
-		for(String message:testMessage){
-			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
+	public static void reportTestFailed(Throwable e, Description description) {
+		Log.method("reportTestFailed", e, description);
+		String className = description.getClassName();
+		if (!isTestRetried(description)) {
+			reportTestFailed(e, className);
 		}
 	}
 
@@ -217,15 +248,11 @@ public class BaseTest {
 		getExtentTest(className).log(LogStatus.FAIL, failureMsg);
 	}
 
-	protected static void captureAdditionalDriverScreenshots(String className) {
-		Log.method("captureAdditionalDriverScreenshots", className);
-		int driverCount = WebDriverFactory.getDriversCount();
-		if (driverCount > 1) {
-			for (int i = 1; i < driverCount; i++) {
-				if (!WebDriverFactory.hasDriverQuit(WebDriverFactory.getDriver(i))) {
-					getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
-				}
-			}
+	public static void reportTestSucceeded(Description description) {
+		Log.method("reportTestSucceeded", description);
+		String className = description.getClassName();
+		if (!isTestRetried(description)) {
+			reportTestSucceeded(className);
 		}
 	}
 
@@ -234,6 +261,13 @@ public class BaseTest {
 		Log.info("_PASS_ ");
 		TestContext.INSTANCE.setTestStatus("PASS");
 		getExtentTest(className).log(LogStatus.PASS, "PASSED");
+	}
+
+	public static void reportTestLogMessage(String className) {
+		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		for(String message:testMessage){
+			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
+		}
 	}
 
 	protected static ExtentTest getExtentTest(String className) {
@@ -474,7 +508,7 @@ public class BaseTest {
 		LoginPageActions loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		getLoginPage().open();
 		loginPageAction.login(userName+":"+Password, null);
-		
+
 		testReport.put("userName", userName);
 
 		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
@@ -562,7 +596,7 @@ public class BaseTest {
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, "", db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
-	
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3file, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
         String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";

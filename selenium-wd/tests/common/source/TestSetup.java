@@ -207,6 +207,8 @@ public class TestSetup {
 	private Integer androidStabilityTestMaxHrs;
 	private Integer androidStabilityTestMaxMinutes;
 
+	private Integer androidMaxLogLines;
+
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
 
@@ -679,6 +681,7 @@ public class TestSetup {
 			this.setAndroidNetworkThrottleEnabled(Boolean.valueOf(this.testProp.getProperty("androidEmulator.Network.Throttle.Enabled")));
 			this.setAndroidNetworkDelay(this.testProp.getProperty("androidEmulator.Network.Delay"));
 			this.setAndroidNetworkSpeed(this.testProp.getProperty("androidEmulator.Network.Speed"));
+			this.setAndroidMaxLogLines(Integer.valueOf(this.testProp.getProperty("androidTests.Logs.MaxLines")));
 
 			this.setAndroidStabilityTestProperties();
 			this.setBackPackServerProperties();
@@ -1820,6 +1823,14 @@ public class TestSetup {
 
 	public void setAndroidStabilityTestMaxMinutes(Integer androidStabilityTestMaxMins) {
 		this.androidStabilityTestMaxMinutes = androidStabilityTestMaxMins;
+	}
+
+	public Integer getAndroidMaxLogLines() {
+		return androidMaxLogLines;
+	}
+
+	public void setAndroidMaxLogLines(Integer androidMaxLogLines) {
+		this.androidMaxLogLines = androidMaxLogLines;
 	}
 
 	public boolean isAndroidNetworkThrottleEnabled() {

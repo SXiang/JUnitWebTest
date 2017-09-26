@@ -26,6 +26,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.sikuli.api.Screen;
 
+import common.source.CheckedConsumer;
 import common.source.ExceptionUtility;
 
 public class AndroidBaseScreen implements Screen {
@@ -132,6 +133,12 @@ public class AndroidBaseScreen implements Screen {
 		} while (attempts > 0);
 
 		return null;
+	}
+
+	protected void validateAndSetElementValue(Object value, CheckedConsumer consumer) throws Exception {
+		if (value != null) {
+			consumer.execute();
+		}
 	}
 
 	public boolean waitForProgressComplete() {

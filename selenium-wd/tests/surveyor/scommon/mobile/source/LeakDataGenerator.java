@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -99,6 +100,54 @@ public class LeakDataGenerator {
 			 	.setMeterNumber(DataGenerator.getNumberBetween(1, 999).toString())
 			 	.setLocationRemarks(DataGenerator.getRandomText(20, 200))
 			 	.setAdditionalNotes(DataGenerator.getRandomText(20, 200));
+			return this;
+		}
+
+		public LeakDataBuilder generateRandomValuesWithNulls() {
+			Address address = DataGenerator.getAddress();
+
+			int randInt = new Random().nextInt(1000) + 1;
+
+			Boolean valueSet = false;
+			if (randInt % 2 == 0) {
+				this.setUseCurrentLocation(true);
+				this.setStreetName(address.getStreetName());
+				this.setSurfaceReading(DataGenerator.getNumberBetween(1, 999).toString());
+				this.setIsPavedWallToWall(true);
+				this.setLeakType(LeakType.Above_Ground);
+				valueSet = true;
+			}
+
+			if (randInt % 3 == 0) {
+				this.setCity(address.getCity());
+				this.setSurfaceReadingUnit(ReadingUnitType.PPM);
+				this.setSurfaceOverLeakType(SurfaceOverLeakType.Concrete);
+				this.setLeakGrade(DataGenerator.getNumberBetween(1, 999).toString());
+				valueSet = true;
+			}
+
+			if (randInt % 4 == 0) {
+				this.setStreetNumber(address.getStreetNumber());
+				this.setState(address.getState());
+				this.setBarholeReading(DataGenerator.getNumberBetween(1, 999).toString());
+				this.setLocationType(LeakLocationType.Service);
+				this.setMeterNumber(DataGenerator.getNumberBetween(1, 999).toString());
+				valueSet = true;
+			}
+
+			if (randInt % 5 == 0) {
+				this.setAptNumber(DataGenerator.getNumberBetween(1, 999).toString());
+				this.setMapNumber(DataGenerator.getNumberBetween(1, 999).toString());
+				this.setBarholeReadingUnit(ReadingUnitType.PPM);
+				this.setPipeMaterialType(LeakPipeMaterialType.CastIron);
+				this.setLocationRemarks(DataGenerator.getRandomText(250, 300));
+				valueSet = true;
+			}
+
+			if (!valueSet || (randInt % 6 == 0)) {
+				this.setAdditionalNotes(DataGenerator.getRandomText(250, 300));
+			}
+
 			return this;
 		}
 

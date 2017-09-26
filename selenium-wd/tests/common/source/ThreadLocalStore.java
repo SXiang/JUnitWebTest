@@ -3,8 +3,10 @@ package common.source;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -47,6 +49,13 @@ public class ThreadLocalStore {
 	    }
 	};
 
+	private static ThreadLocal<List<String>> threadLocalRetriedTests = new ThreadLocal<List<String>>() {
+	    @Override
+	    protected List<String> initialValue() {
+	    	return createDefaultRetriedTestsList();
+	    }
+	};
+
 	public static LogData getLogData() {
 		return threadLocalLogData.get();
 	}
@@ -61,6 +70,14 @@ public class ThreadLocalStore {
 
 	public static ScreenShotOnFailure getScreenShotOnFailure() {
 		return threadLocalScreenShotOnFailure.get();
+	}
+
+	public static List<String> getRetriedTests() {
+		return threadLocalRetriedTests.get();
+	}
+
+	private static List<String> createDefaultRetriedTestsList() {
+		return new ArrayList<String>();
 	}
 
 	private static Map<String, ExtentTest> createDefaultExtentTestMap() {

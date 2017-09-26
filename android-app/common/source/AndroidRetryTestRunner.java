@@ -16,6 +16,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.RunExecutionListener;
 
 /**
@@ -71,29 +72,47 @@ public class AndroidRetryTestRunner extends DataProviderRunner {
             		EachTestNotifier testNotifier = new EachTestNotifier(notifier, description);
             		testNotifier.fireTestStarted();
             		Statement methodStatement = null;
+            		Throwable failureException = null;
             		try {
             			methodStatement = methodBlock(method);
+            			BaseTest.reportTestStarting(description);
+            			storeRetryCandidateTest(description);
             			methodStatement.evaluate();
                     } catch (AssumptionViolatedException e) {
-                        testNotifier.fireTestIgnored();
+                    	failureException = e;
+            			testNotifier.fireTestIgnored();
                     } catch (StoppedByUserException e) {
-                        throw e;
+                    	failureException = e;
+                    	throw e;
                     } catch (MultipleFailureException e) {
                     	List<Throwable> failures = e.getFailures();
 						boolean retry = hasRetryExceptionInFailuresList(failures);
                     	if (retry) {
                             Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
                             		ExceptionUtility.getStackTraceString(e)));
-                        	retryTest(testNotifier, methodStatement, description, e);
+                            failureException = retryTest(testNotifier, methodStatement, description, e);
+                    	} else {
+                    		failureException = e;
                     	}
                     } catch (RetryException | UnreachableBrowserException | SessionNotFoundException e) {
-                        Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
+                    	Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
                         		ExceptionUtility.getStackTraceString(e)));
-                    	retryTest(testNotifier, methodStatement, description, e);
+                    	failureException = retryTest(testNotifier, methodStatement, description, e);
                     } catch (Throwable e) {
+                    	failureException = e;
                         testNotifier.addFailure(e);
                     } finally {
-                		testNotifier.fireTestFinished();
+                    	try {
+                        	releaseRetryCandidateTest(description);
+	                    	if (failureException != null) {
+	                    		BaseTest.reportTestFailed(failureException, description);
+	                    	} else {
+	                    		BaseTest.reportTestSucceeded(description);
+	                    	}
+                    	} finally {
+	                    	BaseTest.reportTestFinished(description);
+	                		testNotifier.fireTestFinished();
+                    	}
                     }
                 }
 
@@ -118,24 +137,41 @@ public class AndroidRetryTestRunner extends DataProviderRunner {
 
 					return false;
 				}
+
+				private void storeRetryCandidateTest(Description description) {
+					String testIdentifier = String.format("%s.%s", description.getClassName(), description.getMethodName());
+					if (!ThreadLocalStore.getRetriedTests().contains(testIdentifier)) {
+						Log.info(String.format("Storing retry candidate test - '%s'", testIdentifier));
+						ThreadLocalStore.getRetriedTests().add(testIdentifier);
+					}
+				}
+
+				private void releaseRetryCandidateTest(Description description) {
+					String testIdentifier = String.format("%s.%s", description.getClassName(), description.getMethodName());
+					if (ThreadLocalStore.getRetriedTests().contains(testIdentifier)) {
+						Log.info(String.format("Releasing retry candidate test - '%s'", testIdentifier));
+						ThreadLocalStore.getRetriedTests().remove(testIdentifier);
+					}
+				}
+
             };
 
             runLeaf(statement, description, notifier);
         }
     }
 
-    private void retryTest(EachTestNotifier testNotifier, Statement statement, Description description, Throwable firstException) {
+    private Throwable retryTest(EachTestNotifier testNotifier, Statement statement, Description description, Throwable firstException) {
     	int attempt = 1;
     	Throwable exceptionOnRetry = firstException;
     	do {
             try {
             	Log.info(String.format("[RETRYING TEST] Attempt - %d", attempt));
                 statement.evaluate();
-                return;
+                return null;
 
             } catch (AssumptionViolatedException e) {
                 testNotifier.addFailedAssumption(e);
-                return;
+                return e;
             } catch (StoppedByUserException e) {
                 throw e;
             } catch (UnreachableBrowserException | SessionNotFoundException e) {
@@ -150,5 +186,6 @@ public class AndroidRetryTestRunner extends DataProviderRunner {
     	} while (attempt <= MAX_ATTEMPTS);
 
     	testNotifier.addFailure(exceptionOnRetry);
+    	return exceptionOnRetry;
 	}
 }

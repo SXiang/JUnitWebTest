@@ -203,6 +203,8 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 	@Override
 	public Boolean screenAndDataLoadCondition() {
 		Log.method("screenAndDataLoadCondition");
+		this.waitForProgressComplete();
+
 		List<Object> allSourcesList = getAllSourcesList();
 		return (allSourcesList!=null) && (allSourcesList.size()>0);
 	}

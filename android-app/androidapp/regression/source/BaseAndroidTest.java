@@ -350,7 +350,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void initLogCollector() {
 		if (logCollector == null) {
-			logCollector = new LogCollector();
+			logCollector = LogCollector.newLogCollector(TestContext.INSTANCE.getTestSetup().getAndroidMaxLogLines());
 		}
 	}
 
