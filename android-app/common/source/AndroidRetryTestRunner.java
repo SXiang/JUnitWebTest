@@ -141,7 +141,6 @@ public class AndroidRetryTestRunner extends DataProviderRunner {
 				private void storeRetryCandidateTest(Description description) {
 					String testIdentifier = String.format("%s.%s", description.getClassName(), description.getMethodName());
 					if (!ThreadLocalStore.getRetriedTests().contains(testIdentifier)) {
-						Log.info(String.format("Storing retry candidate test - '%s'", testIdentifier));
 						ThreadLocalStore.getRetriedTests().add(testIdentifier);
 					}
 				}
@@ -149,7 +148,6 @@ public class AndroidRetryTestRunner extends DataProviderRunner {
 				private void releaseRetryCandidateTest(Description description) {
 					String testIdentifier = String.format("%s.%s", description.getClassName(), description.getMethodName());
 					if (ThreadLocalStore.getRetriedTests().contains(testIdentifier)) {
-						Log.info(String.format("Releasing retry candidate test - '%s'", testIdentifier));
 						ThreadLocalStore.getRetriedTests().remove(testIdentifier);
 					}
 				}

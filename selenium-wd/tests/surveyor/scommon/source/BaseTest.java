@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -29,6 +31,7 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
+import common.source.CheckedConsumer;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.ExtentReportGenerator;
@@ -84,32 +87,28 @@ public class BaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
-			Log.method("BaseTest.starting");
 			BaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
-			Log.method("BaseTest.finished");
 			BaseTest.reportTestFinished(description);
 			TestSetup.simulatorTestFinishing(description);
 		}
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			Log.method("BaseTest.failed");
-			onTestFailureProcessing();
+			invokeTestWatcherEvent(description, () -> onTestFailureProcessing());
 			BaseTest.reportTestFailed(e, description);
-			postTestMethodProcessing();
+			invokeTestWatcherEvent(description, () -> postTestMethodProcessing());
 		}
 
 		@Override
 		 protected void succeeded(Description description) {
-			Log.method("BaseTest.succeeded");
-			onTestSuccessProcessing();
+			invokeTestWatcherEvent(description, () -> onTestSuccessProcessing());
 			BaseTest.reportTestSucceeded(description);
-			postTestMethodProcessing();
+			invokeTestWatcherEvent(description, () -> postTestMethodProcessing());
 		}
 	};
 
@@ -185,24 +184,20 @@ public class BaseTest {
 		int driverCount = WebDriverFactory.getDriversCount();
 		if (driverCount > 1) {
 			for (int i = 1; i < driverCount; i++) {
-				if (WebDriverFactory.getDriver(i) != null) {
-					if (!WebDriverFactory.hasDriverQuit(WebDriverFactory.getDriver(i))) {
-						getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
-					}
+				if (!WebDriverFactory.hasDriverQuit(WebDriverFactory.getDriver(i))) {
+					getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
 				}
 			}
 		}
 	}
 
 	public static void reportTestStarting(Description description) {
-		Log.method("reportTestStarting", description);
 		if (!isTestRetried(description)) {
 			reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
 		}
 	}
 
 	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
-		Log.method("reportTestStarting", className, methodName, firstLogLine);
 		ExtentReports report = getExtentReport(className);
 		setExtentTest(report.startTest(methodName), className);
 		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
@@ -213,7 +208,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestFinished(Description description) {
-		Log.method("reportTestFinished", description);
 		String className = description.getClassName();
 		if (!isTestRetried(description)) {
 			reportTestFinished(className);
@@ -221,7 +215,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestFinished(String className) {
-		Log.method("reportTestFinished", className);
 		ExtentReports report = getExtentReport(className);
 		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 				DateUtility.getCurrentDate()));
@@ -230,7 +223,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestFailed(Throwable e, Description description) {
-		Log.method("reportTestFailed", e, description);
 		String className = description.getClassName();
 		if (!isTestRetried(description)) {
 			reportTestFailed(e, className);
@@ -238,7 +230,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestFailed(Throwable e, String className) {
-		Log.method("reportTestFailed", e, className);
 		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshots(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
 		captureAdditionalDriverScreenshots(className);
@@ -249,7 +240,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestSucceeded(Description description) {
-		Log.method("reportTestSucceeded", description);
 		String className = description.getClassName();
 		if (!isTestRetried(description)) {
 			reportTestSucceeded(className);
@@ -257,7 +247,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestSucceeded(String className) {
-		Log.method("reportTestSucceeded", className);
 		Log.info("_PASS_ ");
 		TestContext.INSTANCE.setTestStatus("PASS");
 		getExtentTest(className).log(LogStatus.PASS, "PASSED");
@@ -310,6 +299,16 @@ public class BaseTest {
 		if (getExtentReportFilePath()!=null) {
 			if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
 				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(getExtentReportFilePath().toString());
+			}
+		}
+	}
+
+	public void invokeTestWatcherEvent(Description description, CheckedConsumer event) {
+		if (!isTestRetried(description)) {
+			try {
+				event.execute();
+			} catch (Exception e) {
+				Log.error(String.format("Error invoking test watcher event. Exception -> %s", ExceptionUtility.getStackTraceString(e)));
 			}
 		}
 	}
