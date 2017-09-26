@@ -28,6 +28,7 @@ import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
+import androidapp.screens.source.ScreenVerifier;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
@@ -410,6 +411,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()

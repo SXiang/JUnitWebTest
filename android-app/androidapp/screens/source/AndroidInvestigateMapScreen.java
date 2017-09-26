@@ -228,12 +228,12 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public void assertFollowButtonStateIsSelected() {
 		Log.method("assertFollowButtonStateIsSelected");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonWhenSelected);
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonWhenSelected);
 	}
 
 	public void assertFollowButtonStateIsNotSelected() {
 		Log.method("assertFollowButtonStateIsNotSelected");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonNotSelected);
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonNotSelected);
 	}
 
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {
@@ -243,7 +243,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public void assertPipesAndMarkerShownAreCorrect(String baseFolder, String imageName) {
 		Log.method("assertPipesAndMarkerShownAreCorrect");
-		screenVerifier.assertImageFoundOnScreen(this, baseFolder, imageName);
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, baseFolder, imageName);
 	}
 
 	@Override

@@ -246,6 +246,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			return true;
 		});
@@ -442,6 +443,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			investigateReportScreen.waitForMarkerTypeGapToBeSelected();
 			initializeInvestigateReportScreen();
 			return true;
 		});
@@ -602,7 +604,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		// click first matching report from search. click first matching marker of type.
 		clickOnFirstInvestigationReport(investigationScreen);
-		initializeAddLeakSourceFormDialog();
+		initializeInvestigateReportScreen();
 		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		// open last edited leak info and verify data is correct.
