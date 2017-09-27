@@ -140,12 +140,14 @@ public class LeakDataGenerator {
 				this.setMapNumber(DataGenerator.getNumberBetween(1, 999).toString());
 				this.setBarholeReadingUnit(ReadingUnitType.PPM);
 				this.setPipeMaterialType(LeakPipeMaterialType.CastIron);
-				this.setLocationRemarks(DataGenerator.getRandomText(250, 300));
+				// TBD: Increase the text length to be greater than 250 post product defect DE3384 is fixed
+				this.setLocationRemarks(DataGenerator.getRandomText(200, 249));
 				valueSet = true;
 			}
 
 			if (!valueSet || (randInt % 6 == 0)) {
-				this.setAdditionalNotes(DataGenerator.getRandomText(250, 300));
+				// TBD: Increase the text length to be greater than 250 post product defect DE3384 is fixed
+				this.setAdditionalNotes(DataGenerator.getRandomText(200, 249));
 			}
 
 			return this;

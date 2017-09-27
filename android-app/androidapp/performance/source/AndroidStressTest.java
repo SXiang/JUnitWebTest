@@ -253,7 +253,7 @@ public class AndroidStressTest extends BaseReportTest {
 				Log.info(String.format("Add Other Source : Stress Test. Iteration - %d", ++i));
 				addOtherSourceFormDialog.waitForScreenLoad();
 				if (i % 2 == 0) { addOtherSourceFormDialog.clickOnUseCurrentLocation(); }
-				addOtherSourceFormDialog.selectLeakSource(leakSourceTypes[new Random().nextInt(leakSourceTypes.length)]);
+				addOtherSourceFormDialog.selectLeakSource(leakSourceTypes[1 + new Random().nextInt(leakSourceTypes.length-1)]);    // skip 'Gas' for OtherSource
 				// TBD: Increase the text length to be greater than 250 post product defect DE3384 is fixed
 				addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(100, 200));
 				addOtherSourceFormDialog.clickOnSubmit();

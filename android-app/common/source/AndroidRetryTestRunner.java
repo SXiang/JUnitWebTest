@@ -20,101 +20,100 @@ import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.RunExecutionListener;
 
 /**
- * This is a custom test runner created to retry tests on failure.
- * Tests will be re-run if following exceptions are encountered:
- *    RetryException (Custom) | UnreachableBrowserException | SessionNotFoundException
- * Retry attempts will be logged as additional instance in test report.
- *
- * @author spulikkal
- *
- */
+* This is a custom test runner created to retry tests on failure.
+* Tests will be re-run if following exceptions are encountered:
+*    RetryException (Custom) | UnreachableBrowserException | SessionNotFoundException
+*
+* @author spulikkal
+*
+*/
 @SuppressWarnings("deprecation")
 public class AndroidRetryTestRunner extends DataProviderRunner {
 
 	private static final Integer MAX_ATTEMPTS = 3;
 
-    public AndroidRetryTestRunner(Class<?> klass) throws InitializationError {
-        super(klass);
-    }
-
-    @Override
-    public void run(final RunNotifier notifier){
-    	notifier.addListener(new RunExecutionListener());
-
-    	Description description = getDescription();
-		EachTestNotifier testNotifier = new EachTestNotifier(notifier, description);
-		Statement classStatement = null;
-        try {
-            classStatement = classBlock(notifier);
-            classStatement.evaluate();
-        } catch (AssumptionViolatedException e) {
-            testNotifier.addFailedAssumption(e);
-        } catch (StoppedByUserException e) {
-            throw e;
-        } catch (RetryException | UnreachableBrowserException | SessionNotFoundException e) {
-            Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
-            		ExceptionUtility.getStackTraceString(e)));
-        	retryTest(testNotifier, classStatement, description, e);
-        } catch (Throwable e) {
-            testNotifier.addFailure(e);
-        }
-    }
+	public AndroidRetryTestRunner(Class<?> klass) throws InitializationError {
+		super(klass);
+	}
 
 	@Override
-    protected void runChild(FrameworkMethod method, RunNotifier notifier) {
-        Description description = describeChild(method);
-        if (isIgnored(method)) {
-            notifier.fireTestIgnored(description);
-        } else {
-            Statement statement = new Statement() {
-                @Override
-                public void evaluate() throws Throwable {
-            		EachTestNotifier testNotifier = new EachTestNotifier(notifier, description);
-            		testNotifier.fireTestStarted();
-            		Statement methodStatement = null;
-            		Throwable failureException = null;
-            		try {
-            			methodStatement = methodBlock(method);
-            			BaseTest.reportTestStarting(description);
-            			storeRetryCandidateTest(description);
-            			methodStatement.evaluate();
-                    } catch (AssumptionViolatedException e) {
-                    	failureException = e;
-            			testNotifier.fireTestIgnored();
-                    } catch (StoppedByUserException e) {
-                    	failureException = e;
-                    	throw e;
-                    } catch (MultipleFailureException e) {
-                    	List<Throwable> failures = e.getFailures();
+	public void run(final RunNotifier notifier){
+		notifier.addListener(new RunExecutionListener());
+
+		Description description = getDescription();
+		EachTestNotifier testNotifier = new EachTestNotifier(notifier, description);
+		Statement classStatement = null;
+		try {
+			classStatement = classBlock(notifier);
+			classStatement.evaluate();
+		} catch (AssumptionViolatedException e) {
+			testNotifier.addFailedAssumption(e);
+		} catch (StoppedByUserException e) {
+			throw e;
+		} catch (RetryException | UnreachableBrowserException | SessionNotFoundException e) {
+			Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
+			ExceptionUtility.getStackTraceString(e)));
+			retryTest(testNotifier, classStatement, description, e);
+		} catch (Throwable e) {
+			testNotifier.addFailure(e);
+		}
+	}
+
+	@Override
+	protected void runChild(FrameworkMethod method, RunNotifier notifier) {
+		Description description = describeChild(method);
+		if (isIgnored(method)) {
+			notifier.fireTestIgnored(description);
+		} else {
+			Statement statement = new Statement() {
+				@Override
+				public void evaluate() throws Throwable {
+					EachTestNotifier testNotifier = new EachTestNotifier(notifier, description);
+					testNotifier.fireTestStarted();
+					Statement methodStatement = null;
+					Throwable failureException = null;
+					try {
+						methodStatement = methodBlock(method);
+						BaseTest.reportTestStarting(description);
+						storeRetryCandidateTest(description);
+						methodStatement.evaluate();
+					} catch (AssumptionViolatedException e) {
+						failureException = e;
+						testNotifier.fireTestIgnored();
+					} catch (StoppedByUserException e) {
+						failureException = e;
+						throw e;
+					} catch (MultipleFailureException e) {
+						List<Throwable> failures = e.getFailures();
 						boolean retry = hasRetryExceptionInFailuresList(failures);
-                    	if (retry) {
-                            Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
-                            		ExceptionUtility.getStackTraceString(e)));
-                            failureException = retryTest(testNotifier, methodStatement, description, e);
-                    	} else {
-                    		failureException = e;
-                    	}
-                    } catch (RetryException | UnreachableBrowserException | SessionNotFoundException e) {
-                    	Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
-                        		ExceptionUtility.getStackTraceString(e)));
-                    	failureException = retryTest(testNotifier, methodStatement, description, e);
-                    } catch (Throwable e) {
-                    	failureException = e;
-                        testNotifier.addFailure(e);
-                    } finally {
-                    	try {
-                        	releaseRetryCandidateTest(description);
-	                    	if (failureException != null) {
-	                    		BaseTest.reportTestFailed(failureException, description);
-	                    	} else {
-	                    		BaseTest.reportTestSucceeded(description);
-	                    	}
-                    	} finally {
-	                    	BaseTest.reportTestFinished(description);
-	                		testNotifier.fireTestFinished();
-                    	}
-                    }
-                }
+						if (retry) {
+							Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
+							ExceptionUtility.getStackTraceString(e)));
+							failureException = retryTest(testNotifier, methodStatement, description, e);
+						} else {
+							failureException = e;
+						}
+					} catch (RetryException | UnreachableBrowserException | SessionNotFoundException e) {
+						Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
+						ExceptionUtility.getStackTraceString(e)));
+						failureException = retryTest(testNotifier, methodStatement, description, e);
+					} catch (Throwable e) {
+						failureException = e;
+						testNotifier.addFailure(e);
+					} finally {
+						try {
+							releaseRetryCandidateTest(description);
+							if (failureException != null) {
+								BaseTest.reportTestFailed(failureException, description);
+							} else {
+								BaseTest.reportTestSucceeded(description);
+							}
+						} finally {
+							BaseTest.reportTestFinished(description);
+							testNotifier.fireTestFinished();
+						}
+					}
+				}
 
 				private boolean hasRetryExceptionInFailuresList(List<Throwable> failures) {
 					if (failures == null) {
@@ -129,8 +128,8 @@ public class AndroidRetryTestRunner extends DataProviderRunner {
 						}
 
 						if (failure.getClass().equals(RetryException.class) ||
-								failure.getClass().equals(UnreachableBrowserException.class) ||
-								failure.getClass().equals(SessionNotFoundException.class)) {
+						failure.getClass().equals(UnreachableBrowserException.class) ||
+						failure.getClass().equals(SessionNotFoundException.class)) {
 							return true;
 						}
 					}
@@ -152,38 +151,38 @@ public class AndroidRetryTestRunner extends DataProviderRunner {
 					}
 				}
 
-            };
+			};
 
-            runLeaf(statement, description, notifier);
-        }
-    }
+			runLeaf(statement, description, notifier);
+		}
+	}
 
-    private Throwable retryTest(EachTestNotifier testNotifier, Statement statement, Description description, Throwable firstException) {
-    	int attempt = 1;
-    	Throwable exceptionOnRetry = firstException;
-    	do {
-            try {
-            	Log.info(String.format("[RETRYING TEST] Attempt - %d", attempt));
-                statement.evaluate();
-                return null;
+	private Throwable retryTest(EachTestNotifier testNotifier, Statement statement, Description description, Throwable firstException) {
+		int attempt = 1;
+		Throwable exceptionOnRetry = firstException;
+		do {
+			try {
+				Log.info(String.format("[RETRYING TEST] Attempt - %d", attempt));
+				statement.evaluate();
+				return null;
 
-            } catch (AssumptionViolatedException e) {
-                testNotifier.addFailedAssumption(e);
-                return e;
-            } catch (StoppedByUserException e) {
-                throw e;
-            } catch (UnreachableBrowserException | SessionNotFoundException e) {
-                Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
-                		ExceptionUtility.getStackTraceString(e)));
-            } catch (Throwable e) {
-            	exceptionOnRetry = e;
-            }
+			} catch (AssumptionViolatedException e) {
+				testNotifier.addFailedAssumption(e);
+				return e;
+			} catch (StoppedByUserException e) {
+				throw e;
+			} catch (UnreachableBrowserException | SessionNotFoundException e) {
+				Log.warn(String.format("Retry - Class | Method : [%s.%s] on exception -> %s", description.getClassName(), description.getMethodName(),
+				ExceptionUtility.getStackTraceString(e)));
+			} catch (Throwable e) {
+				exceptionOnRetry = e;
+			}
 
-            attempt++;
+			attempt++;
 
-    	} while (attempt <= MAX_ATTEMPTS);
+		} while (attempt <= MAX_ATTEMPTS);
 
-    	testNotifier.addFailure(exceptionOnRetry);
-    	return exceptionOnRetry;
+		testNotifier.addFailure(exceptionOnRetry);
+		return exceptionOnRetry;
 	}
 }

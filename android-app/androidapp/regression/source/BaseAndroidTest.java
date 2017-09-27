@@ -51,6 +51,7 @@ import common.source.TestSetup;
 import common.source.Timeout;
 import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
+import common.source.AndroidAutomationTools.AndroidFileInfo;
 import common.source.AndroidAutomationTools.ShellCommands;
 import common.source.AndroidDeviceInterface;
 import common.source.RetryException;
@@ -447,11 +448,39 @@ public class BaseAndroidTest extends BaseTest {
 		Log.info(String.format("Dump heap to device at -'%s/%s'", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName));
 		action.dumpHeap(heapFileName);
 
+		Log.info(String.format("Waiting for dump heap -> '%s/%s' to finish", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName));
+		pollForHeapDumpToFinish(heapFileName);
+
 		Log.info(String.format("Pulling heapdump file-'%s' from device to '%s'", heapFileName, saveFileLocation));
 		AdbInterface.pullFile(String.format("%s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName), saveFileLocation);
 
 		Log.info(String.format("Removing heapdump file-'%s' from device", heapFileName));
 		action.removeHeapFile(heapFileName);
+	}
+
+	private void pollForHeapDumpToFinish(String heapFileName) throws InterruptedException, Exception {
+		Log.method("pollForHeapDumpToFinish", heapFileName);
+		AndroidFileInfo heapFileInfo = null;
+		final int maxIterations = 60;
+		int lastSeenSize = 0;
+		int i=0;
+		do {
+			Thread.sleep(500);
+			String heapFileOnDevice = String.format("%s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName);
+			heapFileInfo = AndroidAutomationTools.getFileInfo(heapFileOnDevice);
+			if (heapFileInfo == null) {
+				Log.error(String.format("Heap file was NOT found on device -> %s", heapFileOnDevice));
+				break;
+			}
+
+			if (heapFileInfo.SIZE == lastSeenSize) {
+				break;
+			}
+
+			lastSeenSize = heapFileInfo.SIZE;
+			i++;
+
+		} while (i < maxIterations);
 	}
 
 	private void collectServiceInfos(String testName) throws Exception {
