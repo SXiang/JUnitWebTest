@@ -2688,6 +2688,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			// indication
 			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
 			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
+			reportIndObj.setAggregateDisposition(csvRow.get("Disposition").trim());
 			String aggregatedClassificationconfidence = "N/A";
 			try {
 				if (!BaseHelper.isNullOrEmpty(csvRow.get("ConfidenceInDisposition").trim())) {
