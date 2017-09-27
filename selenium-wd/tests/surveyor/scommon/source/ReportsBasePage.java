@@ -210,10 +210,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected List<WebElement> checkboxSurveys;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
-	protected WebElement checkboxSnapped;
+	protected WebElement _checkboxSnapped;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
-	protected List<WebElement> checkboxesSnapped;
+	protected List<WebElement> _checkboxesSnapped;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
 	protected WebElement firstSurveyLink;

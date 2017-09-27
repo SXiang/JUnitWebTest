@@ -991,8 +991,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean copyReport(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.copyReport", data, dataRowID);
-		String createdBy = data==null||data.trim().isEmpty()?LoginPageActions.workingDataRow.get().username:data;
-		clickComplianceReportButton(dataRowID, ReportsButtonType.Copy, createdBy);
+		this.getReportsCommonPage().clickOnButtonInReportPage(data, LoginPageActions.workingDataRow.get().username,ReportsButtonType.Copy);
 		return true;
 	}
 

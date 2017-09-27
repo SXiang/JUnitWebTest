@@ -76,7 +76,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		createNewReport(complianceReportsPageAction, 4);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 4);
-		complianceReportsPageAction.copyReport(EMPTY, 4);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4));
 		modifyReport(complianceReportsPageAction, 5);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 5);
@@ -103,7 +103,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		createNewReport(complianceReportsPageAction, 6);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 6);
-		complianceReportsPageAction.copyReport(EMPTY, 6);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.selectReportMode("Manual", 7);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
 		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7));
@@ -132,7 +132,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		createNewReport(complianceReportsPageAction, 8);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 8);
-		complianceReportsPageAction.copyReport(EMPTY, 8);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.selectReportMode("Standard", 9);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 9);
 		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 9));

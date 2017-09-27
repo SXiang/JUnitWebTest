@@ -143,7 +143,7 @@ public class FEQReportsPageTest extends BaseReportsPageActionTest {
 			assertTrue(feqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, getReportRowID(reportDataRowID1)));
 		}
 
-		feqReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+		feqReportsPageAction.copyReport(FacilityEQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		modifyReport(feqReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForReportGenerationToComplete(feqReportsPageAction, getReportRowID(reportDataRowID2));
 		feqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));

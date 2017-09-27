@@ -100,8 +100,10 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
+
 		// Copy report, select Custom boundary and Percent Coverage Forecast.
-        complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
 		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
         assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_FORECASTBOUNDARYINVALID_MESSAGE));
 	}

@@ -176,7 +176,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1)));
 
 		eqReportsPage.waitForCopyReportPagetoLoad();
-		eqReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		eqReportsPage.waitForCopyReportPagetoLoad();
 		eqReportsPageAction.clickOnOKButton(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		eqReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
@@ -364,7 +364,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 			assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY,  getReportRowID(reportDataRowID1)));
 		}
 
-*/		eqReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+*/		eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		modifyReport(eqReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID2));
 		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
