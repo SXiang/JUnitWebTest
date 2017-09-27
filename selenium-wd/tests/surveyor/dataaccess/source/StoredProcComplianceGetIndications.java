@@ -134,11 +134,11 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			return false;
 		}
 
-		if(!RegexUtility.equalsIgnoreEmptyString(this.getAggregatedClassificationConfidence(), (obj.getAggregatedClassificationConfidence()))){
+		if(!RegexUtility.equalsIgnoreEmptyString(this.getAggregatedClassificationConfidence(), obj.getAggregatedClassificationConfidence())){
 			Log.warn(String.format("[isEquals=FALSE] : AggregatedClassificationConfidence is not match, Expect '%s', Actual '%s'", obj.getAggregatedClassificationConfidence().trim(), getAggregatedClassificationConfidence().trim()));
 			return false;
 		}
-		if(!this.getAggregatedEthaneToMethaneRatio().equals(obj.getAggregatedEthaneToMethaneRatio())){
+		if(!RegexUtility.equalsIgnoreEmptyString(this.getAggregatedEthaneToMethaneRatio(), obj.getAggregatedEthaneToMethaneRatio())){
 			Log.warn(String.format("[isEquals=FALSE] : AggregatedEthaneToMethaneRatio is not match, Expect '%s', Actual '%s'", obj.getAggregatedEthaneToMethaneRatio().trim(), getAggregatedEthaneToMethaneRatio().trim()));
 			return false;
 		}
