@@ -1,4 +1,4 @@
-package androidapp.regression.source;
+package androidapp.performance.source;
 
 import static org.junit.Assert.assertTrue;
 
@@ -18,6 +18,11 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.StabilityTestDataProvider;
+import androidapp.regression.source.BaseReportTest;
+import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
+import androidapp.screens.source.AndroidAddSourceDialog;
+import androidapp.screens.source.AndroidAddedSourceListDialog;
+import androidapp.screens.source.AndroidConfirmationDialog;
 import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
@@ -45,6 +50,11 @@ public class AndroidStabilityTest extends BaseReportTest {
 	protected AndroidMarkerTypeListControl markerTypeDialog;
 
 	protected AndroidInvestigateMapScreen investigateMapScreen;
+	protected AndroidAddSourceDialog addSourceDialog;
+	protected AndroidConfirmationDialog confirmationDialog;
+
+	protected AndroidAddLeakSourceFormDialog addLeakSourceFormDialog;
+	protected AndroidAddedSourceListDialog addedSourcesListDialog;
 
 	private static LoginPageActions loginPageAction;
 
@@ -172,8 +182,8 @@ public class AndroidStabilityTest extends BaseReportTest {
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
 		boolean reuseReports = false;
-		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2441", "TC2543", "TC2682", "TC2683", "TC2684", "TC2811"};
-		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
+		String[] tcsWithReportsThatHaveLisas = {"TC2811"};
+		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);
 		if (methodName.startsWith("TC2811_")) {
 			Object[][] tc2811 = StabilityTestDataProvider.dataProviderStabilityTest_TC2811();
 			userDataRowID = (Integer)tc2811[0][1];
@@ -197,6 +207,10 @@ public class AndroidStabilityTest extends BaseReportTest {
 		initializeInvestigateMapScreen();
 		initializeInvestigationScreen();
 		initializeInvestigateReportScreen();
+		initializeAddSourceDialog();
+		initializeMarkerTypeDialog();
+		initializeAddLeakSourceFormDialog();
+		initializeAndroidAddedLeakListDialog();
 	}
 
 	private void initializeInvestigateMapScreen() {
@@ -212,6 +226,26 @@ public class AndroidStabilityTest extends BaseReportTest {
 	private void initializeInvestigationScreen() {
 		investigationScreen = new AndroidInvestigationScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigationScreen);
+	}
+
+	protected void initializeAddSourceDialog() {
+		addSourceDialog = new AndroidAddSourceDialog(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addSourceDialog);
+	}
+
+	protected void initializeMarkerTypeDialog() {
+		markerTypeDialog = new AndroidMarkerTypeListControl(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), markerTypeDialog);
+	}
+
+	protected void initializeAddLeakSourceFormDialog() {
+		addLeakSourceFormDialog = new AndroidAddLeakSourceFormDialog(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addLeakSourceFormDialog);
+	}
+
+	protected void initializeAndroidAddedLeakListDialog() {
+		addedSourcesListDialog = new AndroidAddedSourceListDialog(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addedSourcesListDialog);
 	}
 
 	private void installApkStartAppiumDriver() throws MalformedURLException, IOException {

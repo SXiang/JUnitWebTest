@@ -207,6 +207,11 @@ public class TestSetup {
 	private Integer androidStabilityTestMaxHrs;
 	private Integer androidStabilityTestMaxMinutes;
 
+	private Integer androidStressTestMaxLeaksPerTestRun;
+	private Integer androidStressTestMaxOtherSourcesPerTestRun;
+
+	private Integer androidMaxLogLines;
+
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
 
@@ -679,8 +684,10 @@ public class TestSetup {
 			this.setAndroidNetworkThrottleEnabled(Boolean.valueOf(this.testProp.getProperty("androidEmulator.Network.Throttle.Enabled")));
 			this.setAndroidNetworkDelay(this.testProp.getProperty("androidEmulator.Network.Delay"));
 			this.setAndroidNetworkSpeed(this.testProp.getProperty("androidEmulator.Network.Speed"));
+			this.setAndroidMaxLogLines(Integer.valueOf(this.testProp.getProperty("androidTests.Logs.MaxLines")));
 
 			this.setAndroidStabilityTestProperties();
+			this.setAndroidStressTestProperties();
 			this.setBackPackServerProperties();
 
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
@@ -1005,6 +1012,18 @@ public class TestSetup {
 		String stabilityTestMaxMins = this.testProp.getProperty("androidTests.StabilityTests.MaxMinutes");
 		if (stabilityTestMaxMins != null && stabilityTestMaxMins != "") {
 			this.setAndroidStabilityTestMaxMinutes(Integer.valueOf(stabilityTestMaxMins));
+		}
+	}
+
+	private void setAndroidStressTestProperties() {
+		String stressTestMaxLeaks = this.testProp.getProperty("androidTests.StressTests.MaxLeaksPerTestRun");
+		if (stressTestMaxLeaks != null && stressTestMaxLeaks != "") {
+			this.setAndroidStressTestMaxLeaksPerTestRun(Integer.valueOf(stressTestMaxLeaks));
+		}
+
+		String stressTestMaxOtherSources = this.testProp.getProperty("androidTests.StressTests.MaxOtherSourcesPerTestRun");
+		if (stressTestMaxOtherSources != null && stressTestMaxOtherSources != "") {
+			this.setAndroidStressTestMaxOtherSourcesPerTestRun(Integer.valueOf(stressTestMaxOtherSources));
 		}
 	}
 
@@ -1820,6 +1839,30 @@ public class TestSetup {
 
 	public void setAndroidStabilityTestMaxMinutes(Integer androidStabilityTestMaxMins) {
 		this.androidStabilityTestMaxMinutes = androidStabilityTestMaxMins;
+	}
+
+	public Integer getAndroidStressTestMaxLeaksPerTestRun() {
+		return androidStressTestMaxLeaksPerTestRun;
+	}
+
+	public void setAndroidStressTestMaxLeaksPerTestRun(Integer androidStressTestMaxLeaksPerTestRun) {
+		this.androidStressTestMaxLeaksPerTestRun = androidStressTestMaxLeaksPerTestRun;
+	}
+
+	public Integer getAndroidStressTestMaxOtherSourcesPerTestRun() {
+		return androidStressTestMaxOtherSourcesPerTestRun;
+	}
+
+	public void setAndroidStressTestMaxOtherSourcesPerTestRun(Integer androidStressTestMaxOtherSourcesPerTestRun) {
+		this.androidStressTestMaxOtherSourcesPerTestRun = androidStressTestMaxOtherSourcesPerTestRun;
+	}
+
+	public Integer getAndroidMaxLogLines() {
+		return androidMaxLogLines;
+	}
+
+	public void setAndroidMaxLogLines(Integer androidMaxLogLines) {
+		this.androidMaxLogLines = androidMaxLogLines;
 	}
 
 	public boolean isAndroidNetworkThrottleEnabled() {

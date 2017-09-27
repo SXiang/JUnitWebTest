@@ -51,17 +51,19 @@ import common.source.TestSetup;
 import common.source.Timeout;
 import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
+import common.source.AndroidAutomationTools.AndroidFileInfo;
 import common.source.AndroidAutomationTools.ShellCommands;
 import common.source.AndroidDeviceInterface;
+import common.source.RetryException;
+import common.source.AndroidRetryTestRunner;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.source.BaseTest;
-import surveyor.scommon.source.SurveyorTestRunner;
 
-@RunWith(SurveyorTestRunner.class)
+@RunWith(AndroidRetryTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
 	private static final String SYSTEM_PROP_RO_BUILD_CHARACTERISTICS = "ro.build.characteristics";
 	private static final String SIM_DATA_MANAGER_BROADCASTER_PY = "simDataManagerBroadcaster.py";
@@ -69,6 +71,7 @@ public class BaseAndroidTest extends BaseTest {
 	private static final String DUMMYLINEARFITTERALARM_PY = "dummylinearfitteralarm.py";
 	private static final String ODORCALL_SERVER_PY = "odorcallServer.py";
 	private static final String DUMMYINSTRMGR_PY = "dummyinstrmgr.py";
+	private static final String ENSURE_ANDROID_TEST_PREREQS_CMD = "Ensure-AndroidTestPrereqs.cmd";
 	private static final String PYTHON_EXE = "python.exe";
 	private static final double DEFAULT_ALTITUDE = 0.0;
 	private static final double DEFAULT_LONGITUDE = -121.9863994;
@@ -137,6 +140,7 @@ public class BaseAndroidTest extends BaseTest {
 
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
+		ensureTestPrereqsPresent();
 
 		if (!isRunningInDataGenMode()) {
 			// Start backpack simulator and android automation tools (emulator, appium server).
@@ -308,7 +312,14 @@ public class BaseAndroidTest extends BaseTest {
 
 	@SuppressWarnings("rawtypes")
 	protected AndroidDriver getAndroidDriver() {
-		return (AndroidDriver)appiumDriver;
+		AndroidDriver androidDriver = null;
+		try {
+			androidDriver = (AndroidDriver)appiumDriver;
+		} catch (RuntimeException ex) {
+			throw new RetryException(ex);
+		}
+
+		return androidDriver;
 	}
 
 	protected void dumpSysActivity() {
@@ -340,7 +351,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void initLogCollector() {
 		if (logCollector == null) {
-			logCollector = new LogCollector();
+			logCollector = LogCollector.newLogCollector(TestContext.INSTANCE.getTestSetup().getAndroidMaxLogLines());
 		}
 	}
 
@@ -437,11 +448,39 @@ public class BaseAndroidTest extends BaseTest {
 		Log.info(String.format("Dump heap to device at -'%s/%s'", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName));
 		action.dumpHeap(heapFileName);
 
+		Log.info(String.format("Waiting for dump heap -> '%s/%s' to finish", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName));
+		pollForHeapDumpToFinish(heapFileName);
+
 		Log.info(String.format("Pulling heapdump file-'%s' from device to '%s'", heapFileName, saveFileLocation));
 		AdbInterface.pullFile(String.format("%s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName), saveFileLocation);
 
 		Log.info(String.format("Removing heapdump file-'%s' from device", heapFileName));
 		action.removeHeapFile(heapFileName);
+	}
+
+	private void pollForHeapDumpToFinish(String heapFileName) throws InterruptedException, Exception {
+		Log.method("pollForHeapDumpToFinish", heapFileName);
+		AndroidFileInfo heapFileInfo = null;
+		final int maxIterations = 60;
+		int lastSeenSize = 0;
+		int i=0;
+		do {
+			Thread.sleep(500);
+			String heapFileOnDevice = String.format("%s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName);
+			heapFileInfo = AndroidAutomationTools.getFileInfo(heapFileOnDevice);
+			if (heapFileInfo == null) {
+				Log.error(String.format("Heap file was NOT found on device -> %s", heapFileOnDevice));
+				break;
+			}
+
+			if (heapFileInfo.SIZE == lastSeenSize) {
+				break;
+			}
+
+			lastSeenSize = heapFileInfo.SIZE;
+			i++;
+
+		} while (i < maxIterations);
 	}
 
 	private void collectServiceInfos(String testName) throws Exception {
@@ -506,6 +545,16 @@ public class BaseAndroidTest extends BaseTest {
 			});
 
 		return outputList;
+	}
+
+	public static void ensureTestPrereqsPresent() throws IOException {
+		Log.method("ensureTestPrereqsPresent");
+		String libCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String repoRootFolder = TestSetup.getRootPath();
+		String ensurePrereqsCmd = ENSURE_ANDROID_TEST_PREREQS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"");
+		String command = "cd \"" + libCmdFolder + "\" && " + ensurePrereqsCmd;
+		Log.info("Executing ensure android test prereqs command. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	// Perf optimization. pause simulator processes to prevent delay in fetching element using Appium driver.
