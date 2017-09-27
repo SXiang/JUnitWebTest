@@ -511,14 +511,14 @@ public final class SurveyorConstants {
 	/*
 	 * Other string constants
 	 */
-	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,23";
 
 	/*
 	 * Other string constants
 	 */
-	public static final String ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23";
 
-	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
 
 	/*
 	 * enum for list of constants
@@ -586,6 +586,7 @@ public final class SurveyorConstants {
 		RAPIDRESPONSE ("Rapid Response"),
 		REPORTMETADATA ("Report Metadata"),
 		REPORTSHAPEFILE ("Report ShapeFile"),
+		SNAPTOSTREET("Snap to Street"),
 		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast");
 
 		private final String name;

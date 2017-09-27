@@ -203,12 +203,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr")
 	protected WebElement checkboxSurFirst;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr")
 	protected List<WebElement> checkboxSurveys;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	protected WebElement checkboxSnapped;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	protected List<WebElement> checkboxesSnapped;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
 	protected WebElement firstSurveyLink;
 
@@ -916,8 +922,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 				numSurveysToSelect = Integer.MAX_VALUE;
 			}
 
-			String checkBoxXPath;
-			WebElement checkBoxActionCell;
+			String surveyLinkXPath;
+			WebElement surveyLinkCell;
+			WebElement surveyRow;
 
 			List<WebElement> rows = surveyTable.findElements(By.xpath("tr"));
 
@@ -932,13 +939,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
-				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
-				Log.info("Wait for survey checkbox to be clickable");
-				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
+				surveyLinkXPath = "tr[" + rowNum + "]/td/a[starts-with(@href,'/Live/Survey')]";
+				surveyLinkCell = surveyTable.findElement(By.xpath(surveyLinkXPath));
+				Log.info("Wait for survey tag link to be clickable");
+				WebElementExtender.waitForElementToBeClickable(timeout, driver, surveyLinkCell);
+				surveyRow = surveyTable.findElement(By.xpath("tr[" + rowNum + "]"));
 				Log.info(String.format("Select survey - row %d", rowNum));
-				moveToElement(checkBoxActionCell);
-				jsClick(checkBoxActionCell);
+				moveToElement(surveyRow);
+				jsClick(surveyRow);
 				selectedSurveysCount++;
 
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING)
