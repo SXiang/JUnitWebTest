@@ -293,7 +293,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 
 			complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.verifyAnalyticsPeakInfoIsCorrectInDB(String.format("%s:%s:%s", newTop10PS, newTop25PS, newTop50PS),

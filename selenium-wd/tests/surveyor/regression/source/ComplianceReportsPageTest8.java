@@ -92,8 +92,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
-		complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 
 		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));

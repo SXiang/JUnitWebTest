@@ -174,10 +174,9 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
 
 		//Add no survey
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
         complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
@@ -185,7 +184,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 
 		//Select Percent Coverage Forecast check box
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
 		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
@@ -193,7 +192,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 
 		//Add 2 surveys, same tags
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
 		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
@@ -201,7 +200,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 	
 		//Add 2 surveys, different tags
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
 		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID4));
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
@@ -283,7 +282,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsEntity.get().getRptTitle(), getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -380,7 +379,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -474,7 +473,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.waitForComplianceViewerDialogToClose(EMPTY, getReportRowID(reportDataRowID1));
 		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));

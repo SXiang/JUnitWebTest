@@ -520,9 +520,9 @@ public class ReportCommonEntity extends BaseReportEntity {
 		this.customerBoundaryName = customerBoundaryName;
 	}
 
-	public void setCustomerBoundaryFilterType(CustomerBoundaryFilterType customerBoundaryFilterType) {
-		this.customerBoundaryFilterType = customerBoundaryFilterType;
-	}
+//	public void setCustomerBoundaryFilterType(CustomerBoundaryFilterType customerBoundaryFilterType) {
+//		this.customerBoundaryFilterType = customerBoundaryFilterType;
+//	}
 
 	public SearchAreaPreference getSearchAreaPreference() {
 		return srchAreaPreference;
