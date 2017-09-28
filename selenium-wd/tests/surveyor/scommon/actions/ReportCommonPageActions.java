@@ -499,7 +499,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	protected String getDownloadPath(ReportFileType fileType) throws Exception {
 		return this.getReportsCommonPage().getDownloadPath(fileType, (getWorkingReportsDataRow().title));
 	}
-	
+
 	private void clickComplianceReportButton(Integer dataRowID, ReportsButtonType buttonType, String createdBy) throws Exception {
 		ReportsBaseDataRow compRptDataRow = getReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
