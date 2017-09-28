@@ -2,6 +2,10 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class AndroidAutomationTools {
 	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86_Tab_S_8.4_Black";
@@ -37,6 +41,65 @@ public class AndroidAutomationTools {
 		public static final String TURN_OFF_PROFILE_DEBUG = "setprop debug.hwui.profile false";
 		public static final String TURN_ON_DEBUG_OVERDRAW = "setprop debug.hwui.overdraw true";
 		public static final String TURN_OFF_DEBUG_OVERDRAW = "setprop debug.hwui.overdraw false";
+		public static final String EXERCISE_MONKEY = "monkey -p %s -v %d -s %d --throttle %d";    // provide package name, num_events, num_seed, num_throttle
+		public static final String PROCESSES = "ps";
+		public static final String FILE_INFO = "ls -l %s";      // provide full path to file.
+	}
+
+	public static class AndroidFileInfo {
+		public String PERMISSIONS;
+		public Integer FID;
+		public String USER;
+		public String GROUP;
+		public Integer SIZE;
+		public String DATE;
+		public String TIME;
+		public String NAME;
+
+		private static String PARSE_REGEX_EMULATOR = "(.+)\\s+(.+)\\s+(.+)\\s+(.+)\\s+(.+)\\s+(.+)\\s+(.+)";
+		private static String PARSE_REGEX_DEVICE = "(.+)\\s+(.+)\\s+(.+)\\s+(.+)\\s+(.+)\\s+(.+)\\s+(.+)\\s+(.+)";
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
+
+		public static AndroidFileInfo fromString(String shellText) {
+			String[] lines = shellText.split(BaseHelper.getLineSeperator());
+			for (String line : lines) {
+				String regEx = PARSE_REGEX_EMULATOR;
+				if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+					regEx = PARSE_REGEX_DEVICE;
+				}
+
+				if (RegexUtility.matchesPattern(line, regEx)) {
+					List<String> groups = RegexUtility.getMatchingGroups(shellText, regEx);
+					AndroidFileInfo procInfo = new AndroidFileInfo();
+					if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+						procInfo.PERMISSIONS = groups.get(1);
+						procInfo.FID = Integer.valueOf(groups.get(2));
+						procInfo.USER = groups.get(3);
+						procInfo.GROUP = groups.get(4);
+						procInfo.SIZE = Integer.valueOf(groups.get(5));
+						procInfo.DATE = groups.get(6);
+						procInfo.TIME = groups.get(7);
+						procInfo.NAME = groups.get(8);
+					} else {
+						procInfo.PERMISSIONS = groups.get(1);
+						procInfo.USER = groups.get(2);
+						procInfo.GROUP = groups.get(3);
+						procInfo.SIZE = Integer.valueOf(groups.get(4));
+						procInfo.DATE = groups.get(5);
+						procInfo.TIME = groups.get(6);
+						procInfo.NAME = groups.get(7);
+					}
+
+					return procInfo;
+				}
+			}
+
+			return null;
+		}
 	}
 
 	public static class AndroidPaths {
@@ -84,6 +147,18 @@ public class AndroidAutomationTools {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_ANIMATOR_DURATION_SCALE);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_TRANSITION_ANIMATION_SCALE);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_WINDOW_ANIMATION_SCALE);
+	}
+
+	public static void exerciseMonkey(Integer events, Integer throttleInMsec) throws Exception {
+		Log.method("exerciseMonkey", events, throttleInMsec);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format(ShellCommands.EXERCISE_MONKEY,
+				AppConstants.APP_PACKAGE_NAME, events, DateUtility.getCurrentUnixEpochTime(), throttleInMsec));
+	}
+
+	public static AndroidFileInfo getFileInfo(String filePath) throws Exception {
+		String shellText = AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format(ShellCommands.FILE_INFO, filePath));
+		Log.info(String.format("Shell output -> %s", shellText));
+		return AndroidFileInfo.fromString(shellText);
 	}
 
 	public static boolean isPackageInstalled(String packageName) throws Exception {
