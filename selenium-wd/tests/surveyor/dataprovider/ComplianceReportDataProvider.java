@@ -1510,16 +1510,16 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC2238() {
-		return new Object[][] { { "TC2238" /* TestCaseID */, 6 /* userDataRowID */, 286 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC2238" /* TestCaseID */, 6 /* userDataRowID */, 288 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC2239() {
-		return new Object[][] { { "TC2239" /* TestCaseID */, 6 /* userDataRowID */, 287 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC2239" /* TestCaseID */, 6 /* userDataRowID */, 289 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC2243() {
-		return new Object[][] { { "TC2243" /* TestCaseID */, 6 /* userDataRowID */, 288 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC2243" /* TestCaseID */, 6 /* userDataRowID */, 290 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 }

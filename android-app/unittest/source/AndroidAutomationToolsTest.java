@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
+import common.source.AndroidAutomationTools.AndroidFileInfo;
 import common.source.BaseHelper;
 import common.source.Log;
 import common.source.ScreenRecorder;
@@ -77,8 +78,21 @@ public class AndroidAutomationToolsTest {
 	}
 
 	@Test
+	public void testGetFileInfo() throws Exception {
+		String fileOnDevice = "/sdcard/heapdump.hprof";
+		AndroidFileInfo fileInfo = AndroidAutomationTools.getFileInfo(fileOnDevice);
+		Log.method(String.format("FileInfo -> %s", fileInfo));
+		assertTrue("FileInfo was NOT fetched.", fileInfo != null);
+	}
+
+	@Test
 	public void testStartReactNative() throws IOException {
 		AndroidAutomationTools.startReactNative();
+	}
+
+	@Test
+	public void testExerciseMonkey() throws Exception {
+		AndroidAutomationTools.exerciseMonkey(1000, 100);
 	}
 
 	@Test

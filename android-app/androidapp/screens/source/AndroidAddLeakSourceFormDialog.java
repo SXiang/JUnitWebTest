@@ -3,7 +3,6 @@ package androidapp.screens.source;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
@@ -552,46 +551,48 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		Boolean isPavedWallToWall = (Boolean)formValues.get(DataKey.IS_PAVED_WALL2WALL);
 		Boolean useCurrentLocation = (Boolean)formValues.get(DataKey.USE_CURRENT_LOCATION);
 
-		if (useCurrentLocation) {
+		if (useCurrentLocation != null && useCurrentLocation) {
 			this.clickOnUseCurrentLocation();
 		}
 
-		this.enterStreetNumber(streetNum);
-		this.enterApartmentNumber(aptNum);
-		this.enterStreetName(streetName);
-		this.enterCity(city);
-		this.enterState(state);
-		this.enterMapNumber(mapNum);
+		validateAndSetElementValue(streetNum, () -> this.enterStreetNumber(streetNum));
+		validateAndSetElementValue(aptNum, () -> this.enterApartmentNumber(aptNum));
+		validateAndSetElementValue(streetName, () -> this.enterStreetName(streetName));
+		validateAndSetElementValue(city, () -> this.enterCity(city));
+		validateAndSetElementValue(state, () -> this.enterState(state));
+		validateAndSetElementValue(mapNum, () -> this.enterMapNumber(mapNum));
 
-		this.enterSurfaceReading(surfaceReading);
-		this.selectSurfaceReadingUnit(surfaceReadingUnit);
+		validateAndSetElementValue(surfaceReading, () -> this.enterSurfaceReading(surfaceReading));
+		validateAndSetElementValue(surfaceReadingUnit, () -> this.selectSurfaceReadingUnit(surfaceReadingUnit));
 
-		this.enterBarholeReading(barholeReading);
-		this.selectBarholeReadingUnit(barholeReadingUnit);
+		validateAndSetElementValue(barholeReading, () -> this.enterBarholeReading(barholeReading));
+		validateAndSetElementValue(barholeReadingUnit, () -> this.selectBarholeReadingUnit(barholeReadingUnit));
 
-		this.selectLeakType(leakType);
-		this.enterLeakGrade(leakGrade);
+		validateAndSetElementValue(leakType, () -> this.selectLeakType(leakType));
+		validateAndSetElementValue(leakGrade, () -> this.enterLeakGrade(leakGrade));
 
-		this.selectLocationType(locationType);
-		this.enterPipeMaterialType(pipeMaterialType.toString());
+		validateAndSetElementValue(locationType, () -> this.selectLocationType(locationType));
+		validateAndSetElementValue(pipeMaterialType, () -> this.enterPipeMaterialType(pipeMaterialType.toString()));
 
-		if (isPavedWallToWall) {
-			this.selectPavedWall2Wall();
-		} else {
-			this.unselectPavedWall2Wall();
+		if (!TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+			if (isPavedWallToWall != null && isPavedWallToWall) {
+				this.selectPavedWall2Wall();
+			} else {
+				this.unselectPavedWall2Wall();
+			}
 		}
 
-		this.selectSurfaceOverleakType(surfaceOverLeakType);
+		validateAndSetElementValue(surfaceOverLeakType, () -> this.selectSurfaceOverleakType(surfaceOverLeakType));
 
-		this.enterMeterNumber(meterNum);
-		this.enterLeakLocationRemarks(locationRemarks);
+		validateAndSetElementValue(meterNum, () -> this.enterMeterNumber(meterNum));
+		validateAndSetElementValue(locationRemarks, () -> this.enterLeakLocationRemarks(locationRemarks));
 
 		scrollToNextPage();
 
 		if (editing) {
-			this.enterAdditionalNotesInEditMode(additionalNotes);
+			validateAndSetElementValue(additionalNotes, () -> this.enterAdditionalNotesInEditMode(additionalNotes));
 		} else {
-			this.enterAdditionalNotes(additionalNotes);
+			validateAndSetElementValue(additionalNotes, () -> this.enterAdditionalNotes(additionalNotes));
 		}
 
 		if (clickOkButton) {
@@ -682,11 +683,16 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		String actualLocationRemarks = this.getLeakLocationRemarksText();
 		Boolean actualIsPavedWallToWall = false;
 
-		// use image verification method corresponding to expected value to prevent waits.
-		if (expectedIsPavedWallToWall) {
-			actualIsPavedWallToWall = isPavedWallToWallSelected() ? true : false;
+		if (!TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+			// use image verification method corresponding to expected value to prevent waits.
+			if (expectedIsPavedWallToWall) {
+				actualIsPavedWallToWall = isPavedWallToWallSelected() ? true : false;
+			} else {
+				actualIsPavedWallToWall = isPavedWallToWallUnSelected() ? false : true;
+			}
 		} else {
-			actualIsPavedWallToWall = isPavedWallToWallUnSelected() ? false : true;
+			expectedLeakInfo.setIsPavedWallToWall(false);
+			actualIsPavedWallToWall = false;
 		}
 
 		scrollToNextPage();
