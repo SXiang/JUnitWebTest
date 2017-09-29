@@ -874,8 +874,9 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
-  	        	<include name="**/ComplianceReportsPageTest9.class" />
+  	        	<include name="**/ManageLocationsAdminPageTest.class" />
+  	        	<include name="**/ManageLocationsPageTest.class" />
+  	        	<include name="**/ManageSurveyorPageTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>
