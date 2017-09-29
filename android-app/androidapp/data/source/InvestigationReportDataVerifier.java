@@ -47,7 +47,7 @@ public class InvestigationReportDataVerifier {
 		return new InvestigationReportDataVerifier();
 	}
 
-	public boolean doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(String reportId, String assignedUsername, List<String> markerStatuses, BoxType boxType, Integer boxNumber, Integer sourceItemsInOnePage) {
+	public boolean doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(String reportId, String assignedUsername, List<String> markerStatuses, BoxType boxType, String boxNumber, Integer sourceItemsInOnePage) {
 		Log.method("doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages", reportId, assignedUsername, markerStatuses, boxType, boxNumber, sourceItemsInOnePage);
 		final Integer boxTypeId = BoxTypes.getBoxTypeByName(boxType.toString()).getId();
 		List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
@@ -250,7 +250,7 @@ public class InvestigationReportDataVerifier {
 		markerStatuses.add("In Progress");
 		Integer boxNumber = 1;
 		boolean itemsSpanMultiplePages = reportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(reportId ,
-				"AutomationAdmin", markerStatuses, BoxType.Indication, boxNumber, 8);
+				"AutomationAdmin", markerStatuses, BoxType.Indication, String.valueOf(boxNumber), 8);
 		Log.info(String.format("itemsSpanMultiplePages = %b", itemsSpanMultiplePages));
 		Assert.assertTrue(itemsSpanMultiplePages == false);
 
@@ -259,7 +259,7 @@ public class InvestigationReportDataVerifier {
 		reportId = "4994B6AD-4339-BA77-3218-39E0B1E3BE6E";
 		boxNumber = 2;
 		itemsSpanMultiplePages = reportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(reportId ,
-				"sqapicdr@picarro.com", markerStatuses, BoxType.Indication, boxNumber, 8);
+				"sqapicdr@picarro.com", markerStatuses, BoxType.Indication, String.valueOf(boxNumber), 8);
 		Log.info(String.format("itemsSpanMultiplePages = %b", itemsSpanMultiplePages));
 		Assert.assertTrue(itemsSpanMultiplePages == true);
 

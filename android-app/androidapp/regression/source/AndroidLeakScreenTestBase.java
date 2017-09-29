@@ -229,7 +229,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			if (markerStatuses.contains(markerEntity.getInvestigationStatus())) {
 				idx++;
 				if (!invReportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(Report.getReport(reportTitle).getId(),
-						username, markerStatuses, BoxType.Indication, Integer.valueOf(lisaNum), SOURCE_ITEMS_SHOWN_IN_ONE_PAGE)) {
+						username, markerStatuses, BoxType.Indication, lisaNum, SOURCE_ITEMS_SHOWN_IN_ONE_PAGE)) {
 					Log.info(String.format("Found matching marker -> [%s]", markerEntity.toString()));
 					foundMarker = true;
 					break;

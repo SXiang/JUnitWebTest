@@ -19,7 +19,6 @@
     EthaneRatioSdev = delete
 
 ----------------------------------------------------------------------------------------------------------------------------------#>
-W
 param(
   [Parameter(Mandatory=$true)]
   [String] $WorkingDir,                        # eg. "C:\Repositories\surveyor-qa"
@@ -31,7 +30,7 @@ param(
   [String] $OutputDataFile,                    # eg. "C:\Repositories\host\src\main\python\Host\Utilities\BackpackServer\TestUtilities\Nomad4001-20170713-212401Z-DataLog_User_Minimal.modified.dat"
 
   [Parameter(Mandatory=$true)]
-  [String] $InstructionsFile                   # eg. "C:\Temp\testInstr.ini"
+  [String] $InstructionsFile                  # eg. "C:\Temp\testInstr.ini"
 )
 
 if (-not (Test-Path $InputDataFile)) {
@@ -42,6 +41,11 @@ if (-not (Test-Path $InputDataFile)) {
 if (-not (Test-Path $InstructionsFile)) {
     Write-Error "Did NOT find the input instructions file -> $InstructionsFile"
     exit
+}
+
+if (Test-Path $OutputDataFile) {
+    Write-Host "Found existing output dat file. Deleting existing file -> $OutputDataFile"
+    Remove-Item $OutputDataFile -Force
 }
 
 . "$WorkingDir\selenium-wd\lib\HelperScripts\IniFileHelper.ps1"
@@ -121,9 +125,21 @@ if (-not $script:dropDict.ContainsKey("SpectrumID")) { $format += @{expression={
                 }};label="SpectrumID";width=26} }
 
 
-Write-Host "Transforming input data file and writting to -> $OutputDataFile ..."
+
+function Fix-LastLineSpacing([string]$fileString) {
+    $len = $fileString.Length
+    $firstIdx = $fileString.IndexOf("`r`n")
+    $lastIdx = $fileString.LastIndexOf("`r`n")    
+    $lastRowWidth = $len - ($lastIdx + 2)     # add 2 for linefeed `r`n
+    $missingSpaces = $firstIdx - $lastRowWidth
+    $fileString = $fileString.PadRight($len + $missingSpaces, ' ')
+    $fileString
+}
+
 
 $outStr = $lines | format-table $format -HideTableHeaders | Out-String -Width 900
-$outStr.Trim() | Out-file $OutputDataFile -Encoding ASCII 
+$outStr = $outStr.Trim()
+$outStr = Fix-LastLineSpacing -fileString $outStr
 
-Write-Host "Transformed file written successfully to -> $OutputDataFile"
+Write-Host "Transforming input data file and writing to -> $OutputDataFile ..."
+$outStr | Out-file $OutputDataFile -Encoding ASCII 
