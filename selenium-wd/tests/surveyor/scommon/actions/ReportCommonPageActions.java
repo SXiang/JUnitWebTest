@@ -500,10 +500,10 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return this.getReportsCommonPage().getDownloadPath(fileType, (getWorkingReportsDataRow().title));
 	}
 
-	private void clickComplianceReportButton(Integer dataRowID, ReportsButtonType buttonType) throws Exception {
+	private void clickComplianceReportButton(Integer dataRowID, ReportsButtonType buttonType, String createdBy) throws Exception {
 		ReportsBaseDataRow compRptDataRow = getReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
-		this.getReportsCommonPage().clickComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.get().username, buttonType,
+		this.getReportsCommonPage().clickComplianceReportButton(reportTitle, createdBy, buttonType,
 				false /*confirmAction*/);  // By default use FALSE confirm action.
 	}
 
@@ -532,7 +532,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	private void openComplianceViewerDialog(Integer dataRowID) throws Exception {
-		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
+		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer, TestContext.INSTANCE.getLoggedInUser());
 		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
 		this.getReportsCommonPage().waitForReportViewImagetoAppear();
 	}
@@ -845,7 +845,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnComplianceViewerButton(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.clickOnComplianceViewerButton", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
+		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer, createdBy);
 		return true;
 	}
 
@@ -885,7 +886,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnCopyButton(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.clickOnCopyButton", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.Copy);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
+		clickComplianceReportButton(dataRowID, ReportsButtonType.Copy, createdBy);
 		return true;
 	}
 
@@ -898,7 +900,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnDeleteButton(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.clickOnDeleteButton", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.Delete);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
+		clickComplianceReportButton(dataRowID, ReportsButtonType.Delete, createdBy);
 		return true;
 	}
 
@@ -962,7 +965,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnResubmitButton(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.clickOnResubmitButton", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.Resubmit);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
+		clickComplianceReportButton(dataRowID, ReportsButtonType.Resubmit, createdBy);
 		return true;
 	}
 
@@ -987,9 +991,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean copyReport(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.copyReport", data, dataRowID);
-		this.getReportsCommonPage().clickOnButtonInReportPage(data, LoginPageActions.workingDataRow.get().username,ReportsButtonType.Copy);
-		this.getReportsCommonPage().waitForCopyReportPagetoLoad();
-		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
+		String rptTitle = data==null||data.trim().isEmpty()?getReportsDataRow(dataRowID).title:data;
+		this.getReportsCommonPage().clickOnButtonInReportPage(rptTitle, LoginPageActions.workingDataRow.get().username,ReportsButtonType.Copy);
 		return true;
 	}
 
@@ -1765,7 +1768,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyMetaDataFilesHaveCorrectData(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyMetaDataFilesHaveCorrectData", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataFilesHaveCorrectData", ARG_DATA_ROW_ID, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
+		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer, createdBy);
 		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
 		waitForReportFileDownload(dataRowID, ReportFileType.MetaDataZIP, -1);
 		return this.verifyAllMetadataFiles(data, dataRowID);
@@ -1813,7 +1817,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyMetaDataZIPThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
+		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer, createdBy);
 		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
 		// TODO: Internal method needs implementation.
 		this.getReportsCommonPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipMeta);
@@ -1881,7 +1886,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyPDFThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyPDFThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
+		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer, createdBy);
 		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
 		// TODO: Internal method needs implementation.
 		this.getReportsCommonPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceTablePDF);
@@ -1931,6 +1937,21 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 		Path downloadDirectory = Paths.get(getDownloadPath(ReportFileType.ZIP));
 		return FileUtility.compareFilesInDirectory(downloadDirectory, expectedFileNames);
+	}
+
+	/**
+	 * Executes verifyShapeZipFilesAreCorrect action.
+	 * Verifies that the correct PDF files are present in the ZIP by checking files with expected file names.
+	 * NOTE: This method does NOT check that the data inside the PDFs is correct.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyShapeZipFilesArePresent(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyShapeZipFilesAreCorrect", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.ShapeZIP);
+		return this.getReportsCommonPage().verifyShapeFilesArePresent(downloadPath, getWorkingReportsDataRow().title, data);
 	}
 
 	/**
@@ -2525,10 +2546,11 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.waitForReportGenerationToComplete", data, dataRowID);
+		String createdBy = data==null||data.trim().isEmpty()?TestContext.INSTANCE.getLoggedInUser():data;
 		this.getReportsCommonPage().checkErrorMessages();
 		this.getReportsCommonPage().waitForPageLoad();
 		return this.getReportsCommonPage().waitForReportGenerationtoComplete(getWorkingReportsDataRow().title,
-				TestContext.INSTANCE.getLoggedInUser());
+				createdBy);
 	}
 
 	/**
