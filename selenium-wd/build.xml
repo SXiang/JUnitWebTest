@@ -550,6 +550,7 @@
           <include name="**/ComplianceReportsPageTest11.class" />
           <include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
           <include name="**/ComplianceReportsPageTest_AssetBox.class" />
+          <include name="**/ComplianceReportsPageTest_Tahoe.class" />
           <include name="**/ComplianceReportsPageTest10.class" />
         </fileset>
       </batchtest>
@@ -874,8 +875,7 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
-  	        	<include name="**/ComplianceReportsPageTest9.class" />
+  	        	<include name="**/ComplianceReportsPageTest_Tahoe.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>
