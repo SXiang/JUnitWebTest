@@ -18,21 +18,21 @@ public class AndroidPerfDataProvider extends SurveyorTestRunner {
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2734_1() {
 		return new Object[][] {
-			{ "TC2734-1" /*TestCaseID*/, 16 /*userDataRowID*/,  268 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2734-1" /*TestCaseID*/, 18 /*userDataRowID*/,  268 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2734_2() {
 		return new Object[][] {
-			{ "TC2734-2" /*TestCaseID*/, 16 /*userDataRowID*/,  269 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2734-2" /*TestCaseID*/, 18 /*userDataRowID*/,  269 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2734_3() {
 		return new Object[][] {
-			{ "TC2734-3" /*TestCaseID*/, 16 /*userDataRowID*/,  270 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2734-3" /*TestCaseID*/, 18 /*userDataRowID*/,  270 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 }

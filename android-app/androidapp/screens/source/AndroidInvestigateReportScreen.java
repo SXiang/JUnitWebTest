@@ -150,7 +150,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	}
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
-		Log.method("getInvestigationReports");
+		Log.method("getInvestigationMarkers");
 		waitForProgressComplete();
 		reInitializeListItems();
 		List<InvestigationMarkerEntity> invMarkersList = new ArrayList<InvestigationMarkerEntity>();
@@ -190,9 +190,9 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 				return investigationMarkersFromSP.stream().anyMatch(sp -> {
 					String[] split = s.getMarkerNumber().split("-");
 					String lisaNum = split[split.length-1].trim();
-					Log.info(String.format("Matching boxNumber from storedproc-[%d] with on screen marker-'%s'; marker number='%s'",
+					Log.info(String.format("Matching boxNumber from storedproc-[%s] with on screen marker-'%s'; marker number='%s'",
 							sp.getBoxNumber(), s.getMarkerNumber(), lisaNum));
-					return lisaNum.equals(String.valueOf(sp.getBoxNumber()));
+					return lisaNum.equals(sp.getBoxNumber());
 				});
 			});
 

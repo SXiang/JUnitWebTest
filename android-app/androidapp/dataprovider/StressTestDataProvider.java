@@ -15,11 +15,11 @@ public class StressTestDataProvider extends AndroidDataProvider {
 
 	@DataProvider
 	public static Object[][] dataProviderStressTest_TC2870() {
-		return new Object[][] { { "TC2870" /* TestCaseID */, 16 /* userDataRowID */, 286 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC2870" /* TestCaseID */, 18 /* userDataRowID */, 286 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderStressTest_TC2871() {
-		return new Object[][] { { "TC2871" /* TestCaseID */, 16 /* userDataRowID */, 287 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC2871" /* TestCaseID */, 18 /* userDataRowID */, 287 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 }
