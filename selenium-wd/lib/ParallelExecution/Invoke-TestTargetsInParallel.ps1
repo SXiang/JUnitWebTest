@@ -16,7 +16,7 @@
 
 #--------- MODIFY THIS BEFORE RUNNING SCRIPT -------#
 # Ant Test Targets
-$targetsToRun = @("androidstabilitytests")
+$targetsToRun = @("tc_localrun")
 <#
  "performancetestsLight",
  "performancetestsMedium",
@@ -46,11 +46,11 @@ Invoke-Parallel -InputObject $targetsToRun -runspaceTimeout 18000 -ScriptBlock {
 	$guid = [guid]::NewGuid().toString()
 	$guid = $guid.replace("-", "")
 
-    $buildSrcDir = "C:\Repositories\surveyor-qa"
+    $buildSrcDir = "C:\Repositories\surveyor-qa\selenium-wd"
     $buildRoot = "C:\Build\work"
 
 	$buildWork = "$buildRoot\$guid"
-	$buildWorkingDir = "$buildWork"
+	$buildWorkingDir = "$buildWork\selenium-wd"
 
 	# create new working folder for build
 	New-Item -Force -ItemType directory -Path $buildWorkingDir
@@ -69,7 +69,7 @@ Invoke-Parallel -InputObject $targetsToRun -runspaceTimeout 18000 -ScriptBlock {
 
 	# build files.
     cd "$buildWork"
-    ant -buildfile android-app/build.xml $target
+    ant -buildfile selenium-wd/build.xml $target
 }
 
 $end = Get-Date
