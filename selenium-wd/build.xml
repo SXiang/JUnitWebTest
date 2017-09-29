@@ -815,7 +815,6 @@
 		  <include name="**/ComplianceReportsTestSuite5.class" />
           <include name="**/ComplianceReportsTestSuite6.class" />
           <include name="**/ComplianceReportsTestSuite7.class" />
-          <include name="**/ComplianceReportsPageTest_Tahoe.class" />
           <include name="**/ReportsTestSuite2.class" />
           <include name="**/LatLongSelectionReportsPageTest.class" />
           <include name="**/LatLongSelectionReportsPageTest2.class" />
