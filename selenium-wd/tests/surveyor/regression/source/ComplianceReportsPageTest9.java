@@ -371,7 +371,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - All downloaded files should have Report Name : CR-first_6_report_id_characters
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC771, location = ComplianceReportDataProvider.class)
 	public void TC771_VerifyReportNameSpecifiedComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -393,9 +393,14 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-		// TODO: Enable after actions are implemented.
-		//assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("BreadCrumb", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("FOV", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAPBox", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("LISA", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("PipeAll", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("PipeIntersectingGAP", getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -409,7 +414,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 *	- 1. Verify that in the Optional View Layers section Boundaries are shown as per customer. e.g. for PG&amp;E it is should show 2 options 1. District and 2.District Plat
 	 *	- 2. Verify the view shows district plat boundary correctly.
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC779, location = ComplianceReportDataProvider.class)
 	public void TC779_FlatteningCustomerBoundaryData_NewComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -421,8 +426,15 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID1)));
-		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID1)));
+
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -435,7 +447,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 *	- 1.Verify that in the Optional View Layers section Boundaries are shown as 1. District and 2.District Plat
 	 *	- 2.Verify that in the Optional View Layers section Boundaries are shown as 1. District and 2.District Plat
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC781, location = ComplianceReportDataProvider.class)
 	public void TC781_FlatteningCustomerBoundaryData_CopyComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -446,401 +458,14 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnNewReportButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnCopyButton(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID1)));
-		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration
-	 * Test Description: Shapefile and meta data report feature permission to existing customer - Reprocess Compliance report generation
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the Edit button
-	 *	- - Confirm that the Account Enabled box is checked and check the Report Shape File and Report Meta data button
-	 *	- - Click OK
-	 *	- - On the Compliance Reports page, click on Reprocess button of above generated report (For eg. Report tile: US895 Test Report 2)
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Shape file and meta file export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog has Shape (ZIP) and Meta data (ZIP) export buttons
-	 *	- - User can download the Shape files and meta data files successfully
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC787, location = ComplianceReportDataProvider.class)
-	public void TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-	}
-
-	/**
-	 * Test Case ID: TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport
-	 * Test Description: Remove shape file and meta data feature permission from existing customer - Reprocess Compliance report
-	 * Script: -
-	 *	- - Log in as Picarro Admin- On Manage Customers page, select a customer that has Shape file and Meta data permission options enabled and click the Edit button (eg. PG&amp;E's)- Confirm that the Account Enabled box is checked and uncheck the Report Shape file and meta data buttons- Click OK - Go to compliance report page- Click on Reprocess button of above generated report (eg. Report title: US895 Test Report 3)- Log in as Customer user and navigate to compliance report page- Click on Compliance Viewer button of above generated report (eg. Report title: US895 Test Report 3)
-	 * Results: -
-	 *	- - Compliance Viewer dialog does not have Shape (ZIP) and Meta data (ZIP) export buttons
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC789, location = ComplianceReportDataProvider.class)
-	public void TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC791_ReportShapefilePermissionExistingCustomer_NewComplianceReportGeneration
-	 * Test Description: Report Shapefile permission to existing customer - New Compliance report generation
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the Edit button
-	 *	- - Confirm that the Account Enabled box is checked and check the Report Shape File button
-	 *	- - Click OK
-	 *	- - Login as Customer User
-	 *	- - On the Compliance Reports page, generate the report and select LISAs, FOV, Breadcrumb, Gaps and/or Assets
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Shape file export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog hasCompliance ZIP (Shape)export button
-	 *	- - User can download the Shape files files successfully
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC791, location = ComplianceReportDataProvider.class)
-	public void TC791_ReportShapefilePermissionExistingCustomer_NewComplianceReportGeneration(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC791_ReportShapefilePermissionExistingCustomer_NewComplianceReportGeneration ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-
-		// TODO: Enable after action is implemented.
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC792_ReportMetaDataPermissionExistingCustomer_NewComplianceReportGeneration
-	 * Test Description: Report Meta Data permission to existing customer - New Compliance report generation
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer (CNP) that does not have Report Meta Data permission enabled and click the Edit button
-	 *	- - Confirm that the Account Enabled box is checked and check the Report Meta data File checkbox
-	 *	- - Click OK
-	 *	- - Login as Customer Supervisor or Util admin User (CNP util admin)
-	 *	- - On the Compliance Reports page, generate the report and select LISAs, FOV, Breadcrumb, Gaps and/or Assets
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Meta data export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog has Compliance ZIP (Meta)export button
-	 *	- - User can download the Meta Data files successfully.Report.csv, ReportSurvey.csv, ReportIsotopic.csv, ReportLISAS.csv, ReportGap.csv should be present as per survey data included to generate the report
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC792, location = ComplianceReportDataProvider.class)
-	public void TC792_ReportMetaDataPermissionExistingCustomer_NewComplianceReportGeneration(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC792_ReportMetaDataPermissionExistingCustomer_NewComplianceReportGeneration ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC793_ReportShapefilePermissionExistingCustomer_CopyComplianceReportGeneration
-	 * Test Description: Report Shapefile permission to existing customer - Copy Compliance report generation
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the Edit button
-	 *	- - Confirm that the Account Enabled box is checked and check the Report Shape File button
-	 *	- - Click OK
-	 *	- - Login as Customer User
-	 *	- - On the Compliance Reports page, click on Copy button of above generated report (For eg. Report tile: US895 Test Report 5) and click OK
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Shape file export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog hasCompliance ZIP (Shape)export button
-	 *	- - User can download the Shape files successfully
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC793, location = ComplianceReportDataProvider.class)
-	public void TC793_ReportShapefilePermissionExistingCustomer_CopyComplianceReportGeneration(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC793_ReportShapefilePermissionExistingCustomer_CopyComplianceReportGeneration ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-
-		// TODO: Enable after action is implemented.
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC794_ReportShapefilePermissionExistingCustomer_ReprocessComplianceReport
-	 * Test Description: Report Shapefile permission to existing customer - Reprocess Compliance report
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the Edit button
-	 *	- - Confirm that the Account Enabled box is checked and check the Report Shape File button
-	 *	- - Click OK
-	 *	- - On the Compliance Reports page, click on Reprocess button of above generated report (For eg. Report tile: US895 Test Report 6)
-	 *	- - Log in as Customer's user
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Shape file export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog hasCompliance ZIP (Shape)export button
-	 *	- - User can download the Shape files successfully
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC794, location = ComplianceReportDataProvider.class)
-	public void TC794_ReportShapefilePermissionExistingCustomer_ReprocessComplianceReport(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC794_ReportShapefilePermissionExistingCustomer_ReprocessComplianceReport ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-
-		// TODO: Enable after action is implemented.
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC795_ReportMetaDataPermissionExistingCustomer_CopyComplianceReportGeneration
-	 * Test Description: Report Meta Data permission to existing customer - Copy Compliance report generation
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer that does not have Report Meta Data permission enabled and click the Edit button
-	 *	- - Confirm that the Account Enabled box is checked and check the Report Meta Data File button
-	 *	- - Click OK
-	 *	- - Login as Customer supervisor User (CNP supervisor user)
-	 *	- - On the Compliance Reports page, click on Copy button of above generated report (For eg. Report tile: US1200 Test Report 7) and click OK
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Meta Data file export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog hasCompliance ZIP (Meta)export button
-	 *	- - User can download the Meta Data files successfully.Report.csv, ReportSurvey.csv, ReportIsotopic.csv, ReportLISAS.csv, ReportGap.csv should be present as per survey data included to generate the report
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC795, location = ComplianceReportDataProvider.class)
-	public void TC795_ReportMetaDataPermissionExistingCustomer_CopyComplianceReportGeneration(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC795_ReportMetaDataPermissionExistingCustomer_CopyComplianceReportGeneration ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport
-	 * Test Description: Report Meta Data permission to existing customer - Reprocess Compliance report
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the Edit button
-	 *	- - Confirm that the Account Enabled box is checked and check the Report Meta data checkbox
-	 *	- - Click OK
-	 *	- - On the Compliance Reports page, click on Reprocess button of above generated report (For eg. Report tile: US1200 Test Report 6)
-	 *	- - Log in as Customer's user (Atmo's util admin user)
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Meta Data file export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog hasCompliance ZIP (Meta)export button
-	 *	- - User can download the Meta Data files successfully.Report.csv, ReportSurvey.csv, ReportIsotopic.csv, ReportLISAS.csv, ReportGap.csv should be present as per survey data included to generate the report
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC796, location = ComplianceReportDataProvider.class)
-	public void TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID2));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.clickOnCopyButton(EMPTY, getReportRowID(reportDataRowID2));
+		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID2)));
 	}
 
 	/* * Test Case ID: TC2017_VerifyReportViewPDFandshapefileExportWithHighlightedGapAssetsSelected
