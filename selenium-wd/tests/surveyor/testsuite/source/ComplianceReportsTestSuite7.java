@@ -22,11 +22,11 @@ public class ComplianceReportsTestSuite7 {
 
 	@BeforeClass
     public static void setUpClass() {
-        Log.info("Setup for ComplianceReportsTestSuite6 executing...");
+        Log.info("Setup for ComplianceReportsTestSuite7 executing...");
     }
 
     @AfterClass
     public static void tearDownClass() {
-    	Log.info("Teardown for ComplianceReportsTestSuite6 executing...");
+    	Log.info("Teardown for ComplianceReportsTestSuite7 executing...");
     }
 }
