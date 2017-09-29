@@ -203,10 +203,10 @@ public class ComplianceReportsPageTest_Tahoe extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		//assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSLayersTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		//assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		//assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyReportCreationInSSRSPDFIsCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
 		
@@ -225,7 +225,7 @@ public class ComplianceReportsPageTest_Tahoe extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		String metadataZipFileVerifications = "True:True:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[TRUE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent(metadataZipFileVerifications, getReportRowID(reportDataRowID1)));
-	//	assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
