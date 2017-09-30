@@ -2359,6 +2359,25 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
+	public boolean verifyShapeFilesArePresent(String downloadPath, String reportTitle,String shapeType) throws IOException {
+		Log.method("verifyShapeFilesArePresent", downloadPath, reportTitle, shapeType);
+        String[] fileExts = {".dbf",".prj", ".shp", ".shx"};  
+		String pathToShapeUnZip = getReportShapeUnzipFolder(downloadPath, reportTitle);
+		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(pathToShapeUnZip), false /*includeFullPath*/);
+		if (filesInDirectory == null) {
+			return false;
+		}
+		String reportID = getReportName(reportTitle);
+		String reportPrefix = getReportPrefix();
+		String fileName = String.format("%s-%s-%s", reportPrefix, reportID, shapeType);
+		for(int i=0; i<fileExts.length; i++){
+			    if (!filesInDirectory.contains(fileName+fileExts[i])) {
+				   Log.error(fileName+fileExts[i] +" NOT found in Shape ZIP");
+				   return false;
+			    }
+		}
+		return true;
+	}
 	public boolean verifyMetaDataFilesArePresent(String downloadPath, String reportTitle,
 			boolean verifyGapMetaPresent, boolean verifyLisaMetaPresent, boolean verifySurveyMetaPresent,
 			boolean verifyIsotopicMetaPresent, boolean verifyLisaAnalyticsMetaPresent) throws IOException {
@@ -2486,6 +2505,15 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return pathToMetaDataUnZip;
 	}
 
+	private String getReportShapeUnzipFolder(String actualPath, String reportTitle) {
+		String shapeZipFileName = getReportShapeZipFileName(reportTitle, false /* includeExtension */);
+		String pathToShapeUnZip = actualPath;
+		String unZipFolder = File.separator + shapeZipFileName;
+		if (!actualPath.endsWith(unZipFolder))
+			pathToShapeUnZip += unZipFolder;
+		return pathToShapeUnZip;
+	}
+	
 	public boolean verifyIsotopicMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ReportsCommonPage.verifyIsotopicMetaDataFile", actualPath, reportTitle);

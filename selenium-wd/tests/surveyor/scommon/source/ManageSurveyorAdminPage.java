@@ -51,7 +51,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		Log.info(String.format("Find surveyor %s, location = '%s'",
 				surveyorName, locationName));
 		setPaginationAny(PAGE_PAGINATIONSETTING);
-		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
+		clearSearchFilter();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
 		this.searchTable(surveyorName);
@@ -119,7 +119,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		Log.info(String.format("Edit surveyor %s, customer = '%s', location = '%s'",
 				surveyorName, customer,locationName));
 		setPaginationAny(PAGE_PAGINATIONSETTING);
-		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
+		clearSearchFilter();	// clear any previous entries in search.
 
 		this.searchTable(surveyorName);
 		if (this.searchHasNoMatchingRecords()) {
