@@ -148,10 +148,16 @@ public class Log {
 	}
 
 	private static String formatLogMessage(String msg, boolean debugPrint){
-		StackTraceElement caller = getStackTraceElement(debugPrint);
-		String logMessage = "["+caller.getClassName() + " -> " +caller.getMethodName() +
-		", Line: "+caller.getLineNumber() +"]: "
-		+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
+		String logMessage = "";
+		if (!BaseHelper.isNullOrEmpty(msg)) {
+			StackTraceElement caller = getStackTraceElement(debugPrint);
+			if (caller!=null) {
+				logMessage = "["+caller.getClassName() + " -> " +caller.getMethodName() +
+				", Line: "+caller.getLineNumber() +"]: "
+				+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
+			}
+		}
+
 		return logMessage;
 	}
 

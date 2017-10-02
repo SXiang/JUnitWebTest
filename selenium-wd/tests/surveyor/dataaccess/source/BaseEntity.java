@@ -166,6 +166,10 @@ public class BaseEntity {
 		return str==null?"":str.trim();
 	}
 
+	public static String emptyOrValue(String str){
+		return str==null?"":str;
+	}
+
 	public Integer floatCompare(Float value1, Float value2) {
 		if (Math.abs(value1 - value2) < floatPrecision) {
 			return 0;

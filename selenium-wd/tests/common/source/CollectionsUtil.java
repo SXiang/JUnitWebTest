@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class CollectionsUtil {
 
@@ -75,6 +76,70 @@ public class CollectionsUtil {
 					Log.error("Array value: "+arrayValues[0][i]+" = "+expected);
 					return false;
 				}
+			}
+		}
+
+		return true;
+	}
+
+	public static <T,K> boolean isEqualsMap(Map<T, K> map1, Map<T, K> map2) {
+		Log.method("isEqualsMap");
+		if (map1 == null && map2 == null) {
+			return true;
+		}
+
+		if (map1 == null) {
+			return false;
+		}
+
+		if (map2 == null) {
+			return false;
+		}
+
+		if (map1.size() != map2.size()) {
+			return false;
+		}
+
+		for (Entry<T, K> entry1 : map1.entrySet()) {
+			T key1 = entry1.getKey();
+			K value1 = entry1.getValue();
+			if (map2.containsKey(key1)) {
+				K value2 = map2.get(key1);
+				if (!value1.equals(value2)) {
+					return false;
+				}
+
+			} else {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static <T,K> boolean isEqualsListMap(List<Map<T, K>> listMap1, List<Map<T, K>> listMap2) {
+		Log.method("isEqualsListMap");
+		if (listMap1 == null && listMap2 == null) {
+			return true;
+		}
+
+		if (listMap1 == null) {
+			return false;
+		}
+
+		if (listMap2 == null) {
+			return false;
+		}
+
+		if (listMap1.size() != listMap2.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < listMap1.size(); i++) {
+			Map<T, K> map1 = listMap1.get(i);
+			Map<T, K> map2 = listMap2.get(i);
+			if (!isEqualsMap(map1, map2)) {
+				return false;
 			}
 		}
 
