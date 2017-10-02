@@ -3,6 +3,7 @@ package androidapp.screens.source;
 import common.source.Log;
 import common.source.MobileActions.KeyCode;
 import common.source.SikuliDecoratedDriver;
+import common.source.TestContext;
 import common.source.MobileActions;
 import common.source.Timeout;
 import io.appium.java_client.android.AndroidDriver;
@@ -148,7 +149,7 @@ public class AndroidBaseScreen implements Screen {
 			Log.info("Did NOT find progress bar on screen. Return TRUE");
 			return true;
 		}
-		(new WebDriverWait(this.driver, getScreenLoadTimeout())).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(this.driver, getProgressBarTimeout())).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean displayed = progBar.isDisplayed();
 				Log.info(String.format("ProgressBar displayed = [%b]", displayed));
@@ -202,6 +203,16 @@ public class AndroidBaseScreen implements Screen {
 	}
 
 	protected Integer getScreenLoadTimeout() {
+		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT;
+	}
+
+	protected Integer getProgressBarTimeout() {
+		if (TestContext.INSTANCE.getTestSetup().getAndroidLongerProgressBarTimeoutEnabled()) {
+			Integer timeoutValue = TestContext.INSTANCE.getTestSetup().getAndroidLongerProgressBarTimeoutValueInSeconds();
+			Log.info(String.format("Longer progress bar timeout enabled. Timeout value = [%d].", timeoutValue));
+			return timeoutValue;
+		}
+
 		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT;
 	}
 
