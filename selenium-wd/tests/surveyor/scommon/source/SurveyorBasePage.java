@@ -53,9 +53,7 @@ public class SurveyorBasePage extends BasePage {
 	protected static final String TABLE_BUTTON_CLASS = "btn btn-primary";
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
-	protected static final String DATATABLE_RECORDS_ELEMENT_ID= "datatable_info";
-	protected static final String DATATABLESURVEYS_RECORDS_ELEMENT_ID = "datatableSurveys_info";
-	protected static By DATATABLE_RECORDS_ELEMENT_BY = By.cssSelector(".dataTables_info[id$='_info']");
+	protected static final By DATATABLE_RECORDS_ELEMENT_BY = By.cssSelector(".dataTables_info[id$='_info']");
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -838,8 +836,8 @@ public class SurveyorBasePage extends BasePage {
 	public void waitForSearchResultsToLoad() {
 		Log.method("waitForSearchResultsToLoad");
 		waitForAJAXCallsToComplete();
-		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
-		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(DATATABLE_RECORDS_ELEMENT_BY));
+		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(DATATABLE_RECORDS_ELEMENT_BY);
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
