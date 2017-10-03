@@ -160,6 +160,9 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 				}
 			}
 
+			// Comments: Verification for this step - 'Color of the circle may change based on the disposition of the measured gas (green for Not Natural Gas, red for Natural Gas and black for unknown)'
+			// has been done in backpack simulator data related test case -> TC2876
+
 			return true;
 		});
 	}
