@@ -55,7 +55,7 @@ public class SurveyorBasePage extends BasePage {
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_ID= "datatable_info";
 	protected static final String DATATABLESURVEYS_RECORDS_ELEMENT_ID = "datatableSurveys_info";
-	protected static By DATATABLE_RECORDS_ELEMENT_BY = By.cssSelector(".dataTables_info[id$='_info']");
+	protected static final By DATATABLE_RECORDS_ELEMENT_BY = By.cssSelector(".dataTables_info[id$='_info']");
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -79,7 +79,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
 	protected By linkPicarroAdminOpenedBy = By.cssSelector("ul#picarro-administration-menu.dropdown-menu.collapse.in");
-	
+
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']/a")
 	protected WebElement linkPicarroAdminXPath;
 
@@ -87,7 +87,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";
 	protected By linkCusAdminOpenedBy = By.cssSelector("ul#customer-administration-menu.dropdown-menu.collapse.in");
-	
+
 	@FindBy(css = "[name^='datatable'][name$='_length']")
 	protected WebElement paginationInput;
 	By paginationInputBy = By.cssSelector("[name^='datatable'][name$='_length']");
@@ -129,7 +129,7 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-surveyors']/a")
 	protected WebElement linkCusManageSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
 
@@ -144,37 +144,37 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-calibration']/a")
 	protected WebElement linkPicAdminCalibration;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-users']/a")
 	protected WebElement linkPicAdminManageUsers;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-customers']/a")
 	protected WebElement linkPicAdminManageCustomers;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-locations']/a")
 	protected WebElement linkPicAdminManageLocations;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyors']/a")
 	protected WebElement linkPicAdminManageSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-analyzers']/a")
 	protected WebElement linkPicAdminManageAnalyzers;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-ref-gas-bottles']/a")
 	protected WebElement linkPicAdminManageRefGasBottles;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-sftp-configuration']/a")
 	protected WebElement linkPicAdminSFTPConfiguration;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-analyzer-logs']/a")
 	protected WebElement linkPicAdminAnalyzerLogs;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-server-log']/a")
 	protected WebElement linkPicAdminServerLog;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-report-status']/a")
 	protected WebElement linkPicAdminReportStatus;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='myModalLabel']")
 	protected WebElement popupConfirmationBox;
 	protected String popupConfirmationBoxXPath = "//*[@id='myModalLabel']";
@@ -416,11 +416,11 @@ public class SurveyorBasePage extends BasePage {
 	public WebElement getLinkCusManageRefGasBottles() {
 		return this.linkCusManageRefGasBottles;
 	}
-	
+
 	public WebElement getLinkCusSFTPConfiguration() {
 		return this.linkCusSFTPConfiguration;
 	}
-	
+
 	public WebElement getLabelPageTableInfo() {
 		return this.labelPageTableInfo;
 	}
@@ -463,7 +463,7 @@ public class SurveyorBasePage extends BasePage {
 		this.inputSearch.sendKeys(Keys.ENTER,Keys.RETURN);
 		waitForSearchResultsToLoad();
 	}
-	
+
 	public boolean getListSize(List<String> listOfElements) {
 		Log.method("getListSize", LogHelper.strListToString(listOfElements));
 		String numTextString;
@@ -649,17 +649,17 @@ public class SurveyorBasePage extends BasePage {
 			if(currentOrder!=null){
 				isAscending = !currentOrder.equals("ascending");
 			}
-			
+
 			headerLink.click();
 			waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
 			waitForTableDataToLoad();
-			
+
 			headerLink = tableContext.findElement(By.cssSelector(String.format(headerCss, headerLabel)));
 			String sortedOrder = headerLink.getAttribute("aria-sort");
 			if(currentOrder==null&&sortedOrder!=null){
 				isAscending = sortedOrder.equals("ascending");
 			}
-			
+
 			try{
 				if(isAscending){
 					return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
@@ -785,9 +785,9 @@ public class SurveyorBasePage extends BasePage {
 		}
 		return linkFound;
 	}
-	
+
 	public boolean verifyCustomerAdministrationLinks(){
-		WebElement[] adminLinks = {linkCusManageSurveyors, linkAdminManageUsers, 
+		WebElement[] adminLinks = {linkCusManageSurveyors, linkAdminManageUsers,
 				linkCusManageLocations, linkCusManageRefGasBottles, linkCusSFTPConfiguration};
 		boolean linkFound = true;
 
@@ -796,7 +796,7 @@ public class SurveyorBasePage extends BasePage {
 		}
 		return linkFound;
 	}
-	
+
 	public boolean waitForNumberOfRecords(String actualMessage){
 		return waitForNumberOfRecords(DATATABLE_RECORDS_ELEMENT_BY, actualMessage);
 	}
@@ -826,20 +826,20 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("waitForElementReady", elementID);
         waitForElementReady(By.id(elementID));
 	}
-	
+
 	public void waitForElementReady(By elementBy) {
 		Log.method("waitForElementReady", elementBy);
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), this.timeout)).until(ExpectedConditions.presenceOfElementLocated(elementBy));
 	}
-	
+
 	/**
 	 * Waits for search results to load once user has performed search in datatable.
 	 */
 	public void waitForSearchResultsToLoad() {
 		Log.method("waitForSearchResultsToLoad");
 		waitForAJAXCallsToComplete();
-		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
-		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(DATATABLE_RECORDS_ELEMENT_BY));
+		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(DATATABLE_RECORDS_ELEMENT_BY);
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);

@@ -178,6 +178,7 @@
           <include name="**/AndroidSettingsAuthScreenTest.class" />
           <include name="**/AndroidFormCancelVerificationTest.class" />
           <include name="**/AndroidLoginErrorCasesTest.class" />
+		  <include name="**/AndroidBackPackSimulatorDataTest.class" />
         </fileset>
       </batchtest>
     </junit>

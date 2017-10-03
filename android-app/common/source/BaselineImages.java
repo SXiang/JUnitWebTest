@@ -8,6 +8,7 @@ public class BaselineImages {
 		public static final String TC2551 = "TC2551";
 		public static final String TC2639 = "TC2639";
 		public static final String TC2640 = "TC2640";
+		public static final String TC2876 = "TC2876";
 		public static final String LOADERS = "loaders";
 		public static final String COMMON = "common";
 	}
@@ -53,5 +54,8 @@ public class BaselineImages {
 		public static final String PavedWallToWallUnChecked = "paved-wall-to-wall-unchecked.png";
 		public static final String FollowButtonNotSelected = "follow-button-not-selected.png";
 		public static final String FollowButtonWhenSelected = "follow-button-when-selected.png";
+		public static final String BackPackPanelDisposition_1 = "backpack-panel-disposition-1.png";
+		public static final String BackPackPanelDisposition_2 = "backpack-panel-disposition-2.png";
+		public static final String BackPackPanelDisposition_3_4_5 = "backpack-panel-disposition-3-4-5.png";
 	}
 }

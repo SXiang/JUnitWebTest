@@ -60,8 +60,8 @@ public class BackPackSimDataTransformerTest {
 		String inputDataFile = getUniqueInputDataFile(Paths.get(rootPath, "android-app\\data\\test-expected-data\\unit-tests\\bpacksim-tests\\bpackanalyzer-data.dat").toString());
 		String instructionsFile = generateSampleInstructionFile();
 		Boolean replaceInputFile = true;
-		BackPackSimDataTransformer dataTransformer = BackPackSimDataTransformer.newDataTransformer();
-		dataTransformer.transformDataFileWithRevert(inputDataFile, instructionsFile, replaceInputFile, () -> {
+		BackPackSimDataTransformer dataTransformer = BackPackSimDataTransformer.newDataTransformer(inputDataFile);
+		dataTransformer.transformDataFileWithRevert(instructionsFile, replaceInputFile, () -> {
 			Log.info("Test method log");
 
 			assertTrue(String.format("Input File-'%s' should be present.", inputDataFile), FileUtility.fileExists(inputDataFile));
@@ -103,7 +103,7 @@ public class BackPackSimDataTransformerTest {
 		String inputDataFile = getUniqueInputDataFile(Paths.get(rootPath, "android-app\\data\\test-expected-data\\unit-tests\\bpacksim-tests\\bpackanalyzer-data.dat").toString());
 		String instructionsFile = generateSampleInstructionFile();
 		Boolean replaceInputFile = false;
-		BackPackSimDataTransformer dataTransformer = BackPackSimDataTransformer.newDataTransformer().transformDataFileWithRevert(inputDataFile, instructionsFile, replaceInputFile, () -> {
+		BackPackSimDataTransformer dataTransformer = BackPackSimDataTransformer.newDataTransformer(inputDataFile).transformDataFileWithRevert(instructionsFile, replaceInputFile, () -> {
 			Log.info("Test method log");
 		});
 
@@ -137,7 +137,7 @@ public class BackPackSimDataTransformerTest {
 		String inputDataFile = getUniqueInputDataFile(Paths.get(rootPath, "android-app\\data\\test-expected-data\\unit-tests\\bpacksim-tests\\bpackanalyzer-data.dat").toString());
 		String instructionsFile = generateSampleInstructionFile();
 		Boolean replaceInputFile = true;
-		BackPackSimDataTransformer dataTransformer = BackPackSimDataTransformer.newDataTransformer().transformDataFileWithRevert(inputDataFile, instructionsFile, replaceInputFile, () -> {
+		BackPackSimDataTransformer dataTransformer = BackPackSimDataTransformer.newDataTransformer(inputDataFile).transformDataFileWithRevert(instructionsFile, replaceInputFile, () -> {
 			Log.info("Test method log");
 		}).cleanUp();
 

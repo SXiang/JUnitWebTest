@@ -411,21 +411,22 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 									this.btnProcessResubmit.click();
 									this.waitForPageLoad();
 									this.waitForAJAXCallsToComplete();
-								}
-								if (buttonType == ReportsButtonType.Delete) {
+								} else if (buttonType == ReportsButtonType.Delete) {
 									this.waitForConfirmDeletePopupToShow();
 									if (confirmAction) {
 										Log.clickElementInfo("Confirm Delete");
 										this.clickOnConfirmInDeleteReportPopup();
 										this.waitForConfirmDeletePopupToClose();
 									}
-								}
-								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+								} else if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
 									this.waitForCopyReportPagetoLoad();
 									this.waitForInputTitleToEnable();
 									this.waitForDeleteSurveyButtonToLoad();
 									this.waitForOkButtonToEnable();
+								} else if (buttonType.equals(ReportsButtonType.Investigate)){
+									 this.waitForReportInvestigationsPagetoLoad();
 								}
+
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
@@ -2183,7 +2184,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetGaps> reportList = new ArrayList<StoredProcComplianceGetGaps>();
-		
+
 		int rowNumber = 0;
 		int numRows = (csvRows.size()+11)/12;
 		for(int i=0; i<numRows; i++){

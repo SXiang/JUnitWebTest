@@ -208,13 +208,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr")
 	protected List<WebElement> checkboxSurveys;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected WebElement checkboxSnapped;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected List<WebElement> checkboxesSnapped;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
 	protected WebElement firstSurveyLink;
 
@@ -750,13 +750,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void setSurveyRowsPagination(String numPages) {
-		By tableInfoBy = By.id(DATATABLESURVEYS_RECORDS_ELEMENT_ID);
 		List<WebElement> options = this.surveyTableRows.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
-				waitForNumberOfRecords(tableInfoBy, STRSurveyPaginationMsgPattern);
+				waitForNumberOfRecords(DATATABLE_RECORDS_ELEMENT_BY, STRSurveyPaginationMsgPattern);
 				break;
 			}
 		}
@@ -1132,7 +1131,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		jsSendKeys(inputStartDate, dateTime);
 		jsClick(inputStartDate);
 		inputStartDate.sendKeys(Keys.RETURN);
-		
+
 	}
 
 	public void inputSurveyEndDateTime(String dateTime) {
