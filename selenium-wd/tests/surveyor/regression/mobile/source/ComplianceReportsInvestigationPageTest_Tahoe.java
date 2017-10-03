@@ -90,7 +90,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	 * Test Description: Compliance Report generated with Asset Boxes selected from Search Area Preference dropdown. 
 	 * 						Make sure Highlight LISA Assets, LISA and Assets are selected in Views section
 	 * Script:
-	 * -  Log in as Customer Supervisor user
+	 * - Log in as Customer Supervisor user
 	 * - Navigate to Compliance Reports page
 	 * - Click on Investigate button
 	 * - Select one or more LISAs by checking the checkbox(es) on the right
@@ -142,7 +142,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap"));
 
 		mobileLoginPage.logout();
 	}
@@ -187,13 +187,12 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
-
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
-		String lisaNumberPrefix = reportName+"-LISA-";
-		int workingLisa = 9;
+		String gapNumberPrefix = reportName+"-Gap-";
+		int workingGap = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectGap(gapNumberPrefix+workingGap);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -202,9 +201,9 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnGap(gapNumberPrefix+workingGap);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationGapMap"));
 
 		mobileLoginPage.logout();
 	}
