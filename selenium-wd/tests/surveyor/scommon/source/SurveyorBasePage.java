@@ -53,8 +53,6 @@ public class SurveyorBasePage extends BasePage {
 	protected static final String TABLE_BUTTON_CLASS = "btn btn-primary";
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
-	protected static final String DATATABLE_RECORDS_ELEMENT_ID= "datatable_info";
-	protected static final String DATATABLESURVEYS_RECORDS_ELEMENT_ID = "datatableSurveys_info";
 	protected static final By DATATABLE_RECORDS_ELEMENT_BY = By.cssSelector(".dataTables_info[id$='_info']");
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")

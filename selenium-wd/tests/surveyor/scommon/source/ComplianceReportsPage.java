@@ -411,20 +411,20 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 									this.btnProcessResubmit.click();
 									this.waitForPageLoad();
 									this.waitForAJAXCallsToComplete();
-								} else if (buttonType == ReportsButtonType.Delete) {
+								}else if (buttonType == ReportsButtonType.Delete) {
 									this.waitForConfirmDeletePopupToShow();
 									if (confirmAction) {
 										Log.clickElementInfo("Confirm Delete");
 										this.clickOnConfirmInDeleteReportPopup();
 										this.waitForConfirmDeletePopupToClose();
 									}
-								} else if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+								}else if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
 									this.waitForCopyReportPagetoLoad();
 									this.waitForInputTitleToEnable();
 									this.waitForDeleteSurveyButtonToLoad();
 									this.waitForOkButtonToEnable();
-								} else if (buttonType.equals(ReportsButtonType.Investigate)){
-									 this.waitForReportInvestigationsPagetoLoad();
+								}else if (buttonType.equals(ReportsButtonType.Investigate)){
+									this.waitForReportInvestigationsPagetoLoad();
 								}
 
 								if (removeDBCache) {
