@@ -103,6 +103,12 @@ public class LeakDataGenerator {
 			return this;
 		}
 
+		public LeakDataBuilder generateDefaultValuesCompatibleWithTablet() {
+			LeakDataBuilder leakDataBuilder = generateDefaultValues();
+			leakDataBuilder.setIsPavedWallToWall(false);
+			return leakDataBuilder;
+		}
+
 		public LeakDataBuilder generateRandomValuesWithNulls() {
 			Address address = DataGenerator.getAddress();
 
