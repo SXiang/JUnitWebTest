@@ -750,13 +750,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void setSurveyRowsPagination(String numPages) {
-		By tableInfoBy = By.id(DATATABLESURVEYS_RECORDS_ELEMENT_ID);
 		List<WebElement> options = this.surveyTableRows.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
-				waitForNumberOfRecords(tableInfoBy, STRSurveyPaginationMsgPattern);
+				waitForNumberOfRecords(DATATABLE_RECORDS_ELEMENT_BY, STRSurveyPaginationMsgPattern);
 				break;
 			}
 		}
