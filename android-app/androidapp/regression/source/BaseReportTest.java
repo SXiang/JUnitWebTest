@@ -119,32 +119,31 @@ public class BaseReportTest extends BaseAndroidTest {
 		boolean match = investigations.stream()
 			.allMatch(r -> {
 				Report reportObj = Report.getReport(r.getReportTitle());
-				if (reportObj == null) {
-					Log.error(String.format("Incorrect report found in list. Incorrect report title=[%s]", r.getReportTitle()));
-					return false;
-				}
-
-				String reportId = reportObj.getId();
-				Log.info(String.format("Searching for assigned LISAs in report id='%s'", reportId));
-				List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
-				if (lisaInvestigationfromSP != null && lisaInvestigationfromSP.size()>0) {
-					Log.info(String.format("Investigated LISAs for reportId=[%s] -> %s", reportId,
-						LogHelper.collectionToString(lisaInvestigationfromSP, "lisaInvestigationfromSP")));
-					return lisaInvestigationfromSP.stream().anyMatch(s -> {
-						if (s.getAssignedUserName()!=null) {
-							if (!BaseHelper.isNullOrEmpty(s.getAssignedUserName().trim())) {
-								Log.info("Executing match predicate");
-								return matchPredicate.test(s);
+				if (reportObj != null) {
+					String reportId = reportObj.getId();
+					Log.info(String.format("Searching for assigned LISAs in report id='%s'", reportId));
+					List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
+					if (lisaInvestigationfromSP != null && lisaInvestigationfromSP.size()>0) {
+						Log.info(String.format("Investigated LISAs for reportId=[%s] -> %s", reportId,
+							LogHelper.collectionToString(lisaInvestigationfromSP, "lisaInvestigationfromSP")));
+						return lisaInvestigationfromSP.stream().anyMatch(s -> {
+							if (s.getAssignedUserName()!=null) {
+								if (!BaseHelper.isNullOrEmpty(s.getAssignedUserName().trim())) {
+									Log.info("Executing match predicate");
+									return matchPredicate.test(s);
+								}
 							}
-						}
 
-						return true;
-					});
+							return true;
+						});
+					}
+
+					Log.info(String.format("Found no assigned LISAs for this report id='%s'", reportId));
+					return true;
+				} else {
+					Log.info(String.format("Report shown on screen NOT found in database. Report appears to be deleted from DB, report title=[%s]", r.getReportTitle()));
+					return true;
 				}
-
-
-				Log.info(String.format("Found no assigned LISAs for this report id='%s'", reportId));
-				return true;
 			});
 
 		return match;

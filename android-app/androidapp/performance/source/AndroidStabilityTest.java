@@ -137,6 +137,7 @@ public class AndroidStabilityTest extends BaseReportTest {
 
 		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -159,7 +160,7 @@ public class AndroidStabilityTest extends BaseReportTest {
 				return true;
 			});
 
-			String[] markerStatuses = {notInvestigated, inProgress};
+			String[] markerStatuses = {notInvestigated, inProgress, foundGasLeak};
 			investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 			executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
@@ -191,7 +192,7 @@ public class AndroidStabilityTest extends BaseReportTest {
 			boolean foundReport = false;
 			for (String testCase : tcsWithReportsThatHaveLisas) {
 				tcId = testCase;
-				if (invReportDataVerifier.hasCompleteOrInProgressLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
+				if (invReportDataVerifier.hasCompleteInProgressOrNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 					foundReport = true;
 					break;
 				}

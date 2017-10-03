@@ -210,6 +210,9 @@ public class TestSetup {
 	private Integer androidStressTestMaxLeaksPerTestRun;
 	private Integer androidStressTestMaxOtherSourcesPerTestRun;
 
+	private Boolean androidLongerProgressBarTimeoutEnabled;
+	private Integer androidLongerProgressBarTimeoutValueInSeconds;
+
 	private Integer androidMaxLogLines;
 
 	private String awsAccessKeyId;
@@ -685,6 +688,8 @@ public class TestSetup {
 			this.setAndroidNetworkDelay(this.testProp.getProperty("androidEmulator.Network.Delay"));
 			this.setAndroidNetworkSpeed(this.testProp.getProperty("androidEmulator.Network.Speed"));
 			this.setAndroidMaxLogLines(Integer.valueOf(this.testProp.getProperty("androidTests.Logs.MaxLines")));
+			this.setAndroidLongerProgressBarTimeoutEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.LongerProgressBarWaitTimeout.Enabled")));
+			this.setAndroidLongerProgressBarTimeoutValueInSeconds(Integer.valueOf(this.testProp.getProperty("androidTests.LongerProgressBarWaitTimeout.ValueInSeconds")));
 
 			this.setAndroidStabilityTestProperties();
 			this.setAndroidStressTestProperties();
@@ -1855,6 +1860,23 @@ public class TestSetup {
 
 	public void setAndroidStressTestMaxOtherSourcesPerTestRun(Integer androidStressTestMaxOtherSourcesPerTestRun) {
 		this.androidStressTestMaxOtherSourcesPerTestRun = androidStressTestMaxOtherSourcesPerTestRun;
+	}
+
+	public Integer getAndroidLongerProgressBarTimeoutValueInSeconds() {
+		return androidLongerProgressBarTimeoutValueInSeconds;
+	}
+
+	public void setAndroidLongerProgressBarTimeoutValueInSeconds(
+			Integer androidLongerProgressBarTimeoutValueInSeconds) {
+		this.androidLongerProgressBarTimeoutValueInSeconds = androidLongerProgressBarTimeoutValueInSeconds;
+	}
+
+	public Boolean getAndroidLongerProgressBarTimeoutEnabled() {
+		return androidLongerProgressBarTimeoutEnabled;
+	}
+
+	public void setAndroidLongerProgressBarTimeoutEnabled(Boolean androidLongerProgressBarTimeoutEnabled) {
+		this.androidLongerProgressBarTimeoutEnabled = androidLongerProgressBarTimeoutEnabled;
 	}
 
 	public Integer getAndroidMaxLogLines() {

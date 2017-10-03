@@ -16,16 +16,16 @@ public class AndroidSettingsDataProvider extends AndroidDataProvider {
 
 	@DataProvider
 	public static Object[][] dataProviderSettings_TC2443() {
-		return new Object[][] { { "TC2443" /* TestCaseID */, 16 /* userDataRowID */} };
+		return new Object[][] { { "TC2443" /* TestCaseID */, 18 /* userDataRowID */} };
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderSettings_TC2444() {
-		return new Object[][] { { "TC2444" /* TestCaseID */, 16 /* userDataRowID */} };
+		return new Object[][] { { "TC2444" /* TestCaseID */, 18 /* userDataRowID */} };
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderSettings_TC2551() {
-		return new Object[][] { { "TC2551" /* TestCaseID */, 16 /* userDataRowID */} };
+		return new Object[][] { { "TC2551" /* TestCaseID */, 18 /* userDataRowID */} };
 	}
 }

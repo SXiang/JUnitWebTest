@@ -213,6 +213,10 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2198 = "dataProviderPageActionsComplianceReports_TC2198";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2199 = "dataProviderPageActionsComplianceReports_TC2199";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2200 = "dataProviderPageActionsComplianceReports_TC2200";
+	/* Tahoe*/
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2238 = "dataProviderPageActionsComplianceReports_TC2238";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2239 = "dataProviderPageActionsComplianceReports_TC2239";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2243 = "dataProviderPageActionsComplianceReports_TC2243";
 
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -1503,5 +1507,19 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1496() {
 		return new Object[][] { { "TC1496" /* TestCaseID */, -1 /* userDataRowID */, 271 /* NOT USED - reportDataRowID1 */, 272/* reportDataRowID2 */ } };
 	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC2238() {
+		return new Object[][] { { "TC2238" /* TestCaseID */, 6 /* userDataRowID */, 299 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
 
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC2239() {
+		return new Object[][] { { "TC2239" /* TestCaseID */, 6 /* userDataRowID */, 300 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC2243() {
+		return new Object[][] { { "TC2243" /* TestCaseID */, 6 /* userDataRowID */, 301 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
 }
