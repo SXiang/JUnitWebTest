@@ -86,51 +86,52 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	}
 
 	/**
-	 * Test Case ID: TC2201_LisaInvestigatedAndLeakFoundStatusShouldPersistOnMobileView
-	 * Test Description: Lisa Investigated and Leak found status should persist on Mobile View
+	 * Test Case ID: TC2201_HighlightLISAAssetsSelectedInViewsSection
+	 * Test Description: Compliance Report generated with Asset Boxes selected from Search Area Preference dropdown. 
+	 * 						Make sure Highlight LISA Assets, LISA and Assets are selected in Views section
 	 * Script:
-	 * - Generate compliance report for survey having indications in it
-	 * - On Home Page, navigate to Reports -> Compliance Reports page
-	 * - Click on Investigate icon present for the compliance report
-	 * - Select the Lisa to assign and click on Assign Investigators button
-	 * - Select Assigned To name from the drop down and click OK
-	 * - Now login to application using mobile with Assigned To user credentials
-	 * - Click on Report Name and any one of the assigned LISA
-	 * - Click on Investigate
-	 * - Click on Add Source -> Add Leak button
-	 * - Fill out leak details in popup window and click OK, the click on Mark as Complete button
-	 * - Select another LISA and repeat, but do not click on Mark as Complete button
-	 * - Select a third LISA and click on Add Source -> Add Other Source button, fill in details and click OK, then click Mark as Complete
-	 * - Click on Investigate button on Compliance Reports page
+	 * -  Log in as Customer Supervisor user
+	 * - Navigate to Compliance Reports page
+	 * - Click on Investigate button
+	 * - Select one or more LISAs by checking the checkbox(es) on the right
+	 * - There are two Assign Investigators buttons near the top right. Click the leftmost of these buttons.
+	 * - From the dropdown, select a user to whom to assign the LISA(s)
+	 * - On a mobile device, log in as the selected user
+	 * - Select the appropriate report
+	 * - Select "LISA" from the dropdown
+	 * - Click on a LISA
+	 * - Click on Follow button
 	 * Results:
-	 * - First LISA should be marked as Investigated, Leak Found, with Status of Found Gas Leak
-	 * - Second LISA should be marked as Investigated, Leak Found, with Status of In Progress
-	 * - Third LISA should be marked as Investigated, Leak Not Found, with Status of Found Other Source
+	 * - User is navigated to LISA Investigations page by default. Dropdown is present at top left to select LISAs or Gaps
+	 * - A dropdown menu will appear with names of users for this customer
+	 * - The dropdown will disappear and the selected name will appear in the Investigator column of the selected LISA(s)
+	 * - User is navigated to a page with a list of one or more reports 
+	 * - User is navigated to a page with a list of one or more LISAs and a dropdown menu with selections "Indication" and "Gap". Gaps should not appear on this list unless selected from the dropdown
+	 * - User is navigated to a map showing user's location
+	 * - On map, assets contained within Asset Box are highlighted  in green. Asset Box is outlined in red
 	 */
 	@Test
-	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC219, location = InvestigationReportDataProvider.class)
-	public void TC219_LisaInvestigatedAndLeakFoundStatusShouldPersistOnMobileView(
+	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2201, location = InvestigationReportDataProvider.class)
+	public void TC2201_HighlightLISAAssetsSelectedInViewsSection(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		Log.info("\nRunning TC219_LisaInvestigatedAndLeakFoundStatusShouldPersistOnMobileView ..." +
-			 "\nTest Description: Lisa Investigated and Leak found status should persist on Mobile View");
+		Log.info("\nRunning TC2201_HighlightLISAAssetsSelectedInViewsSection ..." +
+			 "\nTest Description: Compliance Report generated with Asset Boxes selected from Search Area Preference dropdown. Make sure Highlight LISA Assets, LISA and Assets are selected in Views section");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-
-		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
-
+		int workingLisa = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+2);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+3);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -139,81 +140,72 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
-		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, leakDetails);
-		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		mobileInvestigatePage.clickOnAddSource();
-		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		leakDetails.setDefaultTestData();
-		mobileLeakSourcePage.addLeakDetails(leakDetails);
-		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage.clickOnFollow();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
 
-		// Mobile - add leak
-		mobileReportsPage.open();
-		mobileReportsPage.clickOnReportName(reportName);
-		leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 2);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
-		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		mobileInvestigatePage.clickOnAddSource();
-		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		leakDetails.setDefaultTestData();
-		mobileLeakSourcePage.addLeakDetails(leakDetails);
-		mobileLeakSourcePage.closeAddSourceDialog();
-
-		// Mobile - add other source
-		mobileReportsPage.open();
-		mobileReportsPage.clickOnReportName(reportName);
-		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 3);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3, sourceDetails);
-		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
-		mobileInvestigatePage.clickOnAddSource();
-		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
-		sourceDetails.setDefaultTestData();
-		mobileLeakSourcePage.addOtherSource(sourceDetails);
-		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete(sourceDetails);
-
-		// Verify investigation status
-		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-
-		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1));
-		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
-		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3));
-		
 		mobileLoginPage.logout();
 	}
 
 	/**
-	 * Test Case ID: TC2202_SearchValidLisaOnInvestigationReportScreen
+	 * Test Case ID: TC2202_HighlightGapAssetsSelectedInViewsSection
 	 * Test Description: Search valid lisa on investigation report screen
 	 * Script:
-	 * - Navigate to investigation report screen
-	 * - Search the Lisa with valid CH4 value
+	 * - Log in as Customer Supervisor user
+	 * - Navigate to Compliance Reports page
+	 * - Click on Investigate button
+	 * - Select Gaps from dropdown near top left
+	 * - Select one or more Gaps by checking the checkbox(es) on the right
+	 * - There are two Assign Investigators buttons near the top right. Click the leftmost of these buttons.
+	 * - From the dropdown, select a user to whom to assign the Gap(s)
+	 * - On a mobile device, log in as the selected user
+	 * - Select the appropriate report
+	 * - Select Gap from the dropdown
+	 * - Click on a Gap
+	 * - Click on Follow button
 	 * Results:
-	 * -  Search result should display the lisa with that provided CH4 value
+	 * -  User is navigated to Gap Investigations page
+	 * - A dropdown menu will appear with names of users for this customer
+	 * - The dropdown will disappear and the selected name will appear in the Investigator column of the selected Gap(s)
+	 * - User is navigated to a page with a list of one or more reports 
+	 * - User is navigated to a page with a list of one or more LISAs and a dropdown menu with selections "Indication" and "Gap"
+	 * - User is navigated to a map showing user's location
+	 * - On map, assets contained within Asset Box are highlighted in green. Asset Box is outlined in red
 	 */
 	@Test
-	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC224, location = InvestigationReportDataProvider.class)
-	public void TC224_SearchValidLisaOnInvestigationReportScreen(
+	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2202, location = InvestigationReportDataProvider.class)
+	public void TC2202_HighlightGapAssetsSelectedInViewsSection(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		Log.info("\nRunning TC224_SearchValidLisaOnInvestigationReportScreen ..." +
-			 "\nTest Description: Search valid lisa on investigation report screen");
+		Log.info("\nRunning TC2202_HighlightGapAssetsSelectedInViewsSection ..." +
+			 "\nTest Description: Compliance Report generated with Asset Boxes selected from Search Area Preference dropdown. Make sure Highlight Gap Assets, Gaps and Assets are selected in Views section");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-
+		int workingLisa = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		String lisaValue = reportInvestigationsPage.getLisaValue(lisaNumberPrefix+1);
-		assertTrue(reportInvestigationsPage.isLisaValueSearchable(lisaValue));
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+
+		// Mobile - add leak and complete
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage.clickOnFollow();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
+
+		mobileLoginPage.logout();
 	}
 }
