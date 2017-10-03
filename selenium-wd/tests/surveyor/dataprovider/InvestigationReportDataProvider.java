@@ -157,12 +157,12 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	/* ComplianceReportInvestigationPageTest_Tahoe */
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC2201() {
-		return new Object[][] { { "TC2201" /* TestCaseID */, 2 /* userDataRowID */, 3 /* mobileUserDataRowID */, 302 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC2201" /* TestCaseID */, 2 /* userDataRowID */, 3 /* mobileUserDataRowID */, 305 /* reportDataRowID1 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC2202() {
-		return new Object[][] { { "TC2202" /* TestCaseID */, 2 /* userDataRowID */, 3 /* mobileUserDataRowID */, 303 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC2202" /* TestCaseID */, 2 /* userDataRowID */, 3 /* mobileUserDataRowID */, 306 /* reportDataRowID1 */} };
 	}
 	
 }

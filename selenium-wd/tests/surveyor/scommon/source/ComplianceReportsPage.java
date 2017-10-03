@@ -426,6 +426,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 								}else if (buttonType.equals(ReportsButtonType.Investigate)){
 									this.waitForReportInvestigationsPagetoLoad();
 								}
+
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
@@ -2183,7 +2184,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetGaps> reportList = new ArrayList<StoredProcComplianceGetGaps>();
-		
+
 		int rowNumber = 0;
 		int numRows = (csvRows.size()+11)/12;
 		for(int i=0; i<numRows; i++){

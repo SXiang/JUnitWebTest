@@ -7,9 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
+import common.source.BaselineImages;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.MobileActions;
+import common.source.TestContext;
 import common.source.MobileActions.KeyCode;
 import common.source.MobileActions.SwipeDirection;
 import common.source.Timeout;
@@ -51,6 +53,15 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	public AndroidInvestigationScreen(WebDriver driver) {
 		super(driver);
+	}
+
+	public void assertCorrectValuesShownInPanelForDisposition(String imageFile) {
+		Log.method("assertCorrectValuesShownInPanelForDisposition");
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.TC2876, imageFile);
+		} else {
+			Log.info("Skipping assertCorrectValuesShownInPanelForDisposition. Check enabled only with backpack simulator.");
+		}
 	}
 
 	public void clickOnFirstInvestigation() throws Exception {

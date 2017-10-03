@@ -1352,6 +1352,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	private boolean isComplexBoundary(CustomerBoundaryFilterType boundaryFilterType, String boundaryName) {
+		Log.method("isComplexBoundary", boundaryFilterType, boundaryName);
 		return BaseReportEntity.ComplexBoundaryNames.stream()
 			.anyMatch(b -> isComplexCustomerBoundaryMatch(boundaryFilterType, boundaryName, b));
 	}
@@ -2361,7 +2362,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyShapeFilesArePresent(String downloadPath, String reportTitle,String shapeType) throws IOException {
 		Log.method("verifyShapeFilesArePresent", downloadPath, reportTitle, shapeType);
-        String[] fileExts = {".dbf",".prj", ".shp", ".shx"};  
+        String[] fileExts = {".dbf",".prj", ".shp", ".shx"};
 		String pathToShapeUnZip = getReportShapeUnzipFolder(downloadPath, reportTitle);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(pathToShapeUnZip), false /*includeFullPath*/);
 		if (filesInDirectory == null) {
@@ -2513,7 +2514,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			pathToShapeUnZip += unZipFolder;
 		return pathToShapeUnZip;
 	}
-	
+
 	public boolean verifyIsotopicMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ReportsCommonPage.verifyIsotopicMetaDataFile", actualPath, reportTitle);
@@ -2761,7 +2762,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetGaps> reportList = new ArrayList<StoredProcComplianceGetGaps>();
-		
+
 		int rowNumber = 0;
 		int numRows = (csvRows.size()+11)/12;
 		for(int i=0; i<numRows; i++){
@@ -3701,14 +3702,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 			boolean inZipFolder) throws IOException {
 		return verifyViewsImages(actualPath, reportTitle, testCase, viewName, inZipFolder, false);
 	}
-	
+
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName,
 			boolean inZipFolder, boolean isStaticImage) throws IOException {
 		Log.method("ReportsCommonPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName, inZipFolder);
-		if(!isStaticImage){/* Disabled view images verification as the Lisa bubbles are dynamically placed */	
+		if(!isStaticImage){/* Disabled view images verification as the Lisa bubbles are dynamically placed */
 			return true;
 		}
-		
+
 		PDFUtility pdfUtility = new PDFUtility();
 		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
 		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
