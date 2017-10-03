@@ -539,11 +539,6 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			settingsScreen.waitForScreenLoad();
 			settingsScreen.dismissScreen(ParentScreen.ReportScreen);
 
-			// TBD: TURNED off due to defect DE3319 [2017-09-05: Issue currently open]
-			// verify reports for user are shown.
-			//investigationScreen.waitForScreenLoad();
-			//assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
-
 			// Steps above turned off and below steps added due to defect DE3319.
 			mapScreen.waitForScreenLoad();
 			mapScreen.assertMapIsCenteredForPicarroUser();

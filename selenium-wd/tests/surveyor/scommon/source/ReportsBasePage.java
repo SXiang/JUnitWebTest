@@ -208,13 +208,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr")
 	protected List<WebElement> checkboxSurveys;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected WebElement checkboxSnapped;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected List<WebElement> checkboxesSnapped;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
 	protected WebElement firstSurveyLink;
 
@@ -1131,7 +1131,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		jsSendKeys(inputStartDate, dateTime);
 		jsClick(inputStartDate);
 		inputStartDate.sendKeys(Keys.RETURN);
-		
+
 	}
 
 	public void inputSurveyEndDateTime(String dateTime) {

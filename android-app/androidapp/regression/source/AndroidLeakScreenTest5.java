@@ -295,7 +295,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			// Add new leak.
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
-			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
+			LeakDataBuilder leakDataBuilder = getLeakDataBuilderForExecutingDevice();
 			Map<String, Object> leakMap = leakDataBuilder.toMap();
 			leakDataBuilderStore.add(leakDataBuilder);
 			addLeakSourceFormDialog.fillForm(leakMap);
@@ -474,6 +474,14 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		if (FileUtility.fileExists(invCsvFullPath)) {
 			FileUtility.deleteFile(Paths.get(invCsvFullPath));
 		}
+	}
+
+	private LeakDataBuilder getLeakDataBuilderForExecutingDevice() {
+		if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+			return LeakDataGenerator.newBuilder().generateDefaultValuesCompatibleWithTablet();
+		}
+
+		return LeakDataGenerator.newBuilder().generateDefaultValues();
 	}
 
 	private void initializeTestScreenObjects() {

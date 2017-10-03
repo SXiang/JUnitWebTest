@@ -12,18 +12,33 @@ public class BackPackSimDataTransformer {
 	private String inputDataFileBackup;
 	private String outputDataFile;
 
-	public static BackPackSimDataTransformer newDataTransformer() {
-		return new BackPackSimDataTransformer();
+	private BackPackSimDataTransformer() {
 	}
 
-	public BackPackSimDataTransformer transformDataFileWithRevert(String inputDataFile, String instructionsFile, Boolean replaceInputFile, CheckedConsumer testMethods) throws Exception {
-		Log.method("transformDataFileWithRevert", inputDataFile, instructionsFile, replaceInputFile);
+	public static BackPackSimDataTransformer newDataTransformer(String inputDataFile) throws IOException {
+		return new BackPackSimDataTransformer().setInputDataFile(inputDataFile).init();
+	}
 
+	public BackPackSimDataTransformer transformDataFileWithRevert(String instructionsFile, Boolean replaceInputFile, CheckedConsumer testMethods) throws Exception {
+		Log.method("transformDataFileWithRevert", instructionsFile, replaceInputFile);
+		return transformDataFileWithRevertInternal(instructionsFile, replaceInputFile, false /*cleanUpAfterTransform*/, testMethods);
+	}
+
+	public BackPackSimDataTransformer transformDataFileWithRevertAndClean(String instructionsFile, Boolean replaceInputFile, CheckedConsumer testMethods) throws Exception {
+		Log.method("transformDataFileWithRevertAndClean", instructionsFile, replaceInputFile);
+		return transformDataFileWithRevertInternal(instructionsFile, replaceInputFile, true /*cleanUpAfterTransform*/, testMethods);
+	}
+
+	private BackPackSimDataTransformer transformDataFileWithRevertInternal(String instructionsFile,
+			Boolean replaceInputFile, Boolean cleanUpAfterTransform, CheckedConsumer testMethods) throws IOException, Exception {
 		try {
-			transformDataFile(inputDataFile, instructionsFile, replaceInputFile);
+			transformDataFile(instructionsFile, replaceInputFile);
 			testMethods.execute();
 		} finally {
 			revertInputFileToOriginal();
+			if (cleanUpAfterTransform) {
+				this.cleanUp();
+			}
 		}
 
 		return this;
@@ -56,10 +71,57 @@ public class BackPackSimDataTransformer {
 		return this.outputDataFile;
 	}
 
-	private void transformDataFile(String inputDataFile, String instructionsFile, Boolean replaceInputFile) throws IOException {
-		Log.method("transformDataFile", inputDataFile, outputDataFile);
+	public BackPackSimDataTransformer init() throws IOException {
+		Log.method("init");
+		String folder = Paths.get(inputDataFile).getParent().toString();
+		String fileNameWithExt = Paths.get(inputDataFile).getFileName().toString();
+		revertInputFileToBakFileIfExists(folder, fileNameWithExt);
+		createBackupFile(folder, fileNameWithExt);
+		return this;
+	}
 
-		this.inputDataFile = inputDataFile;
+	public BackPackSimDataTransformer setInputDataFile(String value) {
+		this.inputDataFile = value;
+		return this;
+	}
+
+	private void createBackupFile(String folder, String fileNameWithExt) throws IOException {
+		Log.method("createBackupFile", folder, fileNameWithExt);
+		String bakFileName = fileNameWithExt.substring(0, fileNameWithExt.indexOf(".")) + ".bak";
+		String bakDatFile = Paths.get(folder, bakFileName+".dat").toString();
+		Log.info(String.format("Creating a copy of the input data file-'%s' at -> '%s'", inputDataFile, bakDatFile));
+		Files.copy(Paths.get(inputDataFile), Paths.get(bakDatFile), StandardCopyOption.REPLACE_EXISTING);
+
+		this.inputDataFileBackup = bakDatFile;
+	}
+
+	private void replaceInputWithOutputFile() throws IOException {
+		Log.method("replaceInputWithOutputFile");
+		Log.info(String.format("Replacing input data file-'%s' with transformed data file -> '%s'", inputDataFile, outputDataFile));
+		FileUtility.copyFile(outputDataFile, inputDataFile);
+	}
+
+	private void revertInputFileToOriginal() throws IOException {
+		Log.method("revertInputFileToOriginal");
+		if (!BaseHelper.isNullOrEmpty(inputDataFileBackup)) {
+			Log.info(String.format("Reverting input data file to original. Copying '%s' -> '%s'", inputDataFileBackup, inputDataFile));
+			FileUtility.copyFile(inputDataFileBackup, inputDataFile);
+		}
+	}
+
+	private void revertInputFileToBakFileIfExists(String folder, String fileNameWithExt) throws IOException {
+		Log.method("revertInputFileToBakFileIfExists", folder, fileNameWithExt);
+		String bakFileName = fileNameWithExt.substring(0, fileNameWithExt.indexOf(".")) + ".bak";
+		String bakDatFile = Paths.get(folder, bakFileName+".dat").toString();
+		if (FileUtility.fileExists(bakDatFile)) {
+			Log.info(String.format("Detected .bak file. Copying .bak file - '%s' to input data file -> '%s'", bakDatFile, inputDataFile));
+			Files.copy(Paths.get(bakDatFile), Paths.get(inputDataFile), StandardCopyOption.REPLACE_EXISTING);
+		}
+	}
+
+	private void transformDataFile(String instructionsFile, Boolean replaceInputFile) throws IOException {
+		Log.method("transformDataFile", instructionsFile, replaceInputFile);
+
 		String folder = Paths.get(inputDataFile).getParent().toString();
 		String fileNameWithExt = Paths.get(inputDataFile).getFileName().toString();
 		String newFileName = fileNameWithExt.substring(0, fileNameWithExt.indexOf(".")) + ".transformed";
@@ -76,23 +138,7 @@ public class BackPackSimDataTransformer {
 		this.outputDataFile = outputDatFile;
 
 		if (replaceInputFile) {
-			String bakFileName = fileNameWithExt.substring(0, fileNameWithExt.indexOf(".")) + ".bak";
-			String bakDatFile = Paths.get(folder, bakFileName+".dat").toString();
-			Log.info(String.format("Creating a copy of the input data file-'%s' at -> '%s'", inputDataFile, bakDatFile));
-			Files.copy(Paths.get(inputDataFile), Paths.get(bakDatFile), StandardCopyOption.REPLACE_EXISTING);
-
-			this.inputDataFileBackup = bakDatFile;
-
-			Log.info(String.format("Replacing input data file-'%s' with transformed data file -> '%s'", inputDataFile, outputDatFile));
-			FileUtility.copyFile(outputDatFile, inputDataFile);
-		}
-	}
-
-	private void revertInputFileToOriginal() throws IOException {
-		Log.method("revertInputFileToOriginal");
-		if (!BaseHelper.isNullOrEmpty(inputDataFileBackup)) {
-			Log.info(String.format("Reverting input data file to original. Copying '%s' -> '%s'", inputDataFileBackup, inputDataFile));
-			FileUtility.copyFile(inputDataFileBackup, inputDataFile);
+			replaceInputWithOutputFile();
 		}
 	}
 }

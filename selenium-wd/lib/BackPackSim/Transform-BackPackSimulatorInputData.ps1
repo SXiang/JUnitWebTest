@@ -110,8 +110,18 @@ if (-not $script:dropDict.ContainsKey("Disposition")) { $format += @{expression=
                     $_.Disposition
                 }};label="Disposition";width=25} }
 
-if (-not $script:dropDict.ContainsKey("EthaneRatio")) { $format += @{expression={$_.EthaneRatio};label="EthaneRatio";width=25} }
-if (-not $script:dropDict.ContainsKey("EthaneRatioSdev")) { $format += @{expression={$_.EthaneRatioSdev};label="EthaneRatioSdev";width=25} }
+if (-not $script:dropDict.ContainsKey("EthaneRatio")) { $format += @{expression={
+                if (-not ($_.EthaneRatio -match "EthaneRatio\s*") -and ($script:replaceDict.containsKey("EthaneRatio"))) {
+                    $script:replaceDict.get_item("EthaneRatio")
+                } else {
+                    $_.EthaneRatio
+                }};label="EthaneRatio";width=25} }
+if (-not $script:dropDict.ContainsKey("EthaneRatioSdev")) { $format += @{expression={
+                if (-not ($_.EthaneRatioSdev -match "EthaneRatioSdev\s*") -and ($script:replaceDict.containsKey("EthaneRatioSdev"))) {
+                    $script:replaceDict.get_item("EthaneRatioSdev")
+                } else {
+                    $_.EthaneRatioSdev
+                }};label="EthaneRatioSdev";width=25} }
 if (-not $script:dropDict.ContainsKey("GPS_ABS_LAT_ADA")) { $format += @{expression={$_.GPS_ABS_LAT_ADA};label="GPS_ABS_LAT_ADA";width=25} }
 if (-not $script:dropDict.ContainsKey("GPS_ABS_LONG_ADA")) { $format += @{expression={$_.GPS_ABS_LONG_ADA};label="GPS_ABS_LONG_ADA";width=25} }
 if (-not $script:dropDict.ContainsKey("GPS_ALTITUDE_ADA")) { $format += @{expression={$_.GPS_ALTITUDE_ADA};label="GPS_ALTITUDE_ADA";width=25} }
