@@ -555,7 +555,7 @@ public class BaseTest {
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
 			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 			complianceReportsPage.addNewReport(rpt, true);
-			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
+			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportId(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
 			testReport.put(sm.toString()+"ReportName", reportName);
 		}
 		return Collections.synchronizedMap(testReport);

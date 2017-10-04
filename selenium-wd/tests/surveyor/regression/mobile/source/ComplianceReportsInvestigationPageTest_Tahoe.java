@@ -108,16 +108,14 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportName = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		// Assign Lisas to user
-		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
-		String lisaNumberPrefix = reportName+"-LISA-";
 		int workingLisa = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -126,7 +124,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
 		mobileInvestigatePage.clickOnFollow();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap"));
 
@@ -170,15 +168,13 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportName = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 		// Assign Lisas to user
-		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
-		String gapNumberPrefix = reportName+"-Gap-";
 		int workingGap = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectGap(gapNumberPrefix+workingGap);
+		reportInvestigationsPage.selectGapsByNumber(reportName, workingGap);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -187,7 +183,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
-		mobileInvestigatePage = mobileInvestigationPage.clickOnGap(gapNumberPrefix+workingGap);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnGap(reportName, workingGap);
 		mobileInvestigatePage.clickOnFollow();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationGapMap"));
 

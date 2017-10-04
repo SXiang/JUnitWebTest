@@ -36,7 +36,7 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	/* ComplianceReportInvestigationPageTest_Tahoe */
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2201 = "dataProviderPageActionsInvestigationReports_TC2201";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2202 = "dataProviderPageActionsInvestigationReports_TC2202";
-	
+
 	public InvestigationReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
@@ -157,12 +157,12 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	/* ComplianceReportInvestigationPageTest_Tahoe */
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC2201() {
-		return new Object[][] { { "TC2201" /* TestCaseID */, 2 /* userDataRowID */, 3 /* mobileUserDataRowID */, 305 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC2201" /* TestCaseID */, 18 /* userDataRowID */, 16 /* mobileUserDataRowID */, 305 /* reportDataRowID1 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC2202() {
-		return new Object[][] { { "TC2202" /* TestCaseID */, 2 /* userDataRowID */, 3 /* mobileUserDataRowID */, 306 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC2202" /* TestCaseID */, 18 /* userDataRowID */, 16 /* mobileUserDataRowID */, 306 /* reportDataRowID1 */} };
 	}
 	
 }

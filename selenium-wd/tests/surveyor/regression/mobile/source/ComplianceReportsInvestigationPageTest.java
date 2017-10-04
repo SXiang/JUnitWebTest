@@ -118,7 +118,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Assign Lisas to user
@@ -205,7 +205,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Assign Lisas to user
@@ -263,7 +263,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
@@ -341,7 +341,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
@@ -410,7 +410,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportTitle = ComplianceReportsPageActions.workingDataRow.get().title;
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				reportTitle, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
@@ -464,7 +464,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportTitle = ComplianceReportsPageActions.workingDataRow.get().title;
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				reportTitle, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
@@ -525,7 +525,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
@@ -590,7 +590,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 

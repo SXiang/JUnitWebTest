@@ -478,14 +478,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		String reportName1 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, getTestSetup().getLoginUser());
+		String reportName1 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(rptTitle, getTestSetup().getLoginUser());
 		assertNotNull(reportName1);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
-		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, getTestSetup().getLoginUser());
+		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(rptTitle, getTestSetup().getLoginUser());
 		assertNotNull(reportName2);
 
 		assertNotEquals(reportName1, reportName2);

@@ -110,7 +110,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
@@ -234,7 +234,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
@@ -431,7 +431,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_90MIN_IN_SECONDS), reportDataRowID);
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
@@ -605,7 +605,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
@@ -777,7 +777,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
@@ -940,7 +940,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_90MIN_IN_SECONDS), reportDataRowID);
-		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
