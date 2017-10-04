@@ -31,13 +31,11 @@ import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
-import common.source.ArrayUtility;
 import common.source.BackPackAnalyzer;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
@@ -81,10 +79,10 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 
 	@Before
 	public void beforeTest() throws Exception {
+		initializePageActions();
 		createTestCaseData(testName);
 		initializeTestDriver();
 		initializeTestScreenObjects();
-		initializePageActions();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
@@ -354,64 +352,36 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 		});
 	}
 
-	// These test cases do NOT modify report data. We attempt to find existing reports in DB that can be used in the test cases.
-	// In case no matching report is found in DB we create a new one.
+	// For perf tests we always start with a newly generated report with specific lisas.
 	private void createTestCaseData(TestName testName) throws Exception {
 		String methodName = testName.getMethodName();
-		generatedInvReportTitle = lookupExistingReportForTestCase(testName);
-		if (generatedInvReportTitle != null) {
-			return;
-		}
-
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
 		String[] lisaNumbers = {"2", "4", "6"};
-
-		if (methodName.startsWith("TC2734-1")) {
+		boolean reuseReports = false;
+		if (methodName.startsWith("TC2734_1")) {
 			Object[][] tc2734_1 = AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_1();
 			userDataRowID = (Integer)tc2734_1[0][1];
 			reportDataRowID1 = (Integer)tc2734_1[0][2];
 			tcId = "TC2734-1";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
-		} else if (methodName.startsWith("TC2734-2")) {
+		} else if (methodName.startsWith("TC2734_2")) {
 			Object[][] tc2734_2 = AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_2();
 			userDataRowID = (Integer)tc2734_2[0][1];
 			reportDataRowID1 = (Integer)tc2734_2[0][2];
 			tcId = "TC2734-2";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
-		} else if (methodName.startsWith("TC2734-3")) {
+		} else if (methodName.startsWith("TC2734_3")) {
 			Object[][] tc2734_3 = AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_3();
 			userDataRowID = (Integer)tc2734_3[0][1];
 			reportDataRowID1 = (Integer)tc2734_3[0][2];
 			tcId = "TC2734-3";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		}
-	}
-
-	private String lookupExistingReportForTestCase(TestName testName) throws Exception {
-		String methodName = testName.getMethodName();
-		Integer userDataRowID = defaultUserDataRowID;
-		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2682", "TC2683", "TC2684", "TC2734-1", "TC2734-2", "TC2734-3"};
-		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
-		if (methodName.startsWith("TC2734-1")) {
-			userDataRowID = (Integer)AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_1()[0][1];
-		} else if (methodName.startsWith("TC2734-2")) {
-			userDataRowID = (Integer)AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_2()[0][1];
-		} else if (methodName.startsWith("TC2734-3")) {
-			userDataRowID = (Integer)AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_3()[0][1];
-		}
-
-		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
-		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, userDataRow.username);
-		if (matchingReport != null) {
-			return matchingReport.getReportTitle();
-		}
-
-		return null;
 	}
 
 	private void initializeTestScreenObjects() {

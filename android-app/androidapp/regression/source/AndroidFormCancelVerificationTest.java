@@ -134,6 +134,11 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2682_EnergyBackpack_LoggingCGI_Cancel ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
@@ -209,6 +214,11 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 	public void TC2683_EnergyBackpack_LoggingMultipleOtherSource_Cancel(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2683_EnergyBackpack_LoggingMultipleOtherSource_Cancel ...");
+
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
 
 		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
@@ -305,6 +315,11 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2684_EnergyBackpack_LoggingGasFound_Cancel ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
@@ -364,57 +379,60 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		});
 	}
 
-	// Cancel form test cases do NOT modify report data. We attempt to find existing reports in DB that can be used in the test cases.
-	// In case no matching report is found in DB we create a new one.
 	private void createTestCaseData(TestName testName) throws Exception {
 		String methodName = testName.getMethodName();
-		generatedInvReportTitle = lookupExistingReportForTestCase(testName);
-		if (generatedInvReportTitle != null) {
-			return;
+		if (!isRunningInDataGenMode()) {
+			generatedInvReportTitle = lookupExistingReportForTestCase(testName);
+			if (generatedInvReportTitle != null) {
+				return;
+			}
 		}
 
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
-		String[] lisaNumbers = {"2", "4", "6"};
+		boolean reuseReports = false;
 
 		if (methodName.startsWith("TC2682")) {
 			Object[][] tc2682 = FormCancelReportDataProvider.dataProviderAndroidApp_TC2682();
 			userDataRowID = (Integer)tc2682[0][1];
 			reportDataRowID1 = (Integer)tc2682[0][2];
 			tcId = "TC2682";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+					defaultUserDataRowID, userDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2683")) {
 			Object[][] tc2683 = FormCancelReportDataProvider.dataProviderAndroidApp_TC2683();
 			userDataRowID = (Integer)tc2683[0][1];
 			reportDataRowID1 = (Integer)tc2683[0][2];
 			tcId = "TC2683";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+					defaultUserDataRowID, userDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2684")) {
 			Object[][] tc2684 = FormCancelReportDataProvider.dataProviderAndroidApp_TC2684();
 			userDataRowID = (Integer)tc2684[0][1];
 			reportDataRowID1 = (Integer)tc2684[0][2];
 			tcId = "TC2684";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+					defaultUserDataRowID, userDataRowID, reportDataRowID1).getReportTitle();
 		}
 	}
 
 	private String lookupExistingReportForTestCase(TestName testName) throws Exception {
 		String methodName = testName.getMethodName();
 		Integer userDataRowID = defaultUserDataRowID;
-		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2682", "TC2683", "TC2684"};
-		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
+		List<String> tcsWithReportsThatHaveLisasList = new ArrayList<>();
 		if (methodName.startsWith("TC2682")) {
+			tcsWithReportsThatHaveLisasList.add("TC2682");
 			userDataRowID = (Integer)FormCancelReportDataProvider.dataProviderAndroidApp_TC2682()[0][1];
 		} else if (methodName.startsWith("TC2683")) {
+			tcsWithReportsThatHaveLisasList.add("TC2683");
 			userDataRowID = (Integer)FormCancelReportDataProvider.dataProviderAndroidApp_TC2683()[0][1];
 		} else if (methodName.startsWith("TC2684")) {
+			tcsWithReportsThatHaveLisasList.add("TC2684");
 			userDataRowID = (Integer)FormCancelReportDataProvider.dataProviderAndroidApp_TC2684()[0][1];
 		}
 
+		String[] tcsWithReportsThatHaveLisas = tcsWithReportsThatHaveLisasList.toArray(new String[tcsWithReportsThatHaveLisasList.size()]);
 		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, userDataRow.username);
 		if (matchingReport != null) {

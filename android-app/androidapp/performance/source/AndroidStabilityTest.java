@@ -184,7 +184,6 @@ public class AndroidStabilityTest extends BaseReportTest {
 		String tcId = "";
 		boolean reuseReports = false;
 		String[] tcsWithReportsThatHaveLisas = {"TC2811"};
-		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);
 		if (methodName.startsWith("TC2811_")) {
 			Object[][] tc2811 = StabilityTestDataProvider.dataProviderStabilityTest_TC2811();
 			userDataRowID = (Integer)tc2811[0][1];

@@ -19,7 +19,7 @@ public class FormCancelReportDataProvider extends SurveyorTestRunner {
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2682() {
 		return new Object[][] {
-			{ "TC2682" /*TestCaseID*/, 6 /*userDataRowID*/,  256 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2682" /*TestCaseID*/, 18 /*userDataRowID*/,  256 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 

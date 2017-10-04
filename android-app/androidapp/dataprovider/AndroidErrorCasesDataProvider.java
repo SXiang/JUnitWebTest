@@ -19,21 +19,21 @@ public class AndroidErrorCasesDataProvider extends AndroidDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2723() {
 		return new Object[][] {
-			{ "TC2723" /*TestCaseID*/, 6 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2723" /*TestCaseID*/, 18 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2724() {
 		return new Object[][] {
-			{ "TC2724" /*TestCaseID*/, 6 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2724" /*TestCaseID*/, 18 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2725() {
 		return new Object[][] {
-			{ "TC2725" /*TestCaseID*/, 6 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2725" /*TestCaseID*/, 18 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
@@ -47,7 +47,7 @@ public class AndroidErrorCasesDataProvider extends AndroidDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2732() {
 		return new Object[][] {
-			{ "TC2732" /*TestCaseID*/, 6 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2732" /*TestCaseID*/, 18 /* userDataRowID */,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
