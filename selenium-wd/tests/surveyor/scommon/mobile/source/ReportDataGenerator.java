@@ -102,10 +102,10 @@ public class ReportDataGenerator {
 			String[] lisaNumbers, String[] gapNumbers, Boolean selectAllLisas, Boolean selectAllGaps) throws Exception {
 		Log.method("createReportAndAssignLisasAndGapsToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 
-		if (isReusable) {
+		if (getIsReusable()) {
+			Log.info("Reusable set to 'true'. Looking for report in DB which can be reused.");
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
 			if (rptEntity != null) {
-				Log.info(String.format("isReusable set to TRUE. Found existing test data in DB. Reusing data from DB. ReportInfoEntity -> %s", rptEntity));
 				return rptEntity;
 			}
 		}
@@ -132,7 +132,8 @@ public class ReportDataGenerator {
 	private ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
 			String[] lisaNumbers, Boolean selectAllLisas) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
-		if (isReusable) {
+		if (getIsReusable()) {
+			Log.info("Reusable set to 'true'. Looking for report in DB which can be reused.");
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
 			if (rptEntity != null) {
 				return rptEntity;
@@ -156,7 +157,8 @@ public class ReportDataGenerator {
 	private ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
 			String[] gapNumbers, Boolean selectAllGaps) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
-		if (isReusable) {
+		if (getIsReusable()) {
+			Log.info("Reusable set to 'true'. Looking for report in DB which can be reused.");
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
 			if (rptEntity != null) {
 				return rptEntity;

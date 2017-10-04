@@ -167,8 +167,12 @@ public class WebDriverFactory {
 	}
 
 	public static boolean hasDriverQuit(WebDriver driver) {
-		if (driver == null || driver.toString().contains("(null)")) {
+		if (driver == null) {
 			return true;
+		} else {
+			if (driver.toString().contains("(null)")) {
+				return true;
+			}
 		}
 
 		return false;
