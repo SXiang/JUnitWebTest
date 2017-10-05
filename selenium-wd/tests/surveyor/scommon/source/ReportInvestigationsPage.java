@@ -131,11 +131,19 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		this.waitForPageToLoad();
 	}
 
-	public boolean selectLisas(String... lisaNumbers){
+	public boolean selectLisasByNumber(String reportName, int ...lisaNumbers){
+		String[] lisaNames = new String[lisaNumbers.length];
+		for (int i=0; i<lisaNames.length; i++) {
+			lisaNames[i] = reportName+"-LISA-"+lisaNumbers[i];
+		}
+		return selectLisas(lisaNames);
+	}
+	
+	public boolean selectLisas(String... lisaNames){
 		boolean retVal = true;
 		selectDropdownItem(boxTypeDropdown, BOXTYPE_LISA);
-		for (String lisaNumber : lisaNumbers) {
-			retVal = retVal && selectBox(lisaNumber);
+		for (String lisaName : lisaNames) {
+			retVal = retVal && selectBox(lisaName);
 		}
 
 		return retVal;
@@ -146,20 +154,24 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		selectAllCheckboxes();
 	}
 
-	public boolean selectGap(String gapNumber){
-		return selectMultipleGaps(new String[] { gapNumber });
-	}
-
 	public void selectAllGaps(){
 		selectDropdownItem(boxTypeDropdown, BOXTYPE_GAP);
 		selectAllCheckboxes();
 	}
 
-	public boolean selectMultipleGaps(String[] gapNumbers){
+	public boolean selectGapsByNumber(String reportName, int ...gapNumbers){
+		String[] gapNames = new String[gapNumbers.length];
+		for (int i=0; i<gapNames.length; i++) {
+			gapNames[i] = reportName+"-Gap-"+gapNumbers[i];
+		}
+		return selectGaps(gapNames);
+	}
+	
+	public boolean selectGaps(String... gapNames){
 		boolean retVal = true;
 		selectDropdownItem(boxTypeDropdown, BOXTYPE_GAP);
-		for (String gapNumber : gapNumbers) {
-			retVal = retVal && selectBox(gapNumber);
+		for (String gapName : gapNames) {
+			retVal = retVal && selectBox(gapName);
 		}
 
 		return retVal;

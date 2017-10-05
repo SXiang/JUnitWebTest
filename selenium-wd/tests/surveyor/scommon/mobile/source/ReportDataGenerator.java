@@ -185,7 +185,7 @@ public class ReportDataGenerator {
 		loginPageAction.login(EMPTY, userDataRowID);
 		complianceReportsPageAction.open(testCaseID, reportDataRowID);
 		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
-		reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+		reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		return reportId;
 	}
@@ -211,8 +211,7 @@ public class ReportDataGenerator {
 			for (int i = 0; i < gapNumbers.length; i++) {
 				gapsToSelect[i]  = gapNumberPrefix+gapNumbers[i];
 			}
-
-			reportInvestigationsPage.selectMultipleGaps(gapsToSelect);
+			reportInvestigationsPage.selectGaps(gapsToSelect);
 		}
 	}
 

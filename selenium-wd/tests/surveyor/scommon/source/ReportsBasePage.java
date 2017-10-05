@@ -1540,7 +1540,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy, String allowedErrorMsg) throws Exception {
 		Predicate<String> allowedMoreThanSupportedAssetsErrorCheck = getCheckAllowedErrorsPredicate(
 				String.format("report id=%s", getReportJobStat(rptTitle).Id.toUpperCase()));
-		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
+		String reportName = waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
 		if (reportName == null) {
 			return false;
 		}
@@ -1548,7 +1548,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) throws Exception  {
-		return waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/);
+		String reportId = waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy);
+		return getReportNameById(reportId);
+	}
+	
+	public String waitForReportGenerationtoCompleteAndGetReportId(String rptTitle, String strCreatedBy) throws Exception  {
+		return waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/);
 	}
 
 	private boolean waitForReportGenerationToComplete(String rptTitle, String strCreatedBy, StringBuilder rptNameBuilder) {
@@ -1564,7 +1569,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}));
 	}
 
-	protected String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
+	protected String waitForReportGenerationtoCompleteAndGetReportId(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
 		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
 				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
 
@@ -1624,7 +1629,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			outReportId.append(reportId);
 		}
 
-		String strReportName = getReportPrefix() + "-" + reportId.substring(0, 6).toUpperCase();
+		String strReportName = getReportNameById(reportId);
 
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
@@ -3297,5 +3302,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			isCorrect &= customerId.equalsIgnoreCase(id);
 		}
 		return isCorrect;
+	}
+	
+	public String getReportNameById(String reportId){
+		return getReportPrefix() + "-" + reportId.substring(0, 6).toUpperCase();
 	}
 }
