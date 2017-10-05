@@ -23,7 +23,6 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_Tahoe extends BaseReportsPageActionTest {
 
-	private static final String EMPTY = "";
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static LatLongSelectionControl latLongSelectionControl = null;
@@ -68,6 +67,167 @@ public class ComplianceReportsPageTest_Tahoe extends BaseReportsPageActionTest {
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 
+	/**
+	 * Test Case ID: TC2793_ComplianceReportForAssetBoxAreNotIntersectingWithLisas
+	 * Test Description: Generate report for Asset Box algorithm when Assets are not intersecting with LISAs
+	 *	- Customer has Asset Box Algorithm permission
+	 *	- Survey having LISAs but not a single LISA has assets intersected to it
+	 * Script: -
+	 *	-Log in as utility admin
+	 *	- Navigate to Reports -> Compliance
+	 *	- Generate compliance report with above survey (Atleast one view with LISAs and Assets selected)
+	 *	- Download View PDF
+	 *	- Click on Investigate button
+	 *	- Click on Assign Investigators button
+	 *	- Assign couple of LISAs for investigation
+	 *	- Log in to mobile view as assigned user
+	 *	- Investigate any one of the LISAs
+	 *	- Download investigate PDF and CSV button
+	 * Results: -
+	 *	-Assets should not be intersected with any LISAs
+	 *	- LISAs should be present on Investigation List screen
+	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
+	 *	- User should be able to investigate LISAs successfully
+	 *	- Investigate PDF and CSV should have correct LISA information and other details
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2238, location = ComplianceReportDataProvider.class)
+	public void TC2793_ComplianceReportForAssetBoxAreNotIntersectingWithLisas(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2793_ComplianceReportForAssetBoxAreNotIntersectingWithLisas ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID1)));
+	}
+	
+	/**
+	 * Test Case ID: TC2794_ComplianceReportCopyForAssetBoxAreNotIntersectingWithLisas
+	 * Test Description: Generate report for Asset Box algorithm using copy functionality when Assets are not intersecting with LISAs
+	 *	- Customer has Asset Box Algorithm permission
+	 *	- Survey having LISAs but not a single LISA has assets intersected to it
+	 *	- Old Compliance report where assets are not intersecting with LISAs
+	 * Script: -
+	 *	-Log in as utility admin
+	 *	- Click on copy button of above report
+	 *	- Click OK
+	 *	- Download View PDF
+	 *	- Click on Investigate button
+	 *	- Click on Assign Investigators button
+	 *	- Assign couple of LISAs for investigation
+	 *	- Log in to mobile view as assigned user
+	 *	- Investigate any one of the LISAs
+	 *	- Download investigate PDF and CSV button
+	 * Results: -
+	 *	-Assets should not be intersected with any LISAs
+	 *	- LISAs should be present on Investigation List screen
+	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
+	 *	- User should be able to investigate LISAs successfully
+	 *	- Investigate PDF and CSV should have correct LISA information and other details
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2238, location = ComplianceReportDataProvider.class)
+	public void TC2794_ComplianceReportCopyForAssetBoxAreNotIntersectingWithLisas(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2794_ComplianceReportCopyForAssetBoxAreNotIntersectingWithLisas ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID1)));
+	}
+	
+	/**
+	 * Test Case ID: TC2828_ComplianceReportForLisaAssetsAreNotIntersectingWithLisas
+	 * Test Description: Generate report for LISAs Asset Highlight algorithm when Assets are not intersecting with LISAs
+	 *	- Customer has LISA Asset Highlight Algorithm permission
+	 *	- Survey having LISAs but not a single LISA has assets intersected to it
+	 * Script: -
+	 *	- Log in as utility admin
+	 *	- Navigate to Reports -> Compliance
+	 *	- Generate compliance report with above survey (Atleast one view with LISAs and Assets selected)
+	 *	- Download View PDF
+	 *	- Click on Investigate button
+	 *	- Click on Assign Investigators button
+	 *	- Assign couple of LISAs for investigation
+	 *	- Log in to mobile view as assigned user
+	 *	- Investigate any one of the LISAs
+	 *	- Download investigate PDF and CSV button
+	 * Results: -
+	 *	- Assets should not be intersected with any LISAs
+	 *	- LISAs should be present on Investigation List screen
+	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
+	 *	- User should be able to investigate LISAs successfully
+	 *	- Investigate PDF and CSV should have correct LISA information and other details
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2238, location = ComplianceReportDataProvider.class)
+	public void TC2828_ComplianceReportForLisaAssetsAreNotIntersectingWithLisas(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2828_ComplianceReportForLisaAssetsAreNotIntersectingWithLisas ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID1)));
+	}
+	
+	/**
+	 * Test Case ID: TC2829_ComplianceReportCopyForLisaAssetsAreNotIntersectingWithLisas
+	 * Test Description: Generate report for LISAs Asset Highlight algorithm using copy functionality when Assets are not intersecting with LISAs
+	 *	- Customer has LISAs Asset Highlight Algorithm permission
+	 *	- Survey having LISAs but not a single LISA has assets intersected to it
+	 *	- Old Compliance report where assets are not intersecting with LISAs
+	 * Script: -
+	 *	- Log in as utility admin
+	 *	- Click on copy button of above report
+	 *	- Click OK
+	 *	- Download View PDF
+	 *	- Click on Investigate button
+	 *	- Click on Assign Investigators button
+	 *	- Assign couple of LISAs for investigation
+	 *	- Log in to mobile view as assigned user
+	 *	- Investigate any one of the LISAs
+	 *	- Download investigate PDF and CSV button
+	 * Results: -
+	 *	- Assets should not be intersected with any LISAs
+	 *	- LISAs should be present on Investigation List screen
+	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
+	 *	- User should be able to investigate LISAs successfully
+	 *	- Investigate PDF and CSV should have correct LISA information and other details
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2238, location = ComplianceReportDataProvider.class)
+	public void TC2829_ComplianceReportCopyForLisaAssetsAreNotIntersectingWithLisas(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2829_ComplianceReportCopyForLisaAssetsAreNotIntersectingWithLisas ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID1)));
+	}
 	/**
 	 * Test Case ID: TC2238_ComplianceReportWithOnlyHighlightLISAAssetsInView
 	 * Test Description: Generate compliance report for customer having license for Asset box feature and only highlight LISA Assets is selected in views 
