@@ -465,7 +465,7 @@ END
 -- Analyzer
 -- NOTE: [SerialNumber] AND [SharedKey] are UNIQUE for Analyzer. 
 
--- sqacus Analyzer - sqacus2016
+-- sqacus Analyzer - sqacus2016-1(SQACus)/Ethane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SQACUS2016-1' AND [SharedKey]=N'sqacus2016-1')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', [SerialNumber]=N'SQACUS2016-1', [SharedKey]=N'sqacus2016-1' WHERE [Id]='43A34021-8814-8A01-9183-39D4B4DE03EB'
@@ -473,98 +473,105 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'43A34021-8814-8A01-9183-39D4B4DE03EB', N'EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', N'SQACUS2016-1', N'sqacus2016-1')
 END
 
--- RFADS2004 - BlackDodgeP3300
+-- RFADS2004 - BlackDodgeP3300(Picarro)/Ethane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004' AND [SharedKey]=N'rfads2004')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'47FC54A4-26ED-7306-4D1D-39D76AFC27C4', [SerialNumber]=N'RFADS2004', [SharedKey]=N'rfads2004' WHERE [Id]='26F7026D-788B-0413-0D89-39D76AFCAAFE'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'26F7026D-788B-0413-0D89-39D76AFCAAFE', N'47FC54A4-26ED-7306-4D1D-39D76AFC27C4', N'RFADS2004', N'rfads2004')
 END
--- FDDS2037 - White Dodge
+-- FDDS2037 - Software Car(Picarro)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2037' AND [SharedKey]=N'fdds2037')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', [SerialNumber]=N'FDDS2037', [SharedKey]=N'fdds2037' WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC533D50'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'00000015-DB64-FDE7-7E67-39C8AC533D50', N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', N'FDDS2037', N'fdds2037')
 END
--- FDDS2038 - Software Car
+-- FDDS2038 - White Dodge(SQACus)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2038' AND [SharedKey]=N'fdds2038')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', [SerialNumber]=N'FDDS2038', [SharedKey]=N'fdds2038' WHERE [Id]='34A34021-8814-8A01-9183-39D4B4DE03BE'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'34A34021-8814-8A01-9183-39D4B4DE03BE', N'DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', N'FDDS2038', N'fdds2038')
 END
+-- FDDS2037-2(SQATest)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2037-2' AND [SharedKey]=N'fdds2037-2')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'00000014-fb61-2ef6-5dd1-39c8ac533d42', [SerialNumber]=N'FDDS2037-2', [SharedKey]=N'fdds2037-2' WHERE [Id]='00000015-db64-fde7-7e67-39c8ac533d52'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'00000015-db64-fde7-7e67-39c8ac533d52', N'00000014-fb61-2ef6-5dd1-39c8ac533d42', N'FDDS2037-2', N'fdds2037-2')
 END
+-- FEDS2015(PG&E)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FEDS2015' AND [SharedKey]=N'feds2015')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1', [SerialNumber]=N'FEDS2015', [SharedKey]=N'feds2015' WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC533D49'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id],[SurveyorUnitId],[SerialNumber],[SharedKey]) VALUES ('00000015-DB64-FDE7-7E67-39C8AC533D49','C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1','FEDS2015','feds2015')
 END
+-- FEDS2050(Picarro)/MAST
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FEDS2050' AND [SharedKey]=N'feds2050')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', [SerialNumber]=N'FEDS2050', [SharedKey]=N'feds2050' WHERE [Id]='1CF19683-DB1E-CBD8-37AD-39D6D20BE2B7'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id],[SurveyorUnitId],[SerialNumber],[SharedKey]) VALUES ('1CF19683-DB1E-CBD8-37AD-39D6D20BE2B7','2AA6AC90-B839-4787-F3B5-39D4B4DCEE95','FEDS2050','feds2050')
 END
+-- FEDS2055(Picarro)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FEDS2055' AND [SharedKey]=N'feds2055')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'8F434C73-637B-CE9F-80B0-39D7F5B5A258', [SerialNumber]=N'FEDS2055', [SharedKey]=N'feds2055' WHERE [Id]='45E3BFBC-E42C-459A-91A2-39CFD6851706'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id],[SurveyorUnitId],[SerialNumber],[SharedKey]) VALUES ('45E3BFBC-E42C-459A-91A2-39CFD6851706','8F434C73-637B-CE9F-80B0-39D7F5B5A258','FEDS2055','feds2055')
 END
+-- FDDS2037-1(SQACus)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2037-1' AND [SharedKey]=N'fdds2037-1')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'00000014-fb61-2ef6-5dd1-39c8ac533d41', [SerialNumber]=N'FDDS2037-1', [SharedKey]=N'fdds2037-1' WHERE [Id]='00000015-db64-fde7-7e67-39c8ac533d51'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'00000015-db64-fde7-7e67-39c8ac533d51', N'00000014-fb61-2ef6-5dd1-39c8ac533d41', N'FDDS2037-1', N'fdds2037-1')
 END
--- SimAuto-Analyzer1 (Picarro)
+-- SimAuto-Analyzer1 (Picarro)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer1' AND [SharedKey]=N'SimAuto-AnalyzerKey1')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB4F3579-843A-113E-001C-39D4011393C9', [SerialNumber]=N'SimAuto-Analyzer1', [SharedKey]=N'SimAuto-AnalyzerKey1' WHERE [Id]='58839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'58839947-9569-952D-16D6-39D4011442FA', N'FB4F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer1', N'SimAuto-AnalyzerKey1')
 END
--- SimAuto-Analyzer2 (Picarro)
+-- SimAuto-Analyzer2 (Picarro)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer2' AND [SharedKey]=N'SimAuto-AnalyzerKey2')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB5F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer2', [SharedKey]=N'SimAuto-AnalyzerKey2' WHERE [Id]='59839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'59839947-9569-952D-16D6-39D4011442FA', N'FB5F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer2', N'SimAuto-AnalyzerKey2')
 END
--- SimAuto-Analyzer3 (Picarro)
+-- SimAuto-Analyzer3 (Picarro)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer3' AND [SharedKey]=N'SimAuto-AnalyzerKey3')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB6F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer3', [SharedKey]=N'SimAuto-AnalyzerKey3' WHERE [Id]='5a839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'5a839947-9569-952D-16D6-39D4011442FA', N'FB6F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer3', N'SimAuto-AnalyzerKey3')
 END
--- SimAuto-Analyzer4 (sqacus)
+-- SimAuto-Analyzer4 (sqacus)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer4' AND [SharedKey]=N'SimAuto-AnalyzerKey4')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'84F35FAA-71CB-44AE-AB4A-15C343F1C84A', [SerialNumber]=N'SimAuto-Analyzer4', [SharedKey]=N'SimAuto-AnalyzerKey4' WHERE [Id]='AB60E5EC-4B6D-4CAF-B0D2-7D5813AA572E'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'AB60E5EC-4B6D-4CAF-B0D2-7D5813AA572E', N'84F35FAA-71CB-44AE-AB4A-15C343F1C84A', N'SimAuto-Analyzer4', N'SimAuto-AnalyzerKey4')
 END
--- SimAuto-Analyzer5 (PG&E)
+-- SimAuto-Analyzer5 (PG&E)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer5' AND [SharedKey]=N'SimAuto-AnalyzerKey5')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'B432D533-83DB-4EC2-8A39-38DF4125B609', [SerialNumber]=N'SimAuto-Analyzer5', [SharedKey]=N'SimAuto-AnalyzerKey4' WHERE [Id]='56E4AA85-2E22-4233-A64A-00D75D284111'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'56E4AA85-2E22-4233-A64A-00D75D284111', N'B432D533-83DB-4EC2-8A39-38DF4125B609', N'SimAuto-Analyzer5', N'SimAuto-AnalyzerKey5')
 END
+-- RFADS2004-PICARRO (Picarro)/Ethane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004-PICARRO' AND [SharedKey]=N'rfads2004-picarro')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', [SerialNumber]=N'RFADS2004-PICARRO', [SharedKey]=N'rfads2004-picarro' WHERE [Id]='D2CCC285-2BD3-5D22-667E-39D823D4D255'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'D2CCC285-2BD3-5D22-667E-39D823D4D255', N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', N'RFADS2004-PICARRO', N'rfads2004-picarro')
 END
+-- NoLicAna (CustomerWithNoLicense)/Isotopic Methane
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'1E7426FF-6C7C-EFF3-303E-39DA802825EB', [SerialNumber]=N'NoLicAna', [SharedKey]=N'NoLicAnaKey' WHERE [Id]='AFBE9B5B-5222-C1C0-7D96-39DA80286015'
 IF @@ROWCOUNT=0
@@ -572,6 +579,7 @@ IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='NoLicAna' AN
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'AFBE9B5B-5222-C1C0-7D96-39DA80286015', N'1E7426FF-6C7C-EFF3-303E-39DA802825EB', N'NoLicAna', N'NoLicAnaKey')
 END
 -- EQ Analyzer
+-- FEDS2055-PICARRO/Isotopic Methane
 BEGIN
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', [SerialNumber]=N'FEDS2055-PICARRO', [SharedKey]=N'feds2055-picarro' WHERE [Id]='F5970731-CE37-F7F3-DB5F-39D7E2D02053'
 IF @@ROWCOUNT=0
@@ -579,6 +587,7 @@ IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='FEDS2055-PIC
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', N'FEDS2055-PICARRO', N'feds2055-picarro')
 END
 -- Analyzer - (RFADS2004-FEQ)
+-- RFADS2004-FEQ (Picarro) / Ethane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004-FEQ' AND [SharedKey]=N'rfads2004-feq')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'58c51edd-51a4-1266-1159-39dbd3f3366c', [SerialNumber]=N'RFADS2004-FEQ', [SharedKey]=N'rfads2004-feq' WHERE [Id]='88cfc43e-9005-03e1-1d7a-39dbd3f483de'
@@ -586,6 +595,7 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'88cfc43e-9005-03e1-1d7a-39dbd3f483de', N'58c51edd-51a4-1266-1159-39dbd3f3366c', N'RFADS2004-FEQ', N'rfads2004-feq')
 END
 -- Analyzer - (RFADS2003)
+-- RFADS2003(Picarro)/Ethane, MAST
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2003' AND [SharedKey]=N'rfads2003')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'36d72df6-2823-4542-8298-39de6c296d8e', [SerialNumber]=N'RFADS2003', [SharedKey]=N'rfads2003' WHERE [Id]='6479a0f7-37c1-b40c-c53b-39de6c1e9d69'
@@ -593,6 +603,7 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'6479a0f7-37c1-b40c-c53b-39de6c1e9d69', N'36d72df6-2823-4542-8298-39de6c296d8e', N'RFADS2003', N'rfads2003')
 END
 -- Analyzer - (SimAuto-EQAnalyzer1)
+-- SimAuto-EQAnalyzer1(Picarro)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-EQAnalyzer1' AND [SharedKey]=N'SimAuto-EQAnalyzer1Key')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'52D4D54B-1179-4712-AFB4-FA70DDEBA96A', [SerialNumber]=N'SimAuto-EQAnalyzer1', [SharedKey]=N'SimAuto-EQAnalyzer1Key' WHERE [Id]='B89BF795-F1FA-45E6-A6DC-F674A84F5E47'
@@ -600,6 +611,7 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'B89BF795-F1FA-45E6-A6DC-F674A84F5E47', N'52D4D54B-1179-4712-AFB4-FA70DDEBA96A', N'SimAuto-EQAnalyzer1', N'SimAuto-EQAnalyzer1Key')
 END
 -- Analyzer - (SimAuto-EQAnalyzer-SqaCus-1) 
+-- SimAuto-EQAnalyzer-SqaCus-1(SQACus)/Isotopic Methane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-EQAnalyzer-SqaCus-1' AND [SharedKey]=N'SimAuto-EQAnalyzer-SqaCus-1Key')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'400F642D-F2F3-4A0A-8F11-601F9FDCC217', [SerialNumber]=N'SimAuto-EQAnalyzer-SqaCus-1', [SharedKey]=N'SimAuto-EQAnalyzer-SqaCus-1Key' WHERE [Id]='3029DBB8-F824-491D-8D90-6CBD92CFDF8F'
@@ -607,6 +619,7 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'3029DBB8-F824-491D-8D90-6CBD92CFDF8F', N'400F642D-F2F3-4A0A-8F11-601F9FDCC217', N'SimAuto-EQAnalyzer-SqaCus-1', N'SimAuto-EQAnalyzer-SqaCus-1Key')
 END
 -- Analyzer - (SimAuto-EQAnalyzer-Eth1)
+-- SimAuto-EQAnalyzer-Eth1(Picarro)/Ethane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-EQAnalyzer-Eth1' AND [SharedKey]=N'SimAuto-EQAnalyzer-Eth1Key')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'1C374486-FF8A-4117-BCBA-5E0C2B9D3DF7', [SerialNumber]=N'SimAuto-EQAnalyzer-Eth1', [SharedKey]=N'SimAuto-EQAnalyzer-Eth1Key' WHERE [Id]='AF4006D5-C01C-4D28-8099-530E350D1439'
@@ -614,6 +627,7 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'AF4006D5-C01C-4D28-8099-530E350D1439', N'1C374486-FF8A-4117-BCBA-5E0C2B9D3DF7', N'SimAuto-EQAnalyzer-Eth1', N'SimAuto-EQAnalyzer-Eth1Key')
 END
 -- Analyzer - (SimAuto-EQAnalyzer-SqaCus-Eth1)
+-- SimAuto-EQAnalyzer-SqaCus-Eth1(SQACus)/Ethane
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-EQAnalyzer-SqaCus-Eth1' AND [SharedKey]=N'SimAuto-EQAnalyzer-SqaCus-Eth1Key')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'C5354534-336F-44D1-9FB9-6270DFE2EAD7', [SerialNumber]=N'SimAuto-EQAnalyzer-SqaCus-Eth1', [SharedKey]=N'SimAuto-EQAnalyzer-SqaCus-Eth1Key' WHERE [Id]='3BB5D6C4-17D0-4088-A616-11CE03DD3274'
