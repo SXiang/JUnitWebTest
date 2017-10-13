@@ -100,7 +100,7 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	/* ComplianceReportInvestigationPageTest2 */
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC234() {
-		return new Object[][] { { "TC234" /* TestCaseID */, 1 /* userDataRowID */, 2 /* mobileUserDataRowID */, 236 /* reportDataRowID1 */,  3/* mobileUserDataRowID2 */} };
+		return new Object[][] { { "TC234" /* TestCaseID */, 17 /* userDataRowID */, 16 /* mobileUserDataRowID */, 236 /* reportDataRowID1 */,  3/* mobileUserDataRowID2 */} };
 	}
 	
 	@DataProvider

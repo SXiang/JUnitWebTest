@@ -243,7 +243,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		/* 1.  Mobile - add leak and complete */
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
@@ -385,7 +384,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		/* 1. Mobile - add leak and complete */
 		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
@@ -568,7 +566,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
@@ -620,7 +617,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
@@ -731,7 +727,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add other source and complete
 		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 4);
@@ -768,7 +763,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add other source and complete
 		sourceDetails = new OtherSourceEntity(mobileUserDataRow2.username, 2);
@@ -859,7 +853,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);

@@ -113,7 +113,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		// Assign Lisas to user
-		int workingLisa = 9;
+		int workingLisa = 3;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
