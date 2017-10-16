@@ -149,7 +149,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
@@ -177,7 +176,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 8);
@@ -247,7 +245,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1,lisaNumberPrefix+4,lisaNumberPrefix+2,lisaNumberPrefix+7);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1,lisaNumberPrefix+4,lisaNumberPrefix+7);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8,lisaNumberPrefix+5,lisaNumberPrefix+3);
@@ -260,7 +258,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
@@ -268,7 +266,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - no leak found
 		mobileReportsPage.open();
@@ -340,7 +337,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - no leak found
 		mobileReportsPage.open();
@@ -392,9 +388,9 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
 		// Mobile not assigned - color verification: orange
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+9, IndicationStatus.NOTINVESTIGATED);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, IndicationStatus.NOTINVESTIGATED);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-9", new Rectangle(0,500,0,0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-2", new Rectangle(0,500,0,0)));
 		mobileLoginPage.logout();
 	}
 
@@ -466,7 +462,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
@@ -523,7 +518,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 2);
@@ -640,7 +634,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 1);
@@ -697,7 +690,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 2);
@@ -812,7 +804,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
@@ -865,7 +856,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 2);
@@ -975,7 +965,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 1);
@@ -1028,7 +1017,6 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
 		sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 2);

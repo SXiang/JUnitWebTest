@@ -113,7 +113,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		// Assign Lisas to user
-		int workingLisa = 3;
+		int workingLisa = 1;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
@@ -172,7 +172,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 		// Assign Lisas to user
-		int workingGap = 9;
+		int workingGap = 1;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectGapsByNumber(reportName, workingGap);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
