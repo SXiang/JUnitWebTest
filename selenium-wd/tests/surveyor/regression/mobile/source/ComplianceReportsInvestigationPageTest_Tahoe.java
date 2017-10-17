@@ -4,6 +4,9 @@
 package surveyor.regression.mobile.source;
 
 import static org.junit.Assert.*;
+
+import java.awt.Rectangle;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -126,7 +129,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap", new Rectangle(200, 615, 350, 200)));
 
 		mobileLoginPage.logout();
 	}
@@ -185,7 +188,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnGap(reportName, workingGap);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationGapMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationGapMap", new Rectangle(200, 615, 350, 200)));
 
 		mobileLoginPage.logout();
 	}

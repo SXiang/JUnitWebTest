@@ -7,6 +7,9 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+
+import java.awt.Rectangle;
+
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 
@@ -545,7 +548,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap", new Rectangle(200, 615, 350, 200)));
 
 		mobileLoginPage.logout();
 	}
@@ -610,7 +613,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap", new Rectangle(200, 615, 350, 200)));
 
 		mobileLoginPage.logout();
 	}
