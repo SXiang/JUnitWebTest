@@ -248,7 +248,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1,lisaNumberPrefix+4,lisaNumberPrefix+7);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8,lisaNumberPrefix+5,lisaNumberPrefix+3);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8,lisaNumberPrefix+2,lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver
@@ -348,7 +348,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile Found no Leak - color verification: blue
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoGasFound-8"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoGasFound-8", new Rectangle(0,700,0,0)));
 		
 		// Mobile - add leak and complete
 		mobileReportsPage.open();
@@ -365,7 +365,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile FoundLeak - color verification: Red
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.FOUNDGASLEAK);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-8"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-8",new Rectangle(0,700,0,0)));
 		
 		// Mobile - add leak and pause
 		mobileReportsPage.open();
@@ -382,15 +382,15 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile Inprogress - color verification: violet
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8"));	
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8",new Rectangle(0,700,0,0)));	
 
 		// Mobile - not assigned
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
 		// Mobile not assigned - color verification: orange
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, IndicationStatus.NOTINVESTIGATED);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, IndicationStatus.NOTINVESTIGATED);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-2", new Rectangle(0,500,0,0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-5", new Rectangle(0,640,0,-500)));
 		mobileLoginPage.logout();
 	}
 
