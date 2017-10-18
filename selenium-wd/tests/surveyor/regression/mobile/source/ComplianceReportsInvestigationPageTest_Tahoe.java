@@ -116,7 +116,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		// Assign Lisas to user
-		int workingLisa = 1;
+		int workingLisa = 8;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
@@ -129,7 +129,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap", new Rectangle(0, 700, 0, 0)));
 
 		mobileLoginPage.logout();
 	}
