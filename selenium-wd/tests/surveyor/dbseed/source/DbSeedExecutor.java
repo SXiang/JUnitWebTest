@@ -17,6 +17,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerBulkCopy;
 
 import common.source.BcpDatFileTransferUtility;
 import common.source.CSVUtility;
+import common.source.Constants;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
@@ -59,7 +60,7 @@ public class DbSeedExecutor {
 			"rr-sqacudr-1-sqacus","rr-sqacudr-2-sqacus","stnd-pic-sqacus", "standard_test-1-sqacus", "standard_test-2-sqacus", "standard_test-3-sqacus", "stnd-sqacudr-sqacus","stnd-sqacudr-1-sqacus",
 			"stnd-sqacudr-2-sqacus","stnd-sqacudr-3-sqacus","StandardWithLeak-sqacus", "NoFOV-1-sqacus", "NoFOV-2-sqacus", "NoFOV-3-sqacus", "daysurvey3.2-1-sqacus", "daysurvey3.2-2-sqacus",
 			"daysurvey4-1-sqacus", "daysurvey5-1-sqacus", "daysurvey7-1-sqacus", "daysurvey8.2-1-sqacus", "daysurvey8-1-sqacus", "daysurvey8-2-sqacus", "AnalyticsTagA-1-sqacus", "AnalyticsTagB-1-sqacus",
-			"AnalyticsTagC-1-sqacus", "FeqNoPeaks-1-sqacus", "FeqWithPeaks-1-sqacus", "MeqNoPeaks-1-sqacus", "MeqWithPeaks-1-sqacus", "FeqWithPeaks02-1-sqacus","menlo-night-11-17-EQ-1-sqacus", 
+			"AnalyticsTagC-1-sqacus", "FeqNoPeaks-1-sqacus", "FeqWithPeaks-1-sqacus", "MeqNoPeaks-1-sqacus", "MeqWithPeaks-1-sqacus", "FeqWithPeaks02-1-sqacus","menlo-night-11-17-EQ-1-sqacus",
 			"menlo-night-11-17-EQ-2-sqacus","standard-survey-for-EQ-Rpt-1-sqacus", "standard-survey-for-EQ-Rpt-2-sqacus"};
 
 	/* Method to push all the seed data required for automation. */
@@ -414,9 +415,11 @@ public class DbSeedExecutor {
 			Log.info("GIS Refresh DB seed NOT found. Executing SQL script to push GIS refresh DB seed...");
 			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
 
-			Log.info("[Step-0] Transfering .dat files to DB server ...");
-			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(assetDatFile).getFileName().toString());
-			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(boundaryDatFile).getFileName().toString());
+			if (!isRunningOnLocalDB()) {
+				Log.info("[Step-0] Transfering .dat files to DB server ...");
+				BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(assetDatFile).getFileName().toString());
+				BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(boundaryDatFile).getFileName().toString());
+			}
 
 			Log.info("[Step-1] Preparing pre-GIS push steps ...");
 			String sqlFileFullPath = Paths.get(datFolder, "AutomationSeedScript-PreGISLoad.sql").toString();
@@ -448,9 +451,11 @@ public class DbSeedExecutor {
 
 		} finally {
 			if (assetDatFile != null && boundaryDatFile != null) {
-				Log.info("Cleanup remote bcp .dat files ...");
-				String[] cleanupFilesPath = {assetDatFile, boundaryDatFile};
-				BcpDatFileTransferUtility.cleanupBcpDatFilesOnRemoteMachine(cleanupFilesPath);
+				if (!isRunningOnLocalDB()) {
+					Log.info("Cleanup remote bcp .dat files ...");
+					String[] cleanupFilesPath = {assetDatFile, boundaryDatFile};
+					BcpDatFileTransferUtility.cleanupBcpDatFilesOnRemoteMachine(cleanupFilesPath);
+				}
 			}
 
 			connection.setAutoCommit(true);
@@ -724,6 +729,10 @@ public class DbSeedExecutor {
 
 	public static DbSeedBuilderCache getSurveySeedBuilderCache() {
 		return surveySeedBuilderCache;
+	}
+
+	private static boolean isRunningOnLocalDB() {
+		return TestContext.INSTANCE.getDbIpAddress().equals(Constants.LOCALHOST_IP);
 	}
 
 	private static void ensureGISDatFilesArePresent() throws IOException {
