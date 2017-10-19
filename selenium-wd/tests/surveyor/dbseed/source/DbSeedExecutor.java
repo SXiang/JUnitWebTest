@@ -52,15 +52,16 @@ public class DbSeedExecutor {
 			"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3", "daysurvey3.2-1", "daysurvey3.2-2", "daysurvey4-1", "daysurvey5-1", "daysurvey7-1", "daysurvey8.2-1", "daysurvey8-1", "daysurvey8-2",
 			"IsoCapRedTrace-1", "AnalyticsTagA-1", "AnalyticsTagB-1", "AnalyticsTagC-1", "FeqNoPeaks-1", "FeqWithPeaks-1", "MeqNoPeaks-1", "MeqWithPeaks-1", "menlo-night-11-17-EQ-1", "menlo-night-11-17-EQ-2",
 			"standard-survey-for-EQ-Rpt-1", "standard-survey-for-EQ-Rpt-2", "FeqWithPeaks02-1", PICGREATER4HR_DATAFILE, PICLESS4HR_DATAFILE ,PIC8HR01_DATAFILE, PIC8HR02_DATAFILE, PIC8HR03_DATAFILE,
-			PIC8HR04_DATAFILE, PIC8HR05_DATAFILE, PIC8HR06_DATAFILE,PIC8HR07_DATAFILE, PIC8HR08_DATAFILE, PIC8HR09_DATAFILE, PIC8HR10_DATAFILE, PIC8HR11_DATAFILE, PIC8HR12_DATAFILE};
+			PIC8HR04_DATAFILE, PIC8HR05_DATAFILE, PIC8HR06_DATAFILE,PIC8HR07_DATAFILE, PIC8HR08_DATAFILE, PIC8HR09_DATAFILE, PIC8HR10_DATAFILE, PIC8HR11_DATAFILE, PIC8HR12_DATAFILE,
+			"LISANotIntersectingAssets-1"};
 
 	public static final String[] SQACUS_CUSTOMER_SURVEYS = {"assessment-1-sqacus", "assessment-2-sqacus", "EthaneManual-sqacus","EthaneStnd3-sqacus","EthaneStnd2-sqacus","EthaneStnd-sqacus","EthaneRR-sqacus","EthaneOpertor2-sqacus",
 			"EthaneOpertor1-sqacus","Ethane1MinSurvey-sqacus", "iso-cap-1-sqacus", "iso-cap-2-sqacus", "man-pic-1-sqacus","man-pic-2-sqacus","op-pic-sqacus","op-sqacudr-sqacus","rr-pic-sqacus",
 			"rr-sqacudr-1-sqacus","rr-sqacudr-2-sqacus","stnd-pic-sqacus", "standard_test-1-sqacus", "standard_test-2-sqacus", "standard_test-3-sqacus", "stnd-sqacudr-sqacus","stnd-sqacudr-1-sqacus",
 			"stnd-sqacudr-2-sqacus","stnd-sqacudr-3-sqacus","StandardWithLeak-sqacus", "NoFOV-1-sqacus", "NoFOV-2-sqacus", "NoFOV-3-sqacus", "daysurvey3.2-1-sqacus", "daysurvey3.2-2-sqacus",
 			"daysurvey4-1-sqacus", "daysurvey5-1-sqacus", "daysurvey7-1-sqacus", "daysurvey8.2-1-sqacus", "daysurvey8-1-sqacus", "daysurvey8-2-sqacus", "AnalyticsTagA-1-sqacus", "AnalyticsTagB-1-sqacus",
-			"AnalyticsTagC-1-sqacus", "FeqNoPeaks-1-sqacus", "FeqWithPeaks-1-sqacus", "MeqNoPeaks-1-sqacus", "MeqWithPeaks-1-sqacus", "FeqWithPeaks02-1-sqacus","menlo-night-11-17-EQ-1-sqacus", 
-			"menlo-night-11-17-EQ-2-sqacus","standard-survey-for-EQ-Rpt-1-sqacus", "standard-survey-for-EQ-Rpt-2-sqacus"};
+			"AnalyticsTagC-1-sqacus", "FeqNoPeaks-1-sqacus", "FeqWithPeaks-1-sqacus", "MeqNoPeaks-1-sqacus", "MeqWithPeaks-1-sqacus", "FeqWithPeaks02-1-sqacus","menlo-night-11-17-EQ-1-sqacus",
+			"menlo-night-11-17-EQ-2-sqacus","standard-survey-for-EQ-Rpt-1-sqacus", "standard-survey-for-EQ-Rpt-2-sqacus", "LISANotIntersectingAssets-1-sqacus"};
 
 	/* Method to push all the seed data required for automation. */
 

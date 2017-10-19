@@ -8,17 +8,36 @@
     4. UserId
   When changing the AnalyzerId we have the following 2 considerations to take care of:
   a) Ensuring that we are using the correct hardware type for the Analyzer.
+  FIRST find the hardware capability type of the Analyzer used in the original survey:
+    USE [Surveyor_BlankDB_20160926]  -- Change DB name.
+    GO
+	SELECT S.Id as SurveyId
+		  ,S.Tag AS SurveyTag
+		  ,AHC.[AnalyzerId]
+		  ,A.SerialNumber AS AnalyzerSerialNumber
+		  ,AHC.[HardwareCapabilityTypeId]
+		  ,HC.Description AS HardwareCapabilityType
+	  FROM [dbo].[AnalyzerHardwareCapabilityType] AS AHC
+		INNER JOIN [dbo].[Analyzer] AS A ON AHC.AnalyzerId=A.Id
+		INNER JOIN [dbo].[HardwareCapabilityTypes] AS HC ON AHC.HardwareCapabilityTypeId=HC.Id
+		INNER JOIN [dbo].[Survey] AS S ON S.AnalyzerId = A.Id
+	  WHERE S.Id='<original_survey_id>'
+
+  NEXT find a matching Analyzer belonging to customer for which we are replacing Analyzer, SurveyorUnit using this SQL:
+
   EXECUTE following SQL script to get the new AnalyzerId, SurveyorUnitId, RefGasBottleId and UserId for a specific AnalyzerSerialNumber and CapabilityType.
     USE [Surveyor_BlankDB_20160926]  -- Change DB name.
     GO
-    SELECT A.[Id],A.[SurveyorUnitId],RGB.Id AS ReferenceGasBottleId, U.Id AS UserID, L.Id AS LocationId, U.UserName,A.SerialNumber FROM [dbo].[Analyzer] AS A
-	    INNER JOIN [dbo].[SurveyorUnit] AS SU ON A.SurveyorUnitId=SU.Id
-	    INNER JOIN [dbo].[ReferenceGasBottle] AS RGB ON A.SurveyorUnitId=RGB.SurveyorUnitId
-	    INNER JOIN [dbo].[AnalyzerHardwareCapabilityType] AS AHC ON A.Id = AHC.AnalyzerId
-	    INNER JOIN [dbo].[HardwareCapabilityTypes] AS HC ON AHC.HardwareCapabilityTypeId = HC.Id
-	    INNER JOIN [dbo].[Location] AS L ON L.Id = SU.LocationId
-	    INNER JOIN [dbo].[User] AS U on U.LocationId=L.Id
-	    WHERE A.SerialNumber='RFADS2004' AND HC.Name= 'Ethane' --AND U.Username='sqapicsu1@picarro.com'   -- (Uncomment username to get information for specific username)
+	SELECT A.[Id] AS AnalyzerId,A.[SurveyorUnitId],RGB.Id AS ReferenceGasBottleId, U.Id AS UserID, L.Id AS LocationId, U.UserName,A.SerialNumber,C.Name as CustomerName,HC.Description AS HardwareCapabilityType
+	  FROM [dbo].[Analyzer] AS A
+	   INNER JOIN [dbo].[SurveyorUnit] AS SU ON A.SurveyorUnitId=SU.Id
+	   INNER JOIN [dbo].[ReferenceGasBottle] AS RGB ON A.SurveyorUnitId=RGB.SurveyorUnitId
+	   INNER JOIN [dbo].[Location] AS L ON SU.LocationId = L.Id
+	   INNER JOIN [dbo].[Customer] AS C ON L.CustomerId = C.Id
+	   INNER JOIN [dbo].[User] AS U on U.LocationId=L.Id
+	   INNER JOIN [dbo].[AnalyzerHardwareCapabilityType] AS AHC ON AHC.AnalyzerId = A.Id
+	   INNER JOIN [dbo].[HardwareCapabilityTypes] AS HC ON AHC.HardwareCapabilityTypeId=HC.Id
+	  WHERE C.Name = '<new_customer_name>' AND HC.Name= '<hardware_capability_type_from_previous_query>' -- AND A.SerialNumber='SimAuto-Analyzer4' AND U.Username='sqacusdr1@email.com'   -- (Uncomment to filter further by SerialNumber and username)   
 
   b) Ensuring that the values in the CSV are restamped to avoid PrimaryKey conflicts on tables with PK={AnalyzerId, EpochTime}
 
@@ -48,6 +67,10 @@
         -surveyTagFileMapCSVRelativePath "SurveyTagFileMap.csv"  `          # make sure surveyIds used above have a mapping in this .csv file.
         -restampCSVs:$true  `
         -generateNewGuidsForSurvey:$true
+
+  <optionally outFileSuffix can be specified as such>
+	    -outFileSuffix "sqacus"
+
 ----------------------------------------------------------------------------------------------------------------------------------#>
 
 param

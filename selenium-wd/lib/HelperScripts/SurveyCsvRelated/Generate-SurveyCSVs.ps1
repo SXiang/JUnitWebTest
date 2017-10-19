@@ -4,12 +4,12 @@
 
  Sample Run Script:
    .\Generate-SurveyCSVs.ps1 `
-        -surveyIDs "2329A3D7-5C3B-3B93-4B5E-39DB887753E5,B2FA11F7-D62C-7331-1D16-39DB88775916"  `
-        -databaseIPAddress "20.20.130.238"  `
-        -databaseName "SurveyorSQA"  `
+        -surveyIDs "abc74dfd-091f-17b0-acd7-39e1f7914d5e"  `
+        -databaseIPAddress "20.20.130.210"  `
+        -databaseName "SurveyorSQAAuto_blankDB_20170830"  `
         -databaseUser "awssa"  `
-        -databasePassword "j!RuL1Gd7A"  `
-        -outputFolder "C:\temp\MEQ_FEQ_Surveys"
+        -databasePassword "3Vf763pSg2"  `
+        -outputFolder "C:\temp\SUR-121-Surveys"
 ----------------------------------------------------------------------------------------------------------------------------------#>
 
 param
@@ -263,38 +263,6 @@ $surveyIDArr | % {
                 }
 
                 $i5++
-            }
-
-            # --- Note ---
-
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Note-$fileTag-$counter.csv"
-            Write-Host "Printing CSV header for Note -> Survey Tag: $tag"
-            $COLUMN_HEADINGS.get_item("Note-")
-            $colHeaders = $COLUMN_HEADINGS.get_item("Note-")
-            Add-Content $OUTCSV "$colHeaders"
-
-            $i6=0
-            Write-Host "Fetching Note values for Survey Tag: $tag"
-            $query = "SELECT * FROM [$databaseName].[dbo].[Note] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId'"
-            $objNote = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
-            $objNote | foreach {
-                if ($i6 -gt 0) {     # first row is length of array. datarows are from index=1
-                    "Table -> Note, Survey Tag -> $tag - Processing row - $i6"
-
-                    $objNot = $_;
-                    $notAnalyzerId = Null-ToValue -value $objNot.AnalyzerId;
-                    $notDeleted = Null-ToValue -value $objNot.Deleted;
-                    $notEpochTime = Null-ToValue -value $objNot.EpochTime;
-                    $notId = Null-ToValue -value $objNot.Id;
-                    $notLat = Null-ToValue -value $objNot.Lat;
-                    $notLon = Null-ToValue -value $objNot.Lon;
-                    $notText = $objNot.Text;
-                    $notUserId = Null-ToValue -value $objNot.UserId;
-
-                    Add-Content $OUTCSV "$notId,$notAnalyzerId,$notEpochTime,$notUserId,$notLat,$notLon,$notText,$notDeleted"
-                }
-
-                $i6++
             }
 
             # --- Peak ---
