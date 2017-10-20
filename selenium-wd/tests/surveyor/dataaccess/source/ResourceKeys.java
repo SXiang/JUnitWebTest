@@ -320,6 +320,9 @@ public class ResourceKeys {
 	// Ref Gas Capture description types.
 	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Pass = "ReferenceGasCaptureDescription_Isotopic_Reference_Pass";
 
+	// Ref Gas Capture description types.
+	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Fail = "ReferenceGasCaptureDescription_Isotopic_Reference_Fail";
+		
 	// Constants for Licensed Features
 	public static final String ComplianceReport_LicenseMissing = "ComplianceReport_LicenseMissing";
 
