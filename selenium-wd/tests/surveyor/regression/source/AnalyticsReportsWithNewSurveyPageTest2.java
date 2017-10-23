@@ -15,6 +15,7 @@ import java.util.Map;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -375,5 +376,33 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+	}
+	
+	
+	/**
+	 * Test Case ID: TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters
+	 * Test Description: Admin configuration screen for customer-location-specific analytics parameters - Min Cluster Size
+	 * Script:
+	 * - Log into the UI as a Picarro Admin and navigate to the Locations configuration page for a customer;
+	 * - Set the Min Cluster Size to "2.0";
+	 * - Navigate to Report > Compliance Reports;
+	 * - From the customer dropdown, select the same customer and Report Mode: Analytics;
+	 * - Add a Report Title, select a Report Area and add one or more surveys that have several indications,
+	 *   some of which are close to each other (within about 20 meters) 
+	 *   and some that are farther away (more than 50 meters);
+	 * - Select all Views options and all GIS layers;
+	 * - Select Indication Table and click OK
+     * - Once the report completes, navigate back to the Manage Location page for the same customer;
+     * - Set the Min Cluster Size to "10.0";
+     * - Go back to the Compliance Reports page and generate the same report as before;
+     * - Compare the two reports
+	 * Results:
+	 * - The second report should have more LISAs.
+	 */
+	@Ignore
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2399, location = ComplianceReportDataProvider.class)
+	public void TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters ...");
 	}
 }

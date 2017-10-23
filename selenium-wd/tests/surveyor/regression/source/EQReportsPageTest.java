@@ -373,4 +373,61 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID2));
 		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2)));
 	}
+	
+	/**
+	 * Test Case ID: TC2788_GenerateMobileEQReportUsingCopyFunctionalityWithAssessmentSurveys
+	 * Test Description: Generate Mobile EQ reports using copy functionality with Assessment surveys
+	 * Script:
+	 * - Customer has Mobile EQ and Assessment licenses;
+	 *   Mobile EQ and Assessment surveys exist for customer;
+	 *   Customer has at least one EQ report with EQ surveys only
+	 * - Log into the UI;
+	 * - Navigate to the EQ Reports page (NOT Facility EQ Reports page);
+	 * - Click on Copy button of above EQ Report&
+	 * - Add at least one Assessment survey and click OK;
+	 * - Download the EQ Table PDF and EQ View PDF
+	 * Results:
+	 * - In the Survey Selector section of the Copy EQ Report page, 
+	 *  the Survey Mode Filter should include EQ, Standard and Assessment 
+	 *  (depending on licensing, Rapid Response, Operator and Manual may also be among the choices)&;
+	 * - The report should generate successfully
+	 * - The EQ Table PDF should have the correct surveys listed along with line segments and indications (if any);
+	 * - The EQ View PDF should show the correct line segments as drawn by the user
+	 */
+	@Ignore
+	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2788, location = EQReportDataProvider.class)
+	public void TC2788_GenerateMobileEQReportUsingCopyFunctionalityWithAssessmentSurveys(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2788_GenerateMobileEQReportUsingCopyFunctionalityWithAssessmentSurveys ...");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, 29 /*locationRowID*/);
+
+		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+
+		eqReportsPage.openNewReportPage();
+		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
+		eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
+		//Reports still gets generated successfully, which is product defect and getting tracked #US4403.
+		assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, getReportRowID(reportDataRowID1)));
+
+		for (int i=0; i <3; i++)
+		{
+			int y = i++;
+			Log.info("Resubmiting report for " + y + " times ...");
+			eqReportsPageAction.clickOnResubmitButton(EMPTY,  getReportRowID(reportDataRowID1));
+			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
+			assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY,  getReportRowID(reportDataRowID1)));
+		}
+
+		eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+		modifyReport(eqReportsPageAction, getReportRowID(reportDataRowID2));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID2));
+		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
+		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID2));
+		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2)));
+	}
 }
