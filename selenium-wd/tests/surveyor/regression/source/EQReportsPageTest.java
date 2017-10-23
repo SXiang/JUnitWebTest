@@ -353,18 +353,20 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 		eqReportsPage.openNewReportPage();
 		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
-
+		eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
 		//Reports still gets generated successfully, which is product defect and getting tracked #US4403.
-	/*	assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, getReportRowID(reportDataRowID1)));
 
 		for (int i=0; i <3; i++)
 		{
 			int y = i++;
 			Log.info("Resubmiting report for " + y + " times ...");
+			eqReportsPageAction.clickOnResubmitButton(EMPTY,  getReportRowID(reportDataRowID1));
+			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY,  getReportRowID(reportDataRowID1)));
 		}
 
-*/		eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		modifyReport(eqReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID2));
 		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
