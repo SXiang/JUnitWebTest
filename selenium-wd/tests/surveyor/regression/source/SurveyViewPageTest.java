@@ -10,8 +10,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SurveyViewPage;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_CANCELLED;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NOT_NATURAL_GAS;
-import static surveyor.scommon.source.SurveyorConstants.REFGAS_CAPTURE_PASSED;
-
+import static surveyor.scommon.source.SurveyorConstants.REFGAS_CAPTURE_FAIL;
 import java.io.IOException;
 /*
  * **** NOTES ****:
@@ -600,7 +599,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyRefGasCaptureResultIsPresentOnMap(REFGAS_CAPTURE_PASSED, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyRefGasCaptureResultIsPresentOnMap(REFGAS_CAPTURE_FAIL, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
@@ -641,7 +640,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyRefGasCaptureResultIsPresentOnMap(REFGAS_CAPTURE_PASSED, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyRefGasCaptureResultIsPresentOnMap(REFGAS_CAPTURE_FAIL, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
