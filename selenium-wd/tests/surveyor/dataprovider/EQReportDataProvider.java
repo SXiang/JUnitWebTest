@@ -157,7 +157,7 @@ public class EQReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC2788() {
 		return new Object[][] {
-			{ "TC2788" /*TestCaseID*/, 17 /*userDataRowID*/,  21 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC2788" /*TestCaseID*/, 6 /*userDataRowID*/,  21 /*reportDataRowID1*/, 22 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider

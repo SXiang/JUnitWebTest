@@ -200,6 +200,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='EQ']")
 	protected WebElement inputSurModeFilterEQ;
 
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Assessment']")
+	protected WebElement inputSurModeFilterAssessment;
+	
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
@@ -3031,6 +3034,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return inputSurModeFilterManual.isSelected();
 	}
 
+	public boolean isAssessmentSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAssessment);
+	}
+	
 	/**
 	 * Verify the Type of Surveys in the resulted table are valid for the Survey
 	 * Mode Filter
