@@ -138,12 +138,12 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> AnemometerRaw, Survey Tag -> $tag - Processing row - $i1"
 
                     $objAne = $_;
-                    $aneAnalyzerId = Null-ToValue -value $objAne.AnalyzerId;
-                    $aneEpochTime = Null-ToValue -value $objAne.EpochTime;
-                    $aneIndex = Null-ToValue -value $objAne.Index;
-                    $aneStatus = Null-ToValue -value $objAne.Status;
-                    $aneWindSpeedLateral = $objAne.WindSpeedLateral;
-                    $aneWindSpeedLongitudinal = $objAne.WindSpeedLongitudinal;
+                    $aneAnalyzerId = $objAne.AnalyzerId;
+                    $aneEpochTime = $objAne.EpochTime;
+                    $aneIndex = $objAne.Index;
+                    $aneStatus = $objAne.Status;
+                    $aneWindSpeedLateral = Null-ToValue -value $objAne.WindSpeedLateral;
+                    $aneWindSpeedLongitudinal = Null-ToValue -value $objAne.WindSpeedLongitudinal;
 
                     Add-Content $OUTCSV "$aneAnalyzerId,$aneEpochTime,$aneWindSpeedLateral,$aneWindSpeedLongitudinal,$aneStatus,$aneIndex"
                 }
@@ -168,26 +168,26 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> CaptureEvent, Survey Tag -> $tag - Processing row - $i2"
 
                     $objCap = $_;
-                    $capAnalyzerId = Null-ToValue -value $objCap.AnalyzerId;
+                    $capAnalyzerId = $objCap.AnalyzerId;
                     $capCaptureType = Bool-ToBit -value $objCap.CaptureType;
-                    $capClassificationConfidence = $objCap.ClassificationConfidence;
-                    $capConcentration = Null-ToValue -value $objCap.Concentration;
+                    $capClassificationConfidence = Null-ToValue -value $objCap.ClassificationConfidence;
+                    $capConcentration = $objCap.Concentration;
                     $capDateTime = Date-ToString -value $objCap.DateTime;
-                    $capDelta = Null-ToValue -value $objCap.Delta;
-                    $capDisposition = Null-ToValue -value $objCap.Disposition;
-                    $capDistance = $objCap.Distance;
-                    $capEpochTime = Null-ToValue -value $objCap.EpochTime;
-                    $capEthaneRatio = $objCap.EthaneRatio;
-                    $capEthaneRatioSdev = $objCap.EthaneRatioSdev;
-                    $capGpsLatitude = Null-ToValue -value $objCap.GpsLatitude;
-                    $capGpsLongitude = Null-ToValue -value $objCap.GpsLongitude;
-                    $capId = Null-ToValue -value $objCap.Id;
-                    $capReplayLMin = Null-ToValue -value $objCap.ReplayLMin;
-                    $capReplayMax = Null-ToValue -value $objCap.ReplayMax;
-                    $capReplayRMin = Null-ToValue -value $objCap.ReplayRMin;
+                    $capDelta = $objCap.Delta;
+                    $capDisposition = $objCap.Disposition;
+                    $capDistance = Null-ToValue -value $objCap.Distance;
+                    $capEpochTime = $objCap.EpochTime;
+                    $capEthaneRatio = Null-ToValue -value $objCap.EthaneRatio;
+                    $capEthaneRatioSdev = Null-ToValue -value $objCap.EthaneRatioSdev;
+                    $capGpsLatitude = $objCap.GpsLatitude;
+                    $capGpsLongitude = $objCap.GpsLongitude;
+                    $capId = $objCap.Id;
+                    $capReplayLMin = $objCap.ReplayLMin;
+                    $capReplayMax = $objCap.ReplayMax;
+                    $capReplayRMin = $objCap.ReplayRMin;
                     $capShape = Geometry-ToText -value $objCap.Shape;
-                    $capSurveyId = $objCap.SurveyId;
-                    $capUncertainty = Null-ToValue -value $objCap.Uncertainty;
+                    $capSurveyId = Null-ToValue -value $objCap.SurveyId;
+                    $capUncertainty = $objCap.Uncertainty;
 
                     Add-Content $OUTCSV "$capId,$capAnalyzerId,$capEpochTime,$capDateTime,$capGpsLatitude,$capGpsLongitude,$capShape,$capDisposition,$capDelta,$capConcentration,$capUncertainty,$capCaptureType,$capDistance,$capReplayMax,$capReplayLMin,$capReplayRMin,$capSurveyId,$capEthaneRatio,$capEthaneRatioSdev,$capClassificationConfidence"
                 }
@@ -212,10 +212,10 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> FieldOfView, Survey Tag -> $tag - Processing row - $i3"
 
                     $objFie = $_;
-                    $fieAnalyzerId = Null-ToValue -value $objFie.AnalyzerId;
-                    $fieEpochTime = Null-ToValue -value $objFie.EpochTime;
+                    $fieAnalyzerId = $objFie.AnalyzerId;
+                    $fieEpochTime = $objFie.EpochTime;
                     $fieShape = Geometry-ToText -value $objFie.Shape;
-                    $fieSurveyId = $objFie.SurveyId;
+                    $fieSurveyId = Null-ToValue -value $objFie.SurveyId;
 
                     Add-Content $OUTCSV "$fieAnalyzerId,$fieEpochTime,$fieShape,$fieSurveyId"
                 }
@@ -240,14 +240,14 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> GPSRaw, Survey Tag -> $tag - Processing row - $i4"
 
                     $objGPS = $_;
-                    $gPSAnalyzerId = Null-ToValue -value $objGPS.AnalyzerId;
-                    $gPSEpochTime = Null-ToValue -value $objGPS.EpochTime;
-                    $gPSGpsFit = $objGPS.GpsFit;
-                    $gPSGpsLatitude = $objGPS.GpsLatitude;
-                    $gPSGPSLatitudeUncertainty = $objGPS.GPSLatitudeUncertainty;
-                    $gPSGpsLongitude = $objGPS.GpsLongitude;
-                    $gPSGPSLongitudeUncertainty = $objGPS.GPSLongitudeUncertainty;
-                    $gPSGpsTime = $objGPS.GpsTime;
+                    $gPSAnalyzerId = $objGPS.AnalyzerId;
+                    $gPSEpochTime = $objGPS.EpochTime;
+                    $gPSGpsFit = Null-ToValue -value $objGPS.GpsFit;
+                    $gPSGpsLatitude = Null-ToValue -value $objGPS.GpsLatitude;
+                    $gPSGPSLatitudeUncertainty = Null-ToValue -value $objGPS.GPSLatitudeUncertainty;
+                    $gPSGpsLongitude = Null-ToValue -value $objGPS.GpsLongitude;
+                    $gPSGPSLongitudeUncertainty = Null-ToValue -value $objGPS.GPSLongitudeUncertainty;
+                    $gPSGpsTime = Null-ToValue -value $objGPS.GpsTime;
 
                     Add-Content $OUTCSV "$gPSAnalyzerId,$gPSEpochTime,$gPSGpsTime,$gPSGpsLatitude,$gPSGpsLongitude,$gPSGpsFit,$gPSGPSLatitudeUncertainty,$gPSGPSLongitudeUncertainty"
                 }
@@ -272,40 +272,40 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> Measurement, Survey Tag -> $tag - Processing row - $i5"
 
                     $objMea = $_;
-                    $meaAnalyzerEthaneConcentrationUncertainty = $objMea.AnalyzerEthaneConcentrationUncertainty;
-                    $meaAnalyzerId = Null-ToValue -value $objMea.AnalyzerId;
-                    $meaAnalyzerMode = Null-ToValue -value $objMea.AnalyzerMode;
-                    $meaAnalyzerStatus = $objMea.AnalyzerStatus;
-                    $meaC2H4 = $objMea.C2H4;
-                    $meaC2H6 = $objMea.C2H6;
-                    $meaCarSpeedEast = $objMea.CarSpeedEast;
-                    $meaCarSpeedNorth = $objMea.CarSpeedNorth;
-                    $meaCavityPressure = Null-ToValue -value $objMea.CavityPressure;
-                    $meaCH4 = $objMea.CH4;
-                    $meaChemDetect = Bool-ToBit -value $objMea.ChemDetect;
-                    $meaCO2 = $objMea.CO2;
+                    $meaAnalyzerEthaneConcentrationUncertainty = Null-ToValue -value $objMea.AnalyzerEthaneConcentrationUncertainty;
+                    $meaAnalyzerId = $objMea.AnalyzerId;
+                    $meaAnalyzerMode = $objMea.AnalyzerMode;
+                    $meaAnalyzerStatus = Null-ToValue -value $objMea.AnalyzerStatus;
+                    $meaC2H4 = Null-ToValue -value $objMea.C2H4;
+                    $meaC2H6 = Null-ToValue -value $objMea.C2H6;
+                    $meaCarSpeedEast = Null-ToValue -value $objMea.CarSpeedEast;
+                    $meaCarSpeedNorth = Null-ToValue -value $objMea.CarSpeedNorth;
+                    $meaCavityPressure = $objMea.CavityPressure;
+                    $meaCH4 = Null-ToValue -value $objMea.CH4;
+                    $meaChemDetect = Bool-ToBitWithNullCheck -value $objMea.ChemDetect;
+                    $meaCO2 = Null-ToValue -value $objMea.CO2;
                     $meaCreateDate = Date-ToString -value $objMea.CreateDate;
-                    $meaDeltaCH4 = $objMea.DeltaCH4;
-                    $meaEpochTime = Null-ToValue -value $objMea.EpochTime;
-                    $meaGpsFit = $objMea.GpsFit;
-                    $meaGpsLatitude = $objMea.GpsLatitude;
-                    $meaGpsLongitude = $objMea.GpsLongitude;
-                    $meaH2OPercent = $objMea.H2OPercent;
-                    $meaHotBoxTemperature = Null-ToValue -value $objMea.HotBoxTemperature;
-                    $meaInstrumentStatus = Null-ToValue -value $objMea.InstrumentStatus;
-                    $meaMobileFlowRate = Null-ToValue -value $objMea.MobileFlowRate;
-                    $meaPeakDetectorState = $objMea.PeakDetectorState;
-                    $meaPeripheralStatus = $objMea.PeripheralStatus;
+                    $meaDeltaCH4 = Null-ToValue -value $objMea.DeltaCH4;
+                    $meaEpochTime = $objMea.EpochTime;
+                    $meaGpsFit = Null-ToValue -value $objMea.GpsFit;
+                    $meaGpsLatitude = Null-ToValue -value $objMea.GpsLatitude;
+                    $meaGpsLongitude = Null-ToValue -value $objMea.GpsLongitude;
+                    $meaH2OPercent = Null-ToValue -value $objMea.H2OPercent;
+                    $meaHotBoxTemperature = $objMea.HotBoxTemperature;
+                    $meaInstrumentStatus = $objMea.InstrumentStatus;
+                    $meaMobileFlowRate = $objMea.MobileFlowRate;
+                    $meaPeakDetectorState = Null-ToValue -value $objMea.PeakDetectorState;
+                    $meaPeripheralStatus = Null-ToValue -value $objMea.PeripheralStatus;
                     $meaShape = Geometry-ToText -value $objMea.Shape;
-                    $meaSpecies = $objMea.Species;
-                    $meaValveMask = Null-ToValue -value $objMea.ValveMask;
-                    $meaWarmBoxTemperature = Null-ToValue -value $objMea.WarmBoxTemperature;
-                    $meaWeatherStationRotation = $objMea.WeatherStationRotation;
-                    $meaWindDirectionStdDev = $objMea.WindDirectionStdDev;
-                    $meaWindSpeedEast = $objMea.WindSpeedEast;
-                    $meaWindSpeedLateral = $objMea.WindSpeedLateral;
-                    $meaWindSpeedLongitudinal = $objMea.WindSpeedLongitudinal;
-                    $meaWindSpeedNorth = $objMea.WindSpeedNorth;
+                    $meaSpecies = Null-ToValue -value $objMea.Species;
+                    $meaValveMask = $objMea.ValveMask;
+                    $meaWarmBoxTemperature = $objMea.WarmBoxTemperature;
+                    $meaWeatherStationRotation = Null-ToValue -value $objMea.WeatherStationRotation;
+                    $meaWindDirectionStdDev = Null-ToValue -value $objMea.WindDirectionStdDev;
+                    $meaWindSpeedEast = Null-ToValue -value $objMea.WindSpeedEast;
+                    $meaWindSpeedLateral = Null-ToValue -value $objMea.WindSpeedLateral;
+                    $meaWindSpeedLongitudinal = Null-ToValue -value $objMea.WindSpeedLongitudinal;
+                    $meaWindSpeedNorth = Null-ToValue -value $objMea.WindSpeedNorth;
 
                     Add-Content $OUTCSV "$meaAnalyzerId,$meaEpochTime,$meaCreateDate,$meaGpsLatitude,$meaGpsLongitude,$meaGpsFit,$meaShape,$meaInstrumentStatus,$meaValveMask,$meaCarSpeedNorth,$meaCarSpeedEast,$meaWindSpeedNorth,$meaWindSpeedEast,$meaWindDirectionStdDev,$meaWeatherStationRotation,$meaWindSpeedLateral,$meaWindSpeedLongitudinal,$meaChemDetect,$meaSpecies,$meaCH4,$meaCO2,$meaH2OPercent,$meaDeltaCH4,$meaPeripheralStatus,$meaAnalyzerStatus,$meaCavityPressure,$meaWarmBoxTemperature,$meaHotBoxTemperature,$meaMobileFlowRate,$meaAnalyzerMode,$meaPeakDetectorState,$meaC2H6,$meaC2H4,$meaAnalyzerEthaneConcentrationUncertainty"
                 }
@@ -361,11 +361,12 @@ $surveyIDArr | % {
                     $peaPosition = Geometry-ToText -value $objPea.Position;
                     $peaSigma = $objPea.Sigma;
                     $peaSurveyId = Null-ToValue -value $objPea.SurveyId;
+                    $peaSurvivedCollection = Bool-ToBit -value $objPea.SurvivedCollection;
                     $peaWindDirectionStdDev = Null-ToValue -value $objPea.WindDirectionStdDev;
                     $peaWindSpeedEast = Null-ToValue -value $objPea.WindSpeedEast;
                     $peaWindSpeedNorth = Null-ToValue -value $objPea.WindSpeedNorth;
 
-                    Add-Content $OUTCSV "$peaAnalyzerId,$peaEpochTime,$peaAmplitude,$peaCH4,$peaPosition,$peaLisa,$peaLisaOpeningAngle,$peaLisaBearing,$peaCarBearing,$peaMajor,$peaMinor,$peaCarSpeedNorth,$peaCarSpeedEast,$peaWindDirectionStdDev,$peaWindSpeedNorth,$peaWindSpeedEast,$peaSigma,$peaDistance,$peaGpsLatitude,$peaGpsLongitude,$peaPassedAutoThreshold,$peaSurveyId,$peaEthaneRatio,$peaEthaneRatioSdevRaw,$peaEthaneRatioSdev,$peaEthaneConcentrationSdev,$peaEthyleneRatio,$peaEthyleneRatioSdevRaw,$peaEthyleneRatioSdev,$peaEthyleneConcentrationSdev,$peaPipEnergy,$peaMethanePeaktoPeak,$peaDisposition,$peaClassificationConfidence"
+                    Add-Content $OUTCSV "$peaAnalyzerId,$peaEpochTime,$peaAmplitude,$peaCH4,$peaPosition,$peaLisa,$peaLisaOpeningAngle,$peaLisaBearing,$peaCarBearing,$peaMajor,$peaMinor,$peaCarSpeedNorth,$peaCarSpeedEast,$peaWindDirectionStdDev,$peaWindSpeedNorth,$peaWindSpeedEast,$peaSigma,$peaDistance,$peaGpsLatitude,$peaGpsLongitude,$peaPassedAutoThreshold,$peaSurveyId,$peaEthaneRatio,$peaEthaneRatioSdevRaw,$peaEthaneRatioSdev,$peaEthaneConcentrationSdev,$peaEthyleneRatio,$peaEthyleneRatioSdevRaw,$peaEthyleneRatioSdev,$peaEthyleneConcentrationSdev,$peaPipEnergy,$peaMethanePeaktoPeak,$peaDisposition,$peaClassificationConfidence,$peaSurvivedCollection"
                 }
 
                 $i7++
@@ -388,10 +389,10 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> Segment, Survey Tag -> $tag - Processing row - $i8"
 
                     $objSeg = $_;
-                    $segMode = Null-ToValue -value $objSeg.Mode;
-                    $segOrder = Null-ToValue -value $objSeg.Order;
+                    $segMode = $objSeg.Mode;
+                    $segOrder = $objSeg.Order;
                     $segShape = Geometry-ToText -value $objSeg.Shape;
-                    $segSurveyId = Null-ToValue -value $objSeg.SurveyId;
+                    $segSurveyId = $objSeg.SurveyId;
 
                     Add-Content $OUTCSV "$segSurveyId,$segOrder,$segMode,$segShape"
                 }
@@ -416,28 +417,26 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> Survey, Survey Tag -> $tag - Processing row - $i9"
 
                     $objSur = $_;
-                    $surAnalyzerId = Null-ToValue -value $objSur.AnalyzerId;
-                    $surBuildNumber = $objSur.BuildNumber;
-                    $surDeleted = Null-ToValue -value $objSur.Deleted;
+                    $surAnalyzerId = $objSur.AnalyzerId;
+                    $surBuildNumber = Null-ToValue -value $objSur.BuildNumber;
+                    $surDeleted = Bool-ToBit -value $objSur.Deleted;
                     $surEndDateTime = Date-ToString -value $objSur.EndDateTime;
-                    $surEndEpoch = Null-ToValue -value $objSur.EndEpoch;
-                    $surId = Null-ToValue -value $objSur.Id;
-                    $surLocationId = $objSur.LocationId;
-                    $surMinimumAmplitude = $objSur.MinimumAmplitude;
+                    $surEndEpoch = $objSur.EndEpoch;
+                    $surId = $objSur.Id;
+                    $surLocationId = Null-ToValue -value $objSur.LocationId;
+                    $surMinimumAmplitude = Null-ToValue -value $objSur.MinimumAmplitude;
                     $surProcessingDateCompleted = Date-ToString -value $objSur.ProcessingDateCompleted;
                     $surProcessingDateStarted = Date-ToString -value $objSur.ProcessingDateStarted;
-                    $surReferenceGasBottleId = Null-ToValue -value $objSur.ReferenceGasBottleId;
-                    $surStabilityClass = Null-ToValue -value $objSur.StabilityClass;
+                    $surReferenceGasBottleId = $objSur.ReferenceGasBottleId;
+                    $surSnapped = Bool-ToBit -value $objSur.Snapped;
+                    $surStabilityClass = $objSur.StabilityClass;
                     $surStartDateTime = Date-ToString -value $objSur.StartDateTime;
-                    $surStartEpoch = Null-ToValue -value $objSur.StartEpoch;
-                    $surStatus = Null-ToValue -value $objSur.Status;
-                    $surSurveyModeTypeId = Null-ToValue -value $objSur.SurveyModeTypeId;
-                    $surSurveyorUnitId = Null-ToValue -value $objSur.SurveyorUnitId;
-                    $surTag = $objSur.Tag;
-                    $surUserId = Null-ToValue -value $objSur.UserId;
-
-                    # New column from Tahoe.
-                    $surSnapped = Bool-ToBitWithNullCheck -value $objSur.Snapped
+                    $surStartEpoch = $objSur.StartEpoch;
+                    $surStatus = $objSur.Status;
+                    $surSurveyModeTypeId = $objSur.SurveyModeTypeId;
+                    $surSurveyorUnitId = $objSur.SurveyorUnitId;
+                    $surTag = Null-ToValue -value $objSur.Tag;
+                    $surUserId = $objSur.UserId;
 
                     Add-Content $OUTCSV "$surId,$surAnalyzerId,$surSurveyorUnitId,$surReferenceGasBottleId,$surUserId,$surSurveyModeTypeId,$surStartEpoch,$surEndEpoch,$surStartDateTime,$surEndDateTime,$surTag,$surStabilityClass,$surMinimumAmplitude,$surStatus,$surDeleted,$surProcessingDateStarted,$surLocationId,$surBuildNumber,$surProcessingDateCompleted,$surSnapped"
                 }
@@ -462,10 +461,10 @@ $surveyIDArr | % {
                     Write-Output -log "Table -> SurveyCondition, Survey Tag -> $tag - Processing row - $i10"
 
                     $objSur = $_;
-                    $surId = Null-ToValue -value $objSur.Id;
-                    $surName = Null-ToValue -value $objSur.Name;
-                    $surSurveyId = Null-ToValue -value $objSur.SurveyId;
-                    $surValue = Null-ToValue -value $objSur.Value;
+                    $surId = $objSur.Id;
+                    $surName = $objSur.Name;
+                    $surSurveyId = $objSur.SurveyId;
+                    $surValue = $objSur.Value;
 
                     Add-Content $OUTCSV "$surId,$surSurveyId,$surName,$surValue"
                 }
@@ -492,7 +491,7 @@ $surveyIDArr | % {
                     $objSur = $_;
                     $surBreadcrumb = Geometry-ToText -value $objSur.Breadcrumb;
                     $surFieldOfView = Geometry-ToText -value $objSur.FieldOfView;
-                    $surSurveyId = Null-ToValue -value $objSur.SurveyId;
+                    $surSurveyId = $objSur.SurveyId;
 
                     Add-Content $OUTCSV "$surSurveyId,$surFieldOfView,$surBreadcrumb"
                 }

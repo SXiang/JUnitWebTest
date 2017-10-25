@@ -1,22 +1,22 @@
 ﻿param
 (
-  [Parameter(Mandatory=$true)]
-  [String] $inDirectory,              # $inDirectory="C:\temp\Tahoe-CSVs\Original",
+  [Parameter(Mandatory=$false)]
+  [String] $inDirectory="C:\Temp\FindCSVs-UseThis",              # $inDirectory="C:\Temp\FindCSVs-UseThis",
 
-  [Parameter(Mandatory=$true)]
-  [String] $fileExtFilter,            # $fileExtFilter="*.csv",
+  [Parameter(Mandatory=$false)]
+  [String] $fileExtFilter="*.csv",            # $fileExtFilter="*.csv",
 
-  [Parameter(Mandatory=$true)]
-  [String] $outDirectory,             # $outDirectory="C:\temp\Tahoe-CSVs\Cleaned",
+  [Parameter(Mandatory=$false)]
+  [String] $outDirectory="C:\Temp\FindCSVs-UseThis\PeakDatFilesFixed",             # $outDirectory="C:\Temp\FindCSVs-UseThis\PeakDatFilesFixed",
 
-  [Parameter(Mandatory=$true)]
-  [String] $logFilePath               # $logFilePath="C:\temp\Tahoe-CSVs\Logs\logs.txt"
+  [Parameter(Mandatory=$false)]
+  [String] $logFilePath="C:\Temp\FindCSVs-UseThis\Logs\logs.txt"               # $logFilePath="C:\Temp\FindCSVs-UseThis\Logs\logs.txt"
 )
 
 . C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\FileReadWriteHelper.ps1
 
 $primaryKeyMap = @{
-    "Survey"="Snapped:0"
+    "Peak"="SurvivedCollection:1"
 }
 
 $logLinesList = New-Object System.Collections.ArrayList
