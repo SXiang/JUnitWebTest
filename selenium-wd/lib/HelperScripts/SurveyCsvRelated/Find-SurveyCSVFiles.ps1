@@ -24,7 +24,7 @@ param
   [String] $fileExtFilter,                # file extension to search to find data files.
 
   [Parameter(Mandatory=$true)]
-  [String] $outDirectory,                 # $outDirectory="C:\temp\FindCSVs"
+  [String] $outDirectory,                 # $outDirectory="C:\temp\FindCSVs-03"
 
   [Parameter(Mandatory=$false)]
   [switch] $generateSurveyNameList=$true  # set to 'true' to generate code for survey array constant used in DbSeedExecutor.java
@@ -67,7 +67,7 @@ function Get-SurveyFileName($surveyId) {
     $surFilename
 }
 
-function Is-SurveyFile($filename) {
+function Is-SurveyFile([String]$filename) {
     $found = $false
     $script:surveyRelatedFileNameList | %{
         if (-not $found) {
@@ -98,7 +98,7 @@ function AddTo-FileTagMapTable($key, $value)
 
 
 # generate list of survey related file name prefixes.
-$surveys = $surveyIDs -split ","
+$surveys = @($surveyIDs -split ",")
 $surveys | %{
     $surId = $_
     [String]$surveyCsvFilename = [String](Get-SurveyFileName -surveyId $surId)
@@ -113,6 +113,10 @@ $surveys | %{
             }
 
             AddTo-FileTagMapTable -key $cust -value $surveyCsvFileSuffix
+        }
+
+        if (($key -eq "Segment-" ) -or ($key -eq "SurveyResult-")) {
+            $null = $script:surveyRelatedFileNameList.Add("${key}Geom-${surveyCsvFileSuffix}")
         }
     }
 }
@@ -130,6 +134,7 @@ Split-Path -Path "$inDirectory\$fileExtFilter" -Leaf -Resolve | % {
         
         Write-Host "[FOUND_MATCH] -> Copying file - $fileFullPath to $destFileFullPath ..."
         Copy-Item $fileFullPath $destFileFullPath
+        Remove-Item $fileFullPath 
     }
 }
 

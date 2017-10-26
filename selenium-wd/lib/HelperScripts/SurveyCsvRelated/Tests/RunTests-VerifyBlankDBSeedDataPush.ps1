@@ -5,7 +5,7 @@
  Sample Run Script:
    .\RunTests-VerifyBlankDBSeedDataPush.ps1 `
         -databaseIPAddress "SPULIKKAL-ZBOOK\PULIKKALSQLSVR"  `
-        -databaseName "Surveyor_20171017"  `
+        -databaseName "Surveyor_20171020"  `
         -databaseUser "awssa"  `
         -databasePassword "j!RuL1Gd7A"  `
         -inputFolderWithCSVFiles "C:\Repositories\surveyor-qa\selenium-wd\data\sql\SurveySeedData"  `
@@ -37,6 +37,8 @@ param
 . "C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\DatabaseHelpers.ps1"
 
 [Int64] $expectedSurveysInDB = 0
+$EPSILON = "0.5"
+$SURVEY_PREFIX = "Survey-"
 
 # Stores info about Raw data rowcounts for each survey from the CSV
 $surveyRawDataMap = @{}
@@ -60,21 +62,24 @@ Split-Path -Path "$inputFolderWithCSVFiles\Survey-*.csv" -Leaf -Resolve | % {
         $surveyId = $_.Id
         $null = $surveyIdList.Add($surveyId)
 
-        $anemometerRawFile = $fileName.Replace("Survey-", "AnemometerRaw-")
+        $len = $SURVEY_PREFIX.Length
+        $fileNameSuffix = $fileName.Substring($len, $fileName.Length-$len)
+
+        $anemometerRawFile = "AnemometerRaw-$fileNameSuffix"
         $anemometerRawFileFullPath = "$inputFolderWithCSVFiles\$anemometerRawFile"
         $anemRowCount = 0        
         if (Test-Path $anemometerRawFileFullPath) {
             $anemRowCount = (gc $anemometerRawFileFullPath | measure).Count - 1
         }
 
-        $gpsRawFile = $fileName.Replace("Survey-", "GPSRaw-")
+        $gpsRawFile = "GPSRaw-$fileNameSuffix"
         $gpsRawFileFullPath = "$inputFolderWithCSVFiles\$gpsRawFile"
         $gpsRowCount = 0
         if (Test-Path $gpsRawFileFullPath) {
             $gpsRowCount = (gc $gpsRawFileFullPath | measure).Count - 1
         }
 
-        $measRawFile = $fileName.Replace("Survey-", "Measurement-")
+        $measRawFile = "Measurement-$fileNameSuffix"
         $measRawFileFullPath = "$inputFolderWithCSVFiles\$measRawFile"
         $measRowCount = 0
         if (Test-Path $measRawFileFullPath) {
@@ -110,9 +115,9 @@ $query = "SELECT S.[Id] AS SurveyId" +
             "      ,U.UserName" +
             "      ,C.[Name] AS CustomerName" +
             "      ,S.[Tag] AS SurveyTag" +
-            "	  ,(SELECT COUNT(*) FROM [dbo].[Measurement] AS M WHERE M.AnalyzerId=S.AnalyzerId AND M.EpochTime > S.StartEpoch - 0.5 AND M.EpochTime < S.EndEpoch + 0.5) AS MeasurementRecordCount" +
-            "	  ,(SELECT COUNT(*) FROM [dbo].[GPSRaw] AS G WHERE G.AnalyzerId=S.AnalyzerId AND G.EpochTime > S.StartEpoch - 0.5 AND G.EpochTime < S.EndEpoch + 0.5) AS GpsRecordCount" +
-            "	  ,(SELECT COUNT(*) FROM [dbo].[AnemometerRaw] AS AN WHERE AN.AnalyzerId=S.AnalyzerId AND AN.EpochTime > S.StartEpoch - 0.5 AND AN.EpochTime < S.EndEpoch + 0.5) AS AnemometerRecordCount" +
+            "	  ,(SELECT COUNT(*) FROM [dbo].[Measurement] AS M WHERE M.AnalyzerId=S.AnalyzerId AND M.EpochTime > S.StartEpoch - $EPSILON AND M.EpochTime < S.EndEpoch + $EPSILON) AS MeasurementRecordCount" +
+            "	  ,(SELECT COUNT(*) FROM [dbo].[GPSRaw] AS G WHERE G.AnalyzerId=S.AnalyzerId AND G.EpochTime > S.StartEpoch - $EPSILON AND G.EpochTime < S.EndEpoch + $EPSILON) AS GpsRecordCount" +
+            "	  ,(SELECT COUNT(*) FROM [dbo].[AnemometerRaw] AS AN WHERE AN.AnalyzerId=S.AnalyzerId AND AN.EpochTime > S.StartEpoch - $EPSILON AND AN.EpochTime < S.EndEpoch + $EPSILON) AS AnemometerRecordCount" +
             "      ,S.[Status]" +
             "      ,S.[Deleted]" +
             "      ,S.[ProcessingDateStarted]" +
@@ -158,6 +163,14 @@ function Write-ToOutput($line) {
     Add-Content $OUTRESULT $line
 }
 
+function Print-SurveysNotFoundInDB() {
+    $surveyIdList | % {
+        $srvIdFromCSV = $_
+        if (!$surveyInfoInDB.ContainsKey($srvIdFromCSV)) {
+            Write-ToOutput -line "Survey from CSV NOT found in DB -> $srvIdFromCSV"
+        }
+    }
+}
 
 ### TEST 1: Survey Count in DB should match expectedSurveyCount
 Write-ToOutput -line "----------------------------------------------------------------------------------------"
@@ -169,6 +182,7 @@ if ($actualSurveyCount -eq $expectedSurveysInDB) {
     Write-Result -result "PASS" -message "Expected survey count=[$expectedSurveysInDB] and actual survey count=[$actualSurveyCount] MATCH."
 } else {
     Write-Result -result "FAIL" -message "Expected survey count=[$expectedSurveysInDB] and actual survey count=[$actualSurveyCount] do NOT MATCH."
+    Print-SurveysNotFoundInDB 
 }
 
 ### TEST 2: All Surveys should have Completed status

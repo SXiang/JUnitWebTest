@@ -1,16 +1,16 @@
 ﻿param
 (
   [Parameter(Mandatory=$false)]
-  [String] $inDirectory="C:\Temp\FindCSVs-UseThis",              # $inDirectory="C:\Temp\FindCSVs-UseThis",
+  [String] $inDirectory="C:\Temp\FindCSVs-LargeSurveysOriginalCSVs",              # $inDirectory="C:\Temp\FindCSVs-UseThis",
 
   [Parameter(Mandatory=$false)]
   [String] $fileExtFilter="*.csv",            # $fileExtFilter="*.csv",
 
   [Parameter(Mandatory=$false)]
-  [String] $outDirectory="C:\Temp\FindCSVs-UseThis\PeakDatFilesFixed",             # $outDirectory="C:\Temp\FindCSVs-UseThis\PeakDatFilesFixed",
+  [String] $outDirectory="C:\Temp\FindCSVs-LargeSurveysOriginalCSVs\PeakDatFilesFixed",             # $outDirectory="C:\Temp\FindCSVs-UseThis\PeakDatFilesFixed",
 
   [Parameter(Mandatory=$false)]
-  [String] $logFilePath="C:\Temp\FindCSVs-UseThis\Logs\logs.txt"               # $logFilePath="C:\Temp\FindCSVs-UseThis\Logs\logs.txt"
+  [String] $logFilePath="C:\Temp\FindCSVs-LargeSurveysOriginalCSVs\Logs\logs.txt"               # $logFilePath="C:\Temp\FindCSVs-UseThis\Logs\logs.txt"
 )
 
 . C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\FileReadWriteHelper.ps1
@@ -103,9 +103,10 @@ Split-Path -Path "$inDirectory\$fileExtFilter" -Leaf -Resolve | % {
 
         # Next write the line text and include values for new column.
         $i = 0
-        $lineText = ""
         $csvData | % {
             $line = $_
+
+            $lineText = ""
 
             # Include existing columns.
             $k = 0

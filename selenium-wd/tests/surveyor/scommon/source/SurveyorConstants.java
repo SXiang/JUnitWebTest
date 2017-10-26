@@ -662,7 +662,7 @@ public final class SurveyorConstants {
 			return value;
 		}
 	};
-	
+
 	public static enum ReportColorOption {
 		LIGHTBLUE(0),
 		BLUE(1),
