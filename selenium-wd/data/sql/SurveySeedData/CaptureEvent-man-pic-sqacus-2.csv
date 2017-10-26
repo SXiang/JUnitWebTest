@@ -1,0 +1,2 @@
+Id,AnalyzerId,EpochTime,DateTime,GpsLatitude,GpsLongitude,Shape,Disposition,Delta,Concentration,Uncertainty,CaptureType,Distance,ReplayMax,ReplayLMin,ReplayRMin,SurveyId,EthaneRatio,EthaneRatioSdev,ClassificationConfidence
+fb2c2ab9-ea61-4c26-afdd-481832d3ba69,43a34021-8814-8a01-9183-39d4b4de03eb,1450140604.7,2015-12-14 19:50:04.703,37.41895731,-121.97923135,0xE6100000010CF3DDF7B9AB7E5EC0616FA464A0B54240,1,0,4.12668521115,0,0,1164.21264113,0,0,0,d8d050d6-a158-4e8b-b672-15ddddd4e35b,0,0,0

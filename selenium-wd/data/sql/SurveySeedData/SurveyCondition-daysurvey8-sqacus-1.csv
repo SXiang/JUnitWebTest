@@ -1,0 +1,4 @@
+Id,SurveyId,Name,Value
+15264eb0-bbfa-42a5-a021-20193c93740b,05d1cb7d-c0d8-4406-aea1-2ae27d7a33d2,SolarRadiation,overcast
+27110cac-ca76-48c9-b251-71042e10487a,05d1cb7d-c0d8-4406-aea1-2ae27d7a33d2,Wind,light
+b232c925-d2e6-4934-8fa3-a100e5c711b4,05d1cb7d-c0d8-4406-aea1-2ae27d7a33d2,TimeOfDay,day
