@@ -41,6 +41,8 @@ public class Constants {
 	public static final Integer THOUSAND_MSEC_WAIT_BETWEEN_RETRIES = 1000;
 	public static final Integer DEFAULT_MAX_RETRIES = 3;
 
+	public static final String LOCALHOST_IP = "127.0.0.1";
+
 	public static final String BASE_URL_API_DOWNLOAD_IMAGE = "api/DownloadImage?key=";
 
 	public static class MobileEmulationDevice {
