@@ -63,7 +63,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
-		final String[] surveyTags = {"LISANotIntersectingAssets-1", "LISANotIntersectingAssets-1-sqacus"};
+		final String[] surveyTags = {"2HourSurvey-1", "4HourSurvey-1", "2HourSurvey-1-sqacus", "4HourSurvey-1-sqacus"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
 		verifySurveySeedDataIsPresent(surveyTags);
 	}
