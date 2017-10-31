@@ -410,18 +410,18 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters ...");
 		
-		userName = "282405@email.com";
+		userName = "RMADebug@email.com";
 		userPassword = "sqa#Picarro$0";
-		customerName = "regcus282405Analytics_Report";
-		locationName = "282405Loc";
-		surveyTag = "2b999fb30a504ad";
+		customerName = "regcusRMADebugAnalytics_Report";
+		locationName = "RMADebugLoc";
+		surveyTag = "6b6b346b7f8a40f";
 		
 		String minClusterSize= "2.0";
-//		getLoginPage().open();
-//		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-//		manageLocationPageActions.open(EMPTY, NOTSET);
-//		manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,minClusterSize);
-//		getHomePage().logout();
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,minClusterSize);
+		getHomePage().logout();
 
 		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
 
@@ -435,7 +435,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
 		List<String[]> lisaTable1 = complianceReportsPageAction.getComplianceReportsPage().getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);
 
-		minClusterSize= "10.0";
+		minClusterSize= "10";
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		manageLocationPageActions.open(EMPTY, NOTSET);
@@ -454,6 +454,6 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
 		
 		List<String[]> lisaTable2 = complianceReportsPageAction.getComplianceReportsPage().getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);	
-		assertTrue(lisaTable2.size()>=lisaTable1.size());		
+		assertTrue(lisaTable2.size()>=lisaTable1.size());	
 	}
 }

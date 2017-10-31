@@ -834,6 +834,16 @@ UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='F4A45601-E357-3CED-6EE6-3
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('5347598C-4F35-106C-5720-39E262F24391','F4A45601-E357-3CED-6EE6-39D6D20B16D9',1287963120,0,0,-4)	
 
+-- Anemometer entry for 'Software car', calibration record
+UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=2, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'52AA8399-A171-FB5F-C21C-39E262E8DDA0' AND [Index]=0
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'52AA8399-A171-FB5F-C21C-39E262E8DDA0', 0, -3.6, 2, 2, 0)	
+
+-- Anemometer entry for 'Light Blue Escape', calibration record
+UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=2, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'5347598C-4F35-106C-5720-39E262F24391' AND [Index]=0
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'5347598C-4F35-106C-5720-39E262F24391', 0, -3.6, 2, 2, 0)	
+
 -- Anemometer entry for 'iGPS car', calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=2, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'60540576-77EF-198F-F284-39DF4393A70F' AND [Index]=0
 IF @@ROWCOUNT=0

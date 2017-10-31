@@ -369,7 +369,7 @@ public class BaseTest {
 		String cityName = "Santa Clara";
 		String locationName = uniqueNumber + "Loc";
 		String surveyorName = uniqueNumber + "Sur";
-		String analyzerName = uniqueNumber + "Ana";
+		String analyzerName = "AutoTestAnalyzer098";
 		String analyzerSharedKey = analyzerName + "Key";
 
 		if (fetchAnalyzerFromPool) {
