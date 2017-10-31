@@ -58,7 +58,6 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_CoverageValues = "ComplianceReportSSRS_CoverageValues";
 	public static final String ComplianceReportSSRS_DateTime = "ComplianceReportSSRS_DateTime";
 	public static final String ComplianceReportSSRS_ExclusionRadius = "ComplianceReportSSRS_ExclusionRadius";
-	public static final String ComplianceReportSSRS_FieldNotes = "ComplianceReportSSRS_FieldNotes";
 	public static final String ComplianceReportSSRS_FOV = "ComplianceReportSSRS_FOV";
 	public static final String ComplianceReportSSRS_GAPInvestigationComplete = "ComplianceReportSSRS_GAPInvestigationComplete";
 	public static final String ComplianceReportSSRS_GapTable = "ComplianceReportSSRS_GapTable";
@@ -87,7 +86,6 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ShowBoundaries = "ComplianceReportSSRS_ShowBoundaries";
 	public static final String ComplianceReportSSRS_ShowBreadcrumb = "ComplianceReportSSRS_ShowBreadcrumb";
 	public static final String ComplianceReportSSRS_ShowCoverage = "ComplianceReportSSRS_ShowCoverage";
-	public static final String ComplianceReportSSRS_ShowFieldNotes = "ComplianceReportSSRS_ShowFieldNotes";
 	public static final String ComplianceReportSSRS_ShowFOV = "ComplianceReportSSRS_ShowFOV";
 	public static final String ComplianceReportSSRS_ShowGaps = "ComplianceReportSSRS_ShowGaps";
 	public static final String ComplianceReportSSRS_ShowIndications = "ComplianceReportSSRS_ShowIndications";
@@ -322,6 +320,9 @@ public class ResourceKeys {
 	// Ref Gas Capture description types.
 	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Pass = "ReferenceGasCaptureDescription_Isotopic_Reference_Pass";
 
+	// Ref Gas Capture description types.
+	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Fail = "ReferenceGasCaptureDescription_Isotopic_Reference_Fail";
+		
 	// Constants for Licensed Features
 	public static final String ComplianceReport_LicenseMissing = "ComplianceReport_LicenseMissing";
 

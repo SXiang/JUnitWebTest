@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
+import common.source.AndroidAutomationTools.AndroidFileInfo;
 import common.source.BaseHelper;
 import common.source.Log;
 import common.source.ScreenRecorder;
@@ -19,7 +20,7 @@ import common.source.TestSetup;
 public class AndroidAutomationToolsTest {
 
 	private static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
-	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-82.apk";
+	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-82.apk";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -77,13 +78,41 @@ public class AndroidAutomationToolsTest {
 	}
 
 	@Test
+	public void testGetFileInfo() throws Exception {
+		String fileOnDevice = "/sdcard/heapdump.hprof";
+		AndroidFileInfo fileInfo = AndroidAutomationTools.getFileInfo(fileOnDevice);
+		Log.method(String.format("FileInfo -> %s", fileInfo));
+		assertTrue("FileInfo was NOT fetched.", fileInfo != null);
+	}
+
+	@Test
 	public void testStartReactNative() throws IOException {
 		AndroidAutomationTools.startReactNative();
 	}
 
 	@Test
+	public void testExerciseMonkey() throws Exception {
+		AndroidAutomationTools.exerciseMonkey(1000, 100);
+	}
+
+	@Test
 	public void testStop() throws IOException {
 		AndroidAutomationTools.stop();
+	}
+
+	@Test
+	public void testEnsureAppiumServerIsRunning() throws IOException {
+		AndroidAutomationTools.ensureAppiumServerIsRunning();
+	}
+
+	@Test
+	public void testStartAppiumServer() throws IOException {
+		AndroidAutomationTools.startAppiumServer();
+	}
+
+	@Test
+	public void testStopAppiumServer() throws Exception {
+		AndroidAutomationTools.stopAppiumServer();
 	}
 
 	@Test

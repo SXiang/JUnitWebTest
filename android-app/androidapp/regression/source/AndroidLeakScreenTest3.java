@@ -38,12 +38,12 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
-import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
-	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
 	private static String generatedInvReportTitle;
@@ -63,6 +63,8 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 	protected AndroidAddOtherSourceFormDialog addOtherSourceFormDialog;
 
+	private static LoginPageActions loginPageAction;
+
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
 	@Rule
@@ -75,6 +77,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 	@Before
 	public void beforeTest() throws Exception {
+		initializePageActions();
 		createTestCaseData(testName);
 		initializeTestDriver();
 		initializeTestScreenObjects();
@@ -94,6 +97,14 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	}
 
 	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+	}
+
+	/**
 	 * Test Case ID: TC2676_ActiveInvestigationScreenShowsStatusOfInvestigation_OtherSourceFound
 	 * Test Description: Active Investigation screen shows status of investigation - Other Source Found
 	 * Script: -
@@ -110,7 +121,8 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	 * Results: -
 	 *	- - User is navigated to the map
 	 *	- - User will be prompted for PCubed password
-	 *  - - User will see a list of Compliance Reports- User will see a list of LISAs for investigation
+	 *  - - User will see a list of Compliance Reports
+	 *  - - User will see a list of LISAs for investigation
 	 *  - - User will see a map centered on the backpack's location. Status is shown at top left of the map as Not Investigated. Pipe data is displayed on the map Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
 	 *	- - Status at top left changes to In Progress. Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons.
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons.
@@ -129,16 +141,18 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
+
 		String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
-		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
 			mapScreen.assertMapIsCenteredForPicarroUser();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -164,13 +178,10 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 
-			// TBD: Enable post product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, assignmentInProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
@@ -184,20 +195,18 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Sewer);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(30, 200));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnMarkAsComplete();
+
 			investigateReportScreen.waitForScreenLoad();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundOtherSource, actualMarkerStatus));
-
-			/* Commented due to product defect DE3154
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
 					actualMarkerStatus.equals(foundOtherSource));
-			*/
 
 			return true;
 		});
@@ -237,16 +246,18 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
+
 		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
-		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
 			mapScreen.assertMapIsCenteredForPicarroUser();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -265,6 +276,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -274,19 +286,13 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			assertTrue("Follow button NOT displayed", investigateMapScreen.getFollowButton().isDisplayed());
 			assertTrue("Directions button NOT displayed", investigateMapScreen.getDirectionsButton().isDisplayed());
 			investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
-
-			//assertTrue("Investigate button should NOT be displayed but is however displayed", !investigateMapScreen.getInvestigateButton().isDisplayed());
-
 			assertTrue("MarkAsComplete button NOT displayed", investigateMapScreen.getMarkAsCompleteButton().isDisplayed());
 			assertTrue("Pause button NOT displayed", investigateMapScreen.getPauseButton().isDisplayed());
 
-			// TBD: Enable post product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, assignmentInProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			investigateMapScreen.clickOnMarkAsComplete();
 			confirmationDialog.waitForScreenLoad();
@@ -333,16 +339,19 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
+
 		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
+		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
 		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
 			mapScreen.assertMapIsCenteredForPicarroUser();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -366,6 +375,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 		List<String> markerStatuses = Arrays.asList(noGasFound);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -375,19 +385,13 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			assertTrue("Follow button NOT displayed", investigateMapScreen.getFollowButton().isDisplayed());
 			assertTrue("Directions button NOT displayed", investigateMapScreen.getDirectionsButton().isDisplayed());
 			investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
-
-			//assertTrue("Investigate button should NOT be displayed but is however displayed", !investigateMapScreen.getInvestigateButton().isDisplayed());
-
 			assertTrue("MarkAsComplete button NOT displayed", investigateMapScreen.getMarkAsCompleteButton().isDisplayed());
 			assertTrue("Pause button NOT displayed", investigateMapScreen.getPauseButton().isDisplayed());
 
-			// TBD: Enable post product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, assignmentInProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			investigateMapScreen.clickOnPause();
 			investigateReportScreen.waitForScreenLoad();
@@ -398,7 +402,6 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 			return true;
 		});
-
 	}
 
 	/**
@@ -413,7 +416,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	 *  - - The Toggle Mode, Reset Max and Investigate buttons at the bottom of the page all appear with black buttons and white font
 	 *	- The GPS indicator at bottom left is green when GPS signal is good, red with a line through it when no GPS signal is received
 	 *	- - Menu items Clear Heatmap, Alarm Settings, App Settings and Shutdown Instrument appear. Menu background is black, buttons are grey and font is white
-	 *	- - Alarm Settings include only Volume and Threshold
+	 *	- - Alarm Settings include only Volume, Amplitude and Threshold
 	 */
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2687, location = LeakScreenDataProvider.class)
@@ -425,6 +428,10 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			Log.info("Map screen loaded successfully!");
 
+			if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				mapScreen.ensureAnalyzerIsInMethaneMode();
+			}
+
 			mapScreen.assertConcentrationChartIsShown();
 			mapScreen.assertBottomPaneButtonsAreCorrect();
 			mapScreen.assertMethaneModeIsShownInTopPanel();
@@ -432,7 +439,8 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			mapScreen.assertDefaultMethaneValueShownInTopPanelIsCorrect();
 			mapScreen.assertGpsLabelIsGreen();
 
-			// TBD: As discussed with Praki, Gps is RED check skipped. To be verified with actual Backpack Analyzer.
+			// PARTIAL: As discussed with Praki, Gps is RED check skipped. Turn off GPS on emulator does not simulate this condition.
+			// Currently no known way to simulate this condition from code. Skipping the GPS is red check.
 
 			mapScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
@@ -445,6 +453,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			alarmSettingsScreen.waitForScreenLoad();
 			alarmSettingsScreen.assertSlidersShownAreCorrect();
 			alarmSettingsScreen.slideToVolume(4.0f);
+			alarmSettingsScreen.slideToAmplitudeppm(40.0f);
 			alarmSettingsScreen.slideToThresholdppm(24.0f);
 			alarmSettingsScreen.clickOnApply();
 			return true;
@@ -472,16 +481,19 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			userDataRowID = (Integer)tc2681[0][1];
 			reportDataRowID1 = (Integer)tc2681[0][2];
 			tcId = "TC2681";
+		} else if (methodName.startsWith("TC2687")) {
+			return;
 		}
 
-		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(new String[] {tcId}, SurveyorConstants.SQAPICDR);
+		String username = loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username;
+		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(new String[] {tcId}, username);
 		if (matchingReport != null) {
 			generatedInvReportTitle = matchingReport.getReportTitle();
 			return;
 		}
 
 		generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(false /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-				userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+				defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 	}
 
 	private void initializeTestScreenObjects() {

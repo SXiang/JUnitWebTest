@@ -298,7 +298,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findCustomerAndOpenEditPage(String customerName) {
 		Log.method("findCustomerAndOpenEditPage", customerName);
 		Log.info(String.format("Find customer '%s'",customerName));
-		setPaginationAny(PAGINATIONSETTING_100);
+		setPagination(PAGINATIONSETTING_100, true);
 
 		String customerNameXPath;
 		String actionXPath;
@@ -424,17 +424,23 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public boolean editAndSelectLicensedFeatures(String customerName, LicensedFeatures... lfs) {
 		Log.method("editAndSelectLicensedFeatures", customerName, Arrays.toString(lfs));
+		performSearch(customerName);
 		findCustomerAndOpenEditPage(customerName);
 		selectLicensedFeatures(lfs);
 		clickOnEditOkBtn();
+		waitForPageLoad();
+		clearSearchField();
 		return true;
 	}
 
 	public boolean editAndUnSelectLicensedFeatures(String customerName, LicensedFeatures... lfs) {
 		Log.method("editAndUnSelectLicensedFeatures", customerName, Arrays.toString(lfs));
+		performSearch(customerName);
 		findCustomerAndOpenEditPage(customerName);
 		unselectLicensedFeatures(lfs);
 		clickOnEditOkBtn();
+		waitForPageLoad();
+		clearSearchField();
 		return true;
 	}
 

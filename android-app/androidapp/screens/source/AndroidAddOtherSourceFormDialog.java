@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.EnumUtility;
 import common.source.Log;
 import common.source.Timeout;
 import common.source.MobileActions.KeyCode;
@@ -16,14 +17,14 @@ import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 
 public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
-	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String SUBMIT_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Submit\")";
 	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
 	private static final String DELETE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Delete\")";
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
-	private WebElement oK;
+	@AndroidFindBy(uiAutomator = SUBMIT_BUTTON_UI_SELECTOR)
+	private WebElement submit;
 
 	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
 	private WebElement cancel;
@@ -33,51 +34,31 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]")
-	@CacheLookup
-	private WebElement oKNewItem;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[6]")
-	@CacheLookup
-	private WebElement cancelNewItem;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[6]")
-	@CacheLookup
-	private WebElement oKExistingItem;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[7]")
-	@CacheLookup
-	private WebElement cancelExistingItem;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]")
-	@CacheLookup
-	private WebElement deleteExistingItem;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement useCurrentLocation;
 
 	/****** TextField elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement latitude;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.EditText[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.EditText[2]")
 	@CacheLookup
 	private WebElement longitude;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement additionalNotes;
 
 	/****** SelectBox elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement source;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement sourceText;
 
@@ -97,7 +78,7 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public LeakSourceType getSelectedLeakSource() {
 		Log.method("getSelectedLeakSource");
-		return LeakSourceType.valueOf(this.sourceText.getText().trim());
+		return EnumUtility.fromName(this.sourceText.getText().trim(), () -> LeakSourceType.values());
 	}
 
 	public void selectLeakSource(LeakSourceType leakSourceType) {
@@ -108,18 +89,18 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	/****** Button Methods ******/
 
-	public WebElement getOKButton() {
-		Log.method("getOKButton");
-		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
-		return oK;
+	public WebElement getSubmitButton() {
+		Log.method("getSubmitButton");
+		submit = getAndroidDriver().findElementByAndroidUIAutomator(SUBMIT_BUTTON_UI_SELECTOR);
+		return submit;
 	}
 
-	public void clickOnOK() throws Exception {
-		Log.method("clickOnOK");
-		WebElement okButton = getOKButton();
-		tap(okButton);
-		press(okButton);
-		clickAndPressKey(okButton, KeyCode.KEYCODE_ENTER);
+	public void clickOnSubmit() throws Exception {
+		Log.method("clickOnSubmit");
+		WebElement submitButton = getSubmitButton();
+		tap(submitButton);
+		press(submitButton);
+		clickAndPressKey(submitButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getCancelButton() {
@@ -183,15 +164,15 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	}
 
 	public void enterAdditionalNotes(String value) throws Exception {
-		Log.method("enterAdditionalNotes");
+		Log.method("enterAdditionalNotes", value);
 		additionalNotes.clear();
-		sendKeys(additionalNotes, value);
+		additionalNotes.sendKeys(value);
 	}
 
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("AndroidAddOtherSourceFormDialog.screenLoadCondition");
-		return getOKButton()!=null && getOKButton().isDisplayed();
+		return getSubmitButton()!=null && getSubmitButton().isDisplayed();
 	}
 
 	public Boolean verifyCorrectDataIsShown(final LeakSourceType otherSourceLeakSourceType, final String otherSourceAdditionalNotes) {

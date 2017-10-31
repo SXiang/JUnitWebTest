@@ -38,6 +38,7 @@ param
 
 . "$BuildScriptsBaseDir\selenium-wd\lib\SetupAndroidBuildPreReqsCommon.ps1"
 . "$BuildScriptsBaseDir\selenium-wd\lib\ApplicationInstaller.ps1"
+. "$BuildScriptsBaseDir\selenium-wd\lib\HelperScripts\ZipHelpers.ps1"
 
 # 0.
 cd $BuildWorkingDir
@@ -52,6 +53,53 @@ if ($overrideSet) {
     Write-Host "Android automation pre-requisites will NOT be installed."
     Write-Host "NOTE: If you wish to force installation of Android automation pre-requisites on the machine remove '$AUTO_OVERRIDE_TEXT' text from $AUTO_PRE_INSTALL_CHECK_FILE"
     exit
+}
+
+$SKIN_NAME = "Tab_S_8.4_Black"
+$SKIN_DOWNLOAD_URL = "http://img-developer.samsung.com/images/emulator_skin/Tab_S_8.4_Black.zip"
+$TEMP_PATH = [System.IO.Path]::GetTempPath()
+$ANDROIDHOME = $env:ANDROID_HOME
+
+function Check-InstallEmulatorSkin($skinName) {
+    if (-not (Is-EmulatorSkinInstalled -skinName $skinName)) {
+        "Emulator skin - '$skinName' NOT installed. Downloading skin from internet..."
+        $androidSdkVersion = $SystemImage.split("|")[0]    
+        $zipInstallPath = "${TEMP_PATH}${skinName}.zip"
+        
+        # Delete existing skin .zip file if it already exists in $TEMP_PATH
+        if (Test-Path "$zipInstallPath") {
+	        "Deleting $zipInstallPath ..."
+	        Remove-Item "$zipInstallPath" -Force
+        }
+
+        "[Download] - Downloading $SKIN_DOWNLOAD_URL -> $zipInstallPath ..."
+        Invoke-WebRequest -Uri $SKIN_DOWNLOAD_URL -Method GET -OutFile $zipInstallPath
+        "DONE downloading. Downloaded file saved at -> $zipInstallPath"
+
+        $skinInstallFolder = "$ANDROIDHOME\platforms\android-${androidSdkVersion}\skins\$skinName"    
+        "[UnZip] - Extracting skin files to -> $skinInstallFolder ..."
+        Decompress-ArchiveFile -sourceArchiveFileName $zipInstallPath -destinationDirectoryName $skinInstallFolder -overwriteFiles:$false
+        "DONE extracting skin files to $skinInstallFolder"
+
+        "[Cleanup] - Removing .zip file -> $zipInstallPath"
+        Remove-Item $zipInstallPath -Force
+        "Removed .zip file - $zipInstallPath"
+
+    } else {
+        "Emulator skin - '$skinName' is already installed on the machine. Skipping install."
+    }
+}
+
+function Is-EmulatorSkinInstalled($skinName) {
+    $installed = $false
+    $androidSdkVersion = $SystemImage.split("|")[0]
+    $skinInstallFolder = "$ANDROIDHOME\platforms\android-${androidSdkVersion}\skins\$skinName"    
+    if (Test-Path $skinInstallFolder) {
+        $files = Get-ChildItem $skinInstallFolder
+        $installed = (($files -ne $NULL) -and ($files.Length -gt 0))
+    }
+
+    $installed
 }
 
 # 2.
@@ -73,14 +121,18 @@ $installApplications = @{
 InstallApplications-FromDictTable -installAppsDictTable $installApplications
 Write-Host "[INSTALL_EMULATOR_AND_PREREQS]: Done installing Android Build Tools, HAXM and Emulator System Image"
 
-# 4. 
+#>
+
+# 4.
+Check-InstallEmulatorSkin -skinName $SKIN_NAME
+
+# 5. 
 Write-Host "[CREATE_AVD]: Create Android AVD"
-$ANDROIDHOME = $env:ANDROID_HOME
 $imgParts = $SystemImage.split("|")
 $apiLevel = $imgParts[0]
 $tagId = $imgParts[1]
 $abi = $imgParts[2]
-$skin  = "WXGA800-7in"
+$skin  = "${SKIN_NAME}"
 $avdName = "android_${apiLevel}_${tagId}_${abi}_${skin}"
 Write-Host "Creating AVD - $avdName"
 echo no | . "$ANDROIDHOME\tools\android.bat" create avd -t "Google Inc.:Google APIs:$apiLevel" --abi $abi --tag $tagId --name $avdName --skin $skin  # Create AVD

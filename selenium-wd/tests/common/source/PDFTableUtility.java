@@ -24,12 +24,12 @@ public class PDFTableUtility extends PDFUtility{
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
 		LISAINVESTIGATIONPDFTABLE ("LISA#"+wordSeparator+"Status"+wordSeparator+"Investigation Date/Time"+wordSeparator+"Investigator"+wordSeparator+"Duration",0,"Investigation Marker Results",true,-1,5),
 		GAPINVESTIGATIONPDFTABLE ("Gap #"+wordSeparator+"Status"+wordSeparator+"Investigation Date/Time"+wordSeparator+"Investigator"+wordSeparator+"Duration",0,"Date Printed:",true,-1,5),
-		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",0,"",true,-1,10),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)",0,"",true,-1,9),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(�"+wordSeparator+"Field Notes",1,"",true,-1),
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(�",1,"",true,-1),
 		EQDATATABLE ("# Leaks / ft"+wordSeparator+"Emission Rate "+wordSeparator+"/ Leak",0,"",false,-1,9),
 		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
 
@@ -216,7 +216,7 @@ public class PDFTableUtility extends PDFUtility{
 		return pdfTable;
 	}
 
-	private String trimTableRow(String line){
+	public static String trimTableRow(String line){
 		String nelPattern = "[\\u0085]*";
 		line = line.replaceAll(nelPattern, "");
 		line = line.replaceAll(pdfParagraphEnd, "");

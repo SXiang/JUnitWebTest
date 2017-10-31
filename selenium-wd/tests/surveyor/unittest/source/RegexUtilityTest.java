@@ -33,6 +33,14 @@ public class RegexUtilityTest {
 	}
 
 	@Test
+	public void testCustomRegexMatch() {
+		Log.info("Running test - testCustomRegexMatch() ...");
+		String line = "investigator: sqapicdr@picarro.comlatitude: 37.39675, longitude: -121.984397, precison: m";
+		boolean matches = line.matches("Investigator: sqapicdr@picarro.comLatitude: (\\d+\\.\\d+)?, Longitude: \\-?(\\d+\\.\\d+)?, Precison: m".toLowerCase());
+		assertTrue(matches == true);
+	}
+
+	@Test
 	public void testInvAddLeakHeaderMatch() {
 		Log.info("Running test - testInvAddLeakHeaderMatch() ...");
 		String headerText = "CR-A38DB8-LISA-2  (In Progress)";
@@ -44,6 +52,54 @@ public class RegexUtilityTest {
 		Log.info("Running test - testInvAddLeakHeaderNoMatch() ...");
 		String headerText = "NoMatchText";
 		assertFalse(isInvAddLeakHeaderMatch(headerText));
+	}
+
+	@Test
+	public void testPicarroAppLatitudeLongitudeTextMatch() {
+		Log.info("Running test - void testPicarroAppLatitudeLongitudeTextMatch() ...");
+		String latLongText = "Latitude : 37.396834592  Longitude  :  -121.98419167";
+		assertTrue(isPicarroAppLatLongTextMatch(latLongText));
+		latLongText = "Latitude : -37.396834592  Longitude  :  121.98419167";
+		assertTrue(isPicarroAppLatLongTextMatch(latLongText));
+	}
+
+	@Test
+	public void testPicarroAppLatitudeLongitudeTextNoMatch() {
+		Log.info("Running test - testPicarroAppLatitudeLongitudeTextNoMatch() ...");
+		String latLongText = "Latitude :   Longitude  :  ";
+		assertFalse(isPicarroAppLatLongTextMatch(latLongText));
+	}
+
+	@Test
+	public void testPicarroAppPrecisonTextMatch() {
+		Log.info("Running test - void testPicarroAppPrecisonTextMatch() ...");
+		String precisonText = "Precison : 0  m";
+		assertTrue(isPicarroAppPrecisonTextMatch(precisonText));
+		precisonText = "Precison : 19.886999130249m";
+		assertTrue(isPicarroAppPrecisonTextMatch(precisonText));
+	}
+
+	@Test
+	public void testPicarroAppPrecisonTextNoMatch() {
+		Log.info("Running test - testPicarroAppPrecisonTextNoMatch() ...");
+		String precisonText = "Precison : m";
+		assertFalse(isPicarroAppPrecisonTextMatch(precisonText));
+	}
+
+	@Test
+	public void testPicarroAppVelocityTextMatch() {
+		Log.info("Running test - void testPicarroAppVelocityTextMatch() ...");
+		String VelocityText = "Velocity : 0  m/s";
+		assertTrue(isPicarroAppVelocityTextMatch(VelocityText));
+		VelocityText = "Velocity : 100.00  m/s";
+		assertTrue(isPicarroAppVelocityTextMatch(VelocityText));
+	}
+
+	@Test
+	public void testPicarroAppVelocityTextNoMatch() {
+		Log.info("Running test - testPicarroAppVelocityTextNoMatch() ...");
+		String VelocityText = "Velocity : m/s";
+		assertFalse(isPicarroAppVelocityTextMatch(VelocityText));
 	}
 
 	@Test
@@ -75,8 +131,23 @@ public class RegexUtilityTest {
 	}
 
 	private boolean isInvAddLeakHeaderMatch(String headerText) {
+		return isRegexPatternMatch(RegexUtility.INV_ADD_LEAK_STATUS_HEADER_REGEX, headerText);
+	}
+
+	private boolean isPicarroAppLatLongTextMatch(String latLongText) {
+		return isRegexPatternMatch(RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN, latLongText);
+	}
+
+	private boolean isPicarroAppPrecisonTextMatch(String precisonText) {
+		return isRegexPatternMatch(RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN, precisonText);
+	}
+
+	private boolean isPicarroAppVelocityTextMatch(String velocityText) {
+		return isRegexPatternMatch(RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN, velocityText);
+	}
+
+	private boolean isRegexPatternMatch(String regexPattern, String headerText) {
 		boolean match = false;
-		String regexPattern = RegexUtility.INV_ADD_LEAK_STATUS_HEADER_REGEX;
 		if (RegexUtility.matchesPattern(headerText, regexPattern)) {
 			List<String> matchingGroups = RegexUtility.getMatchingGroups(headerText, regexPattern, true);
 			String matchedText = matchingGroups.get(matchingGroups.size()-1);

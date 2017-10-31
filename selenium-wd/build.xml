@@ -550,6 +550,7 @@
           <include name="**/ComplianceReportsPageTest11.class" />
           <include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
           <include name="**/ComplianceReportsPageTest_AssetBox.class" />
+          <include name="**/ComplianceReportsPageTest_Tahoe.class" />
           <include name="**/ComplianceReportsPageTest10.class" />
         </fileset>
       </batchtest>
@@ -586,10 +587,12 @@
           <include name="**/SimulatorGeneralTests.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
+          <include name="**/AssessmentReportsWithNewSurveyPageTest.class" />
           <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
           <include name="**/ObserverViewPageTest_EQ.class" />
           <include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
           <include name="**/DriverViewPageTest_EQ.class" />
+          <include name="**/LicensedFeatureAndVisibilityTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -650,7 +653,6 @@
           <include name="**/ReferenceGasReportsPageTest.class" />
           <include name="**/ManageLocationsPageTest_Ethane.class" />
           <include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
-          <include name="**/LicensedFeatureAndVisibilityTest.class" />
           <include name="**/SurveyViewPageTest_EQ.class" />
         </fileset>
       </batchtest>
@@ -706,9 +708,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-			  <include name="**/DriverViewPageTest_Analytics.class" />
-			  <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
-			  <include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+			  <include name="**/AssessmentReportsWithNewSurveyPageTest.class" />
 			</fileset>
       </batchtest>
     </junit>
@@ -788,10 +788,8 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
-          <include name="**/ReportsTestSuite1.class" />
     	  <!-- Single thread execution test classes -->
           <include name="**/SurveyViewPageTest6.class" />
-          <include name="**/LicensedFeatureAndVisibilityTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -817,6 +815,7 @@
 		  <include name="**/ComplianceReportsTestSuite5.class" />
           <include name="**/ComplianceReportsTestSuite6.class" />
           <include name="**/ComplianceReportsTestSuite7.class" />
+          <include name="**/ComplianceReportsTestSuite8.class" />
           <include name="**/ReportsTestSuite2.class" />
           <include name="**/LatLongSelectionReportsPageTest.class" />
           <include name="**/LatLongSelectionReportsPageTest2.class" />
@@ -863,7 +862,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compiletestsuite,compileregression,compileUnitIntegrationTest" description="Run local branch tests ">
+  <target name="tc_localrun" depends="compiletestsuite,compileregression,compileSanity" description="Run local branch tests ">
   	<junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
   	      <sysproperty key="testReportCategory" value="JUnitParallel" />
   	      <sysproperty key="maxParallelTestThreads" value="5" />
@@ -877,10 +876,7 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/AssessmentReportsPageTest.class" />
-  	        	<include name="**/FEQReportsPageTest.class" />
-  	        	<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
-  	        	<include name="**/ComplianceReportsPageTest12.class" />
+  	        	<include name="**/SurveyViewPageTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

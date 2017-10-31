@@ -8,7 +8,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -290,7 +289,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -390,7 +388,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -463,7 +460,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -482,14 +478,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		String reportName1 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, getTestSetup().getLoginUser());
+		String reportName1 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(rptTitle, getTestSetup().getLoginUser());
 		assertNotNull(reportName1);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
-		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, getTestSetup().getLoginUser());
+		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(rptTitle, getTestSetup().getLoginUser());
 		assertNotNull(reportName2);
 
 		assertNotEquals(reportName1, reportName2);
@@ -540,7 +536,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYBREADCRUMB, "1");
 		viewMap.put(KEYINDICATIONS, "1");
 		viewMap.put(KEYISOTOPICCAPTURE, "1");
-		viewMap.put(KEYANNOTATION, "1");
 		viewMap.put(KEYGAPS, "1");
 		viewMap.put(KEYASSETS, "1");
 		viewMap.put(KEYBOUNDARIES, "0");
@@ -601,7 +596,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -678,7 +672,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -760,7 +753,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -815,7 +807,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYBREADCRUMB, "0");
 		viewMap.put(KEYINDICATIONS, "0");
 		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
@@ -883,7 +874,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYBREADCRUMB, "0");
 		viewMap.put(KEYINDICATIONS, "0");
 		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
@@ -943,7 +933,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -1028,7 +1017,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYBREADCRUMB, "0");
 		viewMap.put(KEYINDICATIONS, "0");
 		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
@@ -1086,7 +1074,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
@@ -1182,7 +1169,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYBREADCRUMB, "1");
 		viewMap.put(KEYINDICATIONS, "1");
 		viewMap.put(KEYISOTOPICCAPTURE, "1");
-		viewMap.put(KEYANNOTATION, "1");
 		viewMap.put(KEYGAPS, "1");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");

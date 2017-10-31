@@ -174,7 +174,6 @@ public class DriverViewPageTest extends BaseMapViewTest {
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Indications));
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.IsotopicAnalysis));
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Lisas));
-			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
 
 			Log.info("Clicking on MAP button");
@@ -287,7 +286,6 @@ public class DriverViewPageTest extends BaseMapViewTest {
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Indications));
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.IsotopicAnalysis));
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Lisas));
-			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
 			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
 
 			Log.info("Clicking on MAP button");

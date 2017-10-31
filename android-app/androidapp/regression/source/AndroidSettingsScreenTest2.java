@@ -12,6 +12,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.support.PageFactory;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import androidapp.dataprovider.AndroidSettingsDataProvider;
 import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
@@ -22,12 +26,15 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import surveyor.scommon.source.SurveyorConstants;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 
 public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
 	protected AndroidInvestigateMapScreen investigateMapScreen;
+
+	private static LoginPageActions loginPageAction;
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
@@ -43,6 +50,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	public void beforeTest() throws Exception {
 		initializeTestDriver();
 		initializeTestScreenObjects();
+		initializePageActions();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
@@ -59,25 +67,36 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	}
 
 	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+	}
+
+	/**
 	 * Test Case ID: TC2548_EnergyBackpack_ScreenShowsCH4MeasurementByDefault
 	 * Test Description: Energy Backpack - Screen shows CH4 measurement by default
 	 * Script: -
 	 *	- - Launch the Backpack app
 	 * Results: -
-	 *	- - Tablet displays the Map screen. The Concentration Chart appears in a small box at top left and current CH4 value appears in another box at top right.
-	 *  - - At the top left of the latter box, HR appears, indicating that it is measuring High Range (CH4). The maximum CH4 value appears at the top right of this box.
+	 *	- - Tablet displays the Map screen. The Concentration Chart appears in a small box at top left and current CH4 value appears in another box at top right. At the top left of the latter box, HR appears, indicating that it is measuring High Range (CH4). The maximum CH4 value appears at the top right of this box.
 	 */
 	@Test
 	public void TC2548_EnergyBackpack_ScreenShowsCH4MeasurementByDefault() throws Exception {
 		Log.info("\nRunning TC2548_EnergyBackpack_ScreenShowsCH4MeasurementByDefault ...");
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
+			if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				mapScreen.ensureAnalyzerIsInMethaneMode();
+			}
+
 			mapScreen.assertConcentrationChartIsShown();
 			mapScreen.assertMapIsLoaded();
 			Log.info("Map screen loaded successfully!");
 
 			final String actualMaxText = mapScreen.getMaxText();
-			final String expectedMaxText = String.format("Max: %s", "2.0 ppm");
+			final String expectedMaxText = String.format("Max %s", "2.0 ppm");
 			final String actualModeText = mapScreen.getModeText();
 			final String expectedModeText = "Methane Mode";
 			final String actualAmplitudeText = mapScreen.getAmplitudeText();
@@ -104,8 +123,8 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	 *	- - Launch the Backpack app
 	 *	- - Click the Toggle Mode button at the bottom of the screen
 	 * Results: -
-	 *	- - Tablet displays the Map screen. The current CH4 value appears in a box at top right. HR appears at the top right inside this box
-	 *	- - HR changes to HP
+	 *	- - Tablet displays the Map screen. The current CH4 value appears in a box at top right. Methane Mode appears at the top left inside this box. Directly under this is the maximum recorded methane concentration for this session, Max: x.x ppm. Directly under this is n/a Ethane, as it is currently not in Ethane mode.To the right of these is the currently measured methane concentration inside a black circle with the methane concentration value and , Methane (ppm) under it.
+	 *	- - Methane Mode is replaced by activity indicator spinning until mode change is complete, then changes to Ethane Mode. Ethane N/A  changes to either --.--% Ethane or some numerical value like 02.32% Ethane. Max concentration and current concentration are unchanged, but the color of the circle may change based on the disposition of the measured gas (green for Not Natural Gas, red for Natural Gas and black for unknown)
 	 */
 	@Test
 	public void TC2549_EnergyBackpack_UserCanToggleBetweenHighRangeHighPrecisionModes() throws Exception {
@@ -119,26 +138,30 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			try {
 				final String actualAmplitudeText = mapScreen.getAmplitudeText();
 				final String expectedAmplitudeText = "2.0";
-
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+					mapScreen.ensureAnalyzerIsInMethaneMode();
 					mapScreen.clickOnToggleMode();
 					assertTrue(String.format("Amplitude should be greater than 0.9. Actual=[%s]", actualAmplitudeText), Float.valueOf(actualAmplitudeText) > 0.9f);
 				} else {
 					assertTrue(String.format("Amplitude text is NOT correct. Expected=[%s]; Actual=[%s]", expectedAmplitudeText, actualAmplitudeText), actualAmplitudeText.equals(expectedAmplitudeText));
+					mapScreen.assertDefaultTopPanelElementsAreCorrect();
 				}
 
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 					mapScreen.assertEthaneModeIsShownInTopPanel();
 				}
+
 			} catch (Exception ex) {
 				fail(String.format("Test failed on exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 			} finally {
 				// revert back to Methane mode
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-					mapScreen.clickOnToggleMode();
-					mapScreen.assertMethaneModeIsShownInTopPanel();
+					mapScreen.ensureAnalyzerIsInMethaneMode();
 				}
 			}
+
+			// Comments: Verification for this step - 'Color of the circle may change based on the disposition of the measured gas (green for Not Natural Gas, red for Natural Gas and black for unknown)'
+			// has been done in backpack simulator data related test case -> TC2876
 
 			return true;
 		});
@@ -157,10 +180,13 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	 *	- - List of Compliance Reports appears
 	 */
 	@Test
-	public void TC2551_EnergyBackpack_InvestigationScreenTablet() throws Exception {
+	@UseDataProvider(value = AndroidSettingsDataProvider.SETTINGS_DATA_PROVIDER_TC2551, location = AndroidSettingsDataProvider.class)
+	public void TC2551_EnergyBackpack_InvestigationScreenTablet(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2551_EnergyBackpack_InvestigationScreenTablet ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.waitForScreenLoad();
 			Log.info("Map screen loaded successfully!");
@@ -168,19 +194,17 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			mapScreen.clickOnInvestigate();
 			initializeMapScreen();
 			mapScreen.waitForLoginDialogToShow();
+
 			mapScreen.assertEnterPasswordHintTextIsShown(BaselineImages.Folder.TC2551, BaselineImages.ImageFile.EnterPassword);
 
 			final String actualUsername = mapScreen.getUsernameEditView().getText();
-			final String expectedUsername = SurveyorConstants.SQAPICDR;
-			final String actualServerUrl = mapScreen.getServerEditView().getText();
-			final String expectedServerUrl = TestContext.INSTANCE.getTestSetup().getBaseUrl();
-			assertTrue(String.format("ServerUrl is NOT correct. Expected=[%s]; Actual=[%s]", expectedServerUrl, actualServerUrl), actualServerUrl.equals(expectedServerUrl));
+			final String expectedUsername = userDataRow.username;
 			assertTrue(String.format("Username is NOT correct. Expected=[%s]; Actual=[%s]", expectedUsername, actualUsername), actualUsername.equals(expectedUsername));
 
-			mapScreen.enterPassword(SurveyorConstants.PICADMINPSWD);
+			mapScreen.enterPassword(userDataRow.password);
 			mapScreen.clickOnSubmit();
 			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			return true;
 		});
 	}

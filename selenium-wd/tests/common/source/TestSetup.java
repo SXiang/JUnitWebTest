@@ -186,10 +186,34 @@ public class TestSetup {
 	private String backPackServerMachineUser;
 	private String backPackServerMachinePwd;
 
+	private String androidDevicePin;
+
 	private boolean isRunningOnBackPackAnalyzer;
 	private boolean isAndroidTestReleaseEnabled;
 	private boolean isAndroidTestPerfMetricsEnabled;
+	private boolean isAndroidTestServiceCorrectorsEnabled;
 	private boolean isAndroidTestWebSocketPauseResumeEnabled;
+	private boolean isAndroidTestPerfProfileVisualBarsEnabled;
+	private boolean isAndroidTestPerfProfileDumpSysEnabled;
+
+	private boolean isAndroidNetworkThrottleEnabled;
+	private String androidNetworkDelay;
+	private String androidNetworkSpeed;
+
+	private INetworkEmulation networkEmulation;
+
+	private String androidPerfTestResultStoreLocation;
+
+	private Integer androidStabilityTestMaxHrs;
+	private Integer androidStabilityTestMaxMinutes;
+
+	private Integer androidStressTestMaxLeaksPerTestRun;
+	private Integer androidStressTestMaxOtherSourcesPerTestRun;
+
+	private Boolean androidLongerProgressBarTimeoutEnabled;
+	private Integer androidLongerProgressBarTimeoutValueInSeconds;
+
+	private Integer androidMaxLogLines;
 
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
@@ -654,9 +678,22 @@ public class TestSetup {
 			this.setAdbLocation(this.testProp.getProperty("adbLocation"));
 			this.setAndroidTestReleaseEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.Release.Enabled")));
 			this.setAndroidTestPerfMetricsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfMetrics.Enabled")));
+			this.setAndroidTestServiceCorrectorsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.ServiceCorrectors.Enabled")));
 			this.setAndroidTestWebSocketPauseResumeEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.WebSocketPauseResume.Enabled")));
+			this.setAndroidTestPerfProfileVisualBarsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfProfile.VisualBars.Enabled")));
+			this.setAndroidTestPerfProfileDumpSysEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfProfile.DumpSys.Enabled")));
+			this.setAndroidPerfTestResultStoreLocation(this.testProp.getProperty("androidTests.PerfResults.Store.Location"));
+			this.setAndroidDevicePin(this.testProp.getProperty("androidDevicePin"));
+			this.setAndroidNetworkThrottleEnabled(Boolean.valueOf(this.testProp.getProperty("androidEmulator.Network.Throttle.Enabled")));
+			this.setAndroidNetworkDelay(this.testProp.getProperty("androidEmulator.Network.Delay"));
+			this.setAndroidNetworkSpeed(this.testProp.getProperty("androidEmulator.Network.Speed"));
+			this.setAndroidMaxLogLines(Integer.valueOf(this.testProp.getProperty("androidTests.Logs.MaxLines")));
+			this.setAndroidLongerProgressBarTimeoutEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.LongerProgressBarWaitTimeout.Enabled")));
+			this.setAndroidLongerProgressBarTimeoutValueInSeconds(Integer.valueOf(this.testProp.getProperty("androidTests.LongerProgressBarWaitTimeout.ValueInSeconds")));
 
-			setBackPackServerProperties(this.testProp);
+			this.setAndroidStabilityTestProperties();
+			this.setAndroidStressTestProperties();
+			this.setBackPackServerProperties();
 
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
@@ -757,7 +794,7 @@ public class TestSetup {
 		}
 	}
 
-	private void setBackPackServerProperties(Properties testProp2) {
+	private void setBackPackServerProperties() {
 		this.setBackPackServerIpAddress(this.testProp.getProperty("backPackServerIpAddress"));
 		this.setBackPackServerMachineIp(this.testProp.getProperty("backPackServerMachineIp"));
 		this.setBackPackServerMachineUser(this.testProp.getProperty("backPackServerMachineUser"));
@@ -968,6 +1005,30 @@ public class TestSetup {
 				&& executionTimesForLargeAreaPipesBaselineCollection != "") {
 			this.setExecutionTimesForLargeAreaPipesReportJobPerfBaseline(
 					Integer.valueOf(executionTimesForLargeAreaPipesBaselineCollection));
+		}
+	}
+
+	private void setAndroidStabilityTestProperties() {
+		String stabilityTestMaxHrs = this.testProp.getProperty("androidTests.StabilityTests.MaxHours");
+		if (stabilityTestMaxHrs != null && stabilityTestMaxHrs != "") {
+			this.setAndroidStabilityTestMaxHrs(Integer.valueOf(stabilityTestMaxHrs));
+		}
+
+		String stabilityTestMaxMins = this.testProp.getProperty("androidTests.StabilityTests.MaxMinutes");
+		if (stabilityTestMaxMins != null && stabilityTestMaxMins != "") {
+			this.setAndroidStabilityTestMaxMinutes(Integer.valueOf(stabilityTestMaxMins));
+		}
+	}
+
+	private void setAndroidStressTestProperties() {
+		String stressTestMaxLeaks = this.testProp.getProperty("androidTests.StressTests.MaxLeaksPerTestRun");
+		if (stressTestMaxLeaks != null && stressTestMaxLeaks != "") {
+			this.setAndroidStressTestMaxLeaksPerTestRun(Integer.valueOf(stressTestMaxLeaks));
+		}
+
+		String stressTestMaxOtherSources = this.testProp.getProperty("androidTests.StressTests.MaxOtherSourcesPerTestRun");
+		if (stressTestMaxOtherSources != null && stressTestMaxOtherSources != "") {
+			this.setAndroidStressTestMaxOtherSourcesPerTestRun(Integer.valueOf(stressTestMaxOtherSources));
 		}
 	}
 
@@ -1727,5 +1788,134 @@ public class TestSetup {
 
 	public void setAndroidTestWebSocketPauseResumeEnabled(boolean isAndroidTestWebSocketPauseResumeEnabled) {
 		this.isAndroidTestWebSocketPauseResumeEnabled = isAndroidTestWebSocketPauseResumeEnabled;
+	}
+
+	public boolean isAndroidTestServiceCorrectorsEnabled() {
+		return isAndroidTestServiceCorrectorsEnabled;
+	}
+
+	public void setAndroidTestServiceCorrectorsEnabled(boolean isAndroidTestServiceCorrectorsEnabled) {
+		this.isAndroidTestServiceCorrectorsEnabled = isAndroidTestServiceCorrectorsEnabled;
+	}
+
+	public String getAndroidDevicePin() {
+		return androidDevicePin;
+	}
+
+	public void setAndroidDevicePin(String androidDevicePin) {
+		this.androidDevicePin = androidDevicePin;
+	}
+
+	public boolean isAndroidTestPerfProfileVisualBarsEnabled() {
+		return isAndroidTestPerfProfileVisualBarsEnabled;
+	}
+
+	public void setAndroidTestPerfProfileVisualBarsEnabled(boolean isAndroidTestPerfProfileVisualBarsEnabled) {
+		this.isAndroidTestPerfProfileVisualBarsEnabled = isAndroidTestPerfProfileVisualBarsEnabled;
+	}
+
+	public boolean isAndroidTestPerfProfileDumpSysEnabled() {
+		return isAndroidTestPerfProfileDumpSysEnabled;
+	}
+
+	public void setAndroidTestPerfProfileDumpSysEnabled(boolean isAndroidTestPerfProfileDumpSysEnabled) {
+		this.isAndroidTestPerfProfileDumpSysEnabled = isAndroidTestPerfProfileDumpSysEnabled;
+	}
+
+	public String getAndroidPerfTestResultStoreLocation() {
+		return androidPerfTestResultStoreLocation;
+	}
+
+	public void setAndroidPerfTestResultStoreLocation(String androidPerfTestResultStoreLocation) {
+		this.androidPerfTestResultStoreLocation = androidPerfTestResultStoreLocation;
+	}
+
+	public Integer getAndroidStabilityTestMaxHrs() {
+		return androidStabilityTestMaxHrs;
+	}
+
+	public void setAndroidStabilityTestMaxHrs(Integer androidStabilityTestMaxHrs) {
+		this.androidStabilityTestMaxHrs = androidStabilityTestMaxHrs;
+	}
+
+	public Integer getAndroidStabilityTestMaxMinutes() {
+		return androidStabilityTestMaxMinutes;
+	}
+
+	public void setAndroidStabilityTestMaxMinutes(Integer androidStabilityTestMaxMins) {
+		this.androidStabilityTestMaxMinutes = androidStabilityTestMaxMins;
+	}
+
+	public Integer getAndroidStressTestMaxLeaksPerTestRun() {
+		return androidStressTestMaxLeaksPerTestRun;
+	}
+
+	public void setAndroidStressTestMaxLeaksPerTestRun(Integer androidStressTestMaxLeaksPerTestRun) {
+		this.androidStressTestMaxLeaksPerTestRun = androidStressTestMaxLeaksPerTestRun;
+	}
+
+	public Integer getAndroidStressTestMaxOtherSourcesPerTestRun() {
+		return androidStressTestMaxOtherSourcesPerTestRun;
+	}
+
+	public void setAndroidStressTestMaxOtherSourcesPerTestRun(Integer androidStressTestMaxOtherSourcesPerTestRun) {
+		this.androidStressTestMaxOtherSourcesPerTestRun = androidStressTestMaxOtherSourcesPerTestRun;
+	}
+
+	public Integer getAndroidLongerProgressBarTimeoutValueInSeconds() {
+		return androidLongerProgressBarTimeoutValueInSeconds;
+	}
+
+	public void setAndroidLongerProgressBarTimeoutValueInSeconds(
+			Integer androidLongerProgressBarTimeoutValueInSeconds) {
+		this.androidLongerProgressBarTimeoutValueInSeconds = androidLongerProgressBarTimeoutValueInSeconds;
+	}
+
+	public Boolean getAndroidLongerProgressBarTimeoutEnabled() {
+		return androidLongerProgressBarTimeoutEnabled;
+	}
+
+	public void setAndroidLongerProgressBarTimeoutEnabled(Boolean androidLongerProgressBarTimeoutEnabled) {
+		this.androidLongerProgressBarTimeoutEnabled = androidLongerProgressBarTimeoutEnabled;
+	}
+
+	public Integer getAndroidMaxLogLines() {
+		return androidMaxLogLines;
+	}
+
+	public void setAndroidMaxLogLines(Integer androidMaxLogLines) {
+		this.androidMaxLogLines = androidMaxLogLines;
+	}
+
+	public boolean isAndroidNetworkThrottleEnabled() {
+		return isAndroidNetworkThrottleEnabled;
+	}
+
+	public void setAndroidNetworkThrottleEnabled(boolean isAndroidNetworkThrottleEnabled) {
+		this.isAndroidNetworkThrottleEnabled = isAndroidNetworkThrottleEnabled;
+	}
+
+	public String getAndroidNetworkDelay() {
+		return androidNetworkDelay;
+	}
+
+	public void setAndroidNetworkDelay(String androidNetworkDelay) {
+		this.androidNetworkDelay = androidNetworkDelay;
+	}
+
+	public String getAndroidNetworkSpeed() {
+		return androidNetworkSpeed;
+	}
+
+	public void setAndroidNetworkSpeed(String androidNetworkSpeed) {
+		this.androidNetworkSpeed = androidNetworkSpeed;
+	}
+
+	public INetworkEmulation getNetworkEmulation() {
+		return networkEmulation;
+	}
+
+	public void setNetworkEmulation(INetworkEmulation networkEmulation) {
+		this.networkEmulation = networkEmulation;
 	}
 }

@@ -13,22 +13,29 @@ import io.appium.java_client.AppiumDriver;
 
 public class LogCollector {
 	private static final Integer LOG_PROCESSING_TIME_IN_SECONDS = 3;
+	private static final Integer DEFAULT_MAX_LOG_LINES = 3000;
 	private static final Integer MAX_ATTEMPTS = 1000;
-	private static final Integer MAX_LOG_LINES = 3000;
 	private static final String[] EXCLUDE_LOGS_FILTER = {"AppiumUnicodeIME", "AccessibilityNodeInfoDumper", "SurfaceFlinger", "injectKeyEvent"};
 
 	private ExecutorService loggingExecutor;
 	private LogcatLog logger;
+	private Integer maxLogLines = DEFAULT_MAX_LOG_LINES;
 
 	public static class LogcatLog implements Runnable {
 		private List<String> logs = new ArrayList<String>();
 		private AppiumDriver<?> appiumDriver;
 		private List<String> excludeFilter;
+		private Integer maxLogLines;
 		private boolean cancelled;
 
 		public LogcatLog(AppiumDriver<?> appiumDriver) {
+			this(appiumDriver, DEFAULT_MAX_LOG_LINES);
+		}
+
+		public LogcatLog(AppiumDriver<?> appiumDriver, Integer maxLogLines) {
 			this.appiumDriver = appiumDriver;
 			this.excludeFilter = Arrays.asList(EXCLUDE_LOGS_FILTER);
+			this.maxLogLines = maxLogLines;
 		}
 
 		@Override
@@ -71,8 +78,8 @@ public class LogCollector {
 			if (logs!=null) {
 				int len = logs.size();
 				List<String> subList = logs;
-				if (len > MAX_LOG_LINES) {
-					subList = logs.subList(len-MAX_LOG_LINES, len-1);
+				if (len > DEFAULT_MAX_LOG_LINES) {
+					subList = logs.subList(len-DEFAULT_MAX_LOG_LINES, len-1);
 
 				}
 				StringBuilder builder = new StringBuilder();
@@ -95,14 +102,23 @@ public class LogCollector {
 		}
 	}
 
+	public static LogCollector newLogCollector(Integer maxLogLines) {
+		return new LogCollector().setMaxLogLines(maxLogLines);
+	}
+
 	public String grabLogs() {
 		this.logger.flushLogs();
 		return this.logger.getLogs();
 	}
 
+	public LogCollector setMaxLogLines(Integer maxLogLines) {
+		this.maxLogLines = maxLogLines;
+		return this;
+	}
+
 	public void startLogging(AppiumDriver<?> appiumDriver) {
 		loggingExecutor = Executors.newSingleThreadExecutor();
-		this.logger = new LogcatLog(appiumDriver);
+		this.logger = new LogcatLog(appiumDriver, this.maxLogLines);
 		loggingExecutor.execute(this.logger);
 	}
 

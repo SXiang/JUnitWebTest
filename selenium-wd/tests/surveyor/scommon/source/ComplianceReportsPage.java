@@ -49,6 +49,7 @@ import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -82,6 +83,7 @@ import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDriving
 import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
 import surveyor.dataaccess.source.StoredProcComplianceGetCoverageForecast;
 import surveyor.dataaccess.source.StoredProcComplianceGetEthaneCapture;
+import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
@@ -409,21 +411,22 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 									this.btnProcessResubmit.click();
 									this.waitForPageLoad();
 									this.waitForAJAXCallsToComplete();
-								}
-								if (buttonType == ReportsButtonType.Delete) {
+								}else if (buttonType == ReportsButtonType.Delete) {
 									this.waitForConfirmDeletePopupToShow();
 									if (confirmAction) {
 										Log.clickElementInfo("Confirm Delete");
 										this.clickOnConfirmInDeleteReportPopup();
 										this.waitForConfirmDeletePopupToClose();
 									}
-								}
-								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+								}else if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
 									this.waitForCopyReportPagetoLoad();
 									this.waitForInputTitleToEnable();
 									this.waitForDeleteSurveyButtonToLoad();
 									this.waitForOkButtonToEnable();
+								}else if (buttonType.equals(ReportsButtonType.Investigate)){
+									this.waitForReportInvestigationsPagetoLoad();
 								}
+
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
@@ -843,7 +846,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public void modifyReportViews() {
 		this.inputViewInd.click();
 		this.inputViewIso.click();
-		this.inputViewAnno.click();
 	}
 
 	@Override
@@ -1578,7 +1580,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		expectedReportString.add(ComplianceReportSSRS_ShowBreadcrumb);
 		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
 		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowGaps);
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
@@ -1953,7 +1954,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			String[] deltaUncertainty = csvRow.get("ValueUncertainty").split(RatioSdevMetaPattern);
 			reportIsoObj.setDelta(Float.parseFloat(deltaUncertainty[0].trim()));
 			reportIsoObj.setUncertainty(Float.parseFloat(deltaUncertainty[1].trim()));
-			reportIsoObj.setText(csvRow.get("FieldNotes").trim());
 			reportList.add(reportIsoObj);
 		}
 		ArrayList<StoredProcComplianceGetIsotopics> storedPodList = StoredProcComplianceGetIsotopics
@@ -2009,7 +2009,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			String[] valueUncertainty = csvRow.get("ValueUncertainty").trim().split(RatioSdevMetaPattern);
 			ethaneCapture.setEthaneRatio(Float.parseFloat(valueUncertainty[0].trim()));
 			ethaneCapture.setEthaneRatioSdev(Float.parseFloat(valueUncertainty[1].trim()));
-			ethaneCapture.setText(csvRow.get("FieldNotes").trim());
 
 			reportList.add(ethaneCapture);
 
@@ -2122,12 +2121,12 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
-			reportIndObj.setText(csvRow.get("FieldNotes").trim());
 
 			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
 			// indication
 			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
 			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
+			reportIndObj.setAggregateDisposition(csvRow.get("Disposition").trim());
 			String aggregatedClassificationconfidence = "N/A";
 			try {
 				int aggregatedClassificationconfidenceFloat = (int) (Float
@@ -2152,6 +2151,85 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			}
 		}
 		Log.info("LISA Meta data file verification passed");
+		return true;
+	}
+
+	public boolean verifyGAPMetaDataFile(String actualPath, String reportTitle)
+			throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyGapMetaDataFile", actualPath, reportTitle);
+		return verifyGAPMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
+	}
+
+	public boolean verifyGAPMetaDataFile(String actualPath, String reportTitle, String reportId)
+			throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyGAPMetaDataFile", actualPath, reportTitle, reportId);
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToMetaDataUnZip = actualPath;
+		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
+		String unZipFolder = File.separator + metaDataZipFileName;
+		if (!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportGAP.csv";
+		String reportName = "CR-" + reportId;
+		if (actualPath.endsWith("-ReportGAP.csv")) {
+			pathToCsv = actualPath;
+		}
+		setReportName(reportName);
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
+		List<StoredProcComplianceGetGaps> reportList = new ArrayList<StoredProcComplianceGetGaps>();
+
+		int rowNumber = 0;
+		int numRows = (csvRows.size()+11)/12;
+		for(int i=0; i<numRows; i++){
+			StoredProcComplianceGetGaps reportGAPObj = new StoredProcComplianceGetGaps();
+			while (csvIterator.hasNext()) {
+				Map<String, String> csvRow = csvIterator.next();
+				if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
+					Log.info("ReportId does NOT match. GAP Meta data file verification failed");
+					return false;
+				}
+				if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
+					Log.info("ReportName does NOT match. GAP Meta data file verification failed");
+					return false;
+				}
+				String gapNumber = csvRow.get("GapNumber");
+				switch(rowNumber%12){
+				case 0: reportGAPObj.setColA(gapNumber); break;
+				case 1: reportGAPObj.setColB(gapNumber); break;
+				case 2: reportGAPObj.setColC(gapNumber); break;
+				case 3: reportGAPObj.setColD(gapNumber); break;
+				case 4: reportGAPObj.setColE(gapNumber); break;
+				case 5: reportGAPObj.setColF(gapNumber); break;
+				case 6: reportGAPObj.setColG(gapNumber); break;
+				case 7: reportGAPObj.setColH(gapNumber); break;
+				case 8: reportGAPObj.setColI(gapNumber); break;
+				case 9: reportGAPObj.setColJ(gapNumber); break;
+				case 10: reportGAPObj.setColK(gapNumber); break;
+				case 11: reportGAPObj.setColL(gapNumber); break;
+				}
+				if(++rowNumber%12==0){
+					break;
+				}
+			}
+			reportGAPObj.setRowNumber(String.valueOf(rowNumber));
+			reportList.add(reportGAPObj);
+		}
+
+		ArrayList<StoredProcComplianceGetGaps> storedPodList = StoredProcComplianceGetGaps.getReportGaps(reportId);
+
+		if (!storedPodList.equals(reportList)) {
+			Log.info(String.format("GAP Meta data file verification failed. Report object from database -> [%s] NOT found in CSV.",
+					storedPodList.toString()));
+				return false;
+		}
+		Log.info("GAP Meta data file verification passed");
 		return true;
 	}
 
@@ -2532,34 +2610,63 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 
+		final String datePrinted = Resources.getResource(ResourceKeys.ReportSSRS_DatePrinted);
+		final Integer numPages = getPageCountInSSRSPDF(actualReportString);
 		List<String> lisaInvestigationDetails = new ArrayList<String>();
-		BufferedReader bufferReader = null;
-		try {
-			String investigationResultTable = RegexUtility.getStringInBetween(actualReportString,
-					_HEADERS_Investigator + " "+ _HEADERS_Duration,
-					LisaInvestigationReportSSRS_InvestigationReport);
-			InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
-			bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-			String line = null;
-			boolean detailsFound = false;
-			while ((line = bufferReader.readLine()) != null) {
-				if (!line.isEmpty()){
-					if(!detailsFound){
-						if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
-							lisaInvestigationDetails.add(line.trim());
-							detailsFound = true;
+		Integer pageTextLength = 0;
+		boolean detailsFound = false;
+		for (int pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+			BufferedReader bufferReader = null;
+			try {
+				String investigationResultTable = "";
+
+				if (pageNumber == 1) {
+					investigationResultTable = RegexUtility.getStringInBetween(actualReportString,
+							_HEADERS_Investigator + " "+ _HEADERS_Duration, LisaInvestigationReportSSRS_InvestigationReport);
+				} else {
+					String remainingPdfText = actualReportString.substring(pageTextLength);
+					investigationResultTable = RegexUtility.getStringInBetween(remainingPdfText, reportTitle, reportTitle);
+				}
+
+				pageTextLength += investigationResultTable.length();
+
+				InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
+				bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+				String line = null;
+				while ((line = bufferReader.readLine()) != null) {
+					if (!line.isEmpty()){
+						if(!detailsFound){
+							if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
+								lisaInvestigationDetails.add(line.trim());
+								detailsFound = true;
+							}
+						}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
+							// skip text in box on top right.
+							if(!line.matches("^"+datePrinted+" .*") && !line.trim().equals(reportId.substring(0, 6)) && !BaseHelper.isNullOrEmpty(line.trim())) {
+								if (line.contains(":")) {
+									if (!line.endsWith(": ")) {
+										line = line.trim();
+									}
+
+									lisaInvestigationDetails.add(line);
+								} else {
+									// continuation from previous line.
+									int lastIdx = lisaInvestigationDetails.size()-1;
+									String prevLine = lisaInvestigationDetails.get(lastIdx);
+									lisaInvestigationDetails.set(lastIdx, prevLine + line.trim());
+								}
+							}
+						}else{
+							detailsFound = false;
+							break;
 						}
-					}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
-						lisaInvestigationDetails.add(line.trim());
-					}else{
-						detailsFound = false;
-						break;
 					}
 				}
+			} finally {
+				bufferReader.close();
 			}
-		} finally {
-			bufferReader.close();
 		}
+
 		Log.info("Investigation Lisa details in PDF: "+lisaInvestigationDetails);
 		return lisaInvestigationDetails;
 	}
@@ -2777,7 +2884,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowLISAs);
 		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
 
@@ -2917,7 +3023,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			found = searchReport(reportTitle, reportCreatedBy);
 			reportMode =getElementText(this.reportMode).trim();
 			performSearch("");
-		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);		
+		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
 		return reportMode;
 	}
 }

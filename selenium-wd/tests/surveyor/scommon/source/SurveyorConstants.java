@@ -11,7 +11,6 @@ import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ConstantDataProvider;
-import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /**
  * @author zlu
@@ -224,7 +223,6 @@ public final class SurveyorConstants {
 	public static final String KEYBREADCRUMB = "Bread Crumb";
 	public static final String KEYINDICATIONS = "Indications";
 	public static final String KEYISOTOPICCAPTURE = "Isotopic Capture";
-	public static final String KEYANNOTATION = "Annotation";
 	public static final String KEYGAPS = "Gaps";
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
@@ -295,6 +293,7 @@ public final class SurveyorConstants {
 	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_Not_Natural_Gas);
 	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_User_Cancellation);
 	public static final String REFGAS_CAPTURE_PASSED = Resources.getResource(ResourceKeys.ReferenceGasCaptureDescription_Isotopic_Reference_Pass);
+	public static final String REFGAS_CAPTURE_FAIL = Resources.getResource(ResourceKeys.ReferenceGasCaptureDescription_Isotopic_Reference_Fail);
 
 	/*
 	 * Driving survey tag for Compliance Reports
@@ -513,14 +512,14 @@ public final class SurveyorConstants {
 	/*
 	 * Other string constants
 	 */
-	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,23";
 
 	/*
 	 * Other string constants
 	 */
-	public static final String ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23";
 
-	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23";
 
 	/*
 	 * enum for list of constants
@@ -588,6 +587,7 @@ public final class SurveyorConstants {
 		RAPIDRESPONSE ("Rapid Response"),
 		REPORTMETADATA ("Report Metadata"),
 		REPORTSHAPEFILE ("Report ShapeFile"),
+		SNAPTOSTREET("Snap to Street"),
 		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast");
 
 		private final String name;
@@ -646,6 +646,23 @@ public final class SurveyorConstants {
 		}
 	};
 
+	public static enum UserLanguage {
+		ENGLISH ("en-US"),
+		SPANISHSPAIN ("es-ES"),
+		SPANISHMEXICO ("es-MX"),
+		FRENCH ("fr-FR"),
+		CHINESE ("zh-CN");
+
+		private final String value;
+		UserLanguage(String value){
+			this.value = value;
+		}
+
+		public String toString(){
+			return value;
+		}
+	};
+
 	public static enum ReportColorOption {
 		LIGHTBLUE(0),
 		BLUE(1),
@@ -669,8 +686,9 @@ public final class SurveyorConstants {
 	public enum Environment {
 		SQAAuto ("CI-SQAAuto", "SQAAuto", 1),
 		Staging ("CI-STG", "Staging", 2),
-		P3Scale ("CI-P3Scale", "P3Scale", 3);
-
+		P3Scale ("CI-P3Scale", "P3Scale", 3),
+		P3Dev ("CI-P3DEV", "P3DEV", 12),
+		P3SQA2 ("CI-P3SQA2", "P3SQA2", 13);
 		private final String ciName;
 		private final String autoDbName;
 		private final Integer index;
@@ -714,6 +732,10 @@ public final class SurveyorConstants {
 				environment = Environment.Staging;
 			} else if (url.contains("p3scale.picarro.com")) {
 				environment = Environment.P3Scale;
+			}else if (url.contains("p3dev.picarro.com")) {
+				environment = Environment.P3Dev;
+			}else if (url.contains("p3sqa2.picarro.com")) {
+				environment = Environment.P3SQA2;
 			}
 			return environment;
 		}

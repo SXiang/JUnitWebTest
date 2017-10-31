@@ -64,7 +64,7 @@ $matchStr = "$APKPrefix*.apk"
 $requiredVersionAPK = ""
 if ($PSBoundParameters.ContainsKey("APKBuildNumber")) {
     $apkBuildNumberSpecified = $true
-    $APKPrefix = "app-${flavor}-${version}-SNAPSHOT-${APKBuildNumber}"
+    $APKPrefix = "app-${flavor}-${version}-${APKBuildNumber}"
     $requiredVersionAPK = "$APKPrefix.apk"
     $matchStr = $requiredVersionAPK
 }

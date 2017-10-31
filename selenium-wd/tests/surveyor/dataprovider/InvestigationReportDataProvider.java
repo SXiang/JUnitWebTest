@@ -23,6 +23,7 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC518 = "dataProviderPageActionsInvestigationReports_TC518";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1573 = "dataProviderPageActionsInvestigationReports_TC1573";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1574 = "dataProviderPageActionsInvestigationReports_TC1574";
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961 = "dataProviderPageActionsInvestigationReports_TC1961";
 	
 	/* ComplianceReportInvestigationPageTest3 */
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1722 = "dataProviderPageActionsInvestigationReports_TC1722";
@@ -31,6 +32,10 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1763 = "dataProviderPageActionsInvestigationReports_TC1763";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1764 = "dataProviderPageActionsInvestigationReports_TC1764";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1767 = "dataProviderPageActionsInvestigationReports_TC1767";
+
+	/* ComplianceReportInvestigationPageTest_Tahoe */
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2201 = "dataProviderPageActionsInvestigationReports_TC2201";
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2202 = "dataProviderPageActionsInvestigationReports_TC2202";
 
 	public InvestigationReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -143,4 +148,21 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1767() {
 		return new Object[][] { { "TC1767" /* TestCaseID */, 1 /* userDataRowID */,2 /* mobileUserDataRowID */, 245 /* reportDataRowID1 */, 3 /* mobileUserDataRowID2 */} };
 	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC1961() {
+		return new Object[][] { { "TC1961" /* TestCaseID */, 4 /* userDataRowID */, 4 /* mobileUserDataRowID */, 273 /* reportDataRowID1 */} };
+	}
+	
+	/* ComplianceReportInvestigationPageTest_Tahoe */
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC2201() {
+		return new Object[][] { { "TC2201" /* TestCaseID */, 18 /* userDataRowID */, 16 /* mobileUserDataRowID */, 305 /* reportDataRowID1 */} };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC2202() {
+		return new Object[][] { { "TC2202" /* TestCaseID */, 18 /* userDataRowID */, 16 /* mobileUserDataRowID */, 306 /* reportDataRowID1 */} };
+	}
+	
 }

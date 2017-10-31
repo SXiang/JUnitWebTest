@@ -9,6 +9,11 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidSettingsScreen extends AndroidBaseScreen {
 
+	public static enum ParentScreen {
+		ReportScreen,
+		MapScreen
+	}
+
 	private static final String ALARM_SETTINGS_UI_SELECTOR = "new UiSelector().text(\"Alarm Settings\")";
 	private WebElement alarmSettings;
 	private boolean alarmSettingsDisplayed;
@@ -21,27 +26,35 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	private WebElement clearHeatmap;
 	private boolean clearHeatmapDisplayed;
 
+	private static final String LOGOUT_UI_SELECTOR = "new UiSelector().text(\"Logout\")";
+	private WebElement logout;
+	private boolean logoutDisplayed;
+
 	private static final String SHUTDOWN_BACKPACK_UI_SELECTOR = "new UiSelector().text(\"Shutdown Backpack\")";
 	private WebElement shutdownInstrument;
 	private boolean shutdownInstrumentDisplayed;
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[3]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement investigate;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]")
-	@CacheLookup
-	private WebElement mode_HR;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement resetMax;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement toggleMode;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement menuButtonOnMapScreen;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement menuButtonOnReportScreen;
 
 	public AndroidSettingsScreen(WebDriver driver) {
 		super(driver);
@@ -57,16 +70,6 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public void clickOnInvestigate() {
 		Log.method("clickOnInvestigate");
 		tap(investigate);
-	}
-
-	public WebElement getMode_HR() {
-		Log.method("getMode_HR");
-		return mode_HR;
-	}
-
-	public void clickOnMode_HR() {
-		Log.method("clickOnMode_HR");
-		tap(mode_HR);
 	}
 
 	public WebElement getResetMax() {
@@ -87,6 +90,27 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public void clickOnToggleMode() {
 		Log.method("clickOnToggleMode");
 		tap(toggleMode);
+	}
+
+	public WebElement getMenuButton(ParentScreen parent) {
+		Log.method("getMenuButton", parent);
+		if (parent.equals(ParentScreen.MapScreen)) {
+			return menuButtonOnMapScreen;
+		} else if (parent.equals(ParentScreen.ReportScreen)) {
+			return menuButtonOnReportScreen;
+		}
+
+		return menuButtonOnMapScreen;
+	}
+
+	public void tapOnMenuButton(ParentScreen parent) {
+		Log.method("tapOnMenuButton", parent);
+		tap(getMenuButton(parent));
+	}
+
+	public void dismissScreen(ParentScreen parent) {
+		Log.method("dismissScreen", parent);
+		tapOnMenuButton(parent);
 	}
 
 	/**** Elements in the Settings dialog. Shown after menuButton is clicked. ****/
@@ -149,6 +173,21 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public void clickOnShutdownInstrument() {
 		Log.method("clickOnShutdownInstrument");
 		tap(getShutdownInstrument());
+	}
+
+	public WebElement getLogout() {
+		Log.method("getLogout");
+		if (!logoutDisplayed) {
+			logout = getAndroidDriver().findElementByAndroidUIAutomator(LOGOUT_UI_SELECTOR);
+			logoutDisplayed = true;
+		}
+
+		return logout;
+	}
+
+	public void clickOnLogout() {
+		Log.method("clickOnLogout");
+		tap(getLogout());
 	}
 
 	@Override

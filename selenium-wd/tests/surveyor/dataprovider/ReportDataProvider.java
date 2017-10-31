@@ -3,7 +3,6 @@ package surveyor.dataprovider;
 
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -69,12 +68,12 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		super.run(notifier);
 	}
 
-	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, String boundary, String map) {
-		return createViewsMapTable(viewName, lisa, fov, breadcrumb, indications, isotopic, annotation, gap, asset, boundary,
+	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String gap, String asset, String boundary, String map) {
+		return createViewsMapTable(viewName, lisa, fov, breadcrumb, indications, isotopic, gap, asset, boundary,
 				null /*highlightLisaAsset*/, null /*highlightGapAsset*/, null /*assetBoxNumber*/, map);
 	}
 
-	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset,
+	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic,  String gap, String asset,
 			String boundary, String highlightLisaAsset, String highlightGapAsset, String assetBoxNumber, String map) {
 		Map<String, String> viewMap = Collections.synchronizedMap(new HashMap<String, String>());
 		viewMap.put(KEYVIEWNAME, viewName);
@@ -83,7 +82,6 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		viewMap.put(KEYBREADCRUMB, breadcrumb);
 		viewMap.put(KEYINDICATIONS, indications);
 		viewMap.put(KEYISOTOPICCAPTURE, isotopic);
-		viewMap.put(KEYANNOTATION, annotation);
 		viewMap.put(KEYGAPS, gap);
 		viewMap.put(KEYASSETS, asset);
 		viewMap.put(KEYBOUNDARIES, boundary);

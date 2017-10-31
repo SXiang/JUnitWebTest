@@ -203,11 +203,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr")
 	protected WebElement checkboxSurFirst;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr")
 	protected List<WebElement> checkboxSurveys;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	protected WebElement checkboxSnapped;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	protected List<WebElement> checkboxesSnapped;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
 	protected WebElement firstSurveyLink;
@@ -250,9 +256,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[7]/input")
 	protected WebElement inputViewIso;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[8]/input")
-	protected WebElement inputViewAnno;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr[1]/td[9]/input")
 	protected WebElement inputViewGaps;
@@ -708,10 +711,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return inputViewIso.isSelected();
 	}
 
-	public boolean isViewFieldNotesSelected() {
-		return inputViewAnno.isSelected();
-	}
-
 	public boolean isViewGapsSelected() {
 		return inputViewGaps.isSelected();
 	}
@@ -751,13 +750,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void setSurveyRowsPagination(String numPages) {
-		By tableInfoBy = By.id(DATATABLESURVEYS_RECORDS_ELEMENT_ID);
 		List<WebElement> options = this.surveyTableRows.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
-				waitForNumberOfRecords(tableInfoBy, STRSurveyPaginationMsgPattern);
+				waitForNumberOfRecords(DATATABLE_RECORDS_ELEMENT_BY, STRSurveyPaginationMsgPattern);
 				break;
 			}
 		}
@@ -872,6 +870,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			inputSurveyTag(reportsSurveyInfo.getTag());
 			selectSurveyInfoStartDate(reportsSurveyInfo.getStartDate());
 			selectSurveyInfoEndDate(reportsSurveyInfo.getEndDate());
+			handleExtraAddSurveyInfoParameters(reports);
 			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
 
 			// Click on Search survey button.
@@ -922,8 +921,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 				numSurveysToSelect = Integer.MAX_VALUE;
 			}
 
-			String checkBoxXPath;
-			WebElement checkBoxActionCell;
+			String surveyLinkXPath;
+			WebElement surveyLinkCell;
+			WebElement surveyRow;
 
 			List<WebElement> rows = surveyTable.findElements(By.xpath("tr"));
 
@@ -938,13 +938,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
-				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
-				Log.info("Wait for survey checkbox to be clickable");
-				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
+				surveyLinkXPath = "tr[" + rowNum + "]/td/a[starts-with(@href,'/Live/Survey')]";
+				surveyLinkCell = surveyTable.findElement(By.xpath(surveyLinkXPath));
+				Log.info("Wait for survey tag link to be clickable");
+				WebElementExtender.waitForElementToBeClickable(timeout, driver, surveyLinkCell);
+				surveyRow = surveyTable.findElement(By.xpath("tr[" + rowNum + "]"));
 				Log.info(String.format("Select survey - row %d", rowNum));
-				moveToElement(checkBoxActionCell);
-				jsClick(checkBoxActionCell);
+				moveToElement(surveyRow);
+				jsClick(surveyRow);
 				selectedSurveysCount++;
 
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING)
@@ -1128,13 +1129,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void inputSurveyStartDateTime(String dateTime) {
 		Log.info(String.format("Input survey Start Date/Time - '%s'", dateTime));
 		jsSendKeys(inputStartDate, dateTime);
-		inputStartDate.click();
+		jsClick(inputStartDate);
+		inputStartDate.sendKeys(Keys.RETURN);
+
 	}
 
 	public void inputSurveyEndDateTime(String dateTime) {
 		Log.info(String.format("Input survey End Date/Time - '%s'", dateTime));
 		jsSendKeys(inputEndDate, dateTime);
-		inputEndDate.click();
+		jsClick(inputEndDate);
+		inputEndDate.sendKeys(Keys.RETURN);
 	}
 
 	public void selectStartDateForSurvey(String startDate) {
@@ -1536,7 +1540,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy, String allowedErrorMsg) throws Exception {
 		Predicate<String> allowedMoreThanSupportedAssetsErrorCheck = getCheckAllowedErrorsPredicate(
 				String.format("report id=%s", getReportJobStat(rptTitle).Id.toUpperCase()));
-		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
+		String reportName = waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
 		if (reportName == null) {
 			return false;
 		}
@@ -1544,7 +1548,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) throws Exception  {
-		return waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/);
+		String reportId = waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy);
+		return getReportNameById(reportId);
+	}
+	
+	public String waitForReportGenerationtoCompleteAndGetReportId(String rptTitle, String strCreatedBy) throws Exception  {
+		return waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/);
 	}
 
 	private boolean waitForReportGenerationToComplete(String rptTitle, String strCreatedBy, StringBuilder rptNameBuilder) {
@@ -1560,7 +1569,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}));
 	}
 
-	protected String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
+	protected String waitForReportGenerationtoCompleteAndGetReportId(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
 		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
 				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
 
@@ -1620,7 +1629,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			outReportId.append(reportId);
 		}
 
-		String strReportName = getReportPrefix() + "-" + reportId.substring(0, 6).toUpperCase();
+		String strReportName = getReportNameById(reportId);
 
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
@@ -3293,5 +3302,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			isCorrect &= customerId.equalsIgnoreCase(id);
 		}
 		return isCorrect;
+	}
+	
+	public String getReportNameById(String reportId){
+		return getReportPrefix() + "-" + reportId.substring(0, 6).toUpperCase();
 	}
 }

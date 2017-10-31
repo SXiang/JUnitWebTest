@@ -9,10 +9,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaselineImages;
 import common.source.Log;
+import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
+
+	private static final String MARKER_INVESTIGATION_STATUS_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]";
+	private static final String FOOTER_INVESTIGATE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]/android.view.ViewGroup[1]";
 
 	private static final String ADD_CGI_BTN_UISELECTOR = "new UiSelector().text(\"Add CGI\")";
 
@@ -60,24 +64,24 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	/****** Label elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = MARKER_INVESTIGATION_STATUS_XPATH)
 	@CacheLookup
 	private WebElement markerInvestigationStatus;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[3]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement latitudeLongitude;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[2]")
-	@CacheLookup
-	private WebElement precision;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[4]")
-	@CacheLookup
-	private WebElement velocity;
+	@AndroidFindBy(xpath = FOOTER_INVESTIGATE_BUTTON_XPATH)
+	private WebElement footerInvestigateButton;
 
 	public AndroidInvestigateMapScreen(WebDriver driver) {
 		super(driver);
+	}
+
+	public void dismissPopup() {
+		Log.method("dismissPopup");
+		tap(getGoogleMapView());
 	}
 
 	/****** Button Methods ******/
@@ -159,11 +163,22 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		tap(getInvestigateButton());
 	}
 
+	public WebElement getFooterInvestigateButton() {
+		Log.method("getFooterInvestigateButton");
+		footerInvestigateButton = getAndroidDriver().findElementByXPath(FOOTER_INVESTIGATE_BUTTON_XPATH);
+		return footerInvestigateButton;
+	}
+
+	public void clickOnFooterInvestigate() {
+		Log.method("clickOnFooterInvestigate");
+		tap(getFooterInvestigateButton());
+	}
+
 	/****** Label Methods ******/
 
 	public String getMarkerInvestigationStatusText() {
 		Log.method("getMarkerInvestigationStatusText");
-		String xPathString = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]";
+		String xPathString = MARKER_INVESTIGATION_STATUS_XPATH;
 		waitForElementToBeClickable(By.xpath(xPathString));
 		markerInvestigationStatus = getAndroidDriver().findElementByXPath(xPathString);
 		return markerInvestigationStatus.getText();
@@ -172,16 +187,6 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	public String getLatitudeLongitudeText() {
 		Log.method("getLatitudeLongitudeText");
 		return latitudeLongitude.getText();
-	}
-
-	public String getPrecisonText() {
-		Log.method("getPrecisonText");
-		return precision.getText();
-	}
-
-	public String getVelocityText() {
-		Log.method("getVelocityText");
-		return velocity.getText();
 	}
 
 	public WebElement getGoogleMapView() {
@@ -212,6 +217,25 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		//MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
 	}
 
+	public void assertMapShowsPicarroUserCurrentLocation() {
+		Log.method("assertMapShowsPicarroUserCurrentLocation");
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
+		} else {
+			Log.info("Skipping map shows Picarro user current location verification. Run test targetting backpack simulator to enable this verification");
+		}
+	}
+
+	public void assertFollowButtonStateIsSelected() {
+		Log.method("assertFollowButtonStateIsSelected");
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonWhenSelected);
+	}
+
+	public void assertFollowButtonStateIsNotSelected() {
+		Log.method("assertFollowButtonStateIsNotSelected");
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.FollowButtonNotSelected);
+	}
+
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {
 		Log.method("assertMarkAsCompleteAndPauseButtonsAreShown");
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.MarkAsCompleteAndPauseButtons);
@@ -219,7 +243,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public void assertPipesAndMarkerShownAreCorrect(String baseFolder, String imageName) {
 		Log.method("assertPipesAndMarkerShownAreCorrect");
-		screenVerifier.assertImageFoundOnScreen(this, baseFolder, imageName);
+		ScreenVerifier.newVerifierWithPixelMatch().assertImageFoundOnScreen(this, baseFolder, imageName);
 	}
 
 	@Override

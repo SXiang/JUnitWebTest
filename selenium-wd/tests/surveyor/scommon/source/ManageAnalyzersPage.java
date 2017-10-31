@@ -63,7 +63,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.CSS, using = ".validation-summary-errors.panel > .panel-body > ul > li")
 	private WebElement warningMsg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[10]/a[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td/a[text()='Edit']")
 	protected WebElement btnEditAnalyzer;
 
 	/**
@@ -114,7 +114,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		this.inputSharedKey.sendKeys(sharedKey);
 
 		Log.info("Select surveyor '"+customerName + " - " + locationName + " - " + surveyor+"'");
-		selectDropdownOption(this.dropDownSurveyor, customerName + " - " + locationName + " - " + surveyor);
+		selectDropdownOptionByText(this.dropDownSurveyor, customerName + " - " + locationName + " - " + surveyor);
 
 		Log.clickElementInfo("OK");
 		this.btnOk.click();
@@ -245,14 +245,14 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));
 
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) && (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[10]/a[1]";
+				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td/a[text()='Edit']";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
 
 				Log.info("Select surveyor '"+cuslocsur+"'");
-				if(!selectDropdownOption(this.dropDownSurveyor, cuslocsur)){
+				if(!selectDropdownOptionByText(this.dropDownSurveyor, cuslocsur)){
 					Log.error("Failed to select surveyor for analyzer '"+cuslocsur+"'");
 				}
 
@@ -342,7 +342,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) && (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 
-				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[10]/a[1]";
+				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td/a[text()='Edit']";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();

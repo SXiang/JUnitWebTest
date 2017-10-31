@@ -9,6 +9,7 @@
 #           -BuildScriptsBaseDir "C:\Repositories\surveyor-qa" `
 #           -BuildFlavor "debug" `
 #           -KeyStoreFileName "my-release-key.keystore" `
+#           -NpmPackageVersion "5.3.0" `
 #           -CIBuildNumber "1" `
 #           -Major "1" `
 #           -Minor "2" `
@@ -45,6 +46,9 @@ param
   [string] $CIBuildNumber,                  # CI build number
 
   [Parameter(Mandatory=$true)]
+  [string] $NpmPackageVersion,              # npm package version. for eg. 5.3.0
+
+  [Parameter(Mandatory=$true)]
   [string] $Major,                          # Major
 
   [Parameter(Mandatory=$true)]
@@ -78,8 +82,8 @@ $BUILD_NUMBER_PLACEHOLDER = "%BUILD_NUMBER%"
 cd "$BuildWorkingDir"
 
 "Triggering NPM install (updating to latest npm) ..."
-npm install npm@$CHOCO_NPM_VERSION -g
-npm install
+npm install npm@${NpmPackageVersion} -g
+npm install --production
 
 # 1. 
 # Install NPM packages

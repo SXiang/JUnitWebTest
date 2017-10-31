@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
@@ -65,7 +64,6 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.ManageReleaseNotesPage;
-import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PageObjectFactory;
@@ -81,7 +79,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorsPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
-	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage;
 	private static ManageReleaseNotesPage manageReleaseNotesPage;
 	private static HomePage homePage;
 	private static LoginPage loginPage;
@@ -126,9 +123,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		manageRefGasBottlesPage = pageObjectFactory.getManageRefGasBottlesPage();
 		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
-
-		manageSurveyorHistoriesPage = pageObjectFactory.getManageSurveyorHistoriesPage();
-		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 
 		manageReleaseNotesPage = pageObjectFactory.getManageReleaseNotesPage();
 		PageFactory.initElements(getDriver(), manageReleaseNotesPage);
@@ -211,7 +205,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -223,7 +216,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewMap2.put(KEYBREADCRUMB, "1");
 		viewMap2.put(KEYINDICATIONS, "1");
 		viewMap2.put(KEYISOTOPICCAPTURE, "0");
-		viewMap2.put(KEYANNOTATION, "0");
 		viewMap2.put(KEYGAPS, "1");
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
@@ -235,7 +227,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewMap3.put(KEYBREADCRUMB, "0");
 		viewMap3.put(KEYINDICATIONS, "0");
 		viewMap3.put(KEYISOTOPICCAPTURE, "1");
-		viewMap3.put(KEYANNOTATION, "1");
 		viewMap3.put(KEYGAPS, "0");
 		viewMap3.put(KEYASSETS, "0");
 		viewMap3.put(KEYBOUNDARIES, "0");
@@ -314,13 +305,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		// homePage.clickOnEQReportLink();
 		// assertTrue(homePage.isLinkBroken());
-
-		homePage.clickOnReferenceGasReportLink();
-		assertTrue(homePage.isLinkBroken());
-
-		homePage.clickOnSystemHistoryReportLink();
-		assertTrue(homePage.isLinkBroken());
-
 		homePage.clickOnPicarroAdminLink();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		homePage.clickOnCalibrationLink();
@@ -411,15 +395,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
 		manageRefGasBottlesPage.waitForPageToLoad();
-
-		homePage.clickOnManageSurveyorHistoriesLink();
-		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
-		manageSurveyorHistoriesPage.clickOnAddNewHistoryEntryBtn();
-		manageSurveyorHistoriesPage.waitForNewPageLoad();
-		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
-		manageSurveyorHistoriesPage.clickOnCancelBtn();
-
-		manageSurveyorHistoriesPage.waitForPageToLoad();
 
 		/* Commenting, while change is being deployed to P3SQA.
 		homePage.clickOnManageReleaseNotesLink();

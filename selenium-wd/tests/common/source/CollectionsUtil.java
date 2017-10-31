@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class CollectionsUtil {
 
@@ -39,5 +40,109 @@ public class CollectionsUtil {
 				listMap.put(key, Collections.synchronizedList(new LinkedList<V>(Arrays.asList(value))));
 			}
 		}
+	}
+
+	public static boolean matchesExpressionList(List<String> listWithMatchStrings, List<String> listToMatch) {
+		Log.method("matchesExpressionList", LogHelper.listToString(listWithMatchStrings), LogHelper.listToString(listToMatch));
+		for(int i=0;i<listToMatch.size();i++) {
+			String actual = listToMatch.get(i).toLowerCase();
+			String expect = listWithMatchStrings.get(i).toLowerCase();
+			if(!actual.matches(expect)){
+				Log.error("NOT matching value found.");
+				Log.error("Actual value: "+actual);
+				Log.error("Match expression: "+expect);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isEqualsArrayMap(String[][] arrayValues, Map<String, String> mapValues) {
+		Log.method("isEqualsArrayMap", LogHelper.arrayOfArrayToString(arrayValues), LogHelper.mapToString(mapValues));
+		for(int i=0;i<arrayValues[0].length; i++) {
+			String actual = mapValues.get(arrayValues[0][i]).toLowerCase().trim();
+			String expected = arrayValues[1][i].toLowerCase();
+			if (NumberUtility.isFloatCsvPair(actual) && NumberUtility.isFloatCsvPair(expected)) {
+				if (!NumberUtility.equalsFloatCsvPairs(actual, expected)) {
+					Log.error("NOT matching float csv pairs found.");
+					Log.error("Map float csv pair value: "+arrayValues[0][i]+" = "+actual);
+					Log.error("Array float csv pair value: "+arrayValues[0][i]+" = "+expected);
+					return false;
+				}
+			} else {
+				if(!actual.equals(expected)){
+					Log.error("NOT matching value found.");
+					Log.error("Map value: "+arrayValues[0][i]+" = "+actual);
+					Log.error("Array value: "+arrayValues[0][i]+" = "+expected);
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public static <T,K> boolean isEqualsMap(Map<T, K> map1, Map<T, K> map2) {
+		Log.method("isEqualsMap");
+		if (map1 == null && map2 == null) {
+			return true;
+		}
+
+		if (map1 == null) {
+			return false;
+		}
+
+		if (map2 == null) {
+			return false;
+		}
+
+		if (map1.size() != map2.size()) {
+			return false;
+		}
+
+		for (Entry<T, K> entry1 : map1.entrySet()) {
+			T key1 = entry1.getKey();
+			K value1 = entry1.getValue();
+			if (map2.containsKey(key1)) {
+				K value2 = map2.get(key1);
+				if (!value1.equals(value2)) {
+					return false;
+				}
+
+			} else {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static <T,K> boolean isEqualsListMap(List<Map<T, K>> listMap1, List<Map<T, K>> listMap2) {
+		Log.method("isEqualsListMap");
+		if (listMap1 == null && listMap2 == null) {
+			return true;
+		}
+
+		if (listMap1 == null) {
+			return false;
+		}
+
+		if (listMap2 == null) {
+			return false;
+		}
+
+		if (listMap1.size() != listMap2.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < listMap1.size(); i++) {
+			Map<T, K> map1 = listMap1.get(i);
+			Map<T, K> map2 = listMap2.get(i);
+			if (!isEqualsMap(map1, map2)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

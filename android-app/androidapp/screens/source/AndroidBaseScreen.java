@@ -7,6 +7,7 @@ import common.source.TestContext;
 import common.source.MobileActions;
 import common.source.Timeout;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -26,8 +27,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.sikuli.api.Screen;
 
+import common.source.CheckedConsumer;
 import common.source.ExceptionUtility;
-import common.source.FunctionUtil;
 
 public class AndroidBaseScreen implements Screen {
 	private static final String EMPTY = "";
@@ -48,7 +49,7 @@ public class AndroidBaseScreen implements Screen {
 	public AndroidBaseScreen(WebDriver driver) {
 		this.driver = driver;
 		this.size = getAndroidDriver().manage().window().getSize();
-		this.screenVerifier = ScreenVerifier.getInstance();
+		this.screenVerifier = ScreenVerifier.newDefaultVerifier();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -82,12 +83,22 @@ public class AndroidBaseScreen implements Screen {
 		MobileActions.newAction((MobileDriver<?>)driver).clickAndPressKey(element, keyCode);
 	}
 
+	public void hideKeyboard() {
+		Log.method("hideKeyboard");
+		((AppiumDriver)this.driver).hideKeyboard();
+	}
+
 	public void pressKey(KeyCode keyCode) throws Exception {
 		MobileActions.newAction((MobileDriver<?>)driver).pressKey(keyCode);
 	}
 
 	public void sendKeys(WebElement element, String text) throws Exception {
 		MobileActions.newAction().sendKeys(element, text);
+	}
+
+	private void setScreenVerifier(ScreenVerifier screenVerifier) {
+		Log.method("setScreenVerifier", screenVerifier);
+		this.screenVerifier = screenVerifier;
 	}
 
 	public void slideBy(WebElement element, WebElement elementContainer, Float value) {
@@ -125,6 +136,12 @@ public class AndroidBaseScreen implements Screen {
 		return null;
 	}
 
+	protected void validateAndSetElementValue(Object value, CheckedConsumer consumer) throws Exception {
+		if (value != null) {
+			consumer.execute();
+		}
+	}
+
 	public boolean waitForProgressComplete() {
 		Log.method("waitForProgressComplete");
 		WebElement progBar = getProgressBarIfPresent();
@@ -132,7 +149,7 @@ public class AndroidBaseScreen implements Screen {
 			Log.info("Did NOT find progress bar on screen. Return TRUE");
 			return true;
 		}
-		(new WebDriverWait(this.driver, getScreenLoadTimeout())).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(this.driver, getProgressBarTimeout())).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean displayed = progBar.isDisplayed();
 				Log.info(String.format("ProgressBar displayed = [%b]", displayed));
@@ -186,6 +203,16 @@ public class AndroidBaseScreen implements Screen {
 	}
 
 	protected Integer getScreenLoadTimeout() {
+		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT;
+	}
+
+	protected Integer getProgressBarTimeout() {
+		if (TestContext.INSTANCE.getTestSetup().getAndroidLongerProgressBarTimeoutEnabled()) {
+			Integer timeoutValue = TestContext.INSTANCE.getTestSetup().getAndroidLongerProgressBarTimeoutValueInSeconds();
+			Log.info(String.format("Longer progress bar timeout enabled. Timeout value = [%d].", timeoutValue));
+			return timeoutValue;
+		}
+
 		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT;
 	}
 

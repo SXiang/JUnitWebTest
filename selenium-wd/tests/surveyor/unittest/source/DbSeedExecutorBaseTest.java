@@ -33,7 +33,6 @@ import surveyor.dbseed.source.DbStateVerifier;
 import surveyor.dbseed.source.FieldOfViewDbSeedBuilder;
 import surveyor.dbseed.source.GPSRawDbSeedBuilder;
 import surveyor.dbseed.source.MeasurementDbSeedBuilder;
-import surveyor.dbseed.source.NoteDbSeedBuilder;
 import surveyor.dbseed.source.PeakDbSeedBuilder;
 import surveyor.dbseed.source.SegmentDbSeedBuilder;
 import surveyor.dbseed.source.SurveyConditionDbSeedBuilder;
@@ -135,7 +134,6 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 				FieldOfViewDbSeedBuilder fieldOfViewDbSeedBuilder = (FieldOfViewDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("FieldOfView-%s.csv", surveyTag));
 				PeakDbSeedBuilder peakDbSeedBuilder = (PeakDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Peak-%s.csv", surveyTag));
 				SegmentDbSeedBuilder segmentDbSeedBuilder = (SegmentDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Segment-%s.csv", surveyTag));
-				NoteDbSeedBuilder noteDbSeedBuilder = (NoteDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Note-%s.csv", surveyTag));
 
 				// check if survey data is present in database for this survey tag.
 				final String surveyCsvFilePath = surveyDbSeedBuilder.getSeedFilePath();
@@ -152,7 +150,6 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 				final Integer minFieldOfViewCount = FileUtility.getLineCountInFile(Paths.get(fieldOfViewDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minPeakCount = FileUtility.getLineCountInFile(Paths.get(peakDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minSegmentCount = FileUtility.getLineCountInFile(Paths.get(segmentDbSeedBuilder.getSeedFilePath())) - 2;
-				final Integer minNoteCount = FileUtility.getLineCountInFile(Paths.get(noteDbSeedBuilder.getSeedFilePath())) - 2;
 				final List<Map<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
 
 				final String surveyId = firstSurveyRow.get(0).get("Id");
@@ -205,7 +202,6 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 
 				Assert.assertTrue(dbStateVerifier.isPeakSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minPeakCount));
 				Assert.assertTrue(dbStateVerifier.isSegmentSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSegmentCount));
-				Assert.assertTrue(dbStateVerifier.isNoteSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minNoteCount));
 
 				Log.info(String.format("----- DONE Verifying survey with tag - '%s' -----", surveyTag));
 			}

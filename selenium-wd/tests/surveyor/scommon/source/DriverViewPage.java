@@ -113,9 +113,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "survey_time_day")
 	private WebElement day;
 
-	@FindBy(id = "btn_delete_annotation")
-	private WebElement fieldNotesDelete;
-
 	@FindBy(css = "button[title='Attributions']")
 	private WebElement i;
 
@@ -158,9 +155,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "survey_type_rapid_response")
 	private WebElement rapidResponse;
 
-	@FindBy(id = "btn_save_annotation")
-	private WebElement fieldNotesSave;
-
 	@FindBy(id = "survey_type_standard")
 	private WebElement standard;
 
@@ -179,14 +173,8 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(css = "a[class='ol-attribution-bing-tos']")
 	private WebElement termsOfUse;
 
-	@FindBy(id = "anno_input")
-	private WebElement fieldNotesTextField;
-
 	@FindBy(id = "survey_modal_tag")
 	private WebElement tagSurvey;
-
-	@FindBy(id = "annotation_modal")
-	private WebElement fieldNotesModalDialog;
 
 	@FindBy(id = "manual_survey_params")
 	private WebElement manualSurveySection;
@@ -298,10 +286,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		Log.clickElementInfo("Cancel Shutdown");
 		this.getShutdownCancelButton().click();
 		return this;
-	}
-
-	public boolean isFieldNotesDialogShown() {
-		return !this.fieldNotesModalDialog.getAttribute("class").contains("ng-hide");
 	}
 
 	public WebElement getStartSurveyButton() {
@@ -483,27 +467,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Click on Cancel Button in Field notes.
-	 *
-	 * @return the DriverViewPage class instance.
-	 */
-	public DriverViewPage clickFieldNotesCancelButton() {
-		fieldNotesCancel = driver.findElement(By.id("btn_cancel_annotation"));
-		Log.clickElementInfo("Cancel", "in field Notes dialog");
-		return this;
-	}
-
-	/**
-	 * Click on Close Button in Field Notes.
-	 *
-	 * @return the DriverViewPage class instance.
-	 */
-	public DriverViewPage clickFieldNotesCloseButton() {
-		fieldNotesClose.click();
-		return this;
-	}
-
-	/**
 	 * Click on image data Link.
 	 *
 	 * @return the DriverViewPage class instance.
@@ -522,17 +485,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage clickDayButton() {
 		Log.clickElementInfo("Day");
 		day.click();
-		return this;
-	}
-
-	/**
-	 * Click on Delete Button.
-	 *
-	 * @return the DriverViewPage class instance.
-	 */
-	public DriverViewPage clickFieldNotesDeleteButton() {
-		Log.clickElementInfo("Delete", "in Field Notes dialog");
-		fieldNotesDelete.click();
 		return this;
 	}
 
@@ -696,18 +648,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Click on Save Button.
-	 *
-	 * @return the DriverViewPage class instance.
-	 */
-	public DriverViewPage clickFieldNotesSaveButton() {
-		fieldNotesSave = driver.findElement(By.id("btn_save_annotation"));
-		Log.clickElementInfo("Save Field Notes");
-		fieldNotesSave.click();
-		return this;
-	}
-
-	/**
 	 * Get Standard Button.
 	 *
 	 * @return the WebElement.
@@ -839,16 +779,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Click on Add/Update note button.
-	 *
-	 * @return the DriverViewPage class instance.
-	 */
-	public DriverViewPage clickOnAddUpdateNoteButton() {
-		addUpdateNoteButton.click();
-		return this;
-	}
-
-	/**
 	 * Click on Terms Of Use Link.
 	 *
 	 * @return the DriverViewPage class instance.
@@ -878,20 +808,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		manualModeMinAmp.clear();
 		Log.info("Set Min Amp to '"+minAmpValue+"'");
 		manualModeMinAmp.sendKeys(minAmpValue);
-		return this;
-	}
-
-	/**
-	 * Set value to Field notes field.
-	 *
-	 * @return the DriverViewPage class instance.
-	 */
-	public DriverViewPage setFieldNotesTextField(String fieldNotes) {
-		Log.info(String.format("Adding fields notes text - %s", fieldNotes));
-		fieldNotesTextField = driver.findElement(By.id("anno_input"));
-		Log.info("Set field notes as '"+fieldNotes+"'");
-		fieldNotesTextField.clear();
-		fieldNotesTextField.sendKeys(fieldNotes);
 		return this;
 	}
 
@@ -1199,20 +1115,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Verify that field notes dialog is shown on the map.
-	 */
-	public boolean verifyFieldNotesDialogIsShown() {
-		return isFieldNotesDialogShown();
-	}
-
-	/**
-	 * Verify that field notes dialog is NOT shown on the map.
-	 */
-	public boolean verifyFieldNotesDialogIsNotShown() {
-		return !isFieldNotesDialogShown();
-	}
-
-	/**
 	 * Verify that the page loaded completely.
 	 */
 	public void waitForPageLoad() {
@@ -1307,29 +1209,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 			}
 		});
 	}
-
-	/**
-	 * Waits for the Field notes dialog to be shown.
-	 */
-	public void waitForFieldNotesDialogToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return isFieldNotesDialogShown();
-			}
-		});
-	}
-
-	/**
-	 * Waits for the Field notes dialog to be closed.
-	 */
-	public void waitForFieldNotesDialogToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return !isFieldNotesDialogShown();
-			}
-		});
-	}
-
+	
 	/**
 	 * Waits for StartSurvey button to be visible.
 	 */
@@ -1346,7 +1226,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Waits for StartSurvey button to be visible.
+	 * Waits for StopSurvey button to be visible.
 	 */
 	public void waitForStopSurveyButtonToBeVisible() {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {

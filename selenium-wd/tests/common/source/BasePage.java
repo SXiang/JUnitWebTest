@@ -86,12 +86,6 @@ public class BasePage {
 	@FindBy(id = "report-investigation")
 	private WebElement linkEQReport;
 
-	@FindBy(id = "report-reference-gas")
-	private WebElement linkReferenceGasReport;
-
-	@FindBy(id = "report-system-history")
-	private WebElement linkSystemHistoryReport;
-
 	@FindBy(how = How.XPATH, using = "//li/a[@data-target='#picarro-administration-menu']")
 	private WebElement linkPicarroAdmin;
 
@@ -119,9 +113,6 @@ public class BasePage {
 	@FindBy(how = How.XPATH, using = "//li[@id='user-release-notes']/a")
 	private WebElement linkManageReleaseNotes;
 
-	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-manage-surveyor-history']/a")
-	private WebElement linkManageSurveyorHistories;
-
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-analyzer-logs']/a")
 	private WebElement linkViewAnalyzerLogs;
 
@@ -134,11 +125,12 @@ public class BasePage {
 	@FindBy(how = How.CSS, using = "body.login-background div.panel-body > p")
 	private List<WebElement> siteErrorMessage;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-body > p")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-body > p")
 	private List<WebElement> licenseMissingText;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-footer > a.btn")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn")
 	private WebElement licenseMissingModalOKBtn;
+	private By licenseMissingModalBy = By.cssSelector("[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn");
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
@@ -236,16 +228,6 @@ public class BasePage {
 		this.linkEQReport.click();
 	}
 
-	public void clickOnReferenceGasReportLink() {
-		Log.clickElementInfo("Reference Gas Report", ElementType.LINK);
-		this.linkReferenceGasReport.click();
-	}
-
-	public void clickOnSystemHistoryReportLink() {
-		Log.clickElementInfo("System History Report", ElementType.LINK);
-		this.linkSystemHistoryReport.click();
-	}
-
 	public void clickOnPicarroAdminLink() {
 		Log.clickElementInfo("Picarro Admin", ElementType.LINK);
 		this.linkPicarroAdmin.click();
@@ -289,11 +271,6 @@ public class BasePage {
 	public void clickOnManageReleaseNotesLink() {
 		Log.clickElementInfo("Manage Release Notes", ElementType.LINK);
 		this.linkManageReleaseNotes.click();
-	}
-
-	public void clickOnManageSurveyorHistoriesLink() {
-		Log.clickElementInfo("Manage Surveyor Histories", ElementType.LINK);
-		this.linkManageSurveyorHistories.click();
 	}
 
 	public void clickOnViewAnalyzerLogsLink(String strBaseURL) {
@@ -525,6 +502,7 @@ public class BasePage {
     public void resizeBrowserWindow(){
     	Log.info("Resize browser window for testing :"+getTestBrowserSize());
     	driver.manage().window().setSize(getTestBrowserSize());
+    	waitForAJAXCallsToComplete();
 	}
 
     public void inputTextValue(WebElement inputElement, String value){
@@ -548,10 +526,19 @@ public class BasePage {
     	}
     }
 
-	protected boolean selectDropdownOption(WebElement dropdown, String option){
+	protected boolean selectDropdownOptionByText(WebElement dropdown, String option){
+		By optBy = By.xpath("option[text()='"+option.trim()+"']");
+		return selectDropdownOption(dropdown, optBy, option);
+	}
+	
+	protected boolean selectDropdownOptionByValue(WebElement dropdown, String value){
+		By optBy = By.xpath("option[@value='"+value.trim()+"']");
+		return selectDropdownOption(dropdown, optBy, value);
+	}
+	
+	protected boolean selectDropdownOption(WebElement dropdown, By optBy, String option){
 		boolean selected = false;
 		int numTry = 0;
-		By optBy = By.xpath("option[text()='"+option.trim()+"']");
 		do{
 			try{
 				WebElement opt =  dropdown.findElement(optBy);
@@ -653,6 +640,7 @@ public class BasePage {
     }
 
     public List<String> getLicenseMissingText(){
+    	WebElementExtender.waitForElementToBeDisplayed(10, driver, licenseMissingModalBy);
     	List<String> licenseMissingMsg = new ArrayList<String>();
     	for(WebElement p:licenseMissingText){
     		String text = getElementText(p).trim();

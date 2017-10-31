@@ -296,10 +296,10 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
 			// Copy report as Picarro admin.
-			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
+			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy, PICDFADMIN);
 
 			// Verify report meta and report shape files are generated successfully.
-			clickOnComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer);
+			clickOnComplianceReportButton(rptTitle, PICDFADMIN, ReportsButtonType.ReportViewer);
 			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
 
 		} catch (Exception ex) {
@@ -341,11 +341,15 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 	}
 
 	private void copyReportAndWaitForReportGenerationToComplete(String rptTitle, String strCreatedBy) {
+		copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy, strCreatedBy);
+	}
+	
+	private void copyReportAndWaitForReportGenerationToComplete(String rptTitle, String strCreatedBy, String strCreatedBy1 ) {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, strCreatedBy);
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, strCreatedBy1);
 		// Purge DB cache to look for new copied report.
 		new Report().purgeCache();
 	}

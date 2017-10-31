@@ -186,7 +186,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.waitForDropdownToBePopulated(this.dropDownLocation);
 
 		Log.info("Select Location - '"+customerName + " - " + locationName+"'");
-		selectDropdownOption(this.dropDownLocation, customerName + " - " + locationName);
+		selectDropdownOptionByText(this.dropDownLocation, customerName + " - " + locationName);
 
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
@@ -210,7 +210,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		Log.info(String.format("Find surveyor '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
 		setPagination(PAGE_PAGINATIONSETTING);
 
-		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
+		clearSearchFilter();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
 		this.searchTable(surveyorName);
@@ -280,7 +280,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     	Log.method("editExistingSurveyor", customerName, locationName, surveyorName, surveyorNameNew);
 		Log.info(String.format("Edit surveyor '%s'", surveyorName));
 		setPagination(PAGE_PAGINATIONSETTING);
-		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
+		clearSearchFilter();		// clear any previous entries in search.
 
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {

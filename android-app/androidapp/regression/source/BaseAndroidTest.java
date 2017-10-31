@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,6 +19,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.support.PageFactory;
 
+import com.android.ddmlib.IDevice;
+
 import androidapp.screens.source.AndroidMapScreen;
 import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
@@ -25,36 +29,56 @@ import common.source.AppConstants;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
+import common.source.EnumUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogCollector;
 import common.source.MobileActions;
+import common.source.NetworkEmulation;
+import common.source.NetworkEmulation.NetworkDelay;
+import common.source.NetworkEmulation.NetworkSpeed;
+import common.source.NumberUtility;
 import common.source.PerfmonDataCollector;
 import common.source.ProcessUtility;
+import common.source.RegexUtility;
 import common.source.ScreenRecorder;
+import common.source.ServiceCorrector;
+import common.source.ServiceCorrector.ServiceInfo;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.Timeout;
 import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
+import common.source.AndroidAutomationTools.AndroidFileInfo;
 import common.source.AndroidAutomationTools.ShellCommands;
+import common.source.AndroidDeviceInterface;
+import common.source.RetryException;
+import common.source.AndroidRetryTestRunner;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.source.BaseTest;
-import surveyor.scommon.source.SurveyorTestRunner;
 
-@RunWith(SurveyorTestRunner.class)
+@RunWith(AndroidRetryTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final String SYSTEM_PROP_RO_BUILD_CHARACTERISTICS = "ro.build.characteristics";
+	private static final String SIM_DATA_MANAGER_BROADCASTER_PY = "simDataManagerBroadcaster.py";
+	private static final String SIM_LINEAR_FITTER_BROADCASTER_PY = "simLinearFitterBroadcaster.py";
+	private static final String DUMMYLINEARFITTERALARM_PY = "dummylinearfitteralarm.py";
+	private static final String ODORCALL_SERVER_PY = "odorcallServer.py";
+	private static final String DUMMYINSTRMGR_PY = "dummyinstrmgr.py";
+	private static final String ENSURE_ANDROID_TEST_PREREQS_CMD = "Ensure-AndroidTestPrereqs.cmd";
+	private static final String PYTHON_EXE = "python.exe";
 	private static final double DEFAULT_ALTITUDE = 0.0;
 	private static final double DEFAULT_LONGITUDE = -121.9863994;
 	private static final double DEFAULT_LATITUDE = 37.3965775;
 	private static final String APK_VERSION_MARKER_FILE_PATH = "C:\\QATestLogs\\installed-apk.md";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+	private static final String TABLET = "tablet";
 	private static final String ADB_EXE = "adb.exe";
 
 	protected static final String TRUE = "true";
@@ -78,6 +102,7 @@ public class BaseAndroidTest extends BaseTest {
 	protected AndroidMapScreen mapScreen;
 
 	private PerfmonDataCollector perfmonCollector;
+	private ServiceCorrector serviceCorrector;
 	private ScreenRecorder screenRecorder;
 	private LogCollector logCollector;
 
@@ -115,15 +140,115 @@ public class BaseAndroidTest extends BaseTest {
 
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
+		ensureTestPrereqsPresent();
 
 		if (!isRunningInDataGenMode()) {
 			// Start backpack simulator and android automation tools (emulator, appium server).
 			cleanupProcesses();
 
 			AdbInterface.init(testSetup.getAdbLocation());
-		    AndroidAutomationTools.start();
-		    AndroidAutomationTools.disableAnimations();  // perf optimization.
+			detectTargetDeviceType();
+
+			if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+				AndroidAutomationTools.startAppiumServer();
+			} else {
+				NetworkEmulation networkEmulation = detectCreateNetworkEmulation();
+				if (networkEmulation == null) {
+					AndroidAutomationTools.start();
+				} else {
+					AndroidAutomationTools.start(networkEmulation);
+				}
+
+			    AndroidAutomationTools.disableAnimations();  // perf optimization.
+			}
 		}
+	}
+
+	private static NetworkEmulation detectCreateNetworkEmulation() {
+		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
+		if (!testSetup.isAndroidNetworkThrottleEnabled()) {
+			return null;
+		}
+
+		String tcpDumpFile = String.format("%s\\%d-%s.tcpdump.cap", LOGS_BASE_FOLDER, getRunUUID(), TestSetup.getUUIDString());
+
+		String delayValue = testSetup.getAndroidNetworkDelay().trim();
+		String speedValue = testSetup.getAndroidNetworkSpeed().trim();
+
+		Integer iDelay = 0;
+		Integer iMinDelay = 0;
+		Integer iMaxDelay = 0;
+		Integer iSpeed = 0;
+		Integer iUpSpeed = 0;
+		Integer iDownSpeed = 0;
+
+		if (delayValue.contains(":")) {
+			List<String> delayValueParts = RegexUtility.split(delayValue, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+			iMinDelay = NumberUtility.getIntegerValueOf(delayValueParts.get(0));
+			iMaxDelay = NumberUtility.getIntegerValueOf(delayValueParts.get(1));
+		} else {
+			iDelay = NumberUtility.getIntegerValueOf(delayValue);
+		}
+
+		if (speedValue.contains(":")) {
+			List<String> speedValueParts = RegexUtility.split(speedValue, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+			iUpSpeed = NumberUtility.getIntegerValueOf(speedValueParts.get(0));
+			iDownSpeed = NumberUtility.getIntegerValueOf(speedValueParts.get(1));
+		} else {
+			iSpeed = NumberUtility.getIntegerValueOf(speedValue);
+		}
+
+		NetworkEmulation emulation = createNetworkEmulation(tcpDumpFile, delayValue, speedValue, iDelay, iMinDelay, iMaxDelay, iSpeed, iUpSpeed, iDownSpeed);
+		TestContext.INSTANCE.getTestSetup().setNetworkEmulation(emulation);
+		return emulation;
+	}
+
+	private static NetworkEmulation createNetworkEmulation(String tcpDumpFile, String delayValue, String speedValue, Integer iDelay,
+			Integer iMinDelay, Integer iMaxDelay, Integer iSpeed, Integer iUpSpeed, Integer iDownSpeed) {
+		NetworkDelay delay = NetworkDelay.NONE;
+		NetworkSpeed speed = NetworkSpeed.FULL;
+		if (iMinDelay>0 && iMaxDelay>0 && iUpSpeed>0 && iDownSpeed>0) {
+			return NetworkEmulation.createNew(iMinDelay, iMaxDelay, iUpSpeed, iDownSpeed, tcpDumpFile);
+		} else if (iMinDelay>0 && iMaxDelay>0) {
+			speed = EnumUtility.fromName(speedValue, () -> NetworkEmulation.NetworkSpeed.values());
+			return NetworkEmulation.createNew(speed, iMinDelay, iMaxDelay, tcpDumpFile);
+		} else if (iUpSpeed>0 && iDownSpeed>0) {
+			delay = EnumUtility.fromName(delayValue, () -> NetworkEmulation.NetworkDelay.values());
+			return NetworkEmulation.createNew(delay, iUpSpeed, iDownSpeed, tcpDumpFile);
+		} else if (iDelay>0 && iSpeed>0) {
+			return NetworkEmulation.createNew(iDelay, iSpeed, tcpDumpFile);
+		} else if (iDelay>0) {
+			speed = EnumUtility.fromName(speedValue, () -> NetworkEmulation.NetworkSpeed.values());
+			return NetworkEmulation.createNew(speed, iDelay, tcpDumpFile);
+		} else if (iSpeed>0) {
+			delay = EnumUtility.fromName(delayValue, () -> NetworkEmulation.NetworkDelay.values());
+			return NetworkEmulation.createNew(delay, iSpeed, tcpDumpFile);
+		} else {
+			delay = EnumUtility.fromName(delayValue, () -> NetworkEmulation.NetworkDelay.values());
+			speed = EnumUtility.fromName(speedValue, () -> NetworkEmulation.NetworkSpeed.values());
+			return NetworkEmulation.createNew(delay, speed, tcpDumpFile);
+		}
+	}
+
+	private static void detectTargetDeviceType() throws Exception {
+		if (areMultipleDevicesConnected()) {
+			throw new Exception("Detected multiple connected devices. Current configuration supports automation run on a single device. Disconnect extra connected devices.");
+		}
+
+		IDevice device = AdbInterface.getConnectedDevice();
+		if (device != null) {
+			String buildCharacteristic = device.getProperty(SYSTEM_PROP_RO_BUILD_CHARACTERISTICS);
+			TestContext.INSTANCE.setIsRunningOnAndroidDevice(buildCharacteristic.toLowerCase().equals(TABLET));
+		}
+	}
+
+	private static boolean areMultipleDevicesConnected() {
+		IDevice[] devices = AdbInterface.getConnectedDevices();
+		if (devices != null) {
+			return (devices.length > 1);
+		}
+
+		return false;
 	}
 
 	@AfterClass
@@ -135,6 +260,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	@Before
 	public void setupBeforeTest() throws Exception {
+		AdbInterface.reset();      // reset to minimize adb hangs leading to appium server hangs.
 	}
 
 	@After
@@ -156,9 +282,44 @@ public class BaseAndroidTest extends BaseTest {
 		cleanUp();
 	}
 
+	public void startTestRecording(String testName) throws Exception {
+		Log.method("startTestRecording", testName);
+		startTestRecording(testName, true /*enableLogging*/);
+	}
+
+	public void stopTestRecording(String testName) throws Exception {
+		Log.method("stopTestRecording", testName);
+		testName = BaseHelper.toAlphaNumeric(testName, '_');
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
+			collectPerfmonMetrics(testName);
+		}
+
+		stopServiceCorrectors(testName);
+		createRecording(testName);
+
+		if (isLoggingEnabled) {
+			collectAdbLogs(testName);
+		}
+	}
+
+	private void stopServiceCorrectors(String testName) throws Exception {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				collectServiceInfos(testName);
+			}
+		}
+	}
+
 	@SuppressWarnings("rawtypes")
 	protected AndroidDriver getAndroidDriver() {
-		return (AndroidDriver)appiumDriver;
+		AndroidDriver androidDriver = null;
+		try {
+			androidDriver = (AndroidDriver)appiumDriver;
+		} catch (RuntimeException ex) {
+			throw new RetryException(ex);
+		}
+
+		return androidDriver;
 	}
 
 	protected void dumpSysActivity() {
@@ -176,6 +337,12 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
+	private void initServiceCorrector() {
+		if (serviceCorrector == null) {
+			serviceCorrector = new ServiceCorrector();
+		}
+	}
+
 	private void initScreenRecorder() {
 		if (screenRecorder == null) {
 			screenRecorder = new ScreenRecorder();
@@ -184,25 +351,31 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void initLogCollector() {
 		if (logCollector == null) {
-			logCollector = new LogCollector();
+			logCollector = LogCollector.newLogCollector(TestContext.INSTANCE.getTestSetup().getAndroidMaxLogLines());
 		}
 	}
 
-	public void startTestRecording(String testName) throws Exception {
-		Log.method("startTestRecording", testName);
-		startTestRecording(testName, true /*enableLogging*/);
+	private static Long getRunUUID() {
+		Long runUUID = TestContext.INSTANCE.getTestSetup().getRunUUID();
+		if (runUUID == null) {
+			return 0L;
+		}
+
+		return runUUID;
 	}
 
-	public void startTestRecording(String testName, Boolean enableLogging) throws Exception {
+	private void startTestRecording(String testName, Boolean enableLogging) throws Exception {
 		Log.method("startTestRecording", testName, enableLogging);
 		testName = BaseHelper.toAlphaNumeric(testName, '_');
 		initScreenRecorder();
-		screenRecorder.startRecording(String.format("/sdcard/%s.mp4", testName));
+		screenRecorder.startRecording(String.format("/sdcard/%s-%d.mp4", testName, getRunUUID()));
 
 		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
 			initPerfmonDataCollector();
 			perfmonCollector.startCollectors();
 		}
+
+		startServiceCorrectors();
 
 		if (enableLogging) {
 			initLogCollector();
@@ -211,17 +384,18 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
-	public void stopTestRecording(String testName) throws Exception {
-		Log.method("stopTestRecording", testName);
-		testName = BaseHelper.toAlphaNumeric(testName, '_');
-		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
-			collectPerfmonMetrics(testName);
-		}
-
-		createRecording(testName);
-
-		if (isLoggingEnabled) {
-			collectAdbLogs(testName);
+	private void startServiceCorrectors() {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				initServiceCorrector();
+				List<ServiceInfo> expectedServices = new ArrayList<ServiceInfo>();
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYINSTRMGR_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, ODORCALL_SERVER_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYLINEARFITTERALARM_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_LINEAR_FITTER_BROADCASTER_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_DATA_MANAGER_BROADCASTER_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				serviceCorrector.startCorrector(expectedServices.toArray(new ServiceInfo[expectedServices.size()]));
+			}
 		}
 	}
 
@@ -229,35 +403,24 @@ public class BaseAndroidTest extends BaseTest {
 		Log.method("collectPerfmonMetrics", testName);
 		String gfxDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.gfx.dat", testName));
 		String cpuDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.cpu.dat", testName));
+		String memDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.mem.dat", testName));
 
-		if(FileUtility.fileExists(gfxDataFile)) {
-			FileUtility.deleteFile(Paths.get(gfxDataFile));
-		}
-
-		if(FileUtility.fileExists(cpuDataFile)) {
-			FileUtility.deleteFile(Paths.get(cpuDataFile));
+		String[] pFiles = {gfxDataFile, cpuDataFile, memDataFile};
+		for (String pFile : pFiles) {
+			if(FileUtility.fileExists(pFile)) {
+				FileUtility.deleteFile(Paths.get(pFile));
+			}
 		}
 
 		List<String> gfxMetrics = this.perfmonCollector.getGfxMetrics();
+		List<String> memMetrics = this.perfmonCollector.getMemMetrics();
 		List<String> cpuMetrics = this.perfmonCollector.getCpuMetrics();
 
-		List<String> allGfxMetrics = new ArrayList<String>();
-		gfxMetrics.stream()
-			.map(e -> e.split(BaseHelper.getLineSeperator()))
-			.forEach(arr -> {
-				for (String str : arr) {
-					allGfxMetrics.add(str);
-				}
-			});
+		List<String> allGfxMetrics = gatherPMetricsToList(gfxMetrics);
+		List<String> allMemMetrics = gatherPMetricsToList(memMetrics);
+		List<String> allCpuMetrics = gatherPMetricsToList(cpuMetrics);
 
-		List<String> allCpuMetrics = new ArrayList<String>();
-		cpuMetrics.stream()
-			.map(e -> e.split(BaseHelper.getLineSeperator()))
-			.forEach(arr -> {
-				for (String str : arr) {
-					allCpuMetrics.add(str);
-				}
-			});
+		generateHeapDump(testName);
 
 		Log.info("Stop perfmon data collectors");
 		perfmonCollector.stopCollectors();
@@ -265,13 +428,81 @@ public class BaseAndroidTest extends BaseTest {
 		Log.info(String.format("Writing gfx metrics data to - '%s'", gfxDataFile));
 		FileUtility.writeToFile(gfxDataFile, allGfxMetrics.toArray(new String[allGfxMetrics.size()]));
 
+		Log.info(String.format("Writing mem metrics data to - '%s'", cpuDataFile));
+		FileUtility.writeToFile(memDataFile, allMemMetrics.toArray(new String[allMemMetrics.size()]));
+
 		Log.info(String.format("Writing cpu metrics data to - '%s'", cpuDataFile));
 		FileUtility.writeToFile(cpuDataFile, allCpuMetrics.toArray(new String[allCpuMetrics.size()]));
 	}
 
+	private void generateHeapDump(String testName) throws Exception {
+		Log.method("generateHeapDump", testName);
+
+		MobileActions action = MobileActions.newAction();
+		String heapFileName = String.format("%s-%d.hprof", testName, getRunUUID());
+		String saveFileLocation = String.format(LOGS_BASE_FOLDER + "\\%s", heapFileName);
+		if(FileUtility.fileExists(saveFileLocation)) {
+			FileUtility.deleteFile(Paths.get(saveFileLocation));
+		}
+
+		Log.info(String.format("Dump heap to device at -'%s/%s'", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName));
+		action.dumpHeap(heapFileName);
+
+		Log.info(String.format("Waiting for dump heap -> '%s/%s' to finish", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName));
+		pollForHeapDumpToFinish(heapFileName);
+
+		Log.info(String.format("Pulling heapdump file-'%s' from device to '%s'", heapFileName, saveFileLocation));
+		AdbInterface.pullFile(String.format("%s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName), saveFileLocation);
+
+		Log.info(String.format("Removing heapdump file-'%s' from device", heapFileName));
+		action.removeHeapFile(heapFileName);
+	}
+
+	private void pollForHeapDumpToFinish(String heapFileName) throws InterruptedException, Exception {
+		Log.method("pollForHeapDumpToFinish", heapFileName);
+		AndroidFileInfo heapFileInfo = null;
+		final int maxIterations = 60;
+		int lastSeenSize = 0;
+		int i=0;
+		do {
+			Thread.sleep(500);
+			String heapFileOnDevice = String.format("%s/%s", AppConstants.APP_HEAPDUMP_SAVE_LOCATION, heapFileName);
+			heapFileInfo = AndroidAutomationTools.getFileInfo(heapFileOnDevice);
+			if (heapFileInfo == null) {
+				Log.error(String.format("Heap file was NOT found on device -> %s", heapFileOnDevice));
+				break;
+			}
+
+			if (heapFileInfo.SIZE == lastSeenSize) {
+				break;
+			}
+
+			lastSeenSize = heapFileInfo.SIZE;
+			i++;
+
+		} while (i < maxIterations);
+	}
+
+	private void collectServiceInfos(String testName) throws Exception {
+		Log.method("collectServiceInfos", testName);
+		String svcInfoFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s-%d.svcinfo.dat", testName, getRunUUID()));
+
+		if(FileUtility.fileExists(svcInfoFile)) {
+			FileUtility.deleteFile(Paths.get(svcInfoFile));
+		}
+
+		Log.info("Stop service corrector");
+		this.serviceCorrector.stopCorrector();
+
+		List<String> svcInfos = this.serviceCorrector.getRunningServices();
+
+		Log.info(String.format("Writing service info to - '%s'", svcInfoFile));
+		FileUtility.writeToFile(svcInfoFile, svcInfos.toArray(new String[svcInfos.size()]));
+	}
+
 	private void collectAdbLogs(String testName) throws IOException {
 		Log.method("collectAdbLogs", testName);
-		String logcatLog = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.log", testName));
+		String logcatLog = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s-%d.log", testName, getRunUUID()));
 		if(FileUtility.fileExists(logcatLog)) {
 			FileUtility.deleteFile(Paths.get(logcatLog));
 		}
@@ -287,7 +518,7 @@ public class BaseAndroidTest extends BaseTest {
 	private void createRecording(String testName) throws Exception {
 		Log.method("createRecording", testName);
 		MobileActions action = MobileActions.newAction();
-		String videoFileName = String.format("%s.mp4", testName);
+		String videoFileName = String.format("%s-%d.mp4", testName, getRunUUID());
 		String saveFileLocation = String.format(LOGS_BASE_FOLDER + "\\%s", videoFileName);
 		if(FileUtility.fileExists(saveFileLocation)) {
 			FileUtility.deleteFile(Paths.get(saveFileLocation));
@@ -303,7 +534,30 @@ public class BaseAndroidTest extends BaseTest {
 		action.removeSdcardFile(videoFileName);
 	}
 
-	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
+	private List<String> gatherPMetricsToList(List<String> metricsList) {
+		List<String> outputList = new ArrayList<String>();
+		metricsList.stream()
+			.map(e -> e.split(BaseHelper.getLineSeperator()))
+			.forEach(arr -> {
+				for (String str : arr) {
+					outputList.add(str);
+				}
+			});
+
+		return outputList;
+	}
+
+	public static void ensureTestPrereqsPresent() throws IOException {
+		Log.method("ensureTestPrereqsPresent");
+		String libCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String repoRootFolder = TestSetup.getRootPath();
+		String ensurePrereqsCmd = ENSURE_ANDROID_TEST_PREREQS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"");
+		String command = "cd \"" + libCmdFolder + "\" && " + ensurePrereqsCmd;
+		Log.info("Executing ensure android test prereqs command. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+	}
+
+	// Perf optimization. pause simulator processes to prevent delay in fetching element using Appium driver.
 	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
 	protected boolean executeWithBackPackDataProcessesPaused(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
 		return executeWithBackPackDataProcessesPausedInternal(applyInitialPause, predicate);
@@ -332,14 +586,27 @@ public class BaseAndroidTest extends BaseTest {
 		return retVal;
 	}
 
-	private static void cleanupProcesses() throws IOException {
+	private Predicate<String> getBackPackSimulatorServiceInfoPredicate() {
+		Predicate<String> predicate = el -> {
+			FunctionUtil.warnOnError(() -> BackPackAnalyzer.restartSimulator());
+			return true;
+		};
+
+		return predicate;
+	}
+
+	private static void cleanupProcesses() throws Exception {
 		Log.method("cleanupProcesses");
 
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.stopSimulator();
 		}
 
-		AndroidAutomationTools.stop();
+		if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+			AndroidAutomationTools.stopAppiumServer();
+		} else {
+			AndroidAutomationTools.stop();
+		}
 
 		ProcessUtility.killProcess(ADB_EXE, false /*killChildProcesses*/);
 
@@ -382,6 +649,10 @@ public class BaseAndroidTest extends BaseTest {
 
 	protected void initializeAppiumTest() throws MalformedURLException, IOException, Exception {
 		Log.method("initializeAppiumTest");
+		if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+			ensureDeviceIsTurnedOnAndUnlocked();
+		}
+
 		ensureApkExistsInConnectedDevice();
 		installApkFileVersionMarkerOnDevice();
 		initializeAppiumDriver();
@@ -401,6 +672,21 @@ public class BaseAndroidTest extends BaseTest {
 		waitForAppLoad();
 	}
 
+	private void ensureDeviceIsTurnedOnAndUnlocked() throws Exception {
+		Log.method("ensureDeviceIsTurnedOnAndUnlocked");
+		String pin = TestContext.INSTANCE.getTestSetup().getAndroidDevicePin();
+		if (AndroidDeviceInterface.isScreenTurnedOff()) {
+			AndroidDeviceInterface.turnOnScreen();
+			AndroidDeviceInterface.unlockDevice();
+			AndroidDeviceInterface.enterPin(pin);
+		} else {
+			if (AndroidDeviceInterface.isDeviceLocked()) {
+				AndroidDeviceInterface.unlockDevice();
+				AndroidDeviceInterface.enterPin(pin);
+			}
+		}
+	}
+
 	private void installApkFileVersionMarkerOnDevice() throws IOException {
 		Log.method("installApkFileVersionMarkerOnDevice");
 		String apkFilename = getApkFile().getName();
@@ -410,15 +696,17 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void initializeAppiumDriver() throws MalformedURLException {
+	protected void initializeAppiumDriver() throws IOException {
 		Log.method("initializeAppiumDriver");
-		appiumDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppNativeDriver();
+		// Server must be running, else webdriver creation will fail.
+		AndroidAutomationTools.ensureAppiumServerIsRunning();
+		appiumDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppNativeDriver(TestContext.INSTANCE.isRunningOnAndroidDevice());
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void initializeAppiumWebDriver() throws MalformedURLException {
 		Log.method("initializeAppiumWebDriver");
-		appiumWebDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppWebDriver();
+		appiumWebDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppWebDriver(TestContext.INSTANCE.isRunningOnAndroidDevice());
 	}
 
 	protected void installLaunchApp(String waitActivityName) throws IOException {

@@ -38,6 +38,10 @@ public class MobileInvestigationPage extends MobileBasePage {
 		driver.get(strPageURL);
 		waitUntilPageLoad();
 	}
+
+	public MobileInvestigatePage clickOnLisa(String reportName, int lisaNumber){
+		return clickOnLisa(reportName+"-LISA-"+lisaNumber);
+	}
 	
 	public MobileInvestigatePage clickOnLisa(String lisaNumber){
 		return clickOnLisa(lisaNumber, null, null);
@@ -64,6 +68,10 @@ public class MobileInvestigationPage extends MobileBasePage {
 		return clickOnMarker(lisaItem);
 	}
 
+	public MobileInvestigatePage clickOnGap(String reportName, int gapNumber){
+		return clickOnGap(reportName+"-Gap-"+gapNumber);
+	}
+	
 	public MobileInvestigatePage clickOnGap(String gapNumber){
 		return clickOnGap(gapNumber, null, null);
 	}

@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 
 import common.source.BaseHelper;
 import common.source.Log;
+import common.source.RegexUtility;
 
 public class StoredProcComplianceGetIndications extends BaseEntity {
 	private String peakNumber;
@@ -16,7 +17,6 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private String surveyorUnitName;
 	private float amplitude;
 	private float ch4;
-	private String text;
 	private String aggregatedEthaneToMethaneRatio;
 	private String aggregatedClassificationConfidence;
 	private String aggregatedClassificationConfidenceReport;
@@ -30,7 +30,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		return this.getPeakNumber().concat(this.getSurveyorUnitName()).concat(this.getDateTime())
 				.concat(String.format("%.2f",this.getAmplitude())).concat(String.format("%.2f", this.getCh4()))
 				.concat(this.getAggregatedEthaneToMethaneRatio()!=null?this.getAggregatedEthaneToMethaneRatio().trim():"[AggregatedEthaneToMethaneRatio=NULL]").concat(this.getAggregateDisposition()!=null?this.getAggregateDisposition():"[AggregateDisposition=NULL]")
-				.concat(this.getAggregatedClassificationConfidence()!=null?this.getAggregatedClassificationConfidence():"[AggregatedClassificationConfidence=NULL]").concat(this.getText());
+				.concat(this.getAggregatedClassificationConfidence()!=null?this.getAggregatedClassificationConfidence():"[AggregatedClassificationConfidence=NULL]");
 	}
 
 	public String getPeakNumber() {
@@ -71,17 +71,6 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 
 	public void setCh4(float ch4) {
 		this.ch4 = ch4;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		if(text==null){
-			text = "";
-		}
-		this.text = text;
 	}
 
 	public String getAggregatedEthaneToMethaneRatio() {
@@ -144,15 +133,12 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			Log.warn(String.format("[isEquals=FALSE] : Ch4 is not match, Expect '%s', Actual '%s'", obj.getCh4(), getCh4()));
 			return false;
 		}
-		if (!this.getText().trim().equals(obj.getText().trim())) {
-			Log.warn(String.format("[isEquals=FALSE] : FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), getText().trim()));
-			return false;
-		}
-		if(!this.getAggregatedClassificationConfidence().equals(obj.getAggregatedClassificationConfidence())){
+
+		if(!RegexUtility.equalsIgnoreEmptyString(this.getAggregatedClassificationConfidence(), obj.getAggregatedClassificationConfidence())){
 			Log.warn(String.format("[isEquals=FALSE] : AggregatedClassificationConfidence is not match, Expect '%s', Actual '%s'", obj.getAggregatedClassificationConfidence().trim(), getAggregatedClassificationConfidence().trim()));
 			return false;
 		}
-		if(!this.getAggregatedEthaneToMethaneRatio().equals(obj.getAggregatedEthaneToMethaneRatio())){
+		if(!RegexUtility.equalsIgnoreEmptyString(this.getAggregatedEthaneToMethaneRatio(), obj.getAggregatedEthaneToMethaneRatio())){
 			Log.warn(String.format("[isEquals=FALSE] : AggregatedEthaneToMethaneRatio is not match, Expect '%s', Actual '%s'", obj.getAggregatedEthaneToMethaneRatio().trim(), getAggregatedEthaneToMethaneRatio().trim()));
 			return false;
 		}
@@ -179,7 +165,6 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			objReport.setSurveyorUnitName(getStringColumnValue(resultSet, "SurveyorUnitName"));
 			objReport.setAmplitude(getFloatColumnValue(resultSet, "Amplitude"));
 			objReport.setCh4(getFloatColumnValue(resultSet, "CH4"));
-			objReport.setText(getStringColumnValue(resultSet, "Text"));
 			String aggrClassConf = getStringColumnValue(resultSet, "AggregatedClassificationConfidence");
 			if (!BaseHelper.isNullOrEmpty(aggrClassConf)) {
 				objReport.setAggregatedClassificationConfidence(aggrClassConf.replaceFirst(">=", ""));

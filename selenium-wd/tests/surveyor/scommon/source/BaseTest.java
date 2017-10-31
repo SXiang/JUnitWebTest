@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -29,6 +31,7 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
+import common.source.CheckedConsumer;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.ExtentReportGenerator;
@@ -48,6 +51,7 @@ import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.DriverViewPageActions.DrivingSurveyType;
 import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.actions.TestEnvironmentActions;
@@ -83,32 +87,28 @@ public class BaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
-			Log.method("BaseTest.starting");
 			BaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
-			Log.method("BaseTest.finished");
-			BaseTest.reportTestFinished(description.getClassName());
+			BaseTest.reportTestFinished(description);
 			TestSetup.simulatorTestFinishing(description);
 		}
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			Log.method("BaseTest.failed");
-			onTestFailureProcessing();
-			BaseTest.reportTestFailed(e, description.getClassName());
-			postTestMethodProcessing();
+			invokeTestWatcherEvent(description, () -> onTestFailureProcessing());
+			BaseTest.reportTestFailed(e, description);
+			invokeTestWatcherEvent(description, () -> postTestMethodProcessing());
 		}
 
 		@Override
 		 protected void succeeded(Description description) {
-			Log.method("BaseTest.succeeded");
-			onTestSuccessProcessing();
-			BaseTest.reportTestSucceeded(description.getClassName());
-			postTestMethodProcessing();
+			invokeTestWatcherEvent(description, () -> onTestSuccessProcessing());
+			BaseTest.reportTestSucceeded(description);
+			invokeTestWatcherEvent(description, () -> postTestMethodProcessing());
 		}
 	};
 
@@ -175,45 +175,8 @@ public class BaseTest {
 		return extentReport;
 	}
 
-	public static void reportTestStarting(Description description) {
-		reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
-	}
-
-	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
-		ExtentReports report = getExtentReport(className);
-		setExtentTest(report.startTest(methodName), className);
-		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
-		getExtentTest(className).log(LogStatus.INFO, firstLogLine);
-		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
-				DateUtility.getCurrentDate()));
-		TestContext.INSTANCE.setTestClassName(className);
-	}
-
-	public static void reportTestFinished(String className) {
-		Log.method("reportTestFinished", className);
-		ExtentReports report = getExtentReport(className);
-		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
-				DateUtility.getCurrentDate()));
-		report.endTest(getExtentTest(className));
-		report.flush();
-	}
-
-	public static void reportTestLogMessage(String className) {
-		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
-		for(String message:testMessage){
-			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
-		}
-	}
-
-	public static void reportTestFailed(Throwable e, String className) {
-		Log.method("reportTestFailed", e, className);
-		BaseTest.reportTestLogMessage(className);
-		getScreenCapture().takeScreenshots(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
-		captureAdditionalDriverScreenshots(className);
-		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
-		TestContext.INSTANCE.setTestStatus("FAIL");
-		String failureMsg = "FAILURE: " + ExceptionUtility.getStackTraceString(e);
-		getExtentTest(className).log(LogStatus.FAIL, failureMsg);
+	private static boolean isTestRetried(Description description) {
+		return ThreadLocalStore.getRetriedTests().contains(String.format("%s.%s", description.getClassName(), description.getMethodName()));
 	}
 
 	protected static void captureAdditionalDriverScreenshots(String className) {
@@ -228,11 +191,72 @@ public class BaseTest {
 		}
 	}
 
+	public static void reportTestStarting(Description description) {
+		if (!isTestRetried(description)) {
+			reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
+		}
+	}
+
+	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
+		ExtentReports report = getExtentReport(className);
+		setExtentTest(report.startTest(methodName), className);
+		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
+		getExtentTest(className).log(LogStatus.INFO, firstLogLine);
+		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
+				DateUtility.getCurrentDate()));
+		TestContext.INSTANCE.setTestClassName(className);
+	}
+
+	public static void reportTestFinished(Description description) {
+		String className = description.getClassName();
+		if (!isTestRetried(description)) {
+			reportTestFinished(className);
+		}
+	}
+
+	public static void reportTestFinished(String className) {
+		ExtentReports report = getExtentReport(className);
+		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
+				DateUtility.getCurrentDate()));
+		report.endTest(getExtentTest(className));
+		report.flush();
+	}
+
+	public static void reportTestFailed(Throwable e, Description description) {
+		String className = description.getClassName();
+		if (!isTestRetried(description)) {
+			reportTestFailed(e, className);
+		}
+	}
+
+	public static void reportTestFailed(Throwable e, String className) {
+		BaseTest.reportTestLogMessage(className);
+		getScreenCapture().takeScreenshots(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+		captureAdditionalDriverScreenshots(className);
+		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
+		TestContext.INSTANCE.setTestStatus("FAIL");
+		String failureMsg = "FAILURE: " + ExceptionUtility.getStackTraceString(e);
+		getExtentTest(className).log(LogStatus.FAIL, failureMsg);
+	}
+
+	public static void reportTestSucceeded(Description description) {
+		String className = description.getClassName();
+		if (!isTestRetried(description)) {
+			reportTestSucceeded(className);
+		}
+	}
+
 	public static void reportTestSucceeded(String className) {
-		Log.method("reportTestSucceeded", className);
 		Log.info("_PASS_ ");
 		TestContext.INSTANCE.setTestStatus("PASS");
 		getExtentTest(className).log(LogStatus.PASS, "PASSED");
+	}
+
+	public static void reportTestLogMessage(String className) {
+		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		for(String message:testMessage){
+			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
+		}
 	}
 
 	protected static ExtentTest getExtentTest(String className) {
@@ -275,6 +299,16 @@ public class BaseTest {
 		if (getExtentReportFilePath()!=null) {
 			if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
 				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(getExtentReportFilePath().toString());
+			}
+		}
+	}
+
+	public void invokeTestWatcherEvent(Description description, CheckedConsumer event) {
+		if (!isTestRetried(description)) {
+			try {
+				event.execute();
+			} catch (Exception e) {
+				Log.error(String.format("Error invoking test watcher event. Exception -> %s", ExceptionUtility.getStackTraceString(e)));
 			}
 		}
 	}
@@ -424,13 +458,20 @@ public class BaseTest {
 		return Collections.synchronizedMap(testAccount);
 	}
 
-	public void addTestUser(String customerName, String userName, String userPassword, String userRole, String locationName){
+	public String addTestUser(String customerName,String userPassword, String userRole, String locationName){
+		String uniqueNumber = getTestSetup().getNewFixedSizeRandomNumber(6);
+		String userName = uniqueNumber + REGBASEUSERNAME;
+		addTestUser(customerName, userName, userPassword, userRole, locationName);
+		return userName;
+	}
+	public String addTestUser(String customerName, String userName, String userPassword, String userRole, String locationName){
 		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), manageUsersPage);
 		manageUsersPage.open();
 		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
 			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
+		return userName;
 	}
 
 	public Map<String, String> addTestReport() throws Exception{
@@ -463,8 +504,10 @@ public class BaseTest {
 		}
 		HashMap<String, String> testReport = new HashMap<String, String>();
 
+		LoginPageActions loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, Password);
+		loginPageAction.login(userName+":"+Password, null);
+
 		testReport.put("userName", userName);
 
 		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
@@ -512,7 +555,7 @@ public class BaseTest {
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
 			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 			complianceReportsPage.addNewReport(rpt, true);
-			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
+			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportId(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
 			testReport.put(sm.toString()+"ReportName", reportName);
 		}
 		return Collections.synchronizedMap(testReport);
@@ -550,7 +593,11 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
-		String replayScriptDB3File = "Surveyor.db3";
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, "", db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3file, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
+        String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		String replayEQScriptDB3File = "Surveyor.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62, 65};
@@ -595,13 +642,16 @@ public class BaseTest {
 				continue;
 			}
 
-			String db3file = replayScriptDB3File;
-			if(st.equals(SurveyType.Analytics)){
-				db3file = replayAnalyticsScriptDB3File;
-			}else if(st.equals(SurveyType.EQ)){
-				db3file = replayEQScriptDB3File;
-				drivingSurveyType = DrivingSurveyType.EQ;
+			if(db3file.isEmpty()){
+				db3file = replayScriptDB3File;
+				if(st.equals(SurveyType.Analytics)){
+					db3file = replayAnalyticsScriptDB3File;
+				}else if(st.equals(SurveyType.EQ)){
+					db3file = replayEQScriptDB3File;
+					drivingSurveyType = DrivingSurveyType.EQ;
+				}
 			}
+
 			int surveyRowID = surveyRowIDs[0];
 			for(int j=0; j<surveyType.length; j++){
 				if(st.equals(surveyType[j])){

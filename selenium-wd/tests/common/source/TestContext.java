@@ -37,6 +37,8 @@ public enum TestContext {
 	private ThreadLocalMap<LogData> threadLogData;
 	private ThreadLocalMap<String> threadTestStatus;
 
+	private Boolean isRunningOnAndroidDevice = false;
+
 	private TestContext() {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
 		this.threadReportIdSet = new ThreadLocalMap<Set<String>>(Collections.synchronizedSet(new HashSet<String>()));
@@ -338,5 +340,13 @@ public enum TestContext {
 
 	public void setExtentTestMap(Map<String, ExtentTest> extentTestMap) {
 		this.extentTestMap = extentTestMap;
+	}
+
+	public Boolean isRunningOnAndroidDevice() {
+		return isRunningOnAndroidDevice;
+	}
+
+	public void setIsRunningOnAndroidDevice(Boolean isRunningOnAndroidDevice) {
+		this.isRunningOnAndroidDevice = isRunningOnAndroidDevice;
 	}
 }

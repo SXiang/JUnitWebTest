@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -142,13 +143,13 @@ public class WebDriverWrapper {
 		}
 	}
 
-	public RemoteWebDriver createAndroidAppWebDriver() throws MalformedURLException{
+	public RemoteWebDriver createAndroidAppWebDriver(boolean isDevice) throws MalformedURLException{
 		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 		DesiredCapabilities capabilities=DesiredCapabilities.android();
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
+		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, getDeviceNameCapability(isDevice));
 		capabilities.setCapability(MobileCapabilityType.BROWSER_NAME,BrowserType.CHROME);
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
 
@@ -160,13 +161,13 @@ public class WebDriverWrapper {
 		return androidDriver;
 	}
 
-	public RemoteWebDriver createAndroidAppNativeDriver() throws MalformedURLException{
+	public RemoteWebDriver createAndroidAppNativeDriver(boolean isDevice) throws IOException{
 		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 		DesiredCapabilities capabilities=DesiredCapabilities.android();
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
+		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, getDeviceNameCapability(isDevice));
 		// NOTE: autoGrantPermissions capability is NOT working along with MobileCapabilityType.APP. Use appPackage and appActivity instead of app.
 		capabilities.setCapability("appPackage", ANDROID_APP_PACKAGE_NAME);
 		capabilities.setCapability("appActivity", ".MainActivity");
@@ -322,14 +323,6 @@ public class WebDriverWrapper {
 		return appiumDriver != null;
 	}
 
-	private void allowChromeAutomationExtensionInIncognito(ChromeDriver chromeDriver) {
-		chromeDriver.get("chrome://extensions-frame");
-		WebElement checkbox = chromeDriver.findElement(By.xpath("//label[@class='incognito-control']/input[@type='checkbox']"));
-		if (!checkbox.isSelected()) {
-		    checkbox.click();
-		}
-	}
-
 	public boolean isDeviceEmulationEnabled() {
 		return deviceEmulationEnabled;
 	}
@@ -360,5 +353,21 @@ public class WebDriverWrapper {
 
 	public void setAndroidAppWebDriver(WebDriver androidAppWebDriver) {
 		this.androidAppWebDriver = androidAppWebDriver;
+	}
+
+	private void allowChromeAutomationExtensionInIncognito(ChromeDriver chromeDriver) {
+		chromeDriver.get("chrome://extensions-frame");
+		WebElement checkbox = chromeDriver.findElement(By.xpath("//label[@class='incognito-control']/input[@type='checkbox']"));
+		if (!checkbox.isSelected()) {
+		    checkbox.click();
+		}
+	}
+
+	private String getDeviceNameCapability(boolean isDevice) {
+		String deviceName = "Android Emulator";
+		if (isDevice) {
+			deviceName = "Galaxy Tab S2";
+		}
+		return deviceName;
 	}
 }

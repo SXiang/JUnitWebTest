@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
+
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
@@ -38,7 +39,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 	private DriverViewPageActions driverViewPageAction;
 	private ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
-
 	private DriverViewPage driverViewPage;
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
 
@@ -62,7 +62,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
 			driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
 			PageFactory.initElements(getDriver(), driverViewPage);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,13 +96,13 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	}
 	private void loginAsObserver(int userRowID, int index) throws Exception {
 		loginPageActionList.get(index).open(EMPTY, NOTSET);
-		loginPageActionList.get(index).workingDataRow.set(null);
+		LoginPageActions.workingDataRow.set(null);
 		loginPageActionList.get(index).login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
 	private void loginAsDriver(int userRowID) throws Exception {
 		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction().workingDataRow.set(null);
+		LoginPageActions.workingDataRow.set(null);
 		getLoginPageAction().login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
@@ -135,13 +134,23 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	}
 
 	/** MandatoryRegression
-	 * Test Case ID: TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp Script: - - - On Home Page, click on Picarro Surveyors -& Online -& Status - - Click on Display button - - Click on Map
-	 * button - - Click on GIS button - - Click on Status button Results: - - Analyzer Warming Up message and analyzer info is displayed - Position button is by default selected and car icon is
-	 * displayed - All the Display options like Indications, LISA, FoV, Concentration Chart, WindRose, Field Notes and Isotopic Analysis are ON - Satellite View is by default ON and Map view is OFF -
-	 * All Asset types and boundaries level are OFF (if customer has assets associated to them) or no assets and boundaries options are displayed to user - Status should display same info as in driver
-	 * view. Status is red and on expanding flow, temp gauges, etc are also red
+	 * Test Case ID: TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp 
+	 * Script: 
+	 * 	- - On Home Page, click on Picarro Surveyors -& Online -& Status 
+	 * 	- - Click on Display button 
+	 * 	- - Click on Map button 
+	 * 	- - Click on GIS button 
+	 * 	- - Click on Status button 
+	 * Results: 
+	 *  - Analyzer Warming Up message and analyzer info is displayed 
+	 * 	- Position button is by default selected and car icon is	displayed 
+	 * 	- All the Display options like Indications, LISA, FoV, Concentration Chart, WindRose, Field Notes and Isotopic Analysis are ON 
+	 * 	- Satellite View is by default ON and Map view is OFF 
+	 * 	- All Asset types and boundaries level are OFF (if customer has assets associated to them) 
+	 * 		or no assets and boundaries options are displayed to user 
+	 * 	- Status should display same info as in driver view. Status is red and on expanding flow, temp gauges, etc are also red
 	 */
-	@Ignore
+	@Test
 	public void TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp() throws Exception {
 		Log.info("\nRunning TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp ...");
 
@@ -149,54 +158,53 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		// Start Analyzer & simulate Instrument Warming
 		startReplay(ANALYZER1_INSTRUMENT_WARMING_ROW_ID);
-		// TODO: Implement check to verify Analyzer warming message is shown.
-		// assertTrue(observerViewPageActionList.get(0).verifyAnalyzerWarmingMessageIsShown(EMPTY, NOTSET));
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		String analyzer =  getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_WARMINGUP, NOTSET));
+		
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
-
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIndicationsButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchLisasButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchFovsButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchConcentrationChartButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchWindroseButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIndicationsButtonIsVisible("ON", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchLisasButtonIsVisible("ON", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchFovsButtonIsVisible("ON", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchConcentrationChartButtonIsVisible("ON", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchWindroseButtonIsVisible("ON", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsVisible("ON", NOTSET));
 
 		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifySatelliteViewIsShown(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySatelliteViewIsShown("ON", NOTSET));
 
 		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifyGisBoundaryBigBoundaryButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyGisBoundarySmallBoundaryButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeCastIronButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeCopperButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeOtherPlasticButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypePEPlasticButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeProtectedSteelButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisBoundaryBigBoundaryButtonIsVisible("OFF", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisBoundarySmallBoundaryButtonIsVisible("OFF", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeCastIronButtonIsVisible("OFF", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeCopperButtonIsVisible("OFF", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeOtherPlasticButtonIsVisible("OFF", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypePEPlasticButtonIsVisible("OFF", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeProtectedSteelButtonIsVisible("OFF", NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeUnProtectedSteelButtonIsVisible("OFF", NOTSET));
 
-		observerViewPageActionList.get(0).clickOnStatusButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifyStatusButtonIsExpanded(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyStatusButtonIsRed(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyPressureButtonIsRed(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyHBTempButtonIsRed(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyWBTempButtonIsRed(EMPTY, NOTSET));
+		
 		assertTrue(observerViewPageActionList.get(0).verifyStatusButtonIsRed(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFlowButtonIsRed(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyPressureButtonIsRed(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyHBTempButtonIsRed(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyWBTempButtonIsRed(EMPTY, NOTSET));
 
 		assertTrue(observerViewPageActionList.get(0).verifyPositionButtonIsSelected(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap("Gray", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
-		// TODO: Post Browser TAB implemented do this CHECK.
-		// Status should display same info as in driver view
-
-		stopSurveyAndAnalyzer();
+		 getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -237,7 +245,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).clickOnZoomInButton(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
@@ -281,7 +288,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
@@ -339,7 +345,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
@@ -395,7 +400,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 * auto-center: On, Map View: Satellite, GIS: All ON - User can see car position, wind rose, concentration chart, breadcrumb, FOV, Indications, LISA, Isotopic Analysis results (if any) and Field
 	 * Notes (if any) in satellite view Results: - - All pipes data and boundaries are displayed
 	 */
-	@Ignore
+	@Test
 	public void TC350_ViewStandardSurveySatelliteViewWhenAllMapBoundariesPipeTypeAreLoaded() throws Exception {
 		Log.info("\nRunning TC350_ViewStandardSurveySatelliteViewWhenAllMapBoundariesPipeTypeAreLoaded ...");
 
@@ -417,10 +422,10 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnSatelliteView(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).getBaseMapViewPageObject().setZoomLevelForAssets();
+
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap("Red", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
@@ -438,17 +443,19 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 * Surveyor and analyzer info - Car position, breadcrumb is displayed to the user - Map is not centered on car's position Results: - - User is not able to see FOV, Indications, LISA, assets,
 	 * boundaries, Field Notes (if any), Isotopic Analysis results (if any), Concentration Chart and Windrose
 	 */
-	@Ignore
+	@Test
 	public void TC351_ViewStandardSurveyWhenAllDisplayOptionsGISAreTurnedOFF() throws Exception {
 		Log.info("\nRunning TC351_ViewStandardSurveyWhenAllDisplayOptionsGISAreTurnedOFF ...");
 
 		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
-
+        String driver = LoginPageActions.workingDataRow.get().username;
+        int zoomLevel = 17;
 		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
 		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
@@ -460,23 +467,22 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
 
+		observerViewPageActionList.get(0).getBaseMapViewPageObject().setZoomLevel(zoomLevel+1);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
-
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + driver, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, zoomLevel), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_C, NOTSET));
 
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
@@ -484,7 +490,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
@@ -507,7 +512,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		String analyzer =  getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
@@ -544,7 +549,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
@@ -559,7 +563,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyCarIconIsNotInCenter(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -609,7 +612,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
@@ -644,7 +646,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
@@ -656,40 +657,39 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 * survey - - Now ask driver user to start the survey again with different survey tag value (eg. tag - Survey 2) Results: - - Observer user should only see recent survey data (eg. Survey 2) - User
 	 * should not see first survey (eg. Survey 1)
 	 */
-	@Ignore
-	// TODO: Correct implementation.
+	@Test
 	public void TC1037_ObserverView_OnceUserStartsNewSurveyOldSurveyShouldNotDisplayedObserverView() throws Exception {
 		Log.info("\nRunning TC1037_ObserverView_OnceUserStartsNewSurveyOldSurveyShouldNotDisplayedObserverView ...");
 
 		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 
 		// Start 1st survey.
-		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_OPERATOR1_ROW_ID, ONE_SECOND * 15);
-		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
-		getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);
-		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
-		driverViewPageAction.clickOnFeatureInfoAddUpdateNote(EMPTY, NOTSET);
-		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1, NOTSET);
+		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND * 3);
+		driverViewPageAction.getBaseDrivingViewPage().setZoomLevel(15);
+		 getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
+		 getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);	
+		String firstTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+		assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(firstTag, NOTSET));
 		stopSurvey();
 
 		// Start 2st survey with a different tag.
-		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		TestEnvironmentActions.workingDataRow.set(null);
+		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND * 3);
+		 getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
-
-		// Verify 1st survey field note is NOT shown.
-		// Verify 2nd survey indication is shown.
-		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		// Verify 2nd survey indication/tag is shown.
+		String analyzer =  getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET);
+		observerViewPageActionList.get(0).getBaseDrivingViewPage().setZoomLevel(15);
 		observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET);
-
+		String secondTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+		assertFalse(secondTag.equals(firstTag));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(secondTag, NOTSET));
 		stopSurveyAndAnalyzer();
 	}
 
@@ -1130,7 +1130,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
@@ -1283,7 +1282,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));

@@ -143,7 +143,15 @@ public class AdbInterface {
 		}
 	}
 
+	public static void reset() {
+		Log.method("reset");
+		AdbInterface.stop();
+		AdbInterface.init(getAdbLocation());
+		adb = AndroidDebugBridge.createBridge(adbLocation, true);
+	}
+
 	public static void stop() {
+		Log.method("stop");
 		AndroidDebugBridge.disconnectBridge();
 		AndroidDebugBridge.terminate();
 	}
@@ -190,6 +198,26 @@ public class AdbInterface {
 		}
 	}
 
+	public static IDevice[] getConnectedDevices() {
+		if (adb == null) {
+			adb = AndroidDebugBridge.createBridge(adbLocation, true);
+		}
+
+		PollManager.poll(() -> !adb.isConnected() || !adb.hasInitialDeviceList(), DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, 2 * MAX_RETRIES_IN_POLL);
+		IDevice[] devices = AndroidDebugBridge.getBridge().getDevices();
+		return devices;
+	}
+
+	public static IDevice getConnectedDevice() {
+		IDevice device = null;
+		IDevice[] devices = getConnectedDevices();
+		if (devices != null && devices.length > 0) {
+			device = devices[0];
+		}
+
+		return device;
+	}
+
 	private static String executeShellCmdInternal(final String adbLocation, final String command) {
 		Log.method("executeShellCmdInternal", command);
 		IDevice device = getConnectedDevice();
@@ -233,20 +261,5 @@ public class AdbInterface {
 		Log.method("revertTypeTextCommand", command);
 		String text = command.replace("input text ", "").replace("\"", "");
 		MobileActions.newAction().undoText(text);
-	}
-
-	private static IDevice getConnectedDevice() {
-		IDevice device = null;
-		if (adb == null) {
-			adb = AndroidDebugBridge.createBridge(adbLocation, true);
-		}
-
-		PollManager.poll(() -> !adb.isConnected() || !adb.hasInitialDeviceList(), DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, 2 * MAX_RETRIES_IN_POLL);
-		IDevice[] devices = AndroidDebugBridge.getBridge().getDevices();
-		if (devices != null && devices.length > 0) {
-			device = devices[0];
-		}
-
-		return device;
 	}
 }

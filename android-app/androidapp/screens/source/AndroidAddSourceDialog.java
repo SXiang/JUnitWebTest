@@ -19,9 +19,6 @@ public class AndroidAddSourceDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement addOtherSources;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
-	@CacheLookup
-	private WebElement cancel;
 	public AndroidAddSourceDialog(WebDriver driver) {
 		super(driver);
 	}
@@ -46,16 +43,6 @@ public class AndroidAddSourceDialog extends AndroidBaseScreen {
 	public void clickOnAddOtherSources() {
 		Log.method("clickOnAddOtherSources");
 		tap(getAddOtherSourcesButton());
-	}
-
-	public WebElement getCancelButton() {
-		Log.method("getCancelButton");
-		return cancel;
-	}
-
-	public void clickOnCancel() {
-		Log.method("clickOnCancel");
-		tap(getCancelButton());
 	}
 
 	@Override

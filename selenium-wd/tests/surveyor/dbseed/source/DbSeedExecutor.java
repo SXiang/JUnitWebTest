@@ -17,6 +17,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerBulkCopy;
 
 import common.source.BcpDatFileTransferUtility;
 import common.source.CSVUtility;
+import common.source.Constants;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
@@ -46,21 +47,31 @@ public class DbSeedExecutor {
 	public static final String ASSET_DAT_FILE = "Asset.BA.dat";
 	public static final String BOUNDARY_DAT_FILE = "Boundary.BA.dat";
 
-	public static final String[] PICARRO_CUSTOMER_SURVEYS = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
-			"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
-			"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
-			"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3", "daysurvey3.2-1", "daysurvey3.2-2", "daysurvey4-1", "daysurvey5-1", "daysurvey7-1", "daysurvey8.2-1", "daysurvey8-1", "daysurvey8-2",
-			"IsoCapRedTrace-1", "AnalyticsTagA-1", "AnalyticsTagB-1", "AnalyticsTagC-1", "FeqNoPeaks-1", "FeqWithPeaks-1", "MeqNoPeaks-1", "MeqWithPeaks-1", "menlo-night-11-17-EQ-1", "menlo-night-11-17-EQ-2",
-			"standard-survey-for-EQ-Rpt-1", "standard-survey-for-EQ-Rpt-2", "FeqWithPeaks02-1", PICGREATER4HR_DATAFILE, PICLESS4HR_DATAFILE ,PIC8HR01_DATAFILE, PIC8HR02_DATAFILE, PIC8HR03_DATAFILE,
-			PIC8HR04_DATAFILE, PIC8HR05_DATAFILE, PIC8HR06_DATAFILE,PIC8HR07_DATAFILE, PIC8HR08_DATAFILE, PIC8HR09_DATAFILE, PIC8HR10_DATAFILE, PIC8HR11_DATAFILE, PIC8HR12_DATAFILE};
+	public static final String[] PICARRO_CUSTOMER_SURVEYS = {
+			/* Surveys with raw data that have been reprocessed - 10/23/2017 (surveyor 3.0.1.2109, worker 3.0.1.884) */
+			"AnalyticsTagA-1", "AnalyticsTagB-1", "AnalyticsTagC-1", "assessment-1", "assessment-2", "daysurvey3.2-1", "daysurvey3.2-2", "daysurvey4-1", "daysurvey5-1",
+			"daysurvey7-1", "daysurvey8-1", "daysurvey8-2", "daysurvey8.2-1", "Ethane1MinSurvey-1", "EthaneManual-1", "FeqNoPeaks01-1", "FeqWithPeaks01-1", "FeqWithPeaks02-1",
+			"iso-cap-1", "iso-cap-2", "IsoCapRedTrace-1", "man-pic-1", "man-pic-2", "MenloNight11_17EQ01-1", "MenloNight11_17EQ02-1",
+			"MeqNoPeaks01-1", "MeqWithPeaks01-1", "No-fov-1-1", "No-fov-2-1", "No-fov-3-1", "op-pic-1", "rr-pic-1", "Standard-With-Leak-1", "StandardSurveyEQ01-1", "StandardSurveyEQ02-1",
+			"standard-test-1-1", "standard-test-2-1", "standard-test-3-1", "stnd-pic-1", "LISANotIntersectingAssets-1", "2HourSurvey-1", "4HourSurvey-1",
+			/* Surveys with raw data that failed in re-processing. Currently using original surveys for seed data. Regenerate seed data for processed survey once re-processing works with later Tahoe builds */
+			"8HourSurvey-1", "GreaterThan4Hour-1",  "LessThan4Hour-1",
+			/* Surveys below do NOT contain raw data */
+			"8HourSurvey-2", "8HourSurvey-3", "8HourSurvey-4", "8HourSurvey-5", "8HourSurvey-6", "8HourSurvey-7", "8HourSurvey-8", "8HourSurvey-9", "8HourSurvey-10", "8HourSurvey-11", "8HourSurvey-12",
+			"EthaneOpertor1", "EthaneOpertor2", "EthaneRR", "EthaneStnd", "EthaneStnd2", "EthaneStnd3", "stnd-sqacudr-1", "stnd-sqacudr-2", "stnd-sqacudr" };
 
-	public static final String[] SQACUS_CUSTOMER_SURVEYS = {"assessment-1-sqacus", "assessment-2-sqacus", "EthaneManual-sqacus","EthaneStnd3-sqacus","EthaneStnd2-sqacus","EthaneStnd-sqacus","EthaneRR-sqacus","EthaneOpertor2-sqacus",
-			"EthaneOpertor1-sqacus","Ethane1MinSurvey-sqacus", "iso-cap-1-sqacus", "iso-cap-2-sqacus", "man-pic-1-sqacus","man-pic-2-sqacus","op-pic-sqacus","op-sqacudr-sqacus","rr-pic-sqacus",
-			"rr-sqacudr-1-sqacus","rr-sqacudr-2-sqacus","stnd-pic-sqacus", "standard_test-1-sqacus", "standard_test-2-sqacus", "standard_test-3-sqacus", "stnd-sqacudr-sqacus","stnd-sqacudr-1-sqacus",
-			"stnd-sqacudr-2-sqacus","stnd-sqacudr-3-sqacus","StandardWithLeak-sqacus", "NoFOV-1-sqacus", "NoFOV-2-sqacus", "NoFOV-3-sqacus", "daysurvey3.2-1-sqacus", "daysurvey3.2-2-sqacus",
-			"daysurvey4-1-sqacus", "daysurvey5-1-sqacus", "daysurvey7-1-sqacus", "daysurvey8.2-1-sqacus", "daysurvey8-1-sqacus", "daysurvey8-2-sqacus", "AnalyticsTagA-1-sqacus", "AnalyticsTagB-1-sqacus",
-			"AnalyticsTagC-1-sqacus", "FeqNoPeaks-1-sqacus", "FeqWithPeaks-1-sqacus", "MeqNoPeaks-1-sqacus", "MeqWithPeaks-1-sqacus", "FeqWithPeaks02-1-sqacus","menlo-night-11-17-EQ-1-sqacus", 
-			"menlo-night-11-17-EQ-2-sqacus","standard-survey-for-EQ-Rpt-1-sqacus", "standard-survey-for-EQ-Rpt-2-sqacus"};
+	public static final String[] SQACUS_CUSTOMER_SURVEYS = {
+			/* Surveys with raw data that have been reprocessed - 10/23/2017 (surveyor 3.0.1.2109, worker 3.0.1.884) */
+			"AnalyticsTagASqaCus-sqacus-1", "AnalyticsTagBSqaCus-sqacus-1", "AnalyticsTagCSqaCus-sqacus-1", "assessment-sqacus-1", "daysurvey3.2-sqacus-1", "daysurvey3.2-sqacus-2",
+			"daysurvey4-sqacus-1", "daysurvey5-sqacus-1", "daysurvey7-sqacus-1", "daysurvey8-sqacus-1", "daysurvey8-sqacus-2", "daysurvey8.2-sqacus-1", "Ethane1MinSurvey-sqacus-1",
+			"EthaneManual-sqacus-1", "FeqNoPeaks01-sqacus-1", "FeqWithPeaks01-sqacus-1", "FeqWithPeaks02-sqacus-1", "iso-cap-sqacus-1", "iso-cap-sqacus-2", "man-pic-sqacus-1", "man-pic-sqacus-2",
+			"MenloNight11_17EQ01-sqacus-1", "MenloNight11_17EQ02-sqacus-1", "MeqNoPeaks01-sqacus-1", "MeqWithPeaks01-sqacus-1", "No-fov-1-sqacus-1", "No-fov-2-sqacus-1", "No-fov-3-sqacus-1",
+			"op-pic-sqacus-1", "op-sqacudr-sqacus-1", "op-sqacudr-sqacus-2", "rr-pic-sqacus-1", "rr-sqacudr-sqacus-1", "rr-sqacudr-sqacus-2", "rr-sqacudr-sqacus-3", "rr-sqacudr-sqacus-4",
+			"Standard-With-Leak-sqacus-1", "StandardSurveyEQ01-sqacus-1", "StandardSurveyEQ02-sqacus-1", "standard-test-1-sqacus-1", "standard-test-2-sqacus-1", "standard-test-3-sqacus-1",
+			"stnd-pic-sqacus-1", "stnd-sqacudr-sqacus-1", "stnd-sqacudr-sqacus-2", "LISANotIntersectingAssets-sqacus-1", "2HourSurvey-1-sqacus", "4HourSurvey-1-sqacus",
+			/* Surveys below do NOT contain raw data */
+			"assessment-2-sqacus", "EthaneOpertor1-sqacus", "EthaneOpertor2-sqacus", "EthaneRR-sqacus", "EthaneStnd-sqacus", "EthaneStnd2-sqacus", "EthaneStnd3-sqacus",
+			"stnd-sqacudr-sqacus-3", "stnd-sqacudr-sqacus-4", "stnd-sqacudr-sqacus-5" };
 
 	/* Method to push all the seed data required for automation. */
 
@@ -116,7 +127,6 @@ public class DbSeedExecutor {
 		FieldOfViewDbSeedBuilder fieldOfViewDbSeedBuilder = null;
 		PeakDbSeedBuilder peakDbSeedBuilder = null;
 		SegmentDbSeedBuilder segmentDbSeedBuilder = null;
-		NoteDbSeedBuilder noteDbSeedBuilder = null;
 
 		surveySeedBuilderCache = new DbSeedBuilderCache();
 
@@ -143,7 +153,6 @@ public class DbSeedExecutor {
 					String fieldOfViewSeedKey = String.format("FieldOfView-%s.csv", surveyTag);
 					String peakSeedKey = String.format("Peak-%s.csv", surveyTag);
 					String segmentSeedKey = String.format("Segment-%s.csv", surveyTag);
-					String noteSeedKey = String.format("Note-%s.csv", surveyTag);
 
 					surveyDbSeedBuilder = new SurveyDbSeedBuilder(surveySeedKey);
 					surveyConditionDbSeedBuilder = new SurveyConditionDbSeedBuilder(surveyConditionSeedKey);
@@ -155,7 +164,6 @@ public class DbSeedExecutor {
 					fieldOfViewDbSeedBuilder = new FieldOfViewDbSeedBuilder(fieldOfViewSeedKey);
 					peakDbSeedBuilder = new PeakDbSeedBuilder(peakSeedKey);
 					segmentDbSeedBuilder = new SegmentDbSeedBuilder(segmentSeedKey);
-					noteDbSeedBuilder = new NoteDbSeedBuilder(noteSeedKey);
 
 					// check if survey data is present in database for this survey tag.
 					final String surveyCsvFilePath = surveyDbSeedBuilder.getSeedFilePath();
@@ -169,7 +177,6 @@ public class DbSeedExecutor {
 					final Integer minFieldOfViewCount = FileUtility.getLineCountInFile(Paths.get(fieldOfViewDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minPeakCount = FileUtility.getLineCountInFile(Paths.get(peakDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minSegmentCount = FileUtility.getLineCountInFile(Paths.get(segmentDbSeedBuilder.getSeedFilePath())) - 2;
-					final Integer minNoteCount = FileUtility.getLineCountInFile(Paths.get(noteDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minMeasurementCount = FileUtility.getLineCountInFile(Paths.get(measurementDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minGPSRawCount = FileUtility.getLineCountInFile(Paths.get(gpsRawDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minAnemometerRawCount = FileUtility.getLineCountInFile(Paths.get(anemometerRawDbSeedBuilder.getSeedFilePath())) - 2;
@@ -292,17 +299,7 @@ public class DbSeedExecutor {
 						}
 					}
 
-					// check and execute Note DB seed.
-					if (dbStateVerifier.isNoteSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minNoteCount)) {
-						Log.info(String.format("Note DB seed is already present for this survey-'%s'. SKIP execution.", surveyId));
-					} else {
-						if (FileUtility.fileExists(noteDbSeedBuilder.getSeedFilePath())) {
-							executeSeed(connection, noteDbSeedBuilder.build());;
-						}
-					}
-
 					// Store all the seed builder in cache for future verification.
-					surveySeedBuilderCache.addDbSeedBuilder(noteSeedKey, noteDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(segmentSeedKey, segmentDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(peakSeedKey, peakDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(fieldOfViewSeedKey, fieldOfViewDbSeedBuilder);
@@ -339,7 +336,6 @@ public class DbSeedExecutor {
 		            closeDbSeedBuilder(fieldOfViewDbSeedBuilder);
 		            closeDbSeedBuilder(peakDbSeedBuilder);
 		            closeDbSeedBuilder(segmentDbSeedBuilder);
-		            closeDbSeedBuilder(noteDbSeedBuilder);
 		        }
 			}
 		} catch (Exception ex) {
@@ -429,9 +425,11 @@ public class DbSeedExecutor {
 			Log.info("GIS Refresh DB seed NOT found. Executing SQL script to push GIS refresh DB seed...");
 			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
 
-			Log.info("[Step-0] Transfering .dat files to DB server ...");
-			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(assetDatFile).getFileName().toString());
-			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(boundaryDatFile).getFileName().toString());
+			if (!isRunningOnLocalDB()) {
+				Log.info("[Step-0] Transfering .dat files to DB server ...");
+				BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(assetDatFile).getFileName().toString());
+				BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(boundaryDatFile).getFileName().toString());
+			}
 
 			Log.info("[Step-1] Preparing pre-GIS push steps ...");
 			String sqlFileFullPath = Paths.get(datFolder, "AutomationSeedScript-PreGISLoad.sql").toString();
@@ -463,9 +461,11 @@ public class DbSeedExecutor {
 
 		} finally {
 			if (assetDatFile != null && boundaryDatFile != null) {
-				Log.info("Cleanup remote bcp .dat files ...");
-				String[] cleanupFilesPath = {assetDatFile, boundaryDatFile};
-				BcpDatFileTransferUtility.cleanupBcpDatFilesOnRemoteMachine(cleanupFilesPath);
+				if (!isRunningOnLocalDB()) {
+					Log.info("Cleanup remote bcp .dat files ...");
+					String[] cleanupFilesPath = {assetDatFile, boundaryDatFile};
+					BcpDatFileTransferUtility.cleanupBcpDatFilesOnRemoteMachine(cleanupFilesPath);
+				}
 			}
 
 			connection.setAutoCommit(true);
@@ -739,6 +739,10 @@ public class DbSeedExecutor {
 
 	public static DbSeedBuilderCache getSurveySeedBuilderCache() {
 		return surveySeedBuilderCache;
+	}
+
+	private static boolean isRunningOnLocalDB() {
+		return TestContext.INSTANCE.getDbIpAddress().equals(Constants.LOCALHOST_IP);
 	}
 
 	private static void ensureGISDatFilesArePresent() throws IOException {

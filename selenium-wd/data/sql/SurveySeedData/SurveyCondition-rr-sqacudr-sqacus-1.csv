@@ -1,0 +1,4 @@
+Id,SurveyId,Name,Value
+cf9887db-b6d3-462b-839e-29da6b0109ee,4f56202c-4471-4839-952a-4cac3987dc02,SolarRadiation,moderate
+c3b2f299-2d34-43e4-a65d-380fe17df2f5,4f56202c-4471-4839-952a-4cac3987dc02,TimeOfDay,day
+677ea6ab-21e7-46bd-b0f5-90597a25ec23,4f56202c-4471-4839-952a-4cac3987dc02,Wind,calm

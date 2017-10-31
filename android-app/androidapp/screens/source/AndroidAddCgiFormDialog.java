@@ -8,26 +8,26 @@ import common.source.Log;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
-	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String SUBMIT_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Submit\")";
 	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
-	private WebElement oK;
+	@AndroidFindBy(uiAutomator = SUBMIT_BUTTON_UI_SELECTOR)
+	private WebElement submit;
 
 	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
 	private WebElement cancel;
 
 	/****** Label elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement markerStatusLabel;
 
 	/****** TextField elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement cgiTextField;
 
@@ -55,22 +55,22 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 		tap(getCancelButton());      // single action click.
 	}
 
-	public WebElement getOKButton() {
-		Log.method("getOKButton");
-		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
-		return oK;
+	public WebElement getSubmitButton() {
+		Log.method("getSubmitButton");
+		submit = getAndroidDriver().findElementByAndroidUIAutomator(SUBMIT_BUTTON_UI_SELECTOR);
+		return submit;
 	}
 
-	public void clickOnOK() {
-		Log.method("clickOnOK");
-		WebElement okButton = getOKButton();
-		tap(okButton);
-		okButton.click();
+	public void clickOnSubmit() {
+		Log.method("clickOnSubmit");
+		WebElement submitButton = getSubmitButton();
+		tap(submitButton);
+		submitButton.click();
 	}
 
-	public void tapOnOK() {
-		Log.method("tapOnOK");
-		tap(getOKButton());
+	public void tapOnSubmit() {
+		Log.method("tapOnSubmit");
+		tap(getSubmitButton());
 	}
 
 	/****** Label Methods ******/
@@ -95,6 +95,6 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("AndroidAddCgiFormDialog.screenLoadCondition");
-		return getOKButton()!=null && getOKButton().isDisplayed();
+		return getSubmitButton()!=null && getSubmitButton().isDisplayed();
 	}
 }

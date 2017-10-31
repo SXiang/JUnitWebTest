@@ -186,7 +186,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(driverViewPageAction.verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(driverViewPageAction.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(driverViewPageAction.verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 
 		// Stop current simulator.
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
@@ -258,7 +257,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
 	}
 
@@ -531,7 +529,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			testEnvironmentAction.get().stopReplay(EMPTY, NOTSET);
 			testEnvironmentAction.get().idleForSeconds("5", NOTSET);
 			driverPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
-			assertTrue(driverViewPageAction.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
 			return true;
 		});
 	}
@@ -669,8 +666,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 
 		int totalIndications = indicationsOnDriverView2.size();   // Indications collected in the end will have all the indications shown in UI.
-		Log.info(String.format("Indications detected in Driver view = %d", totalIndications));
 		indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
+		Log.info(String.format("Indications detected in Driver view 2 = %d", totalIndications));
 		indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
 
 		// confirm correct number of indication. Totally 6 peaks generated. 2 generated right after setting iGPS to bad.

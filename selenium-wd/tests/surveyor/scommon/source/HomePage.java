@@ -125,12 +125,6 @@ public class HomePage extends SurveyorBasePage {
 	// Link may NOT be present for all users. Conditionally detect this link.
 	private WebElement linkInvestigation;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-reference-gas']")
-	private WebElement linkReferenceGas;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-system-history']")
-	private WebElement linkSystemHistory;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]/a")
 	private WebElement linkFirstOnlineSurveyor;
 
@@ -202,9 +196,6 @@ public class HomePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-ref-gas-bottles']/a")
 	protected WebElement linkPicAdminManageRefGasBottles;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyor-history']/a")
-	protected WebElement linkPicAdminManageSurHistories;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-analyzer-logs']/a")
 	protected WebElement linkPicAdminViewAnlLogs;
@@ -287,10 +278,6 @@ public class HomePage extends SurveyorBasePage {
 
 	public WebElement getLinkPicAdminManageRefGasBottles() {
 		return this.linkPicAdminManageRefGasBottles;
-	}
-
-	public WebElement getLinkPicAdminManageSurHistories() {
-		return this.linkPicAdminManageSurHistories;
 	}
 
 	public WebElement getLinkPicAdminViewAnlLogs() {
@@ -795,14 +782,6 @@ public class HomePage extends SurveyorBasePage {
 		return this.linkInvestigation;
 	}
 
-	public WebElement getLinkReferenceGas() {
-		return this.linkReferenceGas;
-	}
-
-	public WebElement getLinkSystemHistory() {
-		return this.linkSystemHistory;
-	}
-
 	public WebElement getLinkDrivingSurveys() {
 		return this.linkDrivingSurveys;
 	}
@@ -895,24 +874,21 @@ public class HomePage extends SurveyorBasePage {
 
 		HashMap<String, String> tblHeaderMap = new HashMap<String, String>();
 		tblHeaderMap.put(Constant_Analyzer, analyzer);
-		DataTablePage dataTable = buildDataTablePage(By.id("datatable-Surveyor"));
-		By onlineLinkBy = By.xpath("//td[3]/a");
+		By onlineLinkBy = By.xpath("td[3]/a");
 		String elementName = "Online Link";
 		String elementReadyText = "Online";
 		Predicate<WebElement> waitForOnlineLinkReady = WebElementPredicates.getWaitForElementTextReadyPredicate(driver, timeout, elementName, elementReadyText);
 		Predicate<WebElement> clickOnOnlineLink = WebElementPredicates.getClickPredicate(elementName);
 		Predicate<WebElement> waitAndClickOnlineLink = waitForOnlineLinkReady.and(clickOnOnlineLink);
-
 		// When page is loaded Surveyor may not show 'Online'. In such case reload the page and retry.
 		boolean actionSuccess = RetryUtil.retryOnException(
 				() -> {
-					dataTable.actionOnMatchingRow(onlineLinkBy, tblHeaderMap, this.getTableActiveSurveyors(), false /*applyPagination*/, waitAndClickOnlineLink);
-					return true;},
-					() -> {
+					return buildDataTablePage(By.id("datatable-Surveyor_wrapper")).actionOnMatchingRow(onlineLinkBy, tblHeaderMap, this.getTableActiveSurveyors(), false /*applyPagination*/, waitAndClickOnlineLink);},
+				() -> {
 						super.open();waitForPageLoad();resetTableActiveSurveyors();
 						return true;},
-						Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
-						Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+				Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
 
 		if (!actionSuccess) {
 			Log.error(String.format("Clicking on '%s' FAILED!", elementName));

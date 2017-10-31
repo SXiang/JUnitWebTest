@@ -16,7 +16,6 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 	private String disposition;
 	private float delta;
 	private float uncertainty;
-	private String text;
 
 	public StoredProcComplianceGetIsotopics() {
 		super();
@@ -25,7 +24,7 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 	public String toString() {
 		String delta = String.format("%.2f",this.getDelta());
 		String uncertainty = String.format("%.2f",this.getUncertainty());
-		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ").concat(this.getDisposition()).concat(" ").concat(delta).concat("+/-").concat(uncertainty).concat(" ").concat(this.getText());
+		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ").concat(this.getDisposition()).concat(" ").concat(delta).concat("+/-").concat(uncertainty);
 
 	}
 
@@ -69,14 +68,6 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 		this.uncertainty = unsertainty;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	public boolean isEquals(StoredProcComplianceGetIsotopics obj) {
 		if (!this.getSurveyorUnitName().trim().equals(obj.getSurveyorUnitName().trim())) {
 			Log.error(String.format("SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getSurveyorUnitName().trim(), this.getSurveyorUnitName().trim()));
@@ -96,10 +87,6 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 		}
 		if (this.getUncertainty() != (obj.getUncertainty())) {
 			Log.warn(String.format("Uncertainty is not match, Expect '%s', Actual '%s'", obj.getUncertainty(), this.getUncertainty()));
-			return false;
-		}
-		if (!this.getText().trim().equals(obj.getText().trim())) {
-			Log.warn(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), this.getText().trim()));
 			return false;
 		}
 		return true;
@@ -132,7 +119,6 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 			objReport.setDisposition(resultSet.getString("Disposition"));
 			objReport.setDelta(resultSet.getFloat("Delta"));
 			objReport.setUncertainty(resultSet.getFloat("Uncertainty"));
-			objReport.setText(resultSet.getString("Text"));
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}

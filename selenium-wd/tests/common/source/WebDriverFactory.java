@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,10 +8,12 @@ import java.util.List;
 
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class WebDriverFactory {
 	private static final String CHROME_EXE = "chromedriver.exe";
 	private static final String CHROMEDRIVER_EXE = "chromedriver.exe";
+	private static final Integer ANDROID_NATIVE_DRIVER_CREATION_MAX_ATTEMPTS = 3;
 
 	private static List<ThreadLocal<WebDriverWrapper>> threadLocalDriverList = Collections.synchronizedList(new ArrayList<ThreadLocal<WebDriverWrapper>>());
 
@@ -20,15 +23,29 @@ public class WebDriverFactory {
 		return webDriverWrapper;
 	}
 
-	protected static WebDriverWrapper createAndroidAppNativeDriver() throws MalformedURLException {
+	protected static WebDriverWrapper createAndroidAppNativeDriver(boolean isDevice) throws Exception {
+		return createAndroidAppNativeDriverWithRetry(isDevice, ANDROID_NATIVE_DRIVER_CREATION_MAX_ATTEMPTS);
+	}
+
+	private static WebDriverWrapper createAndroidAppNativeDriverWithRetry(boolean isDevice, int attempt) throws Exception {
+		if (attempt <= 0) {
+			throw new RetryException(String.format("Failed to create android native driver in max attempts = %d", ANDROID_NATIVE_DRIVER_CREATION_MAX_ATTEMPTS));
+		}
+
 		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
-		webDriverWrapper.createAndroidAppNativeDriver();
+		try {
+			webDriverWrapper.createAndroidAppNativeDriver(isDevice);
+		} catch (UnreachableBrowserException | IOException e) {
+			Log.warn(ExceptionUtility.getStackTraceString(e));
+			return createAndroidAppNativeDriverWithRetry(isDevice, --attempt);
+		}
+
 		return webDriverWrapper;
 	}
 
-	protected static WebDriverWrapper createAndroidAppWebDriver() throws MalformedURLException {
+	protected static WebDriverWrapper createAndroidAppWebDriver(boolean isDevice) throws MalformedURLException {
 		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
-		webDriverWrapper.createAndroidAppWebDriver();
+		webDriverWrapper.createAndroidAppWebDriver(isDevice);
 		return webDriverWrapper;
 	}
 
@@ -52,26 +69,28 @@ public class WebDriverFactory {
 		return getDriver(index, true /*reuse*/);
 	}
 
-	public static WebDriver getAndroidAppNativeDriver() {
-		return getAndroidAppDriver(true /*isNative*/);
+	public static WebDriver getAndroidAppNativeDriver(boolean isDevice) {
+		return getAndroidAppDriver(isDevice, true /*isNative*/);
 	}
 
-	public static WebDriver getAndroidAppWebDriver() {
-		return getAndroidAppDriver(false /*isNative*/);
+	public static WebDriver getAndroidAppWebDriver(boolean isDevice) {
+		return getAndroidAppDriver(isDevice, false /*isNative*/);
 	}
 
-	private static WebDriver getAndroidAppDriver(boolean isNative) {
+	private static WebDriver getAndroidAppDriver(boolean isDevice, boolean isNative) {
 		ThreadLocal<WebDriverWrapper> threadLocalDriver = new ThreadLocal<WebDriverWrapper>() {
 		    @Override
 		    protected WebDriverWrapper initialValue() {
 		    	WebDriverWrapper webDriver = null;
 				try {
 					if (isNative) {
-						webDriver = createAndroidAppNativeDriver();
+						webDriver = createAndroidAppNativeDriver(isDevice);
 					} else {
-						webDriver = createAndroidAppWebDriver();
+						webDriver = createAndroidAppWebDriver(isDevice);
 					}
-				} catch (MalformedURLException ex) {
+				} catch (RetryException ex) {
+					throw ex;
+				} catch (Exception ex) {
 					Log.error(ExceptionUtility.getStackTraceString(ex));
 				}
 		        return webDriver;
@@ -148,8 +167,12 @@ public class WebDriverFactory {
 	}
 
 	public static boolean hasDriverQuit(WebDriver driver) {
-		if (driver == null || driver.toString().contains("(null)")) {
+		if (driver == null) {
 			return true;
+		} else {
+			if (driver.toString().contains("(null)")) {
+				return true;
+			}
 		}
 
 		return false;

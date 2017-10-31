@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.WebElementFunctionUtil;
 import surveyor.dataaccess.source.BoxTypes;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportStatusType;
@@ -43,7 +47,7 @@ public class InvestigationReportDataVerifier {
 		return new InvestigationReportDataVerifier();
 	}
 
-	public boolean doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(String reportId, String assignedUsername, List<String> markerStatuses, BoxType boxType, Integer boxNumber, Integer sourceItemsInOnePage) {
+	public boolean doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(String reportId, String assignedUsername, List<String> markerStatuses, BoxType boxType, String boxNumber, Integer sourceItemsInOnePage) {
 		Log.method("doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages", reportId, assignedUsername, markerStatuses, boxType, boxNumber, sourceItemsInOnePage);
 		final Integer boxTypeId = BoxTypes.getBoxTypeByName(boxType.toString()).getId();
 		List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
@@ -77,14 +81,24 @@ public class InvestigationReportDataVerifier {
 		return findReportOfMatchingPrefixWithNotInvestigatedMarkerOfType(prefixes, assignedUsername, BoxType.Gap);
 	}
 
-	public Report findReportOfMatchingPrefixWithCompleteOrInProgressLisaMarker(String[] prefixes, String assignedUsername) {
-		Log.method("findReportOfMatchingPrefixWithCompleteOrInProgressLisaMarker", Arrays.toString(prefixes), assignedUsername);
-		return findReportOfMatchingPrefixWithCompleteOrInProgressMarkerOfType(prefixes, assignedUsername, BoxType.Indication);
+	public Report findReportOfMatchingPrefixWithLeakFoundOrInProgressLisaMarker(String[] prefixes, String assignedUsername) {
+		Log.method("findReportOfMatchingPrefixWithLeakFoundOrInProgressLisaMarker", Arrays.toString(prefixes), assignedUsername);
+		return findReportOfMatchingPrefixWithLeakFoundOrInProgressMarkerOfType(prefixes, assignedUsername, BoxType.Indication);
 	}
 
-	public Report findReportOfMatchingPrefixWithCompleteOrInProgressGapMarker(String[] prefixes, String assignedUsername) {
-		Log.method("findReportOfMatchingPrefixWithCompleteOrInProgressGapMarker", Arrays.toString(prefixes), assignedUsername);
-		return findReportOfMatchingPrefixWithCompleteOrInProgressMarkerOfType(prefixes, assignedUsername, BoxType.Gap);
+	public Report findReportOfMatchingPrefixWithLeakFoundOrInProgressGapMarker(String[] prefixes, String assignedUsername) {
+		Log.method("findReportOfMatchingPrefixWithLeakFoundOrInProgressGapMarker", Arrays.toString(prefixes), assignedUsername);
+		return findReportOfMatchingPrefixWithLeakFoundOrInProgressMarkerOfType(prefixes, assignedUsername, BoxType.Gap);
+	}
+
+	public Report findReportOfMatchingPrefixWithLeakFoundInProgressOrNotInvestigatedLisaMarker(String[] prefixes, String assignedUsername) {
+		Log.method("findReportOfMatchingPrefixWithLeakFoundInProgressOrNotInvestigatedLisaMarker", Arrays.toString(prefixes), assignedUsername);
+		return findReportOfMatchingPrefixWithLeakFoundInProgressOrNotInvestigatedMarkerOfType(prefixes, assignedUsername, BoxType.Indication);
+	}
+
+	public Report findReportOfMatchingPrefixWithLeakFoundInProgressOrNotInvestigatedGapMarker(String[] prefixes, String assignedUsername) {
+		Log.method("findReportOfMatchingPrefixWithLeakFoundInProgressOrNotInvestigatedGapMarker", Arrays.toString(prefixes), assignedUsername);
+		return findReportOfMatchingPrefixWithLeakFoundInProgressOrNotInvestigatedMarkerOfType(prefixes, assignedUsername, BoxType.Gap);
 	}
 
 	public boolean hasNotInvestigatedLisaMarker(String tcId, String assignedUsername) {
@@ -107,6 +121,16 @@ public class InvestigationReportDataVerifier {
 		return hasCompleteOrInProgressMarker(tcId, assignedUsername, BoxType.Gap);
 	}
 
+	public boolean hasCompleteInProgressOrNotInvestigatedLisaMarker(String tcId, String assignedUsername) {
+		Log.method("hasCompleteInProgressOrNotInvestigatedLisaMarker", tcId, assignedUsername);
+		return hasCompleteInProgressOrNotInvestigatedMarker(tcId, assignedUsername, BoxType.Indication);
+	}
+
+	public boolean hasCompleteInProgressOrNotInvestigatedGapMarker(String tcId, String assignedUsername) {
+		Log.method("hasCompleteInProgressOrNotInvestigatedGapMarker", tcId, assignedUsername);
+		return hasCompleteInProgressOrNotInvestigatedMarker(tcId, assignedUsername, BoxType.Gap);
+	}
+
 	private boolean hasNotInvestigatedMarker(String tcId, String assignedUsername, BoxType boxType) {
 		Log.method("hasNotInvestigatedMarker", tcId, assignedUsername, boxType);
 		return getNotInvestigatedMarkerReport(tcId, assignedUsername, boxType) != null;
@@ -114,7 +138,12 @@ public class InvestigationReportDataVerifier {
 
 	private boolean hasCompleteOrInProgressMarker(String tcId, String assignedUsername, BoxType boxType) {
 		Log.method("hasCompleteOrInProgressMarker", tcId, assignedUsername, boxType);
-		return getCompleteOrInProgressMarker(tcId, assignedUsername, boxType) != null;
+		return getLeakFoundOrInProgressMarkerReport(tcId, assignedUsername, boxType) != null;
+	}
+
+	private boolean hasCompleteInProgressOrNotInvestigatedMarker(String tcId, String assignedUsername, BoxType boxType) {
+		Log.method("hasCompleteInProgressOrNotInvestigatedMarker", tcId, assignedUsername, boxType);
+		return getNotInvestigatedLeakFoundOrInProgressMarkerReport(tcId, assignedUsername, boxType) != null;
 	}
 
 	private Report findReportOfMatchingPrefixWithNotInvestigatedMarkerOfType(String[] prefixes, String assignedUsername, BoxType boxType) {
@@ -124,17 +153,38 @@ public class InvestigationReportDataVerifier {
 			.findFirst().orElse(null);
 	}
 
-	private Report findReportOfMatchingPrefixWithCompleteOrInProgressMarkerOfType(String[] prefixes, String assignedUsername, BoxType boxType) {
+	private Report findReportOfMatchingPrefixWithLeakFoundOrInProgressMarkerOfType(String[] prefixes, String assignedUsername, BoxType boxType) {
 		return Arrays.asList(prefixes).stream()
-			.map(p -> getCompleteOrInProgressMarker(p, assignedUsername, boxType))
+			.map(p -> getLeakFoundOrInProgressMarkerReport(p, assignedUsername, boxType))
+			.filter(r -> r != null)
+			.findFirst().orElse(null);
+	}
+
+	private Report findReportOfMatchingPrefixWithLeakFoundInProgressOrNotInvestigatedMarkerOfType(String[] prefixes, String assignedUsername, BoxType boxType) {
+		return Arrays.asList(prefixes).stream()
+			.map(p -> getNotInvestigatedLeakFoundOrInProgressMarkerReport(p, assignedUsername, boxType))
 			.filter(r -> r != null)
 			.findFirst().orElse(null);
 	}
 
 	private Report getNotInvestigatedMarkerReport(String tcId, String assignedUsername, BoxType boxType) {
 		Log.method("getNotInvestigatedMarkerReport", tcId, assignedUsername, boxType);
+		return getMarkerReportMatchingStatus(tcId, assignedUsername, boxType, getNotInvestigatedPredicate());
+	}
+
+	private Report getLeakFoundOrInProgressMarkerReport(String tcId, String assignedUsername, BoxType boxType) {
+		Log.method("getLeakFoundOrInProgressMarkerReport", tcId, assignedUsername, boxType);
+		return getMarkerReportMatchingStatus(tcId, assignedUsername, boxType, getFoundLeakOrInProgressPredicate());
+	}
+
+	private Report getNotInvestigatedLeakFoundOrInProgressMarkerReport(String tcId, String assignedUsername, BoxType boxType) {
+		Log.method("getNotInvestigatedLeakFoundOrInProgressMarkerReport", tcId, assignedUsername, boxType);
+		return getMarkerReportMatchingStatus(tcId, assignedUsername, boxType, getFoundLeakInProgressOrNotInvestigatedPredicate());
+	}
+
+	private Report getMarkerReportMatchingStatus(String tcId, String assignedUsername, BoxType boxType, Predicate<StoredProcLisaInvestigationShowIndication> markerStatusPredicate) {
+		Log.method("getMarkerReportMatchingStatus", tcId, assignedUsername, boxType, markerStatusPredicate);
 		final Integer boxTypeId = BoxTypes.getBoxTypeByName(boxType.toString()).getId();
-		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		Report report = new Report().getTitleLike(tcId);
 		String reportCompleteStatusTypeId = ReportStatusType.getReportStatusType(REPORT_STATUS_COMPLETE).getId().toString();
 		if (report != null && report.getReportStatusTypeId().equals(reportCompleteStatusTypeId)) {
@@ -142,7 +192,7 @@ public class InvestigationReportDataVerifier {
 			List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
 			if (lisaInvestigationfromSP != null && lisaInvestigationfromSP.size()>0) {
 				boolean match = lisaInvestigationfromSP.stream()
-					.anyMatch(r -> r.getInvestigationStatus().equals(notInvestigated) && r.getAssignedUserName().equals(assignedUsername) && r.getBoxTypeId() == boxTypeId);
+					.anyMatch(r -> markerStatusPredicate.test(r) && r.getAssignedUserName().equals(assignedUsername) && r.getBoxTypeId() == boxTypeId);
 				if (match) {
 					Log.info(String.format("Found match. Returning report - [%s]", report.toString()));
 					return report;
@@ -154,28 +204,30 @@ public class InvestigationReportDataVerifier {
 		return null;
 	}
 
-	private Report getCompleteOrInProgressMarker(String tcId, String assignedUsername, BoxType boxType) {
-		Log.method("getCompleteOrInProgressMarker", tcId, assignedUsername, boxType);
-		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
-		final Integer boxTypeId = BoxTypes.getBoxTypeByName(boxType.toString()).getId();
-		Report report = new Report().getTitleLike(tcId);
-		String reportCompleteStatusTypeId = ReportStatusType.getReportStatusType(REPORT_STATUS_COMPLETE).getId().toString();
-		if (report != null && report.getReportStatusTypeId().equals(reportCompleteStatusTypeId)) {
-			String reportId = report.getId();
-			List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
-			if (lisaInvestigationfromSP != null && lisaInvestigationfromSP.size()>0) {
-				boolean match = lisaInvestigationfromSP.stream()
-					.anyMatch(r -> (r.getInvestigationStatus().equals(inProgress))
-							&& r.getAssignedUserName().equals(assignedUsername) && r.getBoxTypeId() == boxTypeId);
-				if (match) {
-					Log.info(String.format("Found match. Returning report - [%s]", report.toString()));
-					return report;
-				}
-			}
-		}
+	private static Predicate<StoredProcLisaInvestigationShowIndication> getNotInvestigatedPredicate() {
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		return getMarkerStatusPredicate(new String[]{notInvestigated});
+	}
 
-		Log.info("Found NO match. Returning NULL.");
-		return null;
+	private static Predicate<StoredProcLisaInvestigationShowIndication> getFoundLeakOrInProgressPredicate() {
+		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		return getMarkerStatusPredicate(new String[]{foundGasLeak, inProgress});
+	}
+
+	private static Predicate<StoredProcLisaInvestigationShowIndication> getFoundLeakInProgressOrNotInvestigatedPredicate() {
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		return getMarkerStatusPredicate(new String[]{notInvestigated, foundGasLeak, inProgress});
+	}
+
+	private static Predicate<StoredProcLisaInvestigationShowIndication> getMarkerStatusPredicate(String[] markerStatuses) {
+		Predicate<StoredProcLisaInvestigationShowIndication> leakStatusFoundLeakOrInProgressPredicate = sProc -> {
+			return Arrays.asList(markerStatuses).contains(sProc.getInvestigationStatus());
+		};
+
+		return leakStatusFoundLeakOrInProgressPredicate;
 	}
 
 	public static void main(String[] args) {
@@ -198,7 +250,7 @@ public class InvestigationReportDataVerifier {
 		markerStatuses.add("In Progress");
 		Integer boxNumber = 1;
 		boolean itemsSpanMultiplePages = reportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(reportId ,
-				"AutomationAdmin", markerStatuses, BoxType.Indication, boxNumber, 8);
+				"AutomationAdmin", markerStatuses, BoxType.Indication, String.valueOf(boxNumber), 8);
 		Log.info(String.format("itemsSpanMultiplePages = %b", itemsSpanMultiplePages));
 		Assert.assertTrue(itemsSpanMultiplePages == false);
 
@@ -207,7 +259,7 @@ public class InvestigationReportDataVerifier {
 		reportId = "4994B6AD-4339-BA77-3218-39E0B1E3BE6E";
 		boxNumber = 2;
 		itemsSpanMultiplePages = reportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(reportId ,
-				"sqapicdr@picarro.com", markerStatuses, BoxType.Indication, boxNumber, 8);
+				"sqapicdr@picarro.com", markerStatuses, BoxType.Indication, String.valueOf(boxNumber), 8);
 		Log.info(String.format("itemsSpanMultiplePages = %b", itemsSpanMultiplePages));
 		Assert.assertTrue(itemsSpanMultiplePages == true);
 

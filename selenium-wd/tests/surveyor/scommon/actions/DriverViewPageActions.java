@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
 import common.source.Log;
@@ -16,9 +14,6 @@ import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
 import common.source.TestSetup;
-import common.source.WebElementExtender;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
@@ -32,7 +27,6 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 
 public class DriverViewPageActions extends BaseDrivingViewPageActions {
-	private static final String FN_ENTER_FIELD_NOTES = "enterFieldNotes";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_OFF = "verifyGisSwitchIsOff";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
 	private static final String FN_VERIFY_MAP_SWITCH_OFF = "verifyMapSwitchOff";
@@ -130,13 +124,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			getDriverViewPage().waitForFeatureInfoPopupToOpen();
 		}
 		return retVal;
-	}
-
-	public boolean clickOnFeatureInfoAddUpdateNote(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.clickOnFeatureInfoAddUpdateFieldNote", data, dataRowID);
-		getDriverViewPage().clickOnAddUpdateNoteButton();
-		getDriverViewPage().waitForFieldNotesDialogToOpen();
-		return true;
 	}
 
 	public boolean clickOnModeButton(String data, Integer dataRowID) {
@@ -357,8 +344,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			switchType = DisplaySwitchType.IsotopicAnalysis;
 		} else if (data.equalsIgnoreCase("Lisas")) {
 			switchType = DisplaySwitchType.Lisas;
-		} else if (data.equalsIgnoreCase("Notes")) {
-			switchType = DisplaySwitchType.Notes;
 		} else if (data.equalsIgnoreCase("WindRose")) {
 			switchType = DisplaySwitchType.WindRose;
 		}
@@ -689,49 +674,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	}
 
 	/**
-	 * Executes enterFieldNotes action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception
-	 */
-	public boolean enterFieldNotes(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.enterFieldNotes", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_ENTER_FIELD_NOTES, ARG_DATA, data);
-		this.getDriverViewPage().setFieldNotesTextField(data);
-		this.getDriverViewPage().clickFieldNotesSaveButton();
-		return true;
-	}
-
-	/**
-	 * Executes verifyFieldNotesDialogIsShown action.
-	 * NOTES:
-	 * - Use this method - 'verifyFieldNotesDialogIsShown' to verify field notes dialog is showing.
-	 * - Use 'verifyFieldNotesIsShownOnMap' method to verify field note inputed by user is NOT showing on the map.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyFieldNotesDialogIsShown(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyFieldNotesDialogIsShown", data, dataRowID);
-		return this.getDriverViewPage().verifyFieldNotesDialogIsShown();
-	}
-
-	/**
-	 * Executes verifyFieldNotesDialogIsNotShown action.
-	 * NOTES:
-	 * - Use this method - 'verifyFieldNotesDialogIsNotShown' to verify field notes dialog is NOT showing.
-	 * - Use 'verifyFieldNotesIsNotShownOnMap' method to verify field note inputed by user is NOT showing on the map.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyFieldNotesDialogIsNotShown(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyFieldNotesDialogIsNotShown", data, dataRowID);
-		return !this.getDriverViewPage().verifyFieldNotesDialogIsShown();
-	}
-
-	/**
 	 * Executes verifyMapViewIsShown action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -797,17 +739,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean verifyDisplaySwitchConcentrationChartButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchConcentrationChartButtonVisible();
-	}
-
-	/**
-	 * Executes verifyDisplaySwitchNotesButtonIsVisible action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyDisplaySwitchNotesButtonIsVisible(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsVisible", data, dataRowID);
-		return getDriverViewPage().isDisplaySwitchNotesButtonVisible();
 	}
 
 	/**
@@ -1061,17 +992,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean verifyDisplaySwitchConcentrationChartButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchConcentrationChartButtonVisible();
-	}
-
-	/**
-	 * Executes verifyDisplaySwitchNotesButtonIsNotVisible action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyDisplaySwitchNotesButtonIsNotVisible(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsNotVisible", data, dataRowID);
-		return !getDriverViewPage().isDisplaySwitchNotesButtonVisible();
 	}
 
 	/**
@@ -1332,7 +1252,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnCurtainZoomOutButton")) { return this.clickOnCurtainZoomOutButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDisplayButton")) { return this.clickOnDisplayButton(data, dataRowID); }
 		else if (actionName.equals("clickOnFirstIndicationShownOnMap")) { return this.clickOnFirstIndicationShownOnMap(data, dataRowID); }
-		else if (actionName.equals("clickOnFeatureInfoAddUpdateNote")) { return this.clickOnFeatureInfoAddUpdateNote(data, dataRowID); }
 		else if (actionName.equals("clickOnGisButton")) { return this.clickOnGisButton(data, dataRowID); }
 		else if (actionName.equals("clickOnHeaderInfoBox")) { return this.clickOnHeaderInfoBox(data, dataRowID); }
 		else if (actionName.equals("clickOnMapButton")) { return this.clickOnMapButton(data, dataRowID); }
@@ -1342,7 +1261,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnStatusButton")) { return this.clickOnStatusButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomInButton")) { return this.clickOnZoomInButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomOutButton")) { return this.clickOnZoomOutButton(data, dataRowID); }
-		else if (actionName.equals("enterFieldNotes")) { return this.enterFieldNotes(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
@@ -1376,7 +1294,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOffMaterialTypePEPlastic")) { return this.turnOffMaterialTypePEPlastic(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeProtectedSteel")) { return this.turnOffMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeUnprotectedSteel")) { return this.turnOffMaterialTypeUnprotectedSteel(data, dataRowID); }
-		else if (actionName.equals("turnOffNotes")) { return this.turnOffNotes(data, dataRowID); }
 		else if (actionName.equals("turnOffPosition")) { return this.turnOffPosition(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllBoundaries")) { return this.turnOffUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllPipes")) { return this.turnOffUseAllPipes(data, dataRowID); }
@@ -1403,7 +1320,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnMaterialTypePEPlastic")) { return this.turnOnMaterialTypePEPlastic(data, dataRowID); }
 		else if (actionName.equals("turnOnMaterialTypeProtectedSteel")) { return this.turnOnMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOnMaterialTypeUnprotectedSteel")) { return this.turnOnMaterialTypeUnprotectedSteel(data, dataRowID); }
-		else if (actionName.equals("turnOnNotes")) { return this.turnOnNotes(data, dataRowID); }
 		else if (actionName.equals("turnOnPosition")) { return this.turnOnPosition(data, dataRowID); }
 		else if (actionName.equals("turnOnSatelliteView")) { return this.turnOnSatelliteView(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
@@ -1431,12 +1347,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyEQModeDialogMessageEquals")) { return this.verifyEQModeDialogMessageEquals(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsShown")) { return this.verifyEQModeDialogIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsNotShown")) { return this.verifyEQModeDialogIsNotShown(data, dataRowID); }
-		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(data, dataRowID); }
-		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesDialogIsShown")) { return this.verifyFieldNotesDialogIsShown(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesDialogIsNotShown")) { return this.verifyFieldNotesDialogIsNotShown(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsRed")) { return this.verifyFlowButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyFOVIsNotShownOnMap")) { return this.verifyFOVIsNotShownOnMap(data, dataRowID); }
@@ -1506,7 +1416,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyDisplaySwitch8HourHistoryButtonIsVisible")) { return this.verifyDisplaySwitch8HourHistoryButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchWindroseButtonIsVisible")) { return this.verifyDisplaySwitchWindroseButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchConcentrationChartButtonIsVisible")) { return this.verifyDisplaySwitchConcentrationChartButtonIsVisible(data, dataRowID); }
-		else if (actionName.equals("verifyDisplaySwitchNotesButtonIsVisible")) { return this.verifyDisplaySwitchNotesButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsotopicAnalysisButtonIsVisible")) { return this.verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIndicationsButtonIsVisible")) { return this.verifyDisplaySwitchIndicationsButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchLisasButtonIsVisible")) { return this.verifyDisplaySwitchLisasButtonIsVisible(data, dataRowID); }
@@ -1530,7 +1439,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyDisplaySwitch8HourHistoryButtonIsNotVisible")) { return this.verifyDisplaySwitch8HourHistoryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchWindroseButtonIsNotVisible")) { return this.verifyDisplaySwitchWindroseButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchConcentrationChartButtonIsNotVisible")) { return this.verifyDisplaySwitchConcentrationChartButtonIsNotVisible(data, dataRowID); }
-		else if (actionName.equals("verifyDisplaySwitchNotesButtonIsNotVisible")) { return this.verifyDisplaySwitchNotesButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible")) { return this.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIndicationsButtonIsNotVisible")) { return this.verifyDisplaySwitchIndicationsButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchLisasButtonIsNotVisible")) { return this.verifyDisplaySwitchLisasButtonIsNotVisible(data, dataRowID); }

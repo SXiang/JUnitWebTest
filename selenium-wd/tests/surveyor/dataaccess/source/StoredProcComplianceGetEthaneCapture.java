@@ -16,7 +16,6 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 	private String disposition;
 	private float ethaneRatio;
 	private float ethaneRatioSdev;
-	private String text;
     
 	public StoredProcComplianceGetEthaneCapture() {
 		super();
@@ -28,15 +27,7 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ")
 				.concat(this.getDisposition()).concat(" ")
 				.concat(ethaneRatio).concat("+/-")
-				.concat(ethaneRatioSdev).concat(" ").concat(this.getText());
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
+				.concat(ethaneRatioSdev);
 	}
 
 	public String getDateTime() {
@@ -117,11 +108,6 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 					this.getEthaneRatioSdev(),obj.getEthaneRatioSdev()));
 			return false;
 		}
-		if (!this.getText().equals(obj.getText().trim())) {
-			Log.warn(String.format("Field Notes not equal - Expect '%s', Actual '%s'",
-					this.getText().trim(),obj.getText().trim()));
-			return false;
-		}		
 		return true;
 	}
 
@@ -143,7 +129,6 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 			objEthaneCapture.setDisposition(resultSet.getString("Disposition"));
 			objEthaneCapture.setEthaneRatioSdev(resultSet.getFloat("EthaneRatioSdev"));
 			objEthaneCapture.setEthaneRatio(resultSet.getFloat("EthaneRatio"));
-			objEthaneCapture.setText(resultSet.getString("Text"));
 		} catch (SQLException e) {
 			Log.error("Class StoredProcComplianceGetEthaneCapture | " + e.toString());
 		}

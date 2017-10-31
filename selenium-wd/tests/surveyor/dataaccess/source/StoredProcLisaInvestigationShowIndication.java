@@ -10,7 +10,7 @@ import common.source.Log;
 public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 	private int numLeaks;
 	private int boxTypeId;
-	private int boxNumber;
+	private String boxNumber;
 	private String investigationStatus;
 	private String investigationDateTime;
 	private String peakAssignedUserName;
@@ -69,11 +69,11 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 		this.boxTypeId = boxTypeId;
 	}
 
-	public Integer getBoxNumber() {
+	public String getBoxNumber() {
 		return boxNumber;
 	}
 
-	public void setBoxNumber(int boxNumber) {
+	public void setBoxNumber(String boxNumber) {
 		this.boxNumber = boxNumber;
 	}
 
@@ -86,8 +86,9 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 	}
 
 	public String toString() {
-		return Integer.toString(this.getNumLeaks()).trim().concat(String.format("%d", this.getBoxNumber())).concat(String.format("%d", this.getBoxTypeId()))
-				.concat(this.getInvestigationStatus()).concat(this.getInvestigationDateTime()).concat(this.getAssignedUserName()).concat(this.getTotalDuration());
+		return Integer.toString(this.getNumLeaks()).trim().concat(emptyOrValue(this.getBoxNumber())).concat(String.format("%d", this.getBoxTypeId()))
+				.concat(emptyOrValue(this.getInvestigationStatus())).concat(emptyOrValue(this.getInvestigationDateTime())).concat(emptyOrValue(this.getAssignedUserName()))
+				.concat(emptyOrValue(this.getTotalDuration()));
 	}
 
 	public boolean isEquals(StoredProcLisaInvestigationShowIndication obj) {
@@ -139,7 +140,7 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 		try {
 			objReport.setNumLeaks(getIntColumnValue(resultSet,"NumLeaks"));
 			objReport.setBoxTypeId(getIntColumnValue(resultSet,"BoxTypeId"));
-			objReport.setBoxNumber(getIntColumnValue(resultSet,"BoxNumber"));
+			objReport.setBoxNumber(resultSet.getString("BoxNumber"));
 			objReport.setInvestigationStatus(resultSet.getString("InvestigationStatus"));
 			objReport.setInvestigationDateTime(resultSet.getString("InvestigationDateTime"));
 			if (resultSet.wasNull()) {
@@ -156,7 +157,7 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 			objReport.setBoxId(resultSet.getString("BoxId"));
 
 		} catch (SQLException e) {
-			Log.error("Class Report | " + e.toString());
+			Log.error("Class StoredProcLisaInvestigationShowIndication | " + e.toString());
 		}
 
 		return objReport;

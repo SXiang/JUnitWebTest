@@ -16,20 +16,18 @@ public abstract class InvestigationEntity {
 	protected boolean sourceAdded;
 	protected boolean sourceConfirmed;
 
-	
 	public String getBoxType() {
 		return boxType;
 	}
 	public void setBoxType(String boxType) {
 		this.boxType = boxType;
 	}
-	
+
 	public void setDefaultTestData(){
 		investigationStatus = IndicationStatus.NOTINVESTIGATED.toString();
 		additionalNotes = "SQAAuto test notes";
 	}
 
-	
 	public boolean isSourceConfirmed() {
 		return sourceConfirmed;
 	}

@@ -25,12 +25,10 @@ import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.SystemHistoryReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.PageObjectFactory;
-import surveyor.scommon.source.ReferenceGasReportsPage;
 import surveyor.scommon.source.SurveyorConstants;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
@@ -49,9 +47,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 	private static SurveyViewPageActions surveyViewPageAction;
-
-	private static ReferenceGasReportsPage referenceGasReportsPage = null;
-	private static SystemHistoryReportsPage systemHistoryReportsPage = null;
 	private static LatLongSelectionControl latLongSelectionControl = null;
 
 	@BeforeClass
@@ -72,14 +67,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	}
 
 	private void initializeTestPageObjects() {
-		PageObjectFactory pageObjectFactory = new PageObjectFactory();
-
-		referenceGasReportsPage = pageObjectFactory.getReferenceGasReportsPage();
-		PageFactory.initElements(getDriver(), referenceGasReportsPage);
-
-		systemHistoryReportsPage = pageObjectFactory.getSystemHistoryReportsPage();
-		PageFactory.initElements(getDriver(), systemHistoryReportsPage);
-
 		latLongSelectionControl = new LatLongSelectionControl(getDriver());
 		PageFactory.initElements(getDriver(), latLongSelectionControl);
 	}
@@ -135,14 +122,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().searchReport(nonExistentReportTitle, LoginPageActions.workingDataRow.get().username));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().getEmptyTableMessage().equals(NOMATCHINGSEARCH));
-
-		referenceGasReportsPage.open();
-		assertFalse(referenceGasReportsPage.searchReport(nonExistentReportTitle, LoginPageActions.workingDataRow.get().username));
-		assertTrue(referenceGasReportsPage.getEmptyTableMessage().equals(NOMATCHINGSEARCH));
-
-		systemHistoryReportsPage.open();
-		assertFalse(systemHistoryReportsPage.searchReport(nonExistentReportTitle, LoginPageActions.workingDataRow.get().username));
-		assertTrue(systemHistoryReportsPage.getEmptyTableMessage().equals(NOMATCHINGSEARCH));
 	}
 
 	/**

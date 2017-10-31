@@ -113,8 +113,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssets(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllBoundaries(EMPTY, NOTSET);
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
-	}
+		}
 
 	/**
 	 * Test Case ID: TC430_SurveyView_ViewManualSurveyWhenGISDisplayOptionsAreOFF
@@ -216,10 +215,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssets(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllBoundaries(EMPTY, NOTSET);
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
-
-
-	}
+		}
 
 	/**
 	 * Test Case ID: TC432_SurveyView_ViewIndicationsDataManualSurveyWhenGISDataLoaded
@@ -360,10 +356,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssets(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllBoundaries(EMPTY, NOTSET);
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
-
-
-	}
+		}
 
 	/**
 	 * Test Case ID: TC435_SurveyView_ViewFOVIndicationsLisasDataManualSurveyWhenBoundariesLoadedIntoGIS
@@ -424,10 +417,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssets(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllBoundaries(EMPTY, NOTSET);
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
-
-
-	}
+		}
 
 	/**
 	 * Test Case ID: TC436_SurveyView_ViewIndicationsLisasDataManualSurveyWhenGISDataLoaded
@@ -917,7 +907,6 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 	}

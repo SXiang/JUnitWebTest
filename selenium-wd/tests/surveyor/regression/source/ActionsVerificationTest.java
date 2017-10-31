@@ -196,7 +196,6 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		final int analyzerDb3DataRowID = 3;
 		final int surveyDataRowID = 3;
 		final Integer WAIT_TIME_IN_SECONDS = 35;
-		final String SAMPLE_FIELD_NOTES1 = "Dummy Note";
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
@@ -212,17 +211,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds(String.valueOf(WAIT_TIME_IN_SECONDS), NOTSET);
 
-		// stop replay and click on first indication.
-		// NOTE: post stopping replay if test is on a view where indication bubbles take time to settle
-		//       add a pause before calling clickOnFirstIndicationShownOnMap().
+		// stop replay
 		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
-		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
-		assertTrue(driverViewPageAction.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(EMPTY, NOTSET));
-
-		// add field notes and verify.
-		driverViewPageAction.clickOnFeatureInfoAddUpdateNote(EMPTY, NOTSET);
-		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1 , NOTSET);
-		assertTrue(driverViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 
 		// stop survey. stop analyzer.
 		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
@@ -392,7 +382,6 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 
 			driverViewPageAction.clickOnDisplayButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOnLisas(EMPTY,NOTSET);
-			driverViewPageAction.turnOnNotes(EMPTY,NOTSET);
 			driverViewPageAction.turnOffEightHourHistory(EMPTY,NOTSET);
 			driverViewPageAction.turnOffConcentrationChart(EMPTY,NOTSET);
 			driverViewPageAction.turnOffFOVs(EMPTY,NOTSET);
