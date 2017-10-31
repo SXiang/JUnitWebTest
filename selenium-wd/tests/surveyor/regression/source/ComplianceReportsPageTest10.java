@@ -207,12 +207,12 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		getComplianceReportsPage().fillReport(rpt);
 
 		/* Add 100 hours survey */ //Uncomment the following 4 lines whenever the survey is ready - US3885
-//		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PIC4HR01TAG);
-//		getComplianceReportsPage().clickOnSearchSurveyButton();
-//		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
+		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PIC4HR01TAG);
+		getComplianceReportsPage().clickOnSearchSurveyButton();
+		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
 
 		/* Add greater than 100 hours survey */
-//		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC4HR01TAG);
+		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC4HR01TAG);
 		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
 		getComplianceReportsPage().clickOnSearchSurveyButton();
 		assertTrue(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
