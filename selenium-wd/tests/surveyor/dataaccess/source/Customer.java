@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import common.source.Log;
 
 public class Customer extends BaseEntity {
-	private static final String CACHE_KEY = "CUSTOMER.";
+	public static final String CACHE_KEY = "CUSTOMER.";
 
 	private Boolean active;
 	private String name;

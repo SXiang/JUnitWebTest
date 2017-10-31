@@ -77,6 +77,7 @@ public class DbSeedExecutor {
 
 	public static void executeAllDataSeed() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
+		DbSeedExecutor.executeGISCustomerDataSeed();
 		DbSeedExecutor.executeGisSeed();
 		DbSeedExecutor.executeGisRefreshDataSeed();
 		DbSeedExecutor.executeSurveyDataSeed();
@@ -104,6 +105,35 @@ public class DbSeedExecutor {
 		} finally {
 			connection.close();
 		}
+	}
+
+	public static void executeGISCustomerDataSeed() throws Exception {
+		Log.method("DbSeedExecutor.executeGISCustomerDataSeed");
+		String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+		String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-GISCustomers.sql").toString();
+		SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+				TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
+	}
+
+	public static void executeGISCustomerDataSeedForSingleCustomer(String customerName) throws Exception {
+		Log.method("DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer", customerName);
+		String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+		String sqlTemplateFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-GISSingleCustomer.sql.template").toString();
+		String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql",
+				String.format("AutomationSeedScript-GISSingleCustomer-%s.sql", TestSetup.getUUIDString())).toString();
+
+		// Create a working copy of the template file.
+		Files.copy(Paths.get(sqlTemplateFileFullPath), Paths.get(sqlFileFullPath));
+
+		// Update the working copy.
+		Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+		placeholderMap.put("%CUSTOMER_ID%", new Customer().get(customerName).getId());
+		placeholderMap.put("%CUSTOMER_NAME%", customerName);
+		FileUtility.updateFile(sqlFileFullPath, placeholderMap);
+
+		// Use the working copy in the SQL command.
+		SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+				TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
 	}
 
 	/* Method for pushing Survey seed data */

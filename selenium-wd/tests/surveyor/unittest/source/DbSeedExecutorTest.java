@@ -4,9 +4,15 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import common.source.Log;
+import common.source.TestSetup;
+
+import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
+import javax.validation.constraints.AssertTrue;
+
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
@@ -143,6 +149,30 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
+	public void execute08_GisCustomerDataSeedTest() throws Exception {
+		DbSeedExecutor.executeGISCustomerDataSeed();
+		verifyGisCustomerSeedDataIsPresent();
+	}
+
+	@Test
+	public void execute09_GisCustomerDataSeedSingleCustomerTest() throws Exception {
+		final String customerName = "AutomationSeedCustomer00006";
+		Customer customer = new Customer().get(customerName);
+
+		// modify customer name.
+		new Customer().executeNonQuery(String.format("UPDATE [dbo].[Customer] SET Name='%s' WHERE Id='%s'", TestSetup.getUUIDString(), customer.getId()));
+
+		// remove licenses associated with customer.
+		new Customer().executeNonQuery(String.format("DELETE [dbo].[CustomerLicensedFeatureOptions] WHERE CustomerId='%s'", customer.getId()));
+
+		// execute GIS customer seed for customer.
+		DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer(customerName);
+
+		// verify seed data was applied correctly.
+		verifyGisCustomerSeedDataForCustomerIsCorrect(customerName);
+	}
+
+	@Test
 	public void cleanup01_GisDataSeedTest() throws Exception {
 		Log.info("\nRunning cleanup01_GisDataSeedTest ...");
 
@@ -169,5 +199,15 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 		// Verify GIS seed data was removed correctly.
 		verifyGisSeedDataIsNotPresent(customerId);
+	}
+
+	private void verifyGisCustomerSeedDataForCustomerIsCorrect(String customerName) {
+		final Integer expectedLicenseCount = 23;
+		DBCache.INSTANCE.purgeCache(Customer.CACHE_KEY);
+		Customer customer = new Customer().get(customerName);
+		assertTrue(customer != null);
+		Integer actualLicenseCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[CustomerLicensedFeatureOptions] WHERE CustomerId='" + customer.getId() + "'");
+		assertTrue(String.format("Expected name [%s]. Actual=[%s]", customerName, customer.getName()), customer.getName().equals(customerName));
+		assertTrue(String.format("Expected [%d] licenses. Found=[%d]", expectedLicenseCount, actualLicenseCount), actualLicenseCount == expectedLicenseCount);
 	}
 }
