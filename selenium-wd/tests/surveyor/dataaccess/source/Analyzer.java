@@ -105,6 +105,10 @@ public class Analyzer extends BaseEntity {
 		return objAnalyzer;
 	}
 
+	public static ArrayList<Analyzer> getAnalyzersForCustomer(String customerId) {
+		return new Analyzer().getAnalyzersForCustomerInternal(customerId);
+	}
+
 	public Analyzer get(String id) {
 		Analyzer objAnalyzer = null;
 
@@ -158,18 +162,22 @@ public class Analyzer extends BaseEntity {
 		return load(SQL);
 	}
 
+	private ArrayList<Analyzer> getAnalyzersForCustomerInternal(String customerId) {
+		String SQL = String.format("SELECT * FROM [dbo].[Analyzer] WHERE (SurveyorUnitId IN (SELECT [Id] FROM [dbo].[SurveyorUnit] "
+				+ " WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%s')))", customerId);
+		return load(SQL);
+	}
+
 	public void cascadeDeleteAnalyzer() {
 		List<String> queries = new ArrayList<String>();
 		queries.add(String.format("DELETE [dbo].[AnalyzerAlarmLog] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerHardwareCapabilityType] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerHeartbeat] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerLog] WHERE AnalyzerId='%s'", getId()));
-		queries.add(String.format("DELETE [dbo].[AnalyzerSurveyorUnitHistory] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerUpdateJob] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnemometerRaw] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[GPSRaw] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[Measurement] WHERE AnalyzerId='%s'", getId()));
-		queries.add(String.format("DELETE [dbo].[Note] WHERE AnalyzerId='%s'", getId()));
 		queries.forEach(sql -> executeNonQuery(sql));
 
 		// Delete surveys and associated reports.

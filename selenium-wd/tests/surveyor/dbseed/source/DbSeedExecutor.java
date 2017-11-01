@@ -26,8 +26,10 @@ import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ZipUtility;
+import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.SqlCmdUtility;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -122,13 +124,30 @@ public class DbSeedExecutor {
 		String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql",
 				String.format("AutomationSeedScript-GISSingleCustomer-%s.sql", TestSetup.getUUIDString())).toString();
 
+		String customerId = new Customer().get(customerName).getId();
+
+		// Cleanup Analyzers for customer.
+		Analyzer.getAnalyzersForCustomer(customerId).stream()
+			.forEach(a -> a.cascadeDeleteAnalyzer());
+
+		// Re-execute GIS customer data seed for this specific customer.
+
 		// Create a working copy of the template file.
 		Files.copy(Paths.get(sqlTemplateFileFullPath), Paths.get(sqlFileFullPath));
 
 		// Update the working copy.
 		Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
-		placeholderMap.put("%CUSTOMER_ID%", new Customer().get(customerName).getId());
+		placeholderMap.put("%CUSTOMER_ID%", customerId);
 		placeholderMap.put("%CUSTOMER_NAME%", customerName);
+		String seedLocationId = CustomerWithGisDataPool.getSeedLocationIdForCustomer(customerId);
+		if (seedLocationId == null) {
+			placeholderMap.put("%SKIP_LOCATION_CLEANUP%", "1");
+			placeholderMap.put("%LOCATION_ID_FROM_SEED%", "00000000-0000-0000-0000-000000000000");
+		} else {
+			placeholderMap.put("%SKIP_LOCATION_CLEANUP%", "0");
+			placeholderMap.put("%LOCATION_ID_FROM_SEED%", seedLocationId);
+		}
+
 		FileUtility.updateFile(sqlFileFullPath, placeholderMap);
 
 		// Use the working copy in the SQL command.

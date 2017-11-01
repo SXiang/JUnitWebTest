@@ -319,7 +319,7 @@ public class TestSetup {
 
 	public String getCIEnvironmentBuildNumber() {
 		String environmentName = getEnvironment().getAutoDbName();
-		String apiResponse = ApiUtility.getAutomationApiResponse(String.format(ApiUtility.ENVIRONMENT_BUILD_API_RELATIVE_URL, environmentName));
+		String apiResponse = ApiUtility.getAutomationApiResponse(String.format(ApiUtility.ENVIRONMENT_BUILD_API_RELATIVE_URL, environmentName)).getResponseBody();
 		Log.info(String.format("API Response -> %s", apiResponse));
 		Log.info("Creating gson Builder...");
 		GsonBuilder gsonBuilder = new GsonBuilder();

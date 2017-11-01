@@ -3,7 +3,10 @@ BEGIN TRANSACTION;
 BEGIN TRY
 
 	DECLARE @customerId uniqueidentifier
-
+	DECLARE @locationIdFromSeed uniqueidentifier = '00000000-0000-0000-0000-000000000000'
+	DECLARE @skipLocationCleanup bit = %SKIP_LOCATION_CLEANUP%
+	IF (@skipLocationCleanup = 0) SET @locationIdFromSeed = '%LOCATION_ID_FROM_SEED%'
+	
 	-- Customer - '%CUSTOMER_NAME%'
 	IF NOT EXISTS (SELECT * FROM [dbo].[Customer] WHERE Name='%CUSTOMER_NAME%')
 	BEGIN
@@ -85,8 +88,38 @@ BEGIN TRY
 	-- Location for Customer - '%CUSTOMER_NAME%'
 	SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE Name='%CUSTOMER_NAME%'
 	UPDATE [dbo].[Location] SET [Description]=N'%CUSTOMER_NAME%Loc',[Latitude]='37.4020925705503',[Longitude]='-121.984820397399' WHERE [CustomerId]=@customerId 
-	
 
+	------ Cleanup referenced table entries ------
+	
+	-- CalibrationRecord (Anemometer & Inlet) for Customer
+	DELETE [dbo].[Anemometer]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%CUSTOMER_ID%'))))
+	DELETE [dbo].[Inlet]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%CUSTOMER_ID%'))))
+	DELETE [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%CUSTOMER_ID%')))
+
+	-- ReferenceGasBottle for all customer locations
+	DELETE [dbo].[ReferenceGasBottle] WHERE SurveyorUnitId IN (SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE LocationID IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%'))
+
+	-- SurveyorUnit for all customer locations
+	DELETE [dbo].[SurveyorUnit] WHERE LocationID IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+
+	-- Users for Customer (UserLogin, UserRole, UserClaim)
+	DELETE [dbo].[UserLogin] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%')
+	DELETE [dbo].[UserClaim] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%')
+	DELETE [dbo].[UserRole] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%')
+	DELETE [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%'
+
+	-- Locations (except seed data location)
+	DELETE [dbo].[LocationAnalyticsParameter] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[LocationEQParameter] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[LocationPipeLineParameter] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[IsotopicIdentity] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[SurveyModeTypeConfiguration] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')	
+	DELETE [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%' AND ID <> @locationIdFromSeed
+
+	-- CustomerSettings, FTPConfiguration for Customer
+	DELETE [dbo].[CustomerSettings] WHERE CustomerId='%CUSTOMER_ID%'
+	DELETE [dbo].[FTPConfiguration] WHERE CustomerId='%CUSTOMER_ID%'	
+	
 END TRY
 
 BEGIN CATCH

@@ -81,7 +81,7 @@ public class BaseEntity {
 				intColValue = resultSet.getInt(1);
 			}
 		} catch (SQLException e) {
-			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());
+			Log.error(String.format("Class %s | SQL -> %s", this.getClass().toString(), SQL) + e.toString());
 		}
 		return intColValue;
 	}

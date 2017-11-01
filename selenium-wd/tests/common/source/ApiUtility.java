@@ -2,20 +2,52 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Function;
+
 import org.testng.Assert;
 
 import surveyor.scommon.source.SurveyorConstants;
 
 public class ApiUtility {
-
+	// PCubed API constants.
 	public static final String REPORTS_GET_REPORT_STAT_API_RELATIVE_URL = "Reports/GetReportStat?reportTitle=%s";
-	public static final String ENVIRONMENT_BUILD_API_RELATIVE_URL = "api/EnvironmentBuilds?environmentName=%s";
 	public static final String DELETE_MEASUREMENT_SESSION_RELATIVE_URL = "Home/DeleteSession/%s";
 	public static final String DELETE_COMPLIANCE_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=ComplianceReports&reportId=%s";
 	public static final String DELETE_ASSESSMENT_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=AssessmentReports&reportId=%s";
 	public static final String DELETE_EQ_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=EQReports&reportId=%s";
 	private static final String GET_API_RESPONSE_CMD = "GetAPIResponse.cmd";
+
+	// Automation API constants.
+	public static final String ACQUIRE_GIS_CUSTOMER_API_RELATIVE_URL = "api/AcquireGisCustomer/%d";
+	public static final String RELEASE_GIS_CUSTOMER_API_RELATIVE_URL = "api/ReleaseGisCustomer/%d";
+	public static final String ENVIRONMENT_BUILD_API_RELATIVE_URL = "api/EnvironmentBuilds?environmentName=%s";
 	private static final String GET_AUTOMATION_API_RESPONSE_CMD = "Get-ReportingAPIResponse.cmd";
+
+	public static class HttpApiResult {
+		private String responseBody;
+		private Integer statusCode;
+
+		public HttpApiResult(String responseBody, Integer statusCode) {
+			this.setResponseBody(responseBody);
+			this.setStatusCode(statusCode);
+		}
+
+		public String getResponseBody() {
+			return responseBody;
+		}
+
+		public void setResponseBody(String responseBody) {
+			this.responseBody = responseBody;
+		}
+
+		public Integer getStatusCode() {
+			return statusCode;
+		}
+
+		public void setStatusCode(Integer statusCode) {
+			this.statusCode = statusCode;
+		}
+	}
 
 	public ApiUtility() {
 	}
@@ -40,7 +72,7 @@ public class ApiUtility {
 			String workingFolder = TestSetup.getRootPath();
 			String filePathWithCommand = GET_API_RESPONSE_CMD + String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
 							workingFolder, baseUrl, apiRelativePath, loginUser, loginPwd);
-			responseText = executeGetApiResponseCmd(filePathWithCommand);
+			responseText = executeGetApiResponseCmd(filePathWithCommand, (resText) -> extractApiResponse(resText)).getResponseBody();
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
@@ -54,19 +86,57 @@ public class ApiUtility {
 	 * @param apiRelativePath - API relative url
 	 * @return - API response
 	 */
-	public static String getAutomationApiResponse(String apiRelativePath) {
-		String responseText = "";
+	public static HttpApiResult getAutomationApiResponse(String apiRelativePath) {
+		return getAutomationApiResponseInternal(apiRelativePath, "GET", "" /*body*/, (responseText) -> extractApiResponse(responseText));
+	}
+
+	/**
+	 * Executes GET request on specified automation API and returns the response.
+	 *
+	 * @param apiRelativePath - API relative url
+	 * @param responseExtractor - specifies the custom extractor method to use to extract response text from response output.
+	 * @return - API response
+	 */
+	public static HttpApiResult getAutomationApiResponse(String apiRelativePath, Function<String, String> responseExtractor) {
+		return getAutomationApiResponseInternal(apiRelativePath, "GET", "" /*body*/, (responseText) -> extractApiResponse(responseText));
+	}
+
+	/**
+	 * Executes request with specified METHOD on specified automation API and returns the response.
+	 *
+	 * @param apiRelativePath - API relative url
+	 * @param method - GET, POST
+	 * @return - API response
+	 */
+	public static HttpApiResult postAutomationApiResponse(String apiRelativePath, String body) {
+		return getAutomationApiResponseInternal(apiRelativePath, "POST", body, (responseText) -> extractSingleElementJsonApiResponse(responseText));
+	}
+
+	/**
+	 * Executes request with specified METHOD on specified automation API and returns the response.
+	 *
+	 * @param apiRelativePath - API relative url
+	 * @param method - GET, POST
+	 * @param responseExtractor - specifies the custom extractor method to use to extract response text from response output.
+	 * @return - API response
+	 */
+	public static HttpApiResult postAutomationApiResponse(String apiRelativePath, String body, Function<String, String> responseExtractor) {
+		return getAutomationApiResponseInternal(apiRelativePath, "POST", body, responseExtractor);
+	}
+
+	private static HttpApiResult getAutomationApiResponseInternal(String apiRelativePath, String method, String body, Function<String, String> responseExtractor) {
+		HttpApiResult apiResult = null;
 		try {
 			String workingFolder = TestSetup.getRootPath();
 			String automationApiUrl = TestContext.INSTANCE.getTestSetup().getAutomationReportingApiEndpoint();
-			String filePathWithCommand = GET_AUTOMATION_API_RESPONSE_CMD + String.format(" \"%s\" \"%s\" \"%s\"",
-							workingFolder, automationApiUrl, apiRelativePath);
-			responseText = executeGetApiResponseCmd(filePathWithCommand);
+			String filePathWithCommand = GET_AUTOMATION_API_RESPONSE_CMD + String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+							workingFolder, automationApiUrl, apiRelativePath, method, body);
+			apiResult = executeGetApiResponseCmd(filePathWithCommand, responseExtractor);
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
 
-		return responseText;
+		return apiResult;
 	}
 
 	/**
@@ -76,8 +146,10 @@ public class ApiUtility {
 	 * @param apiCmdFileWithArgs
 	 * @return
 	 */
-	private static String executeGetApiResponseCmd(String apiCmdFileWithArgs) {
+	private static HttpApiResult executeGetApiResponseCmd(String apiCmdFileWithArgs, Function<String, String> responseExtractor) {
+		HttpApiResult apiResult = null;
 		String responseText = null;
+		String errorResponseText = null;
 		// Execute get api response script from the contained folder.
 		try {
 			String apiCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
@@ -86,11 +158,19 @@ public class ApiUtility {
 			Log.info("Executing get api response script. Command -> " + command);
 			ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 			responseText = processOutputInfo.getOutput();
-			responseText = extractApiResponse(responseText);
+			errorResponseText = processOutputInfo.getError();
+			responseText = responseExtractor.apply(responseText);
+			apiResult = buildHttpApiResult(errorResponseText, responseText);
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
-		return responseText;
+		return apiResult;
+	}
+
+	private static String extractSingleElementJsonApiResponse(String responseText) {
+		int lastOpenBracketIdx = responseText.lastIndexOf("{");
+		int lastCloseBracketIdx = responseText.lastIndexOf("}");
+		return responseText.substring(lastOpenBracketIdx, lastCloseBracketIdx+1);
 	}
 
 	private static String extractApiResponse(String responseText) {
@@ -110,6 +190,19 @@ public class ApiUtility {
 			}
 		}
 		return response;
+	}
+
+	private static HttpApiResult buildHttpApiResult(String errorResponseText, String response) {
+		Integer statusCode = 200;
+		String responseText = response;
+		if (!BaseHelper.isNullOrEmpty(errorResponseText)) {
+			if (errorResponseText.contains("(404) Not Found")) {
+				statusCode = 404;
+				responseText = "";
+			}
+		}
+
+		return new HttpApiResult(responseText, statusCode);
 	}
 
 	public static void main(String[] args) {
