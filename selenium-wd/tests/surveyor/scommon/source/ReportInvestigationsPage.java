@@ -47,8 +47,8 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "buttonAssignPeaks")
 	protected WebElement buttonAssignPeaks;
 
-	@FindBy(how = How.ID, using = "buttonAssignInvestigator")
-	protected WebElement buttonAssignInvestigator;
+	@FindBy(how = How.ID, using = "buttonInvestigator")
+	protected WebElement buttonInvestigator;
 
 	@FindBy(how = How.CSS, using = "div[id='myModal'] select[id='User']")
 	protected WebElement assignToUserDropdown;
@@ -83,6 +83,9 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "chkSelectAll")
 	protected WebElement selectAll;
 
+	@FindBy(how = How.CSS, using = "a#back-btn.btn.btn-default")
+	protected WebElement backMapButton;
+
 	protected String checkBoxXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td/input[@type='checkbox']";
 	protected String itemStatusXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[3]";
 	protected String itemValueXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[2]";
@@ -92,6 +95,8 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	protected String boxItemXPattern = "//*[@id='boxType']/ul[@class='dropdown-menu']/li/a[text()='%s ']";
 	protected String boxMarkerXPattern = "//div[@class='list-group']/a[starts-with(text(), '%s')]";
 	protected By mapKey = By.cssSelector(".map[id='map']>.ol-viewport > canvas");
+	protected By backMapKey = By.cssSelector("a#back-btn.btn.btn-default");
+	
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
 
 	public static enum IndicationStatus {
@@ -195,6 +200,17 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		return userSelected;
 	}
 
+	public void clickOnInvestigator(){
+		buttonInvestigator.click();
+		waitForAJAXCallsToComplete();
+		waitForElementReady(backMapKey);
+	}
+
+	public void clickOnBackMapButton(){
+		backMapButton.click();
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, button_Investigate);
+	}
+	
 	public void investigateItem(String item){
 		investigateItem(item, BOXTYPE_LISA);
 	}
@@ -207,7 +223,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, button_Investigate);
 		button_Investigate.click();
 	}
-
+	
 	public void clickOnInvestigate(){
 		buttonInvestigate.click();
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);

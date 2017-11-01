@@ -5,6 +5,8 @@ package surveyor.regression.mobile.source;
 
 import static org.junit.Assert.*;
 
+import java.awt.Rectangle;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,7 +15,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.TestContext;
-import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.InvestigationReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -94,7 +95,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	 *	- Investigate any one of the LISAs
 	 *	- Download investigate PDF and CSV button
 	 * Results: -
-	 *	-Assets should not be intersected with any LISAs
+	 *	- Assets should not be intersected with any LISAs
 	 *	- LISAs should be present on Investigation List screen
 	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
 	 *	- User should be able to investigate LISAs successfully
@@ -121,6 +122,13 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
+		
+		// Verify Investigators map
+		
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.clickOnInvestigator();
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2793", "investigatorMapLisa", new Rectangle(0,0,0,0)));
+		reportInvestigationsPage.clickOnBackMapButton();
 		
 		// Assign Lisas to user
 		int workingLisa = 1;
@@ -208,7 +216,12 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
-		
+
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.clickOnInvestigator();
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2794", "investigatorMapLisa", new Rectangle(0,0,0,0)));
+		reportInvestigationsPage.clickOnBackMapButton();
+
 		// Assign Lisas to user
 		int workingLisa = 1;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -292,7 +305,12 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
-		
+
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.clickOnInvestigator();
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2828", "investigatorMapLisa", new Rectangle(0,0,0,0)));
+		reportInvestigationsPage.clickOnBackMapButton();
+
 		// Assign Lisas to user
 		int workingLisa = 1;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -379,7 +397,12 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
-		
+
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.clickOnInvestigator();
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2829", "investigatorMapLisa", new Rectangle(0,0,0,0)));
+		reportInvestigationsPage.clickOnBackMapButton();
+
 		// Assign Lisas to user
 		int workingLisa = 1;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -444,7 +467,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	 * - User is navigated to a map showing user's location
 	 * - On map, assets contained within Asset Box are highlighted  in green. Asset Box is outlined in red
 	 */
-	@Test
+    @Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2201, location = InvestigationReportDataProvider.class)
 	public void TC2201_HighlightLISAAssetsSelectedInViewsSection(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
