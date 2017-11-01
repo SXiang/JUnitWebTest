@@ -55,7 +55,7 @@ public class DbSeedExecutor {
 			"daysurvey7-1", "daysurvey8-1", "daysurvey8-2", "daysurvey8.2-1", "Ethane1MinSurvey-1", "EthaneManual-1", "FeqNoPeaks01-1", "FeqWithPeaks01-1", "FeqWithPeaks02-1",
 			"iso-cap-1", "iso-cap-2", "IsoCapRedTrace-1", "man-pic-1", "man-pic-2", "MenloNight11_17EQ01-1", "MenloNight11_17EQ02-1",
 			"MeqNoPeaks01-1", "MeqWithPeaks01-1", "No-fov-1-1", "No-fov-2-1", "No-fov-3-1", "op-pic-1", "rr-pic-1", "Standard-With-Leak-1", "StandardSurveyEQ01-1", "StandardSurveyEQ02-1",
-			"standard-test-1-1", "standard-test-2-1", "standard-test-3-1", "stnd-pic-1", "LISANotIntersectingAssets-1",
+			"standard-test-1-1", "standard-test-2-1", "standard-test-3-1", "stnd-pic-1", "LISANotIntersectingAssets-1", "2HourSurvey-1", "4HourSurvey-1",
 			/* Surveys with raw data that failed in re-processing. Currently using original surveys for seed data. Regenerate seed data for processed survey once re-processing works with later Tahoe builds */
 			"8HourSurvey-1", "GreaterThan4Hour-1",  "LessThan4Hour-1",
 			/* Surveys below do NOT contain raw data */
@@ -70,7 +70,7 @@ public class DbSeedExecutor {
 			"MenloNight11_17EQ01-sqacus-1", "MenloNight11_17EQ02-sqacus-1", "MeqNoPeaks01-sqacus-1", "MeqWithPeaks01-sqacus-1", "No-fov-1-sqacus-1", "No-fov-2-sqacus-1", "No-fov-3-sqacus-1",
 			"op-pic-sqacus-1", "op-sqacudr-sqacus-1", "op-sqacudr-sqacus-2", "rr-pic-sqacus-1", "rr-sqacudr-sqacus-1", "rr-sqacudr-sqacus-2", "rr-sqacudr-sqacus-3", "rr-sqacudr-sqacus-4",
 			"Standard-With-Leak-sqacus-1", "StandardSurveyEQ01-sqacus-1", "StandardSurveyEQ02-sqacus-1", "standard-test-1-sqacus-1", "standard-test-2-sqacus-1", "standard-test-3-sqacus-1",
-			"stnd-pic-sqacus-1", "stnd-sqacudr-sqacus-1", "stnd-sqacudr-sqacus-2", "LISANotIntersectingAssets-sqacus-1",
+			"stnd-pic-sqacus-1", "stnd-sqacudr-sqacus-1", "stnd-sqacudr-sqacus-2", "LISANotIntersectingAssets-sqacus-1", "2HourSurvey-1-sqacus", "4HourSurvey-1-sqacus",
 			/* Surveys below do NOT contain raw data */
 			"assessment-2-sqacus", "EthaneOpertor1-sqacus", "EthaneOpertor2-sqacus", "EthaneRR-sqacus", "EthaneStnd-sqacus", "EthaneStnd2-sqacus", "EthaneStnd3-sqacus",
 			"stnd-sqacudr-sqacus-3", "stnd-sqacudr-sqacus-4", "stnd-sqacudr-sqacus-5" };
