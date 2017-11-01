@@ -41,6 +41,15 @@ public class CustomerWithGisDataPool {
 		return customer;
 	}
 
+	public static Customer acquireCustomerFailOnError() throws Exception {
+		Customer customer = acquireCustomer();
+		if (customer == null) {
+			throw new Exception("No customer with GIS data available in pool for use.");
+		}
+
+		return customer;
+	}
+
 	public static void releaseCustomer(String customerName) {
 		Integer environmentId = getEnvironmentId();
 		String body = String.format("{\\\"CustomerName\\\":\\\"%s\\\"}", customerName);

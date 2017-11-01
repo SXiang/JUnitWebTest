@@ -12,6 +12,7 @@ import java.util.Map;
 
 import common.source.FunctionUtil;
 import common.source.Log;
+import common.source.TestContext;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -76,12 +78,17 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	@AfterClass
 	public static void afterClass() {
 		if(testAccount!=null && testAccount.get("customerId")!=null){
-			cleanUpGisData(testAccount.get("customerId"));
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				String customerName = testAccount.get("customerName");
+				CustomerWithGisDataPool.releaseCustomer(customerName);
+			} else {
+				cleanUpGisData(testAccount.get("customerId"));
+			}
 		}
 	}
 
 	@Before
-	public void beforeTestMethod() {
+	public void beforeTestMethod() throws Exception {
 		try {
 			initializeTestObjects();
 			initializePageObjects();
@@ -95,7 +102,12 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		}
 
 		if(testAccount == null){
-			testAccount = createTestAccount("Analytics_ObserverView", CapabilityType.Ethane);
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				testAccount = createTestAccountWithGisCustomer("Analytics_ObserverView", CapabilityType.Ethane);
+			} else {
+				testAccount = createTestAccount("Analytics_ObserverView", CapabilityType.Ethane);
+			}
+
 			observerName = testAccount.get("userName");
 			userPassword = testAccount.get("userPassword");
 			customerName = testAccount.get("customerName");
@@ -105,7 +117,10 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 			surveyorName = testAccount.get("surveyorName");
 			userName = getTestSetup().getFixedSizeRandomNumber(6)+"td" + REGBASEUSERNAME;
 			addTestUser(customerName, userName, userPassword, CUSUSERROLEDR, locationName);
-			pushGisData(testAccount.get("customerId"));
+
+			if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				pushGisData(testAccount.get("customerId"));
+			}
 		}
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);

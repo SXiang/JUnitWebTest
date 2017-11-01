@@ -23,6 +23,7 @@ import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -194,6 +195,10 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
 		} finally {
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+			}
+
 			if (!testFailed) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.
@@ -311,6 +316,10 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
 		} finally {
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+			}
+
 			if (!testFailed) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.

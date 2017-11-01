@@ -536,6 +536,17 @@ public class DbSeedExecutor {
 
 	public static void executeGisSeed(String customerId) throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed", customerId);
+		checkExecuteGisSeed(customerId);
+	}
+
+	private static void checkExecuteGisSeed(String customerId) throws Exception {
+		if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			executeGisSeedInternal(customerId);
+		}
+	}
+
+	private static void executeGisSeedInternal(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.executeGisSeedInternal", customerId);
 		boolean isCustomerSpecified = true;
 		if (customerId == null) {
 			isCustomerSpecified = false;
@@ -641,6 +652,18 @@ public class DbSeedExecutor {
 
 	public static void cleanUpGisSeed(String customerId) throws Exception {
 		Log.method("DbSeedExecutor.cleanUpGisSeed", customerId);
+		checkCleanUpGisSeed(customerId);
+	}
+
+	private static void checkCleanUpGisSeed(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.checkCleanUpGisSeed", customerId);
+		if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			cleanUpGisSeedInternal(customerId);
+		}
+	}
+
+	private static void cleanUpGisSeedInternal(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.cleanUpGisSeedInternal", customerId);
 
 		String invalidCustomerName = null;
 

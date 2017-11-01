@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.CustomerLicensedFeaturesDataReader;
@@ -22,22 +24,45 @@ public class ManageCustomerPageActions extends BasePageActions {
 		initializePageObject(driver, new ManageCustomersPage(driver, strBaseURL, testSetup));
 		setDataReader(new CustomerDataReader(this.excelUtility));
 	}
-	
+
 	private void setDataReader(CustomerDataReader customerDataReader) {
-		this.dataReader = customerDataReader;	
+		this.dataReader = customerDataReader;
 	}
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
 		workingDataRow.set(null);
 	}
-	
+
+	/**
+	 * Executes createNewGisCustomer action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean createNewGisCustomer(String data, Integer dataRowID) throws Exception {
+		logAction("ManageCustomersPageActions.createNewGisCustomer", data, dataRowID);
+		workingDataRow.set(this.dataReader.getDataRow(dataRowID));
+		Customer gisCustomer = CustomerWithGisDataPool.acquireCustomerFailOnError();
+		String customerName = gisCustomer.getName();
+		workingDataRow.get().name = customerName;
+		if (!workingDataRow.get().licensedFeaturesRowIDs.isEmpty()) {
+			LicensedFeatures[] licensedFeatures = getLicensedFeatures(workingDataRow.get().licensedFeaturesRowIDs);
+			workingDataRow.get().setLicensedFeatures(licensedFeatures);
+			this.getManageCustomersPage().selectLicensedFeatures(licensedFeatures);
+		}
+
+		return true;
+	}
+
+
 	/**
 	 * Executes createNewCustomer action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean createNewCustomer(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.createNewCustomer", data, dataRowID);
@@ -60,7 +85,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 	 * @param data - comma seperated list of CustomerLicensedFeaturesRowID to be selected.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean editCustomerSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.editCustomerSelectLicensedFeatures", data, dataRowID);
@@ -74,7 +99,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 	 * @param data - comma seperated list of CustomerLicensedFeaturesRowID to be unselected.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean editCustomerUnSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.editCustomerUnSelectLicensedFeatures", data, dataRowID);
@@ -95,7 +120,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 		this.getManageCustomersPage().waitForPageLoad();
 		return true;
 	}
-	
+
 	public ManageCustomersPage getManageCustomersPage() {
 		return (ManageCustomersPage)this.getPageObject();
 	}
@@ -120,6 +145,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 		else if (actionName.equals("clickByXPath")) { return this.clickByXPath(data, dataRowID); }
 		else if (actionName.equals("clickByXPathAndWait")) { return this.clickByXPathAndWait(data, dataRowID); }
 		else if (actionName.equals("createNewCustomer")) { return this.createNewCustomer(data, dataRowID); }
+		else if (actionName.equals("createNewGisCustomer")) { return this.createNewGisCustomer(data, dataRowID); }
 		else if (actionName.equals("editCustomerSelectLicensedFeatures")) { return this.editCustomerSelectLicensedFeatures(data, dataRowID); }
 		else if (actionName.equals("editCustomerUnSelectLicensedFeatures")) { return this.editCustomerUnSelectLicensedFeatures(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
