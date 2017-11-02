@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.source.ApiUtility;
+import common.source.EnumUtility;
 import common.source.Log;
 
 public class Analyzer extends BaseEntity {
@@ -126,6 +127,13 @@ public class Analyzer extends BaseEntity {
 		return objAnalyzer;
 	}
 
+	public List<CapabilityType> getCapabilityTypes() {
+		String SQL = "SELECT HCT.Id, HCT.Name, HCT.Description FROM [dbo].[AnalyzerHardwareCapabilityType] AS AHCT"
+				+ " INNER JOIN [dbo].[HardwareCapabilityTypes] AS HCT ON AHCT.HardwareCapabilityTypeId=HCT.Id"
+				+ " WHERE AHCT.AnalyzerId = '" + this.getId() + "'";
+		return loadCapability(SQL);
+	}
+
 	public Analyzer getBySerialNumber(String serialNum) {
 		Analyzer objAnalyzer = null;
 
@@ -234,5 +242,35 @@ public class Analyzer extends BaseEntity {
 				+ "IF @@ROWCOUNT=0 INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'%s', %d);",
 				capabilityType.getIndex(), getId(), getId(), capabilityType.getIndex());
 		executeNonQuery(SQL);
+	}
+
+	private static CapabilityType loadCapabilityFrom(ResultSet resultSet) {
+		CapabilityType capability = CapabilityType.Ethane;
+		try {
+			capability = EnumUtility.fromName(resultSet.getString("Description"), () -> CapabilityType.values());
+		} catch (SQLException e) {
+			Log.error(e.toString());
+		}
+
+		return capability;
+	}
+
+	private List<CapabilityType> loadCapability(String SQL) {
+		List<CapabilityType> objCapabilityList = new ArrayList<CapabilityType>();
+
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(SQL);
+
+			while (resultSet.next()) {
+				CapabilityType capability = loadCapabilityFrom(resultSet);
+				objCapabilityList.add(capability);
+			}
+
+		} catch (SQLException e) {
+			Log.error("Class Analyzer | " + e.toString());
+		}
+
+		return objCapabilityList;
 	}
 }

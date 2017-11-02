@@ -76,7 +76,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	}
 
 	@AfterClass
-	public static void afterClass() {
+	public static void afterClass() throws Exception {
 		if(testAccount!=null && testAccount.get("customerId")!=null){
 			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 				String customerName = testAccount.get("customerName");

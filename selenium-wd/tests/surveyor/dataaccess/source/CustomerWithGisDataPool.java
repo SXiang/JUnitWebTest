@@ -11,6 +11,7 @@ import common.source.ApiUtility;
 import common.source.ApiUtility.HttpApiResult;
 import common.source.Log;
 import common.source.TestContext;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.entities.CustomerWithGISData;
 import surveyor.scommon.source.SurveyorConstants.Environment;
 
@@ -31,11 +32,12 @@ public class CustomerWithGisDataPool {
 		return null;
 	}
 
-	public static Customer acquireCustomer() {
+	public static Customer acquireCustomer() throws Exception {
 		Customer customer = null;
 		CustomerWithGISData customerWithGisData = executeAcquireCustomerAPIGetResponse();
 		if (customerWithGisData != null) {
 			customer = Customer.getCustomer(customerWithGisData.Name);
+			DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer(customer.getName());
 		}
 
 		return customer;
@@ -50,9 +52,10 @@ public class CustomerWithGisDataPool {
 		return customer;
 	}
 
-	public static void releaseCustomer(String customerName) {
+	public static void releaseCustomer(String customerName) throws Exception {
 		Integer environmentId = getEnvironmentId();
 		String body = String.format("{\\\"CustomerName\\\":\\\"%s\\\"}", customerName);
+		DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer(customerName);
 		ApiUtility.postAutomationApiResponse(String.format(ApiUtility.RELEASE_GIS_CUSTOMER_API_RELATIVE_URL, environmentId), body);
 	}
 

@@ -66,7 +66,7 @@ public class TestDataGenerator {
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 
 		if (custSrvInfo.isPushGISSeedData() && TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-			manageCustomerPageAction.createNewGisCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
+			manageCustomerPageAction.fetchNewGisCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
 		} else {
 			manageCustomerPageAction.createNewCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
 		}

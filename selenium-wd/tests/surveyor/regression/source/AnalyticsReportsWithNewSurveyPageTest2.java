@@ -81,7 +81,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	}
 
 	@AfterClass
-	public static void afterClass() {
+	public static void afterClass() throws Exception {
 		if(testAccount!=null && customerId!=null){
 			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 				String customerName = testAccount.get("customerName");

@@ -73,7 +73,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	}
 
 	@AfterClass
-	public static void afterClass() {
+	public static void afterClass() throws Exception {
 		if(testAccount!=null && customerId!=null){
 			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 				String customerName = testAccount.get("customerName");
@@ -257,7 +257,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
@@ -288,7 +288,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.Resubmit, false);
-		complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1)));
 		getHomePage().logout();
 
 		getLoginPage().open();
@@ -425,7 +425,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 
@@ -472,7 +472,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnResubmitButton(userName, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1)));
 		getHomePage().logout();
 
 		getLoginPage().open();
@@ -527,7 +527,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 
@@ -574,7 +574,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnResubmitButton(userName, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1)));
 		getHomePage().logout();
 
 		getLoginPage().open();

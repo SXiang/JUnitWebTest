@@ -18,6 +18,7 @@ import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerWithGisDataPool;
 
 public class CustomerWithGisDataPoolTest {
+	private static final String automationReportingApiEndpoint = "http://localhost:63087";
 	private static String CustomerNamePrefix = "AutomationSeedCustomer";
 	private static Integer MAX_AVAILABLE_CUSTOMERS = 5;
 
@@ -32,6 +33,7 @@ public class CustomerWithGisDataPoolTest {
 			Log.error(e.getMessage());
 		}
 		testSetup.initializeDBProperties();
+		testSetup.setAutomationReportingApiEndpoint(automationReportingApiEndpoint);
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
 		Log.info("RunUUID=" + TestContext.INSTANCE.getRunUniqueId());
@@ -45,7 +47,12 @@ public class CustomerWithGisDataPoolTest {
 		final List<String> customerIds = new ArrayList<>();
 		IntStream.range(0, MAX_AVAILABLE_CUSTOMERS)
 			.forEach(i -> {
-				Customer customer = CustomerWithGisDataPool.acquireCustomer();
+				Customer customer = null;
+				try {
+					customer = CustomerWithGisDataPool.acquireCustomer();
+				} catch (Exception e) {
+					fail(e.getMessage());
+				}
 				Log.info(String.format("Iteration=%d: Customer -> %s", i, customer));
 				assertTrue("Acquired customer should NOT have been seen earlier.", !customerIds.contains(customer.getId()));
 				customerIds.add(customer.getId());
@@ -60,7 +67,12 @@ public class CustomerWithGisDataPoolTest {
 		// try to acquire one more than the available customers in pool.
 		IntStream.rangeClosed(0, MAX_AVAILABLE_CUSTOMERS)
 			.forEach(i -> {
-				Customer customer = CustomerWithGisDataPool.acquireCustomer();
+				Customer customer = null;
+				try {
+					customer = CustomerWithGisDataPool.acquireCustomer();
+				} catch (Exception e) {
+					fail(e.getMessage());
+				}
 				if (i < MAX_AVAILABLE_CUSTOMERS) {
 					Log.info(String.format("Iteration=%d: Customer -> %s", i, customer));
 					assertTrue("Pool NOT empty. Customer should be available.", customer != null);
@@ -76,7 +88,13 @@ public class CustomerWithGisDataPoolTest {
 		// release same customer multiple times should not fail.
 		final String customerName = "AutomationSeedCustomer00001";
 		IntStream.range(0, 3)
-			.forEach(i -> CustomerWithGisDataPool.releaseCustomer(customerName));
+			.forEach(i -> {
+				try {
+					CustomerWithGisDataPool.releaseCustomer(customerName);
+				} catch (Exception e) {
+					fail(e.getMessage());
+				}
+			});
 	}
 
 	private static void releaseAllCustomersInPool() {
@@ -91,7 +109,11 @@ public class CustomerWithGisDataPoolTest {
 
 				Integer idx = i + 1;
 				String customerName = CustomerNamePrefix + BaseHelper.prependStringWithChar(String.valueOf(idx), '0', padTimes);
-				CustomerWithGisDataPool.releaseCustomer(customerName);
+				try {
+					CustomerWithGisDataPool.releaseCustomer(customerName);
+				} catch (Exception e) {
+					fail(e.getMessage());
+				}
 			});
 	}
 }

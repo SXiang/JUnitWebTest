@@ -85,11 +85,7 @@ BEGIN TRY
 	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6a412f8c-e97f-4c88-b4d4-f2bcecbeabbb' AND [CustomerId]=N'%CUSTOMER_ID%')
 		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6a412f8c-e97f-4c88-b4d4-f2bcecbeabbb', N'%CUSTOMER_ID%')
 
-	-- Location for Customer - '%CUSTOMER_NAME%'
-	SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE Name='%CUSTOMER_NAME%'
-	UPDATE [dbo].[Location] SET [Description]=N'%CUSTOMER_NAME%Loc',[Latitude]='37.4020925705503',[Longitude]='-121.984820397399' WHERE [CustomerId]=@customerId 
-
-	------ Cleanup referenced table entries ------
+	------ Cleanup referenced table entries [START] ------
 	
 	-- CalibrationRecord (Anemometer & Inlet) for Customer
 	DELETE [dbo].[Anemometer]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%CUSTOMER_ID%'))))
@@ -119,6 +115,12 @@ BEGIN TRY
 	-- CustomerSettings, FTPConfiguration for Customer
 	DELETE [dbo].[CustomerSettings] WHERE CustomerId='%CUSTOMER_ID%'
 	DELETE [dbo].[FTPConfiguration] WHERE CustomerId='%CUSTOMER_ID%'	
+
+	------ [END] Cleanup referenced table entries ------
+
+	-- Location for Customer - '%CUSTOMER_NAME%'
+	SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE Name='%CUSTOMER_NAME%'
+	UPDATE [dbo].[Location] SET [Description]=N'%CUSTOMER_NAME%Loc',[Latitude]='37.4020925705503',[Longitude]='-121.984820397399' WHERE [CustomerId]=@customerId 
 	
 END TRY
 

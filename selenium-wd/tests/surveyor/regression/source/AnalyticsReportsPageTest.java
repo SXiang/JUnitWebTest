@@ -6,11 +6,8 @@ import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
 import java.util.Arrays;
 import java.util.List;
 
-
-
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -31,7 +28,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -63,7 +60,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
-	
+
 	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2373, location = AnalyticReportDataProvider.class)
 	public void TC2373_LisaRankingInReportLisasAnalyticsCsvFile(
@@ -81,11 +78,11 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("True:True:True:True", getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
-	
+
 	/*
 	 * * Test Case ID: TC2340_ReportModeOnComplianceReportListPage Test
 	 * Description: Report Mode column on Compliance Reports (Report List) page
@@ -167,7 +164,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 						SQAPICAD);
 		assertTrue(reportMode.equalsIgnoreCase("Manual"));
 	}
-	
+
 	/* * Test Case ID: TC2421_GenerateAnalyticsReportAndSelectAllOptionViewLayers
 	 * Script:
 	 * - Customer has analytics license feature
@@ -187,7 +184,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * - First report view PDF should have all assets and boundaries data displayed
 	 * - Second report view should show gaps with outline of FOV only, not LISAs (Gap area =  Map area - FOV). This will only be clear in reports where part of a LISA fan is within the FOV and part of it is outside (in a gap)
 	 */
-	@Test 
+	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2421, location = AnalyticReportDataProvider.class)
 	public void TC2421_GenerateAnalyticsReportAndSelectAllOptionViewLayers(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -195,7 +192,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-				
+
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -209,7 +206,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
-	
+
 	/* * Test Case ID: TC2425_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_AssetBox
 	 * Script:
 	 * - Customer has analytics license feature
@@ -230,7 +227,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * - First report view PDF should have all assets and boundaries data displayed
 	 * - Second report view should show gaps with outline of FOV only, not LISAs (Gap area =  Map area - FOV). This will only be clear in reports where part of a LISA fan is within the FOV and part of it is outside (in a gap)
 	 */
-	@Test 
+	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2425, location = AnalyticReportDataProvider.class)
 	public void TC2425_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_AssetBox(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -238,7 +235,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-				
+
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -281,7 +278,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-				
+
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -324,7 +321,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-				
+
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
