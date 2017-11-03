@@ -54,11 +54,11 @@ public class BaseUnitTest extends BaseMapViewTest {
 	}
 
 	/**
-	 * Test Description: Verify a GIS customer is fetched correctly from pool.
+	 * Test Description: Verify createTestAccountWithGisCustomer works correctly.
 	 */
 	@Test
 	public void createTestAccountWithGisCustomer_CapabilityTypeAndReleaseVerification() throws Exception{
-		Log.info("\nTestcase - fetchNewGisCustomer_DefaultCustomer_LicensedFeaturesNotSpecified\n");
+		Log.info("\nTestcase - createTestAccountWithGisCustomer_CapabilityTypeAndReleaseVerification\n");
 
 		Map<String, String> testAccount = createTestAccountWithGisCustomer("UNITTEST_TC", CapabilityType.Ethane);
 		String userName = testAccount.get("userName");

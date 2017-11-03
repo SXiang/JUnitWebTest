@@ -68,7 +68,6 @@ public class ManageCustomerPageActions extends BasePageActions {
 				String unselectRowIds = getLicensedFeaturesRowIds(licensedFeaturesToUnselect);
 				open(data, dataRowID);
 				editCustomerUnSelectLicensedFeatures(unselectRowIds, dataRowID);
-				//editCustomerSelectLicensedFeatures(workingDataRow.get().licensedFeaturesRowIDs, dataRowID);
 			}
 		}
 

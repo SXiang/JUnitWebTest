@@ -15,6 +15,7 @@ public class ApiUtility {
 	public static final String DELETE_COMPLIANCE_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=ComplianceReports&reportId=%s";
 	public static final String DELETE_ASSESSMENT_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=AssessmentReports&reportId=%s";
 	public static final String DELETE_EQ_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=EQReports&reportId=%s";
+	public static final String DELETE_FACILITY_EQ_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=FacilityEQReports&reportId==%s";
 	private static final String GET_API_RESPONSE_CMD = "GetAPIResponse.cmd";
 
 	// Automation API constants.

@@ -8,6 +8,8 @@ import java.util.List;
 import common.source.ApiUtility;
 import common.source.EnumUtility;
 import common.source.Log;
+import surveyor.scommon.entities.BaseReportEntity;
+import surveyor.scommon.entities.BaseReportEntity.ReportType;
 
 public class Analyzer extends BaseEntity {
 	public static final String CACHE_KEY = "ANALYZER.";
@@ -193,9 +195,31 @@ public class Analyzer extends BaseEntity {
 			s -> {
 				// Delete reports.
 				ReportDrivingSurvey.getReportDrivingSurveysBySurveyId(s.getId().toString()).forEach(
-						r -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, r.getReportId())));
+						r -> {
+							String reportId = r.getReportId().toString();
+							String reportTypeId = Report.getReportById(reportId).getReportTypeId();
+							ReportType reportType = BaseReportEntity.ReportTypeGuids.get(reportTypeId);
+							if (reportType.equals(ReportType.COMPLIANCE)) {
+								Log.info(String.format("Deleting Compliance Report Id='%s', type='%s' for survey tag='%s'", reportId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, r.getReportId()));
+							} else if (reportType.equals(ReportType.ASSESSMENT)) {
+								Log.info(String.format("Deleting Assessment Report Id='%s', type='%s' for survey tag='%s'", reportId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_ASSESSMENT_REPORTS_RELATIVE_URL, r.getReportId()));
+							}
+						});
 				ReportEQDrivingSurvey.getReportEQDrivingSurveysBySurveyId(s.getId().toString()).forEach(
-						r -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_EQ_REPORTS_RELATIVE_URL, r.getReportEQId())));
+						r -> {
+							String reportEQId = r.getReportEQId().toString();
+							String reportTypeId = Report.getReportById(reportEQId).getReportTypeId();
+							ReportType reportType = BaseReportEntity.ReportTypeGuids.get(reportTypeId);
+							if (reportType.equals(ReportType.EQ)) {
+								Log.info(String.format("Deleting EQ report Id='%s', type='%s' for survey tag='%s'", reportEQId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_EQ_REPORTS_RELATIVE_URL, r.getReportEQId()));
+							} else if (reportType.equals(ReportType.FACILITYEQ)) {
+								Log.info(String.format("Deleting FacilityEQ report Id='%s', type='%s' for survey tag='%s'", reportEQId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_FACILITY_EQ_REPORTS_RELATIVE_URL, r.getReportEQId()));
+							}
+						});
 
 				// DE3052 prevents survey deletion when there is [EQMeasurementResult] or [ReportFieldOfViewAggregated] reference.
 				// Currently explicitly deleting referenced [EQMeasurementResult] and [ReportFieldOfViewAggregated] rows to ensure Test Analyzers with certs can be reused.

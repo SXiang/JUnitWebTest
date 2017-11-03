@@ -22,6 +22,7 @@ public class BaseReportEntity {
 
 	public static Map<String, SurveyModeFilter> SurveyModeFilterGuids;
 	public static Map<String, ReportModeFilter> ReportSurveyModeFilterGuids;
+	public static Map<String, ReportType> ReportTypeGuids;
 	public static Map<String, ReportJobType> ReportJobTypeGuids;
 	public static Map<ReportJobType, String> ReportJobTypeReverseGuids;
 
@@ -77,6 +78,24 @@ public class BaseReportEntity {
 		ReportModeFilter(String nm) {
 			name = nm;
 		}
+		public String toString() {
+			return this.name;
+		}
+	}
+
+	public enum ReportType {
+		FACILITYEQ ("FacilityEQ"),
+		ASSESSMENT ("Assessment"),
+		EQ ("EQ"),
+		INVESTIGATION ("Investigation"),
+		COMPLIANCE ("Compliance");
+
+		private final String name;
+
+		ReportType(String nm) {
+			name = nm;
+		}
+
 		public String toString() {
 			return this.name;
 		}
@@ -384,6 +403,7 @@ public class BaseReportEntity {
 		SurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, SurveyModeFilter>());
 		ReportSurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, ReportModeFilter>());
 		ReportJobTypeGuids = Collections.synchronizedMap(new HashMap<String, ReportJobType>());
+		ReportTypeGuids = Collections.synchronizedMap(new HashMap<String, ReportType>());
 		ReportJobTypeReverseGuids = Collections.synchronizedMap(new HashMap<ReportJobType, String>());
 
 		SurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", SurveyModeFilter.Assessment);
@@ -401,6 +421,12 @@ public class BaseReportEntity {
 		ReportSurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", ReportModeFilter.EQ);
 		ReportSurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", ReportModeFilter.Standard);
 		ReportSurveyModeFilterGuids.put("7EA32138-5FA9-40C8-AC7F-2175054D2359", ReportModeFilter.Analytics);
+
+		ReportTypeGuids.put("00000000-0000-0000-0001-000000000000", ReportType.COMPLIANCE);
+		ReportTypeGuids.put("00000000-0000-0000-0002-000000000000", ReportType.INVESTIGATION);
+		ReportTypeGuids.put("00000000-0000-0000-0005-000000000000", ReportType.EQ);
+		ReportTypeGuids.put("00000000-0000-0000-0006-000000000000", ReportType.ASSESSMENT);
+		ReportTypeGuids.put("00000000-0000-0000-0007-000000000000", ReportType.FACILITYEQ);
 
 		ReportJobTypeGuids.put("00000000-0000-0000-0001-000000000000", ReportJobType.Map);
 		ReportJobTypeGuids.put("00000000-0000-0000-0002-000000000000", ReportJobType.SSRS);
