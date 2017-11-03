@@ -1,5 +1,7 @@
 package surveyor.scommon.source;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -7,7 +9,9 @@ import org.junit.Assert;
 
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
@@ -84,10 +88,12 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		reportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
 	}
 
-	protected void waitForReportGenerationToComplete(ReportCommonPageActions reportsPageAction, Integer reportDataRowID) throws Exception {
+	protected boolean waitForReportGenerationToComplete(ReportCommonPageActions reportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
-			reportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
+			assertTrue(reportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID));
 		}
+
+		return true;
 	}
 
 	protected static Integer getUserRowID(Integer dataRowID) {
@@ -127,8 +133,9 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	 * @param reportDataRowID - report row id
 	 * @param testActions - test actions to run
 	 * @return
+	 * @throws Exception
 	 */
-	protected boolean executeAsNewCustomerWithSurveyAndGISData(ReportCommonPageActions pageAction, CustomerSurveyInfoEntity custSrvInfo, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) {
+	protected boolean executeAsNewCustomerWithSurveyAndGISData(ReportCommonPageActions pageAction, CustomerSurveyInfoEntity custSrvInfo, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) throws Exception {
 		try {
 			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
 		} catch (Exception e) {
@@ -147,11 +154,12 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	 * @param reportDataRowID - report row id
 	 * @param testActions - test actions to run
 	 * @return
+	 * @throws Exception
 	 */
-	protected boolean executeAsCustomerWithGISData(ReportCommonPageActions pageAction, String customerId, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) {
+	protected boolean executeAsCustomerWithGISData(ReportCommonPageActions pageAction, String customerId, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) throws Exception {
 		boolean retVal = false;
 		try {
-			// Add GIS seed for customer.
+			// Add GIS seed for customer. Skipped if already present.
 			DbSeedExecutor.executeGisSeed(customerId);
 
 			retVal = testActions.test(pageAction);
@@ -167,6 +175,10 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 				DbSeedExecutor.cleanUpGisSeed(customerId);
 			} catch (Exception e) {
 				Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+			}
+
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
 			}
 		}
 

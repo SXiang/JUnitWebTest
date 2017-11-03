@@ -7,7 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.CheckedPredicate;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.Location;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataaccess.source.User;
@@ -62,26 +64,32 @@ public class TestDataGenerator {
 	public void generateNewCustomerAndSurvey(CustomerSurveyInfoEntity custSrvInfo, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		// Create new customer.
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
+
+		if (custSrvInfo.isPushGISSeedData() && TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			manageCustomerPageAction.fetchNewGisCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
+		} else {
+			manageCustomerPageAction.createNewCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
+		}
+
 		String customerName = ManageCustomerPageActions.workingDataRow.get().name;
-		
+
 		// Create new location.
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, custSrvInfo.getLocationRowID() /*locationRowID*/);
 		String locationName = ManageLocationPageActions.workingDataRow.get().name;
-		
+
 		// Create new user.
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, custSrvInfo.getUserRowID() /*userRowID*/);
-		
+
 		// Create new surveyor.
 		manageSurveyorPageAction.open(EMPTY, NOTSET);
 		manageSurveyorPageAction.createNewSurveyor(EMPTY, custSrvInfo.getSurveyorRowID() /*surveyorRowID*/);
 		String surveyorName = ManageSurveyorPageActions.workingDataRow.get().description;
-		
+
 		if(custSrvInfo.isCalibrationRecord())
 		{
-			manageSurveyorAdminPage.editExistingSurveyor(customerName, locationName, surveyorName, locationName, surveyorName, true);		
+			manageSurveyorAdminPage.editExistingSurveyor(customerName, locationName, surveyorName, locationName, surveyorName, true);
 		}
 
 		// Create new analyzer.
@@ -93,7 +101,7 @@ public class TestDataGenerator {
 		manageRefGasBottlesPageAction.createNewRefGasBottle(EMPTY, custSrvInfo.getRefGasBottleRowID() /*refGasBottleRowID*/);
 
 		// Push GIS seed if specified.
-		if (custSrvInfo.isPushGISSeedData()) {
+		if (custSrvInfo.isPushGISSeedData() && !TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 			Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
 			DbSeedExecutor.executeGisSeed(customer.getId());
 		}
@@ -108,11 +116,15 @@ public class TestDataGenerator {
 
 		// Cleanup GIS seed (if not specified to be retained).
 		if (!custSrvInfo.isRetainGISSeedData()) {
-			try {
-				Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-				DbSeedExecutor.cleanUpGisSeed(customer.getId());
-			} catch (Exception e) {
-				Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+			} else {
+				try {
+					Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+					DbSeedExecutor.cleanUpGisSeed(customer.getId());
+				} catch (Exception e) {
+					Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+				}
 			}
 		}
 	}

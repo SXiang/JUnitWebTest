@@ -30,7 +30,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 
 	/**
 	 * Initializes the page action objects.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
 		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
@@ -41,7 +41,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 
 		// Select run mode here.
 		setTestRunMode(ReportTestRunMode.UnitTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -50,20 +50,20 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 	public ActionsVerification_ComplianceReportsTest() {
 	}
 
-	
+
 	@Test
 	public void TC_ComplianceReports_VerifyNewComplianceReportsPageFields() throws Exception {
 		Log.info("\nRunning TC_ComplianceReports_VerifyNewComplianceReportsPageFields ...");
 
 		Integer userDataRowID = 6;
 		Integer reportDataRowID1 = 49;
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
-		
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1));
-		
+
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.selectReportMode(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
@@ -79,10 +79,10 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 
 		Integer userDataRowID = 6;
 		Integer reportDataRowID1 = 49;
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
-		
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		createNewReport(complianceReportsPageAction, reportDataRowID1);
 		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
@@ -94,7 +94,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 	}
 
 	/**
-	 * This unit test is data dependent. Was tested by modifying lat/long coordinates on TC824. 
+	 * This unit test is data dependent. Was tested by modifying lat/long coordinates on TC824.
 	 * To run this unit test, generate report with following data and point ReportRowID to the title of generated report:
 		 	listBoundary.add("37.4102286146667");
 			listBoundary.add("-121.9813578675");
@@ -107,11 +107,11 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		Log.info("\nRunning TC_ComplianceReports_EmptySSRSPDFVerifications ...");
 
 		Integer userDataRowID = 6;
-		Integer reportDataRowID1 = 49;   // Set a rowID that would generate EMPTY tables. If no such row then, create new report. 
-		
+		Integer reportDataRowID1 = 49;   // Set a rowID that would generate EMPTY tables. If no such row then, create new report.
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
-		
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		createNewReport(complianceReportsPageAction, reportDataRowID1);
 		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
@@ -135,11 +135,11 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		Log.info("\nRunning TC_ComplianceReports_VerifyErrorMessages ...");
 
 		Integer userDataRowID = 6;
-		Integer reportDataRowID1 = 74;   // Use a rowID that would generate error messages. 
-		
+		Integer reportDataRowID1 = 74;   // Use a rowID that would generate error messages.
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
-		
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
 		StringBuilder expectedErrorMessages = new StringBuilder();
@@ -158,11 +158,11 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		Log.info("\nRunning TC_ComplianceReports_VerifyReportCancelled ...");
 
 		Integer userDataRowID = 6;
-		Integer reportDataRowID1 = 49;   // Use a rowID that would generate error messages. 
-		
+		Integer reportDataRowID1 = 49;   // Use a rowID that would generate error messages.
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
-		
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1);
@@ -181,11 +181,11 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		Log.info("\nRunning TC_ComplianceReports_VerifySSRSPdfFooter ...");
 
 		Integer userDataRowID = 6;
-		Integer reportDataRowID1 = 49;   // Use a rowID that would generate error messages. 
-		
+		Integer reportDataRowID1 = 49;   // Use a rowID that would generate error messages.
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
-		
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		createNewReport(complianceReportsPageAction, reportDataRowID1);
 		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
@@ -197,7 +197,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 
 	/**
 	 * Unit test to verify searched surveys results.
-	 * NOTE: BEFORE running test: Make sure the reportRowID is using CustomerRowID=2 
+	 * NOTE: BEFORE running test: Make sure the reportRowID is using CustomerRowID=2
 	 * @throws Exception
 	 */
 	@Test
@@ -206,13 +206,13 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 
 		Integer userDataRowID = 6;
 		Integer reportDataRowID1 = 49;
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
-		
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1));
-		
+
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.selectReportMode(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);

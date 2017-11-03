@@ -284,7 +284,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(eqReportsPage.isRapidResponseSurveyModeShown());
 		assertTrue(eqReportsPage.isEQSurveyModeShown());
 		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
-		eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
+		assertTrue(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));
 		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
@@ -318,7 +318,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 		eqReportsPage.openNewReportPage();
 		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
-		eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
+		assertTrue(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));
 		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));

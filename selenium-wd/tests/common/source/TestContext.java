@@ -302,7 +302,8 @@ public enum TestContext {
 
 	public Long getRunUniqueId() {
 		if (testSetup != null) {
-			return testSetup.getRunUUID();
+			Long runUUID = testSetup.getRunUUID();
+			return runUUID == null ? 0L : runUUID;
 		}
 		return 0L;
 	}
