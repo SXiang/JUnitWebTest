@@ -310,10 +310,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//table[@id='datatableSurveys']/tbody/tr")
 	protected List<WebElement> numberofSurveyRecords;
 
-	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
-	protected WebElement btnDeleteConfirm;
-	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
-
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
 
@@ -4339,16 +4335,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			List<Map<String, String>> views) {
 		fillCustomBoundaryTextFields(NELat, NELong, SWLat, SWLong);
 		addViews(customer, views);
-	}
-
-	@Override
-	public WebElement getBtnDeleteConfirm() {
-		return btnDeleteConfirm;
-	}
-
-	@Override
-	public String getBtnDeleteConfirmXpath() {
-		return btnDeleteConfirmXpath;
 	}
 
 	@Override

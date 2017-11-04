@@ -7,6 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.AssessmentReportsPageActions;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.AssessmentReportsPage;
 
@@ -15,6 +16,8 @@ public class AssessmentReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 	private static AssessmentReportsPageActions assessmentReportsPageAction;
 	private static AssessmentReportsPage assessmentReportsPage;
+
+	private static LoginPageActions loginPageAction;
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
@@ -30,6 +33,7 @@ public class AssessmentReportsPageUnitTest  extends BaseReportsPageActionTest {
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		assessmentReportsPageAction = new AssessmentReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 
 		// Select run mode here.
@@ -38,6 +42,21 @@ public class AssessmentReportsPageUnitTest  extends BaseReportsPageActionTest {
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			assessmentReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
+	}
+
+	@Test
+	public void testCleanupReport() throws Exception {
+		final Integer userDataRowID = 2;
+		final Integer reportDataRowID1 = 4;
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+
+		assessmentReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
 	}
 
 	@Test

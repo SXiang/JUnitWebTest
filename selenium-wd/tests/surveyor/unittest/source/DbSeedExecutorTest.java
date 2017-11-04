@@ -217,6 +217,17 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
+	public void cleanup01_GisDataSeedTest_SpecificCustomer_VerifyNoErrors() throws Exception {
+		Log.info("\nRunning cleanup01_GisDataSeedTest_SpecificCustomer_VerifyNoErrors ...");
+
+		final String customerId = "7084D990-2DF2-D11E-EAFD-39E29618B4BD";
+		DbSeedExecutor.cleanUpGisSeed(customerId);
+
+		// Verify GIS seed data was removed correctly.
+		verifyGisSeedDataIsNotPresent(customerId);
+	}
+
+	@Test
 	public void cleanup01_GisDataSeedTest() throws Exception {
 		Log.info("\nRunning cleanup01_GisDataSeedTest ...");
 
