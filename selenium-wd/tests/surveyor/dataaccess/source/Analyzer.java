@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.source.ApiUtility;
+import common.source.EnumUtility;
 import common.source.Log;
+import surveyor.scommon.entities.BaseReportEntity;
+import surveyor.scommon.entities.BaseReportEntity.ReportType;
 
 public class Analyzer extends BaseEntity {
 	public static final String CACHE_KEY = "ANALYZER.";
@@ -105,6 +108,10 @@ public class Analyzer extends BaseEntity {
 		return objAnalyzer;
 	}
 
+	public static ArrayList<Analyzer> getAnalyzersForCustomer(String customerId) {
+		return new Analyzer().getAnalyzersForCustomerInternal(customerId);
+	}
+
 	public Analyzer get(String id) {
 		Analyzer objAnalyzer = null;
 
@@ -120,6 +127,13 @@ public class Analyzer extends BaseEntity {
 			}
 		}
 		return objAnalyzer;
+	}
+
+	public List<CapabilityType> getCapabilityTypes() {
+		String SQL = "SELECT HCT.Id, HCT.Name, HCT.Description FROM [dbo].[AnalyzerHardwareCapabilityType] AS AHCT"
+				+ " INNER JOIN [dbo].[HardwareCapabilityTypes] AS HCT ON AHCT.HardwareCapabilityTypeId=HCT.Id"
+				+ " WHERE AHCT.AnalyzerId = '" + this.getId() + "'";
+		return loadCapability(SQL);
 	}
 
 	public Analyzer getBySerialNumber(String serialNum) {
@@ -158,18 +172,22 @@ public class Analyzer extends BaseEntity {
 		return load(SQL);
 	}
 
+	private ArrayList<Analyzer> getAnalyzersForCustomerInternal(String customerId) {
+		String SQL = String.format("SELECT * FROM [dbo].[Analyzer] WHERE (SurveyorUnitId IN (SELECT [Id] FROM [dbo].[SurveyorUnit] "
+				+ " WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%s')))", customerId);
+		return load(SQL);
+	}
+
 	public void cascadeDeleteAnalyzer() {
 		List<String> queries = new ArrayList<String>();
 		queries.add(String.format("DELETE [dbo].[AnalyzerAlarmLog] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerHardwareCapabilityType] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerHeartbeat] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerLog] WHERE AnalyzerId='%s'", getId()));
-		queries.add(String.format("DELETE [dbo].[AnalyzerSurveyorUnitHistory] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnalyzerUpdateJob] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[AnemometerRaw] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[GPSRaw] WHERE AnalyzerId='%s'", getId()));
 		queries.add(String.format("DELETE [dbo].[Measurement] WHERE AnalyzerId='%s'", getId()));
-		queries.add(String.format("DELETE [dbo].[Note] WHERE AnalyzerId='%s'", getId()));
 		queries.forEach(sql -> executeNonQuery(sql));
 
 		// Delete surveys and associated reports.
@@ -177,9 +195,31 @@ public class Analyzer extends BaseEntity {
 			s -> {
 				// Delete reports.
 				ReportDrivingSurvey.getReportDrivingSurveysBySurveyId(s.getId().toString()).forEach(
-						r -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, r.getReportId())));
+						r -> {
+							String reportId = r.getReportId().toString();
+							String reportTypeId = Report.getReportById(reportId).getReportTypeId();
+							ReportType reportType = BaseReportEntity.ReportTypeGuids.get(reportTypeId);
+							if (reportType.equals(ReportType.COMPLIANCE)) {
+								Log.info(String.format("Deleting Compliance Report Id='%s', type='%s' for survey tag='%s'", reportId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, r.getReportId()));
+							} else if (reportType.equals(ReportType.ASSESSMENT)) {
+								Log.info(String.format("Deleting Assessment Report Id='%s', type='%s' for survey tag='%s'", reportId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_ASSESSMENT_REPORTS_RELATIVE_URL, r.getReportId()));
+							}
+						});
 				ReportEQDrivingSurvey.getReportEQDrivingSurveysBySurveyId(s.getId().toString()).forEach(
-						r -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_EQ_REPORTS_RELATIVE_URL, r.getReportEQId())));
+						r -> {
+							String reportEQId = r.getReportEQId().toString();
+							String reportTypeId = Report.getReportById(reportEQId).getReportTypeId();
+							ReportType reportType = BaseReportEntity.ReportTypeGuids.get(reportTypeId);
+							if (reportType.equals(ReportType.EQ)) {
+								Log.info(String.format("Deleting EQ report Id='%s', type='%s' for survey tag='%s'", reportEQId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_EQ_REPORTS_RELATIVE_URL, r.getReportEQId()));
+							} else if (reportType.equals(ReportType.FACILITYEQ)) {
+								Log.info(String.format("Deleting FacilityEQ report Id='%s', type='%s' for survey tag='%s'", reportEQId, reportTypeId, s.getTag()));
+								ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_FACILITY_EQ_REPORTS_RELATIVE_URL, r.getReportEQId()));
+							}
+						});
 
 				// DE3052 prevents survey deletion when there is [EQMeasurementResult] or [ReportFieldOfViewAggregated] reference.
 				// Currently explicitly deleting referenced [EQMeasurementResult] and [ReportFieldOfViewAggregated] rows to ensure Test Analyzers with certs can be reused.
@@ -226,5 +266,35 @@ public class Analyzer extends BaseEntity {
 				+ "IF @@ROWCOUNT=0 INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'%s', %d);",
 				capabilityType.getIndex(), getId(), getId(), capabilityType.getIndex());
 		executeNonQuery(SQL);
+	}
+
+	private static CapabilityType loadCapabilityFrom(ResultSet resultSet) {
+		CapabilityType capability = CapabilityType.Ethane;
+		try {
+			capability = EnumUtility.fromName(resultSet.getString("Description"), () -> CapabilityType.values());
+		} catch (SQLException e) {
+			Log.error(e.toString());
+		}
+
+		return capability;
+	}
+
+	private List<CapabilityType> loadCapability(String SQL) {
+		List<CapabilityType> objCapabilityList = new ArrayList<CapabilityType>();
+
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(SQL);
+
+			while (resultSet.next()) {
+				CapabilityType capability = loadCapabilityFrom(resultSet);
+				objCapabilityList.add(capability);
+			}
+
+		} catch (SQLException e) {
+			Log.error("Class Analyzer | " + e.toString());
+		}
+
+		return objCapabilityList;
 	}
 }

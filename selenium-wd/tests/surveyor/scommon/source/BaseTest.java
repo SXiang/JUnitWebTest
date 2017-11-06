@@ -45,6 +45,7 @@ import common.source.WebDriverFactory;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -331,35 +332,51 @@ public class BaseTest {
 		return true;
 	}
 
-	public Map<String, String> createTestAccount(String testCase){
+	public Map<String, String> createTestAccountWithGisCustomer(String testCase) throws Exception{
+		return createTestAccount(testCase, null /*lfsToExclude*/, CapabilityType.IsotopicMethane,
+				true /*addTestSurveyor*/, true /*fetchAnalyzerFromPool*/, true /*fetchCustomerFromPool*/);
+	}
+
+	public Map<String, String> createTestAccountWithGisCustomer(String testCase, CapabilityType analyzerType) throws Exception{
+		return createTestAccount(testCase, null /*lfsToExclude*/, analyzerType,
+				true /*addTestSurveyor*/, true /*fetchAnalyzerFromPool*/, true /*fetchCustomerFromPool*/);
+	}
+
+	public Map<String, String> createTestAccount(String testCase) throws Exception{
 		return createTestAccount(testCase, CapabilityType.IsotopicMethane);
 	}
 
-	public Map<String, String> createTestAccount(String testCase, CapabilityType analyzerType){
+	public Map<String, String> createTestAccount(String testCase, CapabilityType analyzerType) throws Exception{
 		return createTestAccount(testCase,  null, analyzerType, true, true);
 	}
 
-	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
+	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor) throws Exception{
 		return createTestAccount(testCase, addTestSurveyor, true);
 	}
 
-	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool) throws Exception{
 		return createTestAccount(testCase,  null, CapabilityType.IsotopicMethane, addTestSurveyor, fetchAnalyzerFromPool);
 	}
 
-	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude) throws Exception{
 		return createTestAccount(testCase, lfsToExclude, true);
 	}
 
-	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor) throws Exception{
 		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
 
-	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool) throws Exception{
 		return createTestAccount(testCase, lfsToExclude, CapabilityType.IsotopicMethane, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
 
-	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, CapabilityType analyzerType, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, CapabilityType analyzerType,
+			boolean addTestSurveyor, boolean fetchAnalyzerFromPool) throws Exception{
+		return createTestAccount(testCase, lfsToExclude, analyzerType, addTestSurveyor, fetchAnalyzerFromPool, false /*fetchCustomerFromPool*/);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, CapabilityType analyzerType,
+			boolean addTestSurveyor, boolean fetchAnalyzerFromPool, boolean fetchCustomerFromPool) throws Exception{
 		String uniqueNumber = getTestSetup().getNewFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
 		String userName = uniqueNumber + REGBASEUSERNAME;
@@ -391,7 +408,7 @@ public class BaseTest {
 		LicensedFeatures[] lfs = LicensedFeatures.values(lfsToExclude);
 
 		HashMap<String, String> testAccount = new HashMap<String, String>();
-		testAccount.put("customerName", customerName);
+
 		testAccount.put("userName", userName);
 		testAccount.put("locationName", locationName);
 		testAccount.put("cityName", cityName);
@@ -402,12 +419,18 @@ public class BaseTest {
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageCustomersPage);
-		manageCustomersPage.open();
-		if(!manageCustomersPage.addNewCustomer(customerName, eula, true,lfs)){
-			fail(String.format("Failed to add a new customer %s, %s, %s",customerName, eula, true));
+		if (fetchCustomerFromPool) {
+			customerName = CustomerWithGisDataPool.acquireCustomerFailOnError().getName();
+		} else {
+			ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+			PageFactory.initElements(getDriver(),  manageCustomersPage);
+			manageCustomersPage.open();
+			if(!manageCustomersPage.addNewCustomer(customerName, eula, true,lfs)){
+				fail(String.format("Failed to add a new customer %s, %s, %s",customerName, eula, true));
+			}
 		}
+
+		testAccount.put("customerName", customerName);
 
 		ManageLocationsPage	manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), manageLocationsPage);

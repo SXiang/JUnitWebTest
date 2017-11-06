@@ -1,0 +1,150 @@
+BEGIN TRANSACTION;
+
+BEGIN TRY
+
+	DECLARE @customerId uniqueidentifier
+	DECLARE @locationIdFromSeed uniqueidentifier = '00000000-0000-0000-0000-000000000000'
+	DECLARE @skipLocationCleanup bit = %SKIP_LOCATION_CLEANUP%
+	IF (@skipLocationCleanup = 0) SET @locationIdFromSeed = '%LOCATION_ID_FROM_SEED%'
+	
+	-- Customer - '%CUSTOMER_NAME%'
+	IF NOT EXISTS (SELECT * FROM [dbo].[Customer] WHERE Name='%CUSTOMER_NAME%')
+	BEGIN
+		UPDATE [dbo].[Customer] SET [Name]=N'%CUSTOMER_NAME%',[Eula]=N'Accept the agreement',[Active]=1 WHERE [Id]='%CUSTOMER_ID%' 
+		IF @@ROWCOUNT=0
+			INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (N'%CUSTOMER_ID%',N'%CUSTOMER_NAME%' ,N'Accept the agreement',1)
+	END
+
+	-- License for Customer - '%CUSTOMER_NAME%'
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'e86cbf64-f9f2-47bd-80a8-008a233ce7d7' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'e86cbf64-f9f2-47bd-80a8-008a233ce7d7', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46fb8592-4477-4ee1-ab49-04a991036785' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'46fb8592-4477-4ee1-ab49-04a991036785', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'387d1519-64da-4abd-b947-1bcd72bd6caa' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'387d1519-64da-4abd-b947-1bcd72bd6caa', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'3eb7107c-ee5e-467c-92ce-222a83bcb7cf' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'3eb7107c-ee5e-467c-92ce-222a83bcb7cf', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'34664fdf-c940-45ab-b37c-34abd5ebf0a1' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'34664fdf-c940-45ab-b37c-34abd5ebf0a1', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'55cd10c5-80db-004c-f0d6-39d4d9124478' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'55cd10c5-80db-004c-f0d6-39d4d9124478', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'399900b5-e0c6-4b79-8f94-3ea7f00d879f' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'399900b5-e0c6-4b79-8f94-3ea7f00d879f', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'5f93bb71-4f95-4e26-abd3-500b68838d7b' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'5f93bb71-4f95-4e26-abd3-500b68838d7b', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'5edf6c34-5769-43d1-afe9-5e9223a7f48f' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'5edf6c34-5769-43d1-afe9-5e9223a7f48f', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'b5d075a8-94ee-4d28-afc4-69283d124a53' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'b5d075a8-94ee-4d28-afc4-69283d124a53', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'05d91eb6-90b2-440c-b887-69ac44a071ed' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'05d91eb6-90b2-440c-b887-69ac44a071ed', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'0f726186-19ee-4703-9c77-6ec6155ab255' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'0f726186-19ee-4703-9c77-6ec6155ab255', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'a104c92b-38b6-4c1a-aa25-70b3b8308cb7' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'a104c92b-38b6-4c1a-aa25-70b3b8308cb7', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'117aeb6d-5a15-4170-ab85-9978ec68a017' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'117aeb6d-5a15-4170-ab85-9978ec68a017', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'765f2dbb-b6f2-4d53-a6d3-9a071e54091e' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'765f2dbb-b6f2-4d53-a6d3-9a071e54091e', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'4405b107-f234-43a6-bac4-a7f0b8ecd7ac' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'4405b107-f234-43a6-bac4-a7f0b8ecd7ac', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'944b3ef5-3f25-4358-82ad-ae632ea3f4c9' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'944b3ef5-3f25-4358-82ad-ae632ea3f4c9', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'a42cfe59-405b-445b-ae63-af74c5d9cbba' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'a42cfe59-405b-445b-ae63-af74c5d9cbba', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'cfd1ead2-9386-4b81-95c7-b3bf1c8252fb' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'cfd1ead2-9386-4b81-95c7-b3bf1c8252fb', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'0105e725-4913-477a-b58d-cbd9d83e7c70' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'0105e725-4913-477a-b58d-cbd9d83e7c70', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'f5e43f3d-9f69-430d-9013-e902a34a1d18' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'f5e43f3d-9f69-430d-9013-e902a34a1d18', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'8cef7673-80d2-407a-b833-f164c472cfda' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'8cef7673-80d2-407a-b833-f164c472cfda', N'%CUSTOMER_ID%')
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6a412f8c-e97f-4c88-b4d4-f2bcecbeabbb' AND [CustomerId]=N'%CUSTOMER_ID%')
+		INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6a412f8c-e97f-4c88-b4d4-f2bcecbeabbb', N'%CUSTOMER_ID%')
+
+	------ Cleanup referenced table entries [START] ------
+	
+	-- CalibrationRecord (Anemometer & Inlet) for Customer
+	DELETE [dbo].[Anemometer]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%CUSTOMER_ID%'))))
+	DELETE [dbo].[Inlet]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%CUSTOMER_ID%'))))
+	DELETE [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='%CUSTOMER_ID%')))
+
+	-- ReferenceGasBottle for all customer locations
+	DELETE [dbo].[ReferenceGasBottle] WHERE SurveyorUnitId IN (SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE LocationID IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%'))
+
+	-- SurveyorUnit for all customer locations
+	DELETE [dbo].[SurveyorUnit] WHERE LocationID IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+
+	-- Users for Customer (UserLogin, UserRole, UserClaim)
+	DELETE [dbo].[UserLogin] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%')
+	DELETE [dbo].[UserClaim] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%')
+	DELETE [dbo].[UserRole] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%')
+	DELETE [dbo].[User] WHERE CustomerId = '%CUSTOMER_ID%'
+
+	-- Locations (except seed data location)
+	DELETE [dbo].[LocationAnalyticsParameter] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[LocationEQParameter] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[LocationPipeLineParameter] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[IsotopicIdentity] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')
+	DELETE [dbo].[SurveyModeTypeConfiguration] WHERE LocationId IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%')	
+	DELETE [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%' AND ID <> @locationIdFromSeed
+
+	-- CustomerSettings, FTPConfiguration for Customer
+	DELETE [dbo].[CustomerSettings] WHERE CustomerId='%CUSTOMER_ID%'
+	DELETE [dbo].[FTPConfiguration] WHERE CustomerId='%CUSTOMER_ID%'	
+
+	------ [END] Cleanup referenced table entries ------
+
+	-- Location for Customer - '%CUSTOMER_NAME%'
+	SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE Name='%CUSTOMER_NAME%'
+	UPDATE [dbo].[Location] SET [Description]=N'%CUSTOMER_NAME%Loc',[Latitude]='37.4020925705503',[Longitude]='-121.984820397399' WHERE [CustomerId]=@customerId 
+	
+END TRY
+
+BEGIN CATCH
+    --returns the complete original error message as a result set
+    SELECT 
+        ERROR_NUMBER() AS ErrorNumber
+        ,ERROR_SEVERITY() AS ErrorSeverity
+        ,ERROR_STATE() AS ErrorState
+        ,ERROR_PROCEDURE() AS ErrorProcedure
+        ,ERROR_LINE() AS ErrorLine
+        ,ERROR_MESSAGE() AS ErrorMessage
+
+    --will return the complete original error message as an error message
+    DECLARE @ErrorMessage nvarchar(400), @ErrorNumber int, @ErrorSeverity int, @ErrorState int, @ErrorLine int
+    SELECT @ErrorMessage = N'Error %d, Line %d, Message: '+ERROR_MESSAGE(),@ErrorNumber = ERROR_NUMBER(),@ErrorSeverity = ERROR_SEVERITY(),@ErrorState = ERROR_STATE(),@ErrorLine = ERROR_LINE()
+
+ 	IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION;
+
+	RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorNumber,@ErrorLine)
+    
+END CATCH;
+
+IF @@TRANCOUNT > 0
+    COMMIT TRANSACTION;
+GO

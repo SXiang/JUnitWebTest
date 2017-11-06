@@ -4,9 +4,15 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import common.source.Log;
+import common.source.TestSetup;
+
+import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
+import javax.validation.constraints.AssertTrue;
+
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
@@ -143,6 +149,74 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
+	public void execute08_GisCustomerDataSeedTest() throws Exception {
+		DbSeedExecutor.executeGISCustomerDataSeed();
+		verifyGisCustomerSeedDataIsPresent();
+	}
+
+	@Test
+	public void execute09_GisCustomerDataSeedSingleCustomerTest_GISSeedCustomer() throws Exception {
+		final String customerName = "AutomationSeedCustomer00001";
+
+		// PREP: execute GIS customer seed for customer.
+		DbSeedExecutor.executeGISCustomerDataSeed();
+		verifyGisCustomerSeedDataIsPresent();
+
+		try {
+			Customer customer = new Customer().get(customerName);
+
+			String customerId = customer.getId();
+
+			// modify customer name.
+			customer.executeNonQuery(String.format("UPDATE [dbo].[Customer] SET Name='%s' WHERE Id='%s'", TestSetup.getUUIDString(), customerId));
+
+			// remove licenses associated with customer.
+			customer.executeNonQuery(String.format("DELETE [dbo].[CustomerLicensedFeatureOptions] WHERE CustomerId='%s'", customerId));
+
+			// execute GIS customer seed for customer.
+			DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer(customerName);
+
+			// verify seed data was applied correctly.
+			verifyGisCustomerSeedDataForCustomerIsCorrect(customerName);
+		} finally {
+			// RE-ADD GIS customer seed data.
+			DbSeedExecutor.executeGISCustomerDataSeed();
+			verifyGisCustomerSeedDataIsPresent();
+		}
+	}
+
+	@Test
+	public void execute09_GisCustomerDataSeedSingleCustomerTest_CustomerWithReferenceTableEntries() throws Exception {
+		final String customerName = "sqacus";
+
+		// PREP: Ensure seed data present for 'sqacus'.
+		DbSeedExecutor.executeGenericDataSeed();
+		verifyGenericSeedDataIsPresent();
+
+		String customerId = Customer.getCustomer(customerName).getId();
+		Customer customer = new Customer();
+
+		try {
+			// modify customer name.
+			customer.executeNonQuery(String.format("UPDATE [dbo].[Customer] SET Name='%s' WHERE Id='%s'", TestSetup.getUUIDString(), customerId));
+
+			// remove licenses associated with customer.
+			customer.executeNonQuery(String.format("DELETE [dbo].[CustomerLicensedFeatureOptions] WHERE CustomerId='%s'", customerId));
+
+			// execute GIS customer seed for customer.
+			DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer(customerName);
+
+			// verify referenced table entries are deleted correctly.
+			verifyGisCustomerReferencedTableEntriesDeletedCorrectly(customerId);
+		} finally {
+			// RE-ADD Generic seed data after cleaning up the added licenses.
+			customer.executeNonQuery(String.format("DELETE [dbo].[CustomerLicensedFeatureOptions] WHERE CustomerId='%s'", customerId));
+			DbSeedExecutor.executeGenericDataSeed();
+			verifyGenericSeedDataIsPresent();
+		}
+	}
+
+	@Test
 	public void cleanup01_GisDataSeedTest() throws Exception {
 		Log.info("\nRunning cleanup01_GisDataSeedTest ...");
 
@@ -169,5 +243,55 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 		// Verify GIS seed data was removed correctly.
 		verifyGisSeedDataIsNotPresent(customerId);
+	}
+
+	private void verifyGisCustomerSeedDataForCustomerIsCorrect(String customerName) {
+		final Integer expectedLicenseCount = 23;
+		DBCache.INSTANCE.purgeCache(Customer.CACHE_KEY);
+		Customer customer = new Customer().get(customerName);
+		assertTrue(customer != null);
+		Integer actualLicenseCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[CustomerLicensedFeatureOptions] WHERE CustomerId='" + customer.getId() + "'");
+		assertTrue(String.format("Expected name [%s]. Actual=[%s]", customerName, customer.getName()), customer.getName().equals(customerName));
+		assertTrue(String.format("Expected [%d] licenses. Found=[%d]", expectedLicenseCount, actualLicenseCount), actualLicenseCount == expectedLicenseCount);
+	}
+
+	private void verifyGisCustomerReferencedTableEntriesDeletedCorrectly(String customerId) {
+		Customer customer = new Customer();
+
+		Integer anemometerCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[Anemometer]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='" + customerId + "'))))");
+		assertTrue(String.format("[Anemometer] Expected Count=0, Actual=%d", anemometerCount), anemometerCount == 0);
+
+		Integer inletCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[Inlet]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='" + customerId + "'))))");
+		assertTrue(String.format("[Inlet] Expected Count=0, Actual=%d", inletCount), inletCount == 0);
+
+		Integer calibrationRecordCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='" + customerId + "')))");
+		assertTrue(String.format("[CalibrationRecord] Expected Count=0, Actual=%d", calibrationRecordCount), calibrationRecordCount == 0);
+
+		Integer referenceGasBottleCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[ReferenceGasBottle] WHERE SurveyorUnitId IN (SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE LocationID IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='" + customerId + "'))");
+		assertTrue(String.format("[ReferenceGasBottle] Expected Count=0, Actual=%d", referenceGasBottleCount), referenceGasBottleCount == 0);
+
+		Integer surveyorUnitCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[SurveyorUnit] WHERE LocationID IN (SELECT [Id] FROM [dbo].[Location] WHERE [CustomerId]='" + customerId + "')");
+		assertTrue(String.format("[SurveyorUnit] Expected Count=0, Actual=%d", surveyorUnitCount), surveyorUnitCount == 0);
+
+		Integer userLoginCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[UserLogin] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '" + customerId + "')");
+		assertTrue(String.format("[UserLogin] Expected Count=0, Actual=%d", userLoginCount), userLoginCount == 0);
+
+		Integer userClaimCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[UserClaim] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '" + customerId + "')");
+		assertTrue(String.format("[UserClaim] Expected Count=0, Actual=%d", userClaimCount), userClaimCount == 0);
+
+		Integer userRoleCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[UserRole] WHERE [UserId] IN (SELECT [ID] FROM [dbo].[User] WHERE CustomerId = '" + customerId + "')");
+		assertTrue(String.format("[UserRole] Expected Count=0, Actual=%d", userRoleCount), userRoleCount == 0);
+
+		Integer userCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[User] WHERE CustomerId = '" + customerId + "'");
+		assertTrue(String.format("[User] Expected Count=0, Actual=%d", userCount), userCount == 0);
+
+		Integer locationCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[Location] WHERE [CustomerId]='" + customerId + "'");
+		assertTrue(String.format("[Location] Expected Count=0, Actual=%d", locationCount), locationCount == 0);
+
+		Integer customerSettingsCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[CustomerSettings] WHERE CustomerId='" + customerId + "'");
+		assertTrue(String.format("[CustomerSettings] Expected Count=0, Actual=%d", customerSettingsCount), customerSettingsCount == 0);
+
+		Integer ftpConfigurationCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[FTPConfiguration] WHERE CustomerId='" + customerId + "'");
+		assertTrue(String.format("[FTPConfiguration] Expected Count=0, Actual=%d", ftpConfigurationCount), ftpConfigurationCount == 0);
 	}
 }

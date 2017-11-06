@@ -14,7 +14,23 @@ public class CustomerLicenses {
 		private String description;
 
 		public License(String licenseFeatureId, String description) {
+			this.setLicenseFeatureId(licenseFeatureId);
+			this.setDescription(description);
+		}
+
+		public String getLicenseFeatureId() {
+			return licenseFeatureId;
+		}
+
+		public void setLicenseFeatureId(String licenseFeatureId) {
 			this.licenseFeatureId = licenseFeatureId;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
 			this.description = description;
 		}
 

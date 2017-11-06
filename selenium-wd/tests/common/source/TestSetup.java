@@ -167,6 +167,8 @@ public class TestSetup {
 	private boolean pushDBSeedEnabled;
 	private String pushDBSeedBaseUrl;
 
+	private Boolean geoServerEnabled;
+
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
 	private Long runUUID;
@@ -319,7 +321,7 @@ public class TestSetup {
 
 	public String getCIEnvironmentBuildNumber() {
 		String environmentName = getEnvironment().getAutoDbName();
-		String apiResponse = ApiUtility.getAutomationApiResponse(String.format(ApiUtility.ENVIRONMENT_BUILD_API_RELATIVE_URL, environmentName));
+		String apiResponse = ApiUtility.getAutomationApiResponse(String.format(ApiUtility.ENVIRONMENT_BUILD_API_RELATIVE_URL, environmentName)).getResponseBody();
 		Log.info(String.format("API Response -> %s", apiResponse));
 		Log.info("Creating gson Builder...");
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -732,6 +734,8 @@ public class TestSetup {
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
 			setDBServerMachineProperties();
+
+			this.setGeoServerEnabled(Boolean.valueOf(this.testProp.getProperty("geoServer.Enabled")));
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
@@ -1917,5 +1921,13 @@ public class TestSetup {
 
 	public void setNetworkEmulation(INetworkEmulation networkEmulation) {
 		this.networkEmulation = networkEmulation;
+	}
+
+	public boolean isGeoServerEnabled() {
+		return geoServerEnabled;
+	}
+
+	public void setGeoServerEnabled(boolean geoServerEnabled) {
+		this.geoServerEnabled = geoServerEnabled;
 	}
 }
