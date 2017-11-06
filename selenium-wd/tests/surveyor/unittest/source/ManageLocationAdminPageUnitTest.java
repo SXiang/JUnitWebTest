@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.unittest.source;
 
@@ -68,7 +68,7 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, 24 /*locationRowID*/);
 	}
-	
+
 	/**
 	 * Test Description: Add and Edit FEQ location for new customer
 	 * attributes present
@@ -87,7 +87,7 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 		// Create new location.
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, 24 /*locationRowID*/);
-		
+
 		///Edit FEQ location parameters for the existing location
 		manageLocationPageAction.editFEQLocationParameters(EMPTY, 25/*locationRowID*/);
 		assertTrue(manageLocationPageAction.findExistingLocation(EMPTY, 25));
@@ -113,7 +113,7 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, 26 /*locationRowID*/);
 	}
-	
+
 	/**
 	 * Test Description: Add and Edit MEQ location for new customer
 	 * attributes present
@@ -132,7 +132,7 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 		// Create new location.
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, 26 /*locationRowID*/);
-		
+
 		///Edit MEQ location parameters for the existing location
 		manageLocationPageAction.editMEQLocationParameters(EMPTY, 27/*locationRowID*/);
 		assertTrue(manageLocationPageAction.findExistingLocation(EMPTY, 27));

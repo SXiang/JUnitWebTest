@@ -26,8 +26,10 @@ import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ZipUtility;
+import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.SqlCmdUtility;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -77,6 +79,7 @@ public class DbSeedExecutor {
 
 	public static void executeAllDataSeed() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
+		DbSeedExecutor.executeGISCustomerDataSeed();
 		DbSeedExecutor.executeGisSeed();
 		DbSeedExecutor.executeGisRefreshDataSeed();
 		DbSeedExecutor.executeSurveyDataSeed();
@@ -104,6 +107,52 @@ public class DbSeedExecutor {
 		} finally {
 			connection.close();
 		}
+	}
+
+	public static void executeGISCustomerDataSeed() throws Exception {
+		Log.method("DbSeedExecutor.executeGISCustomerDataSeed");
+		String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+		String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-GISCustomers.sql").toString();
+		SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+				TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
+	}
+
+	public static void executeGISCustomerDataSeedForSingleCustomer(String customerName) throws Exception {
+		Log.method("DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer", customerName);
+		String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+		String sqlTemplateFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-GISSingleCustomer.sql.template").toString();
+		String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql",
+				String.format("AutomationSeedScript-GISSingleCustomer-%s.sql", TestSetup.getUUIDString())).toString();
+
+		String customerId = new Customer().get(customerName).getId();
+
+		// Cleanup Analyzers for customer.
+		Analyzer.getAnalyzersForCustomer(customerId).stream()
+			.forEach(a -> a.cascadeDeleteAnalyzer());
+
+		// Re-execute GIS customer data seed for this specific customer.
+
+		// Create a working copy of the template file.
+		Files.copy(Paths.get(sqlTemplateFileFullPath), Paths.get(sqlFileFullPath));
+
+		// Update the working copy.
+		Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+		placeholderMap.put("%CUSTOMER_ID%", customerId);
+		placeholderMap.put("%CUSTOMER_NAME%", customerName);
+		String seedLocationId = CustomerWithGisDataPool.getSeedLocationIdForCustomer(customerId);
+		if (seedLocationId == null) {
+			placeholderMap.put("%SKIP_LOCATION_CLEANUP%", "1");
+			placeholderMap.put("%LOCATION_ID_FROM_SEED%", "00000000-0000-0000-0000-000000000000");
+		} else {
+			placeholderMap.put("%SKIP_LOCATION_CLEANUP%", "0");
+			placeholderMap.put("%LOCATION_ID_FROM_SEED%", seedLocationId);
+		}
+
+		FileUtility.updateFile(sqlFileFullPath, placeholderMap);
+
+		// Use the working copy in the SQL command.
+		SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+				TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
 	}
 
 	/* Method for pushing Survey seed data */
@@ -487,6 +536,17 @@ public class DbSeedExecutor {
 
 	public static void executeGisSeed(String customerId) throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed", customerId);
+		checkExecuteGisSeed(customerId);
+	}
+
+	private static void checkExecuteGisSeed(String customerId) throws Exception {
+		if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			executeGisSeedInternal(customerId);
+		}
+	}
+
+	private static void executeGisSeedInternal(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.executeGisSeedInternal", customerId);
 		boolean isCustomerSpecified = true;
 		if (customerId == null) {
 			isCustomerSpecified = false;
@@ -592,6 +652,18 @@ public class DbSeedExecutor {
 
 	public static void cleanUpGisSeed(String customerId) throws Exception {
 		Log.method("DbSeedExecutor.cleanUpGisSeed", customerId);
+		checkCleanUpGisSeed(customerId);
+	}
+
+	private static void checkCleanUpGisSeed(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.checkCleanUpGisSeed", customerId);
+		if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			cleanUpGisSeedInternal(customerId);
+		}
+	}
+
+	private static void cleanUpGisSeedInternal(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.cleanUpGisSeedInternal", customerId);
 
 		String invalidCustomerName = null;
 

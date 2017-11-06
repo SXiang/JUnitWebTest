@@ -4,12 +4,15 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 
 import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
+import common.source.TestContext;
+
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -32,6 +35,7 @@ import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -69,10 +73,21 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		setPropertiesForTestRunMode();
 
 		if(testAccount == null){
-			testAccount = createTestAccount("CusWithoutAsset");
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				testAccount = createTestAccountWithGisCustomer("CusWithAsset");
+			} else {
+				testAccount = createTestAccount("CusWithoutAsset");
+			}
+
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
 					,testAccount.get("userName"), testAccount.get("userPassword"), 20 /*surveyRuntimeInSeconds*/, SurveyType.Standard);
 		}
+	}
+
+	@After
+	public void afterTest() throws Exception {
+		String customerName = testAccount.get("customerName");
+		CustomerWithGisDataPool.releaseCustomer(customerName);
 	}
 
 	private void initializePageObjects() {
@@ -343,7 +358,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 	private void copyReportAndWaitForReportGenerationToComplete(String rptTitle, String strCreatedBy) {
 		copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy, strCreatedBy);
 	}
-	
+
 	private void copyReportAndWaitForReportGenerationToComplete(String rptTitle, String strCreatedBy, String strCreatedBy1 ) {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);

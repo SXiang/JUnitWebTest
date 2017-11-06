@@ -20,6 +20,7 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.Asset;
 import surveyor.dataaccess.source.Boundary;
 import surveyor.dataaccess.source.ConnectionFactory;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerBoundaryType;
 import surveyor.dataaccess.source.CustomerMaterialType;
 import surveyor.dbseed.source.AnemometerRawDbSeedBuilder;
@@ -39,11 +40,12 @@ import surveyor.dbseed.source.SurveyConditionDbSeedBuilder;
 import surveyor.dbseed.source.SurveyDbSeedBuilder;
 import surveyor.dbseed.source.SurveyResultDbSeedBuilder;
 import surveyor.scommon.source.BaseTest;
+import surveyor.scommon.source.SurveyorConstants;
 
 public class DbSeedExecutorBaseTest extends BaseTest {
 
 	protected void verifyGenericSeedDataIsPresent() throws Exception, SQLException {
-		// Verify generic seed data is now present in the DB.
+		// Verify generic seed data is present in the DB.
 		Connection connection = null;
 		boolean isGenericSeedPresent = false;
 		try {
@@ -54,6 +56,23 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 		}
 		Assert.assertTrue(isGenericSeedPresent);
 	}
+
+	protected void verifyGisCustomerSeedDataIsPresent() throws Exception, SQLException {
+		final Integer expectedCount = 61;
+		final String gisCustomerNamePrefix = "AutomationSeedCustomer";
+		Integer actualCount = 0;
+		Connection connection = null;
+		try {
+			connection = ConnectionFactory.createConnection();
+			Customer customer = Customer.getCustomer(SurveyorConstants.CUSTOMER_PICARRO);
+			actualCount = customer.executeSingleInt("SELECT COUNT(*) FROM dbo.[Customer] WHERE Name LIKE '" + gisCustomerNamePrefix + "%'");
+		} finally {
+			connection.close();
+		}
+
+		Assert.assertTrue(actualCount == expectedCount);
+	}
+
 
 	protected void verifyGisRefreshSeedDataIsPresent(String customerId) throws Exception {
 		Connection connection = null;
