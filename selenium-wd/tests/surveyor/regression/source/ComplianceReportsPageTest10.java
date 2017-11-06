@@ -190,7 +190,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Max Survey Duration Reached message is displayed on the search button
 	 *	- - User is able to add survey which doesnot exceed 100 hours duration  range
 	 */
-	@Test /*Need survey equals 100 hours */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC194, location = ComplianceReportDataProvider.class)
 	public void TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -294,7 +294,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - The   breadcrumb color should be red from the point of data latency until the point   where data latency ends
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC622, location = ComplianceReportDataProvider.class)
 	public void TC622_ComplianceReportsCheckRedTraceDueDataLatency(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -305,6 +305,11 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+
+        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID1)));
 	}
 
 	/**
