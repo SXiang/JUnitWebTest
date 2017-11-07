@@ -30,8 +30,6 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -49,7 +47,6 @@ import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -90,7 +87,6 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
-import common.source.RetryUtil;
 import common.source.SortHelper;
 import common.source.TestContext;
 
@@ -203,6 +199,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
 	protected WebElement reportMode;
 
+	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
+	protected WebElement btnDeleteConfirm;
+	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
+
 	public WebElement getSurveyModalErrorMsg(){
 		return this.surveyModalErrorMsg;
 	}
@@ -290,6 +290,16 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		this.waitForCancelChangeReportModeButton();
 		this.btnChangeModeCancel.click();
 		return isReportModeSelected(mode);
+	}
+
+	@Override
+	public WebElement getBtnDeleteConfirm() {
+		return btnDeleteConfirm;
+	}
+
+	@Override
+	public String getBtnDeleteConfirmXpath() {
+		return btnDeleteConfirmXpath;
 	}
 
 	/**
