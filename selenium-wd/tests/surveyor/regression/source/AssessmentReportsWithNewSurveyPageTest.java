@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.function.Predicate;
 
+import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.ReportCommonPageActions;
+import surveyor.scommon.actions.data.AssessmentReportDataReader.AssessmentReportsDataRow;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.AssessmentReportsPageActions;
@@ -201,7 +203,7 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
 				assessmentReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID2));
 
-				//Generate new shape files and Enable the step once DE3355 gets fixed 
+				//Generate new shape files and Enable the step once DE3355 gets fixed
 				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 				assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
@@ -256,7 +258,7 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 				assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
 
-				//Generate new shape files and Enable the step once DE3355 gets fixed 
+				//Generate new shape files and Enable the step once DE3355 gets fixed
 				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
 				return false;
@@ -295,6 +297,8 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		// Create new customer with survey + GIS data and then execute test steps.
 		assertTrue(executeAsNewCustomerWithSurveyAndGISData(assessmentReportsPageAction, surveyInfoEntity, reportDataRowID1, pageAction -> {
+			String reportTitleBeforeCopy = null;
+			Boolean testFailed = false;
 			try {
 				String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 				loginPageAction.open(EMPTY, NOTSET);
@@ -303,20 +307,42 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 				createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+				reportTitleBeforeCopy = AssessmentReportsPageActions.workingDataRow.get().title;
 				assessmentReportsPageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 				modifyReport(assessmentReportsPageAction, getReportRowID(reportDataRowID2));
 				waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID2));
+
+				AssessmentReportsPageActions.workingDataRow.set((AssessmentReportsDataRow) assessmentReportsPageAction.getWorkingReportsDataRow());
 
 				assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
 				assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
 				assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
 				assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
 
-				//Generate new shape files and Enable the step once DE3355 gets fixed 
+				//Generate new shape files and Enable the step once DE3355 gets fixed
 				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
+				testFailed = true;
+				Log.error(ExceptionUtility.getStackTraceString(ex));
 				return false;
+			} finally {
+				// BaseTest will delete the current workingDataRow report. Remove the reportBeforeCopy explicitly.
+				if (!testFailed) {
+					if (reportTitleBeforeCopy != null) {
+						String workingReportTitle = AssessmentReportsPageActions.workingDataRow.get().title;
+						AssessmentReportsPageActions.workingDataRow.get().title = reportTitleBeforeCopy;
+						try {
+							assessmentReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
+						} catch (Exception e) {
+							Log.error(ExceptionUtility.getStackTraceString(e));
+							return false;
+						} finally {
+							AssessmentReportsPageActions.workingDataRow.get().title = workingReportTitle;
+						}
+					}
+				}
 			}
+
 			return true;
 		}));
 	}

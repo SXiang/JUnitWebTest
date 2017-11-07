@@ -86,6 +86,21 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	}
 
 	@Test
+	public void testCleanupReport() throws Exception {
+		final Integer userDataRowID = 5;
+		final Integer reportDataRowID1 = 50;
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+
+		complianceReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
+	}
+
+	@Test
 	public void getLISAInvestigationPDFData_VerifyUsingReportsPresentInDB() throws Exception {
 		final String[] tcIds = new String[] {"TC2448", "TC2440"};
 		final String username = SurveyorConstants.SQAPICDR;

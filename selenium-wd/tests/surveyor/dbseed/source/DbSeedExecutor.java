@@ -26,8 +26,10 @@ import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ZipUtility;
+import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.SqlCmdUtility;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -53,7 +55,7 @@ public class DbSeedExecutor {
 			"daysurvey7-1", "daysurvey8-1", "daysurvey8-2", "daysurvey8.2-1", "Ethane1MinSurvey-1", "EthaneManual-1", "FeqNoPeaks01-1", "FeqWithPeaks01-1", "FeqWithPeaks02-1",
 			"iso-cap-1", "iso-cap-2", "IsoCapRedTrace-1", "man-pic-1", "man-pic-2", "MenloNight11_17EQ01-1", "MenloNight11_17EQ02-1",
 			"MeqNoPeaks01-1", "MeqWithPeaks01-1", "No-fov-1-1", "No-fov-2-1", "No-fov-3-1", "op-pic-1", "rr-pic-1", "Standard-With-Leak-1", "StandardSurveyEQ01-1", "StandardSurveyEQ02-1",
-			"standard-test-1-1", "standard-test-2-1", "standard-test-3-1", "stnd-pic-1", "LISANotIntersectingAssets-1",
+			"standard-test-1-1", "standard-test-2-1", "standard-test-3-1", "stnd-pic-1", "LISANotIntersectingAssets-1", "2HourSurvey-1", "4HourSurvey-1",
 			/* Surveys with raw data that failed in re-processing. Currently using original surveys for seed data. Regenerate seed data for processed survey once re-processing works with later Tahoe builds */
 			"8HourSurvey-1", "GreaterThan4Hour-1",  "LessThan4Hour-1",
 			/* Surveys below do NOT contain raw data */
@@ -68,7 +70,7 @@ public class DbSeedExecutor {
 			"MenloNight11_17EQ01-sqacus-1", "MenloNight11_17EQ02-sqacus-1", "MeqNoPeaks01-sqacus-1", "MeqWithPeaks01-sqacus-1", "No-fov-1-sqacus-1", "No-fov-2-sqacus-1", "No-fov-3-sqacus-1",
 			"op-pic-sqacus-1", "op-sqacudr-sqacus-1", "op-sqacudr-sqacus-2", "rr-pic-sqacus-1", "rr-sqacudr-sqacus-1", "rr-sqacudr-sqacus-2", "rr-sqacudr-sqacus-3", "rr-sqacudr-sqacus-4",
 			"Standard-With-Leak-sqacus-1", "StandardSurveyEQ01-sqacus-1", "StandardSurveyEQ02-sqacus-1", "standard-test-1-sqacus-1", "standard-test-2-sqacus-1", "standard-test-3-sqacus-1",
-			"stnd-pic-sqacus-1", "stnd-sqacudr-sqacus-1", "stnd-sqacudr-sqacus-2", "LISANotIntersectingAssets-sqacus-1",
+			"stnd-pic-sqacus-1", "stnd-sqacudr-sqacus-1", "stnd-sqacudr-sqacus-2", "LISANotIntersectingAssets-sqacus-1", "2HourSurvey-1-sqacus", "4HourSurvey-1-sqacus",
 			/* Surveys below do NOT contain raw data */
 			"assessment-2-sqacus", "EthaneOpertor1-sqacus", "EthaneOpertor2-sqacus", "EthaneRR-sqacus", "EthaneStnd-sqacus", "EthaneStnd2-sqacus", "EthaneStnd3-sqacus",
 			"stnd-sqacudr-sqacus-3", "stnd-sqacudr-sqacus-4", "stnd-sqacudr-sqacus-5" };
@@ -77,6 +79,7 @@ public class DbSeedExecutor {
 
 	public static void executeAllDataSeed() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
+		DbSeedExecutor.executeGISCustomerDataSeed();
 		DbSeedExecutor.executeGisSeed();
 		DbSeedExecutor.executeGisRefreshDataSeed();
 		DbSeedExecutor.executeSurveyDataSeed();
@@ -104,6 +107,52 @@ public class DbSeedExecutor {
 		} finally {
 			connection.close();
 		}
+	}
+
+	public static void executeGISCustomerDataSeed() throws Exception {
+		Log.method("DbSeedExecutor.executeGISCustomerDataSeed");
+		String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+		String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-GISCustomers.sql").toString();
+		SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+				TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
+	}
+
+	public static void executeGISCustomerDataSeedForSingleCustomer(String customerName) throws Exception {
+		Log.method("DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer", customerName);
+		String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+		String sqlTemplateFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-GISSingleCustomer.sql.template").toString();
+		String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql",
+				String.format("AutomationSeedScript-GISSingleCustomer-%s.sql", TestSetup.getUUIDString())).toString();
+
+		String customerId = new Customer().get(customerName).getId();
+
+		// Cleanup Analyzers for customer.
+		Analyzer.getAnalyzersForCustomer(customerId).stream()
+			.forEach(a -> a.cascadeDeleteAnalyzer());
+
+		// Re-execute GIS customer data seed for this specific customer.
+
+		// Create a working copy of the template file.
+		Files.copy(Paths.get(sqlTemplateFileFullPath), Paths.get(sqlFileFullPath));
+
+		// Update the working copy.
+		Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+		placeholderMap.put("%CUSTOMER_ID%", customerId);
+		placeholderMap.put("%CUSTOMER_NAME%", customerName);
+		String seedLocationId = CustomerWithGisDataPool.getSeedLocationIdForCustomer(customerId);
+		if (seedLocationId == null) {
+			placeholderMap.put("%SKIP_LOCATION_CLEANUP%", "1");
+			placeholderMap.put("%LOCATION_ID_FROM_SEED%", "00000000-0000-0000-0000-000000000000");
+		} else {
+			placeholderMap.put("%SKIP_LOCATION_CLEANUP%", "0");
+			placeholderMap.put("%LOCATION_ID_FROM_SEED%", seedLocationId);
+		}
+
+		FileUtility.updateFile(sqlFileFullPath, placeholderMap);
+
+		// Use the working copy in the SQL command.
+		SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+				TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
 	}
 
 	/* Method for pushing Survey seed data */
@@ -487,6 +536,17 @@ public class DbSeedExecutor {
 
 	public static void executeGisSeed(String customerId) throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed", customerId);
+		checkExecuteGisSeed(customerId);
+	}
+
+	private static void checkExecuteGisSeed(String customerId) throws Exception {
+		if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			executeGisSeedInternal(customerId);
+		}
+	}
+
+	private static void executeGisSeedInternal(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.executeGisSeedInternal", customerId);
 		boolean isCustomerSpecified = true;
 		if (customerId == null) {
 			isCustomerSpecified = false;
@@ -592,6 +652,18 @@ public class DbSeedExecutor {
 
 	public static void cleanUpGisSeed(String customerId) throws Exception {
 		Log.method("DbSeedExecutor.cleanUpGisSeed", customerId);
+		checkCleanUpGisSeed(customerId);
+	}
+
+	private static void checkCleanUpGisSeed(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.checkCleanUpGisSeed", customerId);
+		if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			cleanUpGisSeedInternal(customerId);
+		}
+	}
+
+	private static void cleanUpGisSeedInternal(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.cleanUpGisSeedInternal", customerId);
 
 		String invalidCustomerName = null;
 
@@ -672,6 +744,7 @@ public class DbSeedExecutor {
                 //  Execute the cleanup statements.
             	List<String> cleanupStatements = dbSeedData.getCleanupStatements();
             	for (String cleanupStmt : cleanupStatements) {
+            		Log.info(String.format("Cleanup Statement -> %s", cleanupStmt));
                     stmt.executeUpdate(cleanupStmt);
 				}
 

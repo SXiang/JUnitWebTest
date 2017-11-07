@@ -19,6 +19,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageAnalyzerPageActions;
@@ -59,7 +60,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
 	private static ManageSurveyorPageActions manageSurveyorPageAction;
 	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -376,7 +377,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			return true;
 		}));
 	}
-	
+
 	/**
 	 * Test Case ID: TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags
 	 * Test Description: - Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags
@@ -422,7 +423,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
 					DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
-			
+
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 
@@ -436,10 +437,14 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 			assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 			assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-			
+
 		} catch (Exception ex) {
 			BaseTest.reportTestFailed(ex, ComplianceReportsPageTest3.class.getName());
 		} finally {
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+			}
+
 			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		}
 	}

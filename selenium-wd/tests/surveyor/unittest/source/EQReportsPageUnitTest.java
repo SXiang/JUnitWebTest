@@ -50,6 +50,21 @@ public class EQReportsPageUnitTest  extends BaseReportsPageActionTest {
 	}
 
 	@Test
+	public void testCleanupReport() throws Exception {
+		final Integer userDataRowID = 4;
+		final Integer reportDataRowID1 = 3;
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+
+		eqReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
+	}
+
+	@Test
 	public void verifyEmissionsQuantificationTable() throws IOException {
 		final String reportTitle = "TC532-4c986b42ed1e4b47b655";
 		final String actualPath = "C:\\Users\\spulikkal\\Downloads";

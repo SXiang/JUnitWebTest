@@ -1554,7 +1554,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String reportId = waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy);
 		return getReportNameById(reportId);
 	}
-	
+
 	public String waitForReportGenerationtoCompleteAndGetReportId(String rptTitle, String strCreatedBy) throws Exception  {
 		return waitForReportGenerationtoCompleteAndGetReportId(rptTitle, strCreatedBy, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/);
 	}
@@ -3310,7 +3310,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return isCorrect;
 	}
-	
+
 	public String getReportNameById(String reportId){
 		return getReportPrefix() + "-" + reportId.substring(0, 6).toUpperCase();
 	}
