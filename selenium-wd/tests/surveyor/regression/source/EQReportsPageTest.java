@@ -396,7 +396,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * - The EQ Table PDF should have the correct surveys listed along with line segments and indications (if any);
 	 * - The EQ View PDF should show the correct line segments as drawn by the user
 	 */
-	@Test
+	@Ignore /*SUR-293 to track the issue in this test*/
 	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2788, location = EQReportDataProvider.class)
 	public void TC2788_GenerateMobileEQReportUsingCopyFunctionalityWithAssessmentSurveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -404,9 +404,9 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-/*
- * 	workercommon JobProcessor.process_next_job Job failed 09A4FD8D-88B1-2195-1B8D-39E262F37688: array of sample points is empty
- */
+		/*
+		 * 	workercommon JobProcessor.process_next_job Job failed 09A4FD8D-88B1-2195-1B8D-39E262F37688: array of sample points is empty
+		 */
 		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 		eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));

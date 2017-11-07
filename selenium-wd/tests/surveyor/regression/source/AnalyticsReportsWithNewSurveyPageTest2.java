@@ -96,36 +96,36 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		initializePageObjects();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-//			if(testAccount == null){
-//				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);				
-//				userName = testAccount.get("userName");
-//				userPassword = testAccount.get("userPassword");
-//				customerName = testAccount.get("customerName");
-//				locationName = testAccount.get("locationName");
-//				analyzerSharedKey = testAccount.get("analyzerSharedKey");
-//				analyzerName = testAccount.get("analyzerName");
-//				analyzerType = testAccount.get("analyzerType");
-//				surveyorName = testAccount.get("surveyorName");
-//				customerId = testAccount.get("customerId");
-//				surveyMinAmplitude = "0.035";
-//				rankingMinAmplitude = "0.035";
-//				analyticsMinClusterSize = "2";
-//				manageLocationPageActions.open(EMPTY, NOTSET);
-//				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
-//				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
-//				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
-//				testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
-//						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
-//				pushGisData(testAccount.get("customerId"));
-//				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-//			} else {
-//				getLoginPage().open();
-//				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-//				manageLocationPageActions.open(EMPTY, NOTSET);
-//				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
-//				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
-//				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
-//			}
+			if(testAccount == null){
+				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);				
+				userName = testAccount.get("userName");
+				userPassword = testAccount.get("userPassword");
+				customerName = testAccount.get("customerName");
+				locationName = testAccount.get("locationName");
+				analyzerSharedKey = testAccount.get("analyzerSharedKey");
+				analyzerName = testAccount.get("analyzerName");
+				analyzerType = testAccount.get("analyzerType");
+				surveyorName = testAccount.get("surveyorName");
+				customerId = testAccount.get("customerId");
+				surveyMinAmplitude = "0.035";
+				rankingMinAmplitude = "0.035";
+				analyticsMinClusterSize = "2";
+				manageLocationPageActions.open(EMPTY, NOTSET);
+				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
+				testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
+						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
+				pushGisData(testAccount.get("customerId"));
+				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+			} else {
+				getLoginPage().open();
+				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+				manageLocationPageActions.open(EMPTY, NOTSET);
+				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
+			}
 		}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
@@ -409,12 +409,6 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	public void TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters ...");
-		
-		userName = "RMADebug@email.com";
-		userPassword = "sqa#Picarro$0";
-		customerName = "regcusRMADebugAnalytics_Report";
-		locationName = "RMADebugLoc";
-		surveyTag = "6b6b346b7f8a40f";
 		
 		String minClusterSize= "2.0";
 		getLoginPage().open();
