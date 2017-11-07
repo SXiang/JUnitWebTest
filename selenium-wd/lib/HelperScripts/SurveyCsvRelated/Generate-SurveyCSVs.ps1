@@ -12,7 +12,7 @@
         -outputFolder "C:\temp\SUR-121-Surveys"  `
         -addCustomerNameAsSuffix:$true   `
         -generateSurveyNameList:$true   `
-        -disableRawDataGeneration:$true
+        -disableRawDataGeneration:$false
 
  NOTE: Script assumes surveyIDs provided as input to the script are ordered by Survey Tags 
        (ie ascending or descending order of Surveys tags) for file indices to be computed correctly for the CSV files.

@@ -2,17 +2,43 @@
  DESCRIPTION:
   - Use this script to re-generate SQACUS surveys based on original Picarro surveys.
 
+ Sample Run Script:
+   .\Generate-SurveysForOtherCustomerUsingPicarroSurveys.ps1 `
+        -BaseScriptFolder "C:\Repositories\surveyor-qa"  `
+        -CustomerName "sqacus"  `
+        -DatabaseIP "20.20.130.210"  `
+        -DatabaseName "SurveyorSQAAuto_blankDB_20171025"  `
+        -DatabaseUser "awssa"  `
+        -DatabasePwd "<password>"  `
+        -ProcessingFolderPath "C:\temp\SUR-121-Surveys"  `
+        -GenerateReportForNotMatchingAnalyzers:$false
+
 ----------------------------------------------------------------------------------------------------------------------------------#>
 
 param(
-    $BaseScriptFolder = "C:\Repositories\surveyor-qa",
-    $CustomerName = "sqacus",
-    $DatabaseIP="20.20.130.210",
-    $DatabaseName="SurveyorSQAAuto_blankDB_20171025",
-    $DatabaseUser="awssa",
-    $DatabasePwd="3Vf763pSg2",
-    $ProcessingFolderPath = "C:\Temp\RegenerateSurveys-SQACUS-20171106",
-    $GenerateReportForNotMatchingAnalyzers = $false
+    [Parameter(Mandatory=$true)]
+    [String] $BaseScriptFolder,
+
+    [Parameter(Mandatory=$true)]    
+    [String] $CustomerName,
+
+    [Parameter(Mandatory=$true)]
+    [String] $DatabaseIP,
+
+    [Parameter(Mandatory=$true)]
+    [String] $DatabaseName,
+
+    [Parameter(Mandatory=$true)]
+    [String] $DatabaseUser,
+
+    [Parameter(Mandatory=$true)]
+    [String] $DatabasePwd,
+
+    [Parameter(Mandatory=$true)]
+    [String] $ProcessingFolderPath,
+
+    [Parameter(Mandatory=$true)]
+    [switch] $GenerateReportForNotMatchingAnalyzers = $false
 )
 
 # load helper scripts
