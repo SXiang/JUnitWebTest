@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import common.source.ApiUtility;
 import common.source.Log;
@@ -34,6 +37,10 @@ public class AssessmentReportsPage extends ReportsCommonPage {
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.AssessmentReports_AddNew);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.AssessmentReport_PageTitle);
 
+	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=AssessmentReports')]")
+	protected WebElement btnDeleteConfirm;
+	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=AssessmentReports')]";
+
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -47,6 +54,16 @@ public class AssessmentReportsPage extends ReportsCommonPage {
 
 	public String getFullReportName(String rptTitle) {
 		return "AS" + "-" + getReportName(rptTitle);
+	}
+
+	@Override
+	public WebElement getBtnDeleteConfirm() {
+		return btnDeleteConfirm;
+	}
+
+	@Override
+	public String getBtnDeleteConfirmXpath() {
+		return btnDeleteConfirmXpath;
 	}
 
 	@Override
