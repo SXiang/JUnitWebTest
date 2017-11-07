@@ -775,9 +775,9 @@ UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 W
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'43A34021-8814-8A01-9183-39D4B4DE03EB', 0)
 -- HardwareCapabilityType for FEDS2055-PICARRO
-UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'F5970731-CE37-F7F3-DB5F-39D7E2D02053'
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'F5970731-CE37-F7F3-DB5F-39D7E2D02053'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', 0)
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', 1)
 -- AnalyzerHardwareCapabilityType for Surveyor - 'Black Rhino FEQ'
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'88cfc43e-9005-03e1-1d7a-39dbd3f483de'
 IF @@ROWCOUNT=0
