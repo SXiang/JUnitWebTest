@@ -426,7 +426,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters ...");
 		
-		String minClusterSize= "2.0";
+		String minClusterSize= "2";
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		manageLocationPageActions.open(EMPTY, NOTSET);
