@@ -16,6 +16,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -63,6 +64,10 @@ public class EQReportsPage extends ReportsCommonPage {
 	@FindBy(id = "eq-selected-text")
 	protected WebElement eqSelectedText;
 
+	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=EQReports')]")
+	protected WebElement btnDeleteConfirm;
+	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=EQReports')]";
+
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -80,6 +85,16 @@ public class EQReportsPage extends ReportsCommonPage {
 
 	public WebElement getEqLocationSelector() {
 		return eqLocationSelector;
+	}
+
+	@Override
+	public WebElement getBtnDeleteConfirm() {
+		return btnDeleteConfirm;
+	}
+
+	@Override
+	public String getBtnDeleteConfirmXpath() {
+		return btnDeleteConfirmXpath;
 	}
 
 	@Override
@@ -288,5 +303,5 @@ public class EQReportsPage extends ReportsCommonPage {
 
 		Log.info("Emissions Quantification table verification passed");
 		return true;
-	}	
+	}
 }

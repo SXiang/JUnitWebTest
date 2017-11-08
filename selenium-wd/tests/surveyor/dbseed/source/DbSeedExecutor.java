@@ -744,6 +744,7 @@ public class DbSeedExecutor {
                 //  Execute the cleanup statements.
             	List<String> cleanupStatements = dbSeedData.getCleanupStatements();
             	for (String cleanupStmt : cleanupStatements) {
+            		Log.info(String.format("Cleanup Statement -> %s", cleanupStmt));
                     stmt.executeUpdate(cleanupStmt);
 				}
 

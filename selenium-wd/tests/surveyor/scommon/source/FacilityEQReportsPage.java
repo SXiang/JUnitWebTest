@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -39,10 +40,14 @@ public class FacilityEQReportsPage extends ReportsCommonPage {
 
 	@FindBy(id = "btn-facility-EQ-select-area")
 	protected WebElement shapeSelectorBtn;
-	
+
 	@FindBy(id = "report-show-lisas")
 	protected WebElement checkBoxShowLisas;
-	
+
+	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=FacilityEQReports')]")
+	protected WebElement btnDeleteConfirm;
+	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=FacilityEQReports')]";
+
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -56,6 +61,16 @@ public class FacilityEQReportsPage extends ReportsCommonPage {
 
 	public String getFullReportName(String rptTitle) {
 		return getReportPrefix() + "-" + getReportName(rptTitle);
+	}
+
+	@Override
+	public WebElement getBtnDeleteConfirm() {
+		return btnDeleteConfirm;
+	}
+
+	@Override
+	public String getBtnDeleteConfirmXpath() {
+		return btnDeleteConfirmXpath;
 	}
 
 	@Override
@@ -80,7 +95,7 @@ public class FacilityEQReportsPage extends ReportsCommonPage {
 		// 3. Shape Selector
 		List<Coordinates> shapeCoordinates = reportsFacilityEQ.getShapeCoordinates();
 		selectShape(shapeCoordinates);
-		
+
 		// 4. boolean showLisas
 		boolean showLisas = reportsFacilityEQ.isShowLisas();
 		selectShowLisasInvestigationMarker(showLisas);
@@ -90,7 +105,7 @@ public class FacilityEQReportsPage extends ReportsCommonPage {
 	public String getReportPrefix() {
 		return "FEQ";
 	}
-	
+
 	protected void selectShowLisasInvestigationMarker(Boolean showLisas) {
 		if (showLisas != null) {
 			if (showLisas) {
@@ -106,7 +121,7 @@ public class FacilityEQReportsPage extends ReportsCommonPage {
 			}
 		}
 	}
-	
+
 	protected void selectFacilityEQLocationParameter(String feqLocationParameter) {
 		selectDropdownOptionByText(feqLocationSelector, feqLocationParameter);
 	}
@@ -123,7 +138,7 @@ public class FacilityEQReportsPage extends ReportsCommonPage {
 			Log.error(String.format("clickLineSegmentsSelector() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
 		}
 	}
-	
+
 	protected boolean clickShapeSelector() {
 		Log.clickElementInfo("Click Shape Selector");
 		this.shapeSelectorBtn.click();
