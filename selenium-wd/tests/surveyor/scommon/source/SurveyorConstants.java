@@ -341,7 +341,7 @@ public final class SurveyorConstants {
 	public static final String PIC8HR10TAG = "8hoursurvey10";
 	public static final String PIC8HR11TAG = "8hoursurvey11";
 	public static final String PIC8HR12TAG = "8hoursurvey12";
-	public static final String PIC4HR01TAG = "4hoursurvey01";
+	public static final String PIC4HR01TAG = "4HourSurvey";
 	public static final String PICLESS4HRTAG = "LessThan4Hour";
 	public static final String PICGREATER4HRTAG = "GreaterThan4Hour";
 
@@ -357,7 +357,7 @@ public final class SurveyorConstants {
 	public static final String PIC8HR10_DATAFILE = "8HourSurvey-10";
 	public static final String PIC8HR11_DATAFILE = "8HourSurvey-11";
 	public static final String PIC8HR12_DATAFILE = "8HourSurvey-12";
-	public static final String PIC4HR01_DATAFILE = "4HourSurvey-01";
+	public static final String PIC4HR01_DATAFILE = "4HourSurvey-1";
 	public static final String PICLESS4HR_DATAFILE = "LessThan4Hour-1";
 	public static final String PICGREATER4HR_DATAFILE = "GreaterThan4Hour-1";
 

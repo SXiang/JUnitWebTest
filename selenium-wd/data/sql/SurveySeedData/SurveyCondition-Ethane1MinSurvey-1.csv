@@ -1,4 +1,4 @@
 Id,SurveyId,Name,Value
 e8b2e0ee-aa80-6a7d-0c7f-39d83a6b8751,4ce925c5-a081-319d-220a-39d83a6b8751,SolarRadiation,moderate
-13b9f9fc-063d-19dd-1137-39d83a6b8751,4ce925c5-a081-319d-220a-39d83a6b8751,Wind,light
 bf6511fb-599d-9cf2-24b2-39d83a6b8751,4ce925c5-a081-319d-220a-39d83a6b8751,TimeOfDay,day
+13b9f9fc-063d-19dd-1137-39d83a6b8751,4ce925c5-a081-319d-220a-39d83a6b8751,Wind,light
