@@ -825,17 +825,17 @@ IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('60540576-77EF-198F-F284-39DF4393A70F','EDA5A3A0-7B86-A343-69F6-39D8A7186DC1',1485109206,0,0,-4)	
 F5970731-CE37-F7F3-DB5F-39D7E2D02053
 -- Calibration record for 'Software Car'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='2AA6AC90-B839-4787-F3B5-39D4B4DCEE95',[StartEpoch]=1485109206,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='52AA8399-A171-FB5F-C21C-39E262E8DDA0'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='2AA6AC90-B839-4787-F3B5-39D4B4DCEE95',[StartEpoch]=1287963120,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='52AA8399-A171-FB5F-C21C-39E262E8DDA0'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('52AA8399-A171-FB5F-C21C-39E262E8DDA0','2AA6AC90-B839-4787-F3B5-39D4B4DCEE95',1287963120,0,0,-4)	
 
 	-- Calibration record for 'Picarro Production #10'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='4A474FE4-B1AC-9A12-1F51-39CFD683AF02',[StartEpoch]=1485109206,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='65F8BD34-E60C-A333-CF3A-39E2A9DD7BEB'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='4A474FE4-B1AC-9A12-1F51-39CFD683AF02',[StartEpoch]=1287963120,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='65F8BD34-E60C-A333-CF3A-39E2A9DD7BEB'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('65F8BD34-E60C-A333-CF3A-39E2A9DD7BEB','4A474FE4-B1AC-9A12-1F51-39CFD683AF02',1287963120,0,0,-4)	
 
 -- Calibration record for 'Light Blue Escape'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='F4A45601-E357-3CED-6EE6-39D6D20B16D9',[StartEpoch]=1485109206,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='5347598C-4F35-106C-5720-39E262F24391'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='F4A45601-E357-3CED-6EE6-39D6D20B16D9',[StartEpoch]=1287963120,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='5347598C-4F35-106C-5720-39E262F24391'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('5347598C-4F35-106C-5720-39E262F24391','F4A45601-E357-3CED-6EE6-39D6D20B16D9',1287963120,0,0,-4)	
 
