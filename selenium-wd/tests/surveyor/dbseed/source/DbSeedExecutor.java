@@ -64,15 +64,15 @@ public class DbSeedExecutor {
 
 	public static final String[] SQACUS_CUSTOMER_SURVEYS = {
 			/* Surveys with raw data that have been reprocessed - 10/23/2017 (surveyor 3.0.1.2109, worker 3.0.1.884) */
-			"AnalyticsTagASqaCus-sqacus-1", "AnalyticsTagBSqaCus-sqacus-1", "AnalyticsTagCSqaCus-sqacus-1", "assessment-sqacus-1", "daysurvey3.2-sqacus-1", "daysurvey3.2-sqacus-2",
+			"AnalyticsTagA-sqacus-1", "AnalyticsTagB-sqacus-1", "AnalyticsTagC-sqacus-1", "assessment-sqacus-1", "daysurvey3.2-sqacus-1", "daysurvey3.2-sqacus-2",
 			"daysurvey4-sqacus-1", "daysurvey5-sqacus-1", "daysurvey7-sqacus-1", "daysurvey8-sqacus-1", "daysurvey8-sqacus-2", "daysurvey8.2-sqacus-1", "Ethane1MinSurvey-sqacus-1",
 			"EthaneManual-sqacus-1", "FeqNoPeaks01-sqacus-1", "FeqWithPeaks01-sqacus-1", "FeqWithPeaks02-sqacus-1", "iso-cap-sqacus-1", "iso-cap-sqacus-2", "man-pic-sqacus-1", "man-pic-sqacus-2",
 			"MenloNight11_17EQ01-sqacus-1", "MenloNight11_17EQ02-sqacus-1", "MeqNoPeaks01-sqacus-1", "MeqWithPeaks01-sqacus-1", "No-fov-1-sqacus-1", "No-fov-2-sqacus-1", "No-fov-3-sqacus-1",
 			"op-pic-sqacus-1", "op-sqacudr-sqacus-1", "op-sqacudr-sqacus-2", "rr-pic-sqacus-1", "rr-sqacudr-sqacus-1", "rr-sqacudr-sqacus-2", "rr-sqacudr-sqacus-3", "rr-sqacudr-sqacus-4",
 			"Standard-With-Leak-sqacus-1", "StandardSurveyEQ01-sqacus-1", "StandardSurveyEQ02-sqacus-1", "standard-test-1-sqacus-1", "standard-test-2-sqacus-1", "standard-test-3-sqacus-1",
-			"stnd-pic-sqacus-1", "stnd-sqacudr-sqacus-1", "stnd-sqacudr-sqacus-2", "LISANotIntersectingAssets-sqacus-1", "2HourSurvey-1-sqacus", "4HourSurvey-1-sqacus",
+			"stnd-pic-sqacus-1", "stnd-sqacudr-sqacus-1", "stnd-sqacudr-sqacus-2", "LISANotIntersectingAssets-sqacus-1", "2HourSurvey-sqacus-1", "4HourSurvey-sqacus-1", "stnd-sqacudr-sqacus-6",
 			/* Surveys below do NOT contain raw data */
-			"assessment-2-sqacus", "EthaneOpertor1-sqacus", "EthaneOpertor2-sqacus", "EthaneRR-sqacus", "EthaneStnd-sqacus", "EthaneStnd2-sqacus", "EthaneStnd3-sqacus",
+			"assessment-sqacus-2", "EthaneOpertor1-sqacus", "EthaneOpertor2-sqacus", "EthaneRR-sqacus", "EthaneStnd-sqacus", "EthaneStnd2-sqacus", "EthaneStnd3-sqacus",
 			"stnd-sqacudr-sqacus-3", "stnd-sqacudr-sqacus-4", "stnd-sqacudr-sqacus-5" };
 
 	/* Method to push all the seed data required for automation. */

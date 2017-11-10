@@ -19,6 +19,12 @@ function Write-ToOutput($line) {
     Add-Content $OUTRESULT $line
 }
 
+function New-GuidNoDashes() {
+    [guid]::NewGuid().ToString().Replace("-", "").ToUpper()
+}
+
+$failingFilesList = New-Object System.Collections.ArrayList
+
 Write-ToOutput -line "-----------------------------------------------------------------------------"
 Write-ToOutput -line "Starting verifications... Failures (if any) will be listed below."
 Write-ToOutput -line "-----------------------------------------------------------------------------"
@@ -58,6 +64,7 @@ Split-Path -Path "$inDirectory\$fileExtFilter" -Leaf -Resolve | % {
 
         if ($actualFileHeader -ne $expectedFileHeader) {
             Write-ToOutput -line "[$fileName] : Headers do NOT Match. Actual=[$actualFileHeader], Expected=[$expectedFileHeader]"
+            $null = $failingFilesList.Add($fileName)
             $foundFailure = $true
         }
     }
@@ -65,6 +72,18 @@ Split-Path -Path "$inDirectory\$fileExtFilter" -Leaf -Resolve | % {
 
 if (-not $foundFailure) {
     Write-ToOutput -line "All CSVs passed test."
+} else {
+    $uuid = New-GuidNoDashes
+    $copyFolderPath = "$outputFolder\$uuid"
+    Write-Host "Creating new directory to store failing files - '$copyFolderPath' "
+    New-Item -ItemType Directory $copyFolderPath
+    $failingFilesList | %{
+        $fName = $_
+        $fFullPath = "$inDirectory\$fName"
+        $copyFileFullPath = "$copyFolderPath\$fName"
+        Write-Host "Copying $fFullPath -> $copyFileFullPath ..."
+        Copy-Item $fFullPath $copyFileFullPath
+    }
 }
 
 ii $OUTRESULT

@@ -631,8 +631,10 @@ public class BaseTest {
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		String replayEQScriptDB3File = "Surveyor.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62, 65};
+
 		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics, SurveyType.EQ};
 		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};
+
 		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300", "P3300"};
 		DrivingSurveyType drivingSurveyType = DrivingSurveyType.Default;
 		if(surveyTypes==null||surveyTypes.length==0){

@@ -11,7 +11,8 @@
         -databasePassword "3Vf763pSg2"  `
         -outputFolder "C:\temp\SUR-121-Surveys"  `
         -addCustomerNameAsSuffix:$true   `
-        -generateSurveyNameList:$true
+        -generateSurveyNameList:$true   `
+        -disableRawDataGeneration:$false
 
  NOTE: Script assumes surveyIDs provided as input to the script are ordered by Survey Tags 
        (ie ascending or descending order of Surveys tags) for file indices to be computed correctly for the CSV files.
@@ -41,7 +42,10 @@ param
   [switch] $addCustomerNameAsSuffix=$false, # set to 'true' to add customer name as suffix to generated survey csv files. eg. - 'AnemometerRaw-StandardSurveyEQ02-1-sqacus.csv'
 
   [Parameter(Mandatory=$false)]
-  [switch] $generateSurveyNameList=$false   # set to 'true' to generate code for survey array constant used in DbSeedExecutor.java
+  [switch] $generateSurveyNameList=$false,   # set to 'true' to generate code for survey array constant used in DbSeedExecutor.java
+
+  [Parameter(Mandatory=$false)]
+  [switch] $disableRawDataGeneration=$false      # set to 'true' to disable data generation for raw data tables (AnemometerRaw, GpsRaw, Measurement)
 )
 
 # Load helper functions.
@@ -123,32 +127,35 @@ $surveyIDArr | % {
 
             AddTo-FileTagMapTable -key $customerName -value "$fileTag-$counter"
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\AnemometerRaw-$fileTag-$counter.csv"
-            Write-Output -log "Printing CSV header for AnemometerRaw -> Survey Tag: $tag"
-            $COLUMN_HEADINGS.get_item("AnemometerRaw-")
-            $colHeaders = $COLUMN_HEADINGS.get_item("AnemometerRaw-")
-            Add-Content $OUTCSV "$colHeaders"
+            if (-not $disableRawDataGeneration) {
 
-            $i1=0
-            Write-Output -log "Fetching AnemometerRaw values for Survey Tag: $tag"
-            $query = "SELECT * FROM [$databaseName].[dbo].[AnemometerRaw] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId'"
-            $objAnemometerRaw = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
-            $objAnemometerRaw | foreach {
-                if ($i1 -gt 0) {     # first row is length of array. datarows are from index=1
-                    Write-Output -log "Table -> AnemometerRaw, Survey Tag -> $tag - Processing row - $i1"
+                $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\AnemometerRaw-$fileTag-$counter.csv"
+                Write-Output -log "Printing CSV header for AnemometerRaw -> Survey Tag: $tag"
+                $COLUMN_HEADINGS.get_item("AnemometerRaw-")
+                $colHeaders = $COLUMN_HEADINGS.get_item("AnemometerRaw-")
+                Add-Content $OUTCSV "$colHeaders"
 
-                    $objAne = $_;
-                    $aneAnalyzerId = $objAne.AnalyzerId;
-                    $aneEpochTime = $objAne.EpochTime;
-                    $aneIndex = $objAne.Index;
-                    $aneStatus = $objAne.Status;
-                    $aneWindSpeedLateral = Null-ToValue -value $objAne.WindSpeedLateral;
-                    $aneWindSpeedLongitudinal = Null-ToValue -value $objAne.WindSpeedLongitudinal;
+                $i1=0
+                Write-Output -log "Fetching AnemometerRaw values for Survey Tag: $tag"
+                $query = "SELECT * FROM [$databaseName].[dbo].[AnemometerRaw] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId'"
+                $objAnemometerRaw = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
+                $objAnemometerRaw | foreach {
+                    if ($i1 -gt 0) {     # first row is length of array. datarows are from index=1
+                        Write-Output -log "Table -> AnemometerRaw, Survey Tag -> $tag - Processing row - $i1"
 
-                    Add-Content $OUTCSV "$aneAnalyzerId,$aneEpochTime,$aneWindSpeedLateral,$aneWindSpeedLongitudinal,$aneStatus,$aneIndex"
+                        $objAne = $_;
+                        $aneAnalyzerId = $objAne.AnalyzerId;
+                        $aneEpochTime = $objAne.EpochTime;
+                        $aneIndex = $objAne.Index;
+                        $aneStatus = $objAne.Status;
+                        $aneWindSpeedLateral = Null-ToValue -value $objAne.WindSpeedLateral;
+                        $aneWindSpeedLongitudinal = Null-ToValue -value $objAne.WindSpeedLongitudinal;
+
+                        Add-Content $OUTCSV "$aneAnalyzerId,$aneEpochTime,$aneWindSpeedLateral,$aneWindSpeedLongitudinal,$aneStatus,$aneIndex"
+                    }
+
+                    $i1++
                 }
-
-                $i1++
             }
 
             # --- CaptureEvent ---
@@ -225,92 +232,98 @@ $surveyIDArr | % {
 
             # --- GPSRaw ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\GPSRaw-$fileTag-$counter.csv"
-            Write-Output -log "Printing CSV header for GPSRaw -> Survey Tag: $tag"
-            $COLUMN_HEADINGS.get_item("GPSRaw-")
-            $colHeaders = $COLUMN_HEADINGS.get_item("GPSRaw-")
-            Add-Content $OUTCSV "$colHeaders"
+            if (-not $disableRawDataGeneration) {
 
-            $i4=0
-            Write-Output -log "Fetching GPSRaw values for Survey Tag: $tag"
-            $query = "SELECT * FROM [$databaseName].[dbo].[GPSRaw] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId'"
-            $objGPSRaw = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
-            $objGPSRaw | foreach {
-                if ($i4 -gt 0) {     # first row is length of array. datarows are from index=1
-                    Write-Output -log "Table -> GPSRaw, Survey Tag -> $tag - Processing row - $i4"
+                $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\GPSRaw-$fileTag-$counter.csv"
+                Write-Output -log "Printing CSV header for GPSRaw -> Survey Tag: $tag"
+                $COLUMN_HEADINGS.get_item("GPSRaw-")
+                $colHeaders = $COLUMN_HEADINGS.get_item("GPSRaw-")
+                Add-Content $OUTCSV "$colHeaders"
 
-                    $objGPS = $_;
-                    $gPSAnalyzerId = $objGPS.AnalyzerId;
-                    $gPSEpochTime = $objGPS.EpochTime;
-                    $gPSGpsFit = Null-ToValue -value $objGPS.GpsFit;
-                    $gPSGpsLatitude = Null-ToValue -value $objGPS.GpsLatitude;
-                    $gPSGPSLatitudeUncertainty = Null-ToValue -value $objGPS.GPSLatitudeUncertainty;
-                    $gPSGpsLongitude = Null-ToValue -value $objGPS.GpsLongitude;
-                    $gPSGPSLongitudeUncertainty = Null-ToValue -value $objGPS.GPSLongitudeUncertainty;
-                    $gPSGpsTime = Null-ToValue -value $objGPS.GpsTime;
+                $i4=0
+                Write-Output -log "Fetching GPSRaw values for Survey Tag: $tag"
+                $query = "SELECT * FROM [$databaseName].[dbo].[GPSRaw] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId'"
+                $objGPSRaw = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
+                $objGPSRaw | foreach {
+                    if ($i4 -gt 0) {     # first row is length of array. datarows are from index=1
+                        Write-Output -log "Table -> GPSRaw, Survey Tag -> $tag - Processing row - $i4"
 
-                    Add-Content $OUTCSV "$gPSAnalyzerId,$gPSEpochTime,$gPSGpsTime,$gPSGpsLatitude,$gPSGpsLongitude,$gPSGpsFit,$gPSGPSLatitudeUncertainty,$gPSGPSLongitudeUncertainty"
+                        $objGPS = $_;
+                        $gPSAnalyzerId = $objGPS.AnalyzerId;
+                        $gPSEpochTime = $objGPS.EpochTime;
+                        $gPSGpsFit = Null-ToValue -value $objGPS.GpsFit;
+                        $gPSGpsLatitude = Null-ToValue -value $objGPS.GpsLatitude;
+                        $gPSGPSLatitudeUncertainty = Null-ToValue -value $objGPS.GPSLatitudeUncertainty;
+                        $gPSGpsLongitude = Null-ToValue -value $objGPS.GpsLongitude;
+                        $gPSGPSLongitudeUncertainty = Null-ToValue -value $objGPS.GPSLongitudeUncertainty;
+                        $gPSGpsTime = Null-ToValue -value $objGPS.GpsTime;
+
+                        Add-Content $OUTCSV "$gPSAnalyzerId,$gPSEpochTime,$gPSGpsTime,$gPSGpsLatitude,$gPSGpsLongitude,$gPSGpsFit,$gPSGPSLatitudeUncertainty,$gPSGPSLongitudeUncertainty"
+                    }
+
+                    $i4++
                 }
-
-                $i4++
             }
 
             # --- Measurement ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Measurement-$fileTag-$counter.csv"
-            Write-Output -log "Printing CSV header for Measurement -> Survey Tag: $tag"
-            $COLUMN_HEADINGS.get_item("Measurement-")
-            $colHeaders = $COLUMN_HEADINGS.get_item("Measurement-")
-            Add-Content $OUTCSV "$colHeaders"
+            if (-not $disableRawDataGeneration) {
 
-            $i5=0
-            Write-Output -log "Fetching Measurement values for Survey Tag: $tag"
-            $query = "SELECT [AnalyzerId],[EpochTime],[CreateDate],[GpsLatitude],[GpsLongitude],[GpsFit],CONVERT(VARBINARY(MAX), [Shape]) AS Shape,[InstrumentStatus],[ValveMask],[CarSpeedNorth],[CarSpeedEast],[WindSpeedNorth],[WindSpeedEast],[WindDirectionStdDev],[WeatherStationRotation],[WindSpeedLateral],[WindSpeedLongitudinal],[ChemDetect],[Species],[CH4],[CO2],[H2OPercent],[DeltaCH4],[PeripheralStatus],[AnalyzerStatus],[CavityPressure],[WarmBoxTemperature],[HotBoxTemperature],[MobileFlowRate],[AnalyzerMode],[PeakDetectorState],[C2H6],[C2H4],[AnalyzerEthaneConcentrationUncertainty] FROM [$databaseName].[dbo].[Measurement] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId'"
-            $objMeasurement = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
-            $objMeasurement | foreach {
-                if ($i5 -gt 0) {     # first row is length of array. datarows are from index=1
-                    Write-Output -log "Table -> Measurement, Survey Tag -> $tag - Processing row - $i5"
+                $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Measurement-$fileTag-$counter.csv"
+                Write-Output -log "Printing CSV header for Measurement -> Survey Tag: $tag"
+                $COLUMN_HEADINGS.get_item("Measurement-")
+                $colHeaders = $COLUMN_HEADINGS.get_item("Measurement-")
+                Add-Content $OUTCSV "$colHeaders"
 
-                    $objMea = $_;
-                    $meaAnalyzerEthaneConcentrationUncertainty = Null-ToValue -value $objMea.AnalyzerEthaneConcentrationUncertainty;
-                    $meaAnalyzerId = $objMea.AnalyzerId;
-                    $meaAnalyzerMode = $objMea.AnalyzerMode;
-                    $meaAnalyzerStatus = Null-ToValue -value $objMea.AnalyzerStatus;
-                    $meaC2H4 = Null-ToValue -value $objMea.C2H4;
-                    $meaC2H6 = Null-ToValue -value $objMea.C2H6;
-                    $meaCarSpeedEast = Null-ToValue -value $objMea.CarSpeedEast;
-                    $meaCarSpeedNorth = Null-ToValue -value $objMea.CarSpeedNorth;
-                    $meaCavityPressure = $objMea.CavityPressure;
-                    $meaCH4 = Null-ToValue -value $objMea.CH4;
-                    $meaChemDetect = Bool-ToBitWithNullCheck -value $objMea.ChemDetect;
-                    $meaCO2 = Null-ToValue -value $objMea.CO2;
-                    $meaCreateDate = Date-ToString -value $objMea.CreateDate;
-                    $meaDeltaCH4 = Null-ToValue -value $objMea.DeltaCH4;
-                    $meaEpochTime = $objMea.EpochTime;
-                    $meaGpsFit = Null-ToValue -value $objMea.GpsFit;
-                    $meaGpsLatitude = Null-ToValue -value $objMea.GpsLatitude;
-                    $meaGpsLongitude = Null-ToValue -value $objMea.GpsLongitude;
-                    $meaH2OPercent = Null-ToValue -value $objMea.H2OPercent;
-                    $meaHotBoxTemperature = $objMea.HotBoxTemperature;
-                    $meaInstrumentStatus = $objMea.InstrumentStatus;
-                    $meaMobileFlowRate = $objMea.MobileFlowRate;
-                    $meaPeakDetectorState = Null-ToValue -value $objMea.PeakDetectorState;
-                    $meaPeripheralStatus = Null-ToValue -value $objMea.PeripheralStatus;
-                    $meaShape = Geometry-ToText -value $objMea.Shape;
-                    $meaSpecies = Null-ToValue -value $objMea.Species;
-                    $meaValveMask = $objMea.ValveMask;
-                    $meaWarmBoxTemperature = $objMea.WarmBoxTemperature;
-                    $meaWeatherStationRotation = Null-ToValue -value $objMea.WeatherStationRotation;
-                    $meaWindDirectionStdDev = Null-ToValue -value $objMea.WindDirectionStdDev;
-                    $meaWindSpeedEast = Null-ToValue -value $objMea.WindSpeedEast;
-                    $meaWindSpeedLateral = Null-ToValue -value $objMea.WindSpeedLateral;
-                    $meaWindSpeedLongitudinal = Null-ToValue -value $objMea.WindSpeedLongitudinal;
-                    $meaWindSpeedNorth = Null-ToValue -value $objMea.WindSpeedNorth;
+                $i5=0
+                Write-Output -log "Fetching Measurement values for Survey Tag: $tag"
+                $query = "SELECT [AnalyzerId],[EpochTime],[CreateDate],[GpsLatitude],[GpsLongitude],[GpsFit],CONVERT(VARBINARY(MAX), [Shape]) AS Shape,[InstrumentStatus],[ValveMask],[CarSpeedNorth],[CarSpeedEast],[WindSpeedNorth],[WindSpeedEast],[WindDirectionStdDev],[WeatherStationRotation],[WindSpeedLateral],[WindSpeedLongitudinal],[ChemDetect],[Species],[CH4],[CO2],[H2OPercent],[DeltaCH4],[PeripheralStatus],[AnalyzerStatus],[CavityPressure],[WarmBoxTemperature],[HotBoxTemperature],[MobileFlowRate],[AnalyzerMode],[PeakDetectorState],[C2H6],[C2H4],[AnalyzerEthaneConcentrationUncertainty] FROM [$databaseName].[dbo].[Measurement] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId'"
+                $objMeasurement = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
+                $objMeasurement | foreach {
+                    if ($i5 -gt 0) {     # first row is length of array. datarows are from index=1
+                        Write-Output -log "Table -> Measurement, Survey Tag -> $tag - Processing row - $i5"
 
-                    Add-Content $OUTCSV "$meaAnalyzerId,$meaEpochTime,$meaCreateDate,$meaGpsLatitude,$meaGpsLongitude,$meaGpsFit,$meaShape,$meaInstrumentStatus,$meaValveMask,$meaCarSpeedNorth,$meaCarSpeedEast,$meaWindSpeedNorth,$meaWindSpeedEast,$meaWindDirectionStdDev,$meaWeatherStationRotation,$meaWindSpeedLateral,$meaWindSpeedLongitudinal,$meaChemDetect,$meaSpecies,$meaCH4,$meaCO2,$meaH2OPercent,$meaDeltaCH4,$meaPeripheralStatus,$meaAnalyzerStatus,$meaCavityPressure,$meaWarmBoxTemperature,$meaHotBoxTemperature,$meaMobileFlowRate,$meaAnalyzerMode,$meaPeakDetectorState,$meaC2H6,$meaC2H4,$meaAnalyzerEthaneConcentrationUncertainty"
+                        $objMea = $_;
+                        $meaAnalyzerEthaneConcentrationUncertainty = Null-ToValue -value $objMea.AnalyzerEthaneConcentrationUncertainty;
+                        $meaAnalyzerId = $objMea.AnalyzerId;
+                        $meaAnalyzerMode = $objMea.AnalyzerMode;
+                        $meaAnalyzerStatus = Null-ToValue -value $objMea.AnalyzerStatus;
+                        $meaC2H4 = Null-ToValue -value $objMea.C2H4;
+                        $meaC2H6 = Null-ToValue -value $objMea.C2H6;
+                        $meaCarSpeedEast = Null-ToValue -value $objMea.CarSpeedEast;
+                        $meaCarSpeedNorth = Null-ToValue -value $objMea.CarSpeedNorth;
+                        $meaCavityPressure = $objMea.CavityPressure;
+                        $meaCH4 = Null-ToValue -value $objMea.CH4;
+                        $meaChemDetect = Bool-ToBitWithNullCheck -value $objMea.ChemDetect;
+                        $meaCO2 = Null-ToValue -value $objMea.CO2;
+                        $meaCreateDate = Date-ToString -value $objMea.CreateDate;
+                        $meaDeltaCH4 = Null-ToValue -value $objMea.DeltaCH4;
+                        $meaEpochTime = $objMea.EpochTime;
+                        $meaGpsFit = Null-ToValue -value $objMea.GpsFit;
+                        $meaGpsLatitude = Null-ToValue -value $objMea.GpsLatitude;
+                        $meaGpsLongitude = Null-ToValue -value $objMea.GpsLongitude;
+                        $meaH2OPercent = Null-ToValue -value $objMea.H2OPercent;
+                        $meaHotBoxTemperature = $objMea.HotBoxTemperature;
+                        $meaInstrumentStatus = $objMea.InstrumentStatus;
+                        $meaMobileFlowRate = $objMea.MobileFlowRate;
+                        $meaPeakDetectorState = Null-ToValue -value $objMea.PeakDetectorState;
+                        $meaPeripheralStatus = Null-ToValue -value $objMea.PeripheralStatus;
+                        $meaShape = Geometry-ToText -value $objMea.Shape;
+                        $meaSpecies = Null-ToValue -value $objMea.Species;
+                        $meaValveMask = $objMea.ValveMask;
+                        $meaWarmBoxTemperature = $objMea.WarmBoxTemperature;
+                        $meaWeatherStationRotation = Null-ToValue -value $objMea.WeatherStationRotation;
+                        $meaWindDirectionStdDev = Null-ToValue -value $objMea.WindDirectionStdDev;
+                        $meaWindSpeedEast = Null-ToValue -value $objMea.WindSpeedEast;
+                        $meaWindSpeedLateral = Null-ToValue -value $objMea.WindSpeedLateral;
+                        $meaWindSpeedLongitudinal = Null-ToValue -value $objMea.WindSpeedLongitudinal;
+                        $meaWindSpeedNorth = Null-ToValue -value $objMea.WindSpeedNorth;
+
+                        Add-Content $OUTCSV "$meaAnalyzerId,$meaEpochTime,$meaCreateDate,$meaGpsLatitude,$meaGpsLongitude,$meaGpsFit,$meaShape,$meaInstrumentStatus,$meaValveMask,$meaCarSpeedNorth,$meaCarSpeedEast,$meaWindSpeedNorth,$meaWindSpeedEast,$meaWindDirectionStdDev,$meaWeatherStationRotation,$meaWindSpeedLateral,$meaWindSpeedLongitudinal,$meaChemDetect,$meaSpecies,$meaCH4,$meaCO2,$meaH2OPercent,$meaDeltaCH4,$meaPeripheralStatus,$meaAnalyzerStatus,$meaCavityPressure,$meaWarmBoxTemperature,$meaHotBoxTemperature,$meaMobileFlowRate,$meaAnalyzerMode,$meaPeakDetectorState,$meaC2H6,$meaC2H4,$meaAnalyzerEthaneConcentrationUncertainty"
+                    }
+
+                    $i5++
                 }
-
-                $i5++
             }
 
             # --- Peak ---
