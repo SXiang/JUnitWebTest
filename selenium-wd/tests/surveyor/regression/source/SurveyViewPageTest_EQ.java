@@ -54,7 +54,7 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
-		
+
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -69,12 +69,12 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER_4, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR_4, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_F, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 //		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 //		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
 		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
@@ -109,13 +109,13 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnEightHourHistory(EMPTY, NOTSET);
-		
+
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
-		
+
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -129,12 +129,12 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER_6, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR_6, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_F, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
 		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
