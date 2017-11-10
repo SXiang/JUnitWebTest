@@ -2,14 +2,21 @@ package surveyor.regression.source;
 
 import common.source.BaseHelper;
 import common.source.HostSimDefinitionGenerator;
+import common.source.HostSimInstructions;
 import common.source.Log;
+import common.source.RegexUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestContext;
+import common.source.HostSimInstructions.Action;
+import common.source.HostSimInstructions.Anemometer;
+import common.source.HostSimInstructions.Measurement;
+import common.source.HostSimInstructions.Selector;
 
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +66,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	private static MeasurementSessionsPage measurementSessionsPage;
 
 
-	private static Map<String, String> testAccount, testSurvey;
+	private static Map<String, String> testAccount, testSurvey, testSurvey2;
 	private static String userName;
 	private static String userPassword;
 	private static String customerName;
@@ -68,7 +75,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	private static String analyzerName;
 	private static String analyzerType;
 	private static String surveyorName;
-	private static String surveyTag;
+	private static String surveyTag, surveyTag2;
 	private static String customerId;
 	private static String surveyMinAmplitude;
 	private static String rankingMinAmplitude;
@@ -103,13 +110,8 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 			if(testAccount == null){
-				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-					testAccount = createTestAccountWithGisCustomer("Analytics_Report", CapabilityType.Ethane);
-				} else {
-					testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
-				}
-
 				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
+
 				userName = testAccount.get("userName");
 				userPassword = testAccount.get("userPassword");
 				customerName = testAccount.get("customerName");
@@ -126,14 +128,25 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
 				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
 				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
-				testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
-						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
-
+				
+//				userName = "519100@email.com"; 
+//				userPassword = "sqa#Picarro$0";
+//				analyzerName = "SimAuto-Analyzer007";
+//				analyzerSharedKey = "SimAuto-AnalyzerKey007";
+//				customerName = "regcus519100Analytics_Report";
+//				locationName = "519100Loc";
+//				
+				testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
+						,userName, userPassword, 220, SurveyType.Analytics);
+				testSurvey2 = addTestSurvey(addPeaks(), analyzerName, analyzerSharedKey, CapabilityType.Ethane, "", ""
+						,userName, userPassword, 220, SurveyType.Analytics);
+				
 				if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-					pushGisData(testAccount.get("customerId"));
+//					pushGisData(customerId);
 				}
 
 				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+				surveyTag2 = testSurvey2.get(SurveyType.Analytics.toString()+"Tag");
 			} else {
 				getLoginPage().open();
 				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -144,6 +157,22 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 			}
 		}
 
+    private static String[] addPeaks(){
+    	HostSimInstructions instructions = new HostSimInstructions("addPeaks");
+		instructions.addSelector(Selector.EveryM, 2000)
+			.addAnemometerAction(Action.UpdateRandom, Anemometer.Column.WS_STATUS, "1","0.1")
+			.addMeasurementAction(Action.Update, Measurement.Column.CH4, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+		String files = null;
+		try {
+			files = String.join(",", instructions.createFile());
+		} catch (IOException e) {
+			Log.warn("Failed to create instruction files for test");
+			return null;
+		};
+		return RegexUtility.split(files, RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[1]);
+    }
+    
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
 
@@ -433,7 +462,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,minClusterSize);
 		getHomePage().logout();
 
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag2, reportDataRowID1, SurveyModeFilter.Analytics);
 
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
 		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
@@ -452,7 +481,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,minClusterSize);
 		getHomePage().logout();
 
-		testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+		testReport = addTestReport(userName, userPassword, customerName, surveyTag2, reportDataRowID1, SurveyModeFilter.Analytics);
 
 		reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
 		reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
@@ -464,6 +493,6 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
 		
 		List<String[]> lisaTable2 = complianceReportsPageAction.getComplianceReportsPage().getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);	
-		assertTrue(lisaTable2.size()>=lisaTable1.size());	
+		assertTrue(lisaTable2.size()>lisaTable1.size());	
 	}
 }

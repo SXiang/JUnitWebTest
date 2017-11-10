@@ -389,6 +389,10 @@ public class BaseTest {
 		String analyzerName = uniqueNumber + "Ana";
 		String analyzerSharedKey = analyzerName + "Key";
 
+		if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			fetchCustomerFromPool = true;
+		}
+		
 		if (fetchAnalyzerFromPool) {
 			// Fetch Analyzer from pool. Delete analyzer if already exists in DB.
 			analyzerName = AnalyzerSerialNumberPool.INSTANCE.fetchNext();
@@ -620,6 +624,9 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3file, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
+		return addTestSurvey(null, analyzerName, analyzerSharedKey, analyzerType, db3file, db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+	public Map<String, String> addTestSurvey(String[] instructionFiles, String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3file, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
         String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		String replayEQScriptDB3File = "Surveyor.db3";
@@ -684,7 +691,7 @@ public class BaseTest {
 			}
 
 			/* Step 2: startAnalyzerSurvey */
-			startAnalyzerSurvey(testEnvironmentAction, drivingSurveyType, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
+			startAnalyzerSurvey(testEnvironmentAction, drivingSurveyType, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds, instructionFiles);
 			/* Step 3: stopAnalyzerSurvey */
 			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 			testSurvey.put(st.name()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
@@ -706,18 +713,30 @@ public class BaseTest {
 			analyzerName, analyzerSharedKey);
 	}
 
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
+			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,
+    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds, null);
+	}
+	
     protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
-		String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+		String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds, String[] instructionFiles) throws Exception{
     	startAnalyzerSurvey(testEnvironmentAction, DrivingSurveyType.Default, driverViewPageAction,
     			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
     }
 
-	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
+    protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
 			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+    	startAnalyzerSurvey(testEnvironmentAction, surveyType, driverViewPageAction,
+    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds,null);
+    }
+    
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
+			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds, String[] instructionFiles) throws Exception{
 		TestSetup.restartAnalyzer();
 		driverViewPageAction.open("", -1);
 		driverViewPageAction.waitForConnectionToComplete("", -1);
-		TestSetup.replayDB3Script(db3DefnFile, db3file);
+		TestSetup.replayDB3Script(db3DefnFile, db3file, instructionFiles);
 		driverViewPageAction.clickOnModeButton("", -1);
 		if(surveyType.equals(DrivingSurveyType.EQ)){
 			driverViewPageAction.startEQDrivingSurvey("", surveyRowID);
