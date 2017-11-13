@@ -3,6 +3,7 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -11,8 +12,10 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.OLMapEntities.Indication;
 import common.source.Screenshotter;
+import surveyor.dataaccess.source.Peak;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -114,9 +117,20 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 		Log.info(String.format("Indications detected in Survey view = %d", indicationsOnSurveyView.size()));
 		indicationsOnSurveyView.forEach(i -> Log.info(i.toString()));
 
-		// Compare indications count on driver view and survey view. Comparing index, disposition and text on Indications set objects.
-		assertTrue(indicationsOnDriverView.size() == indicationsOnSurveyView.size());
-		assertTrue(indicationsOnDriverView.equals(indicationsOnSurveyView));
+		// Compare indications count on driver view is greater than or equal to survey view.
+		assertTrue(indicationsOnDriverView.size() >= indicationsOnSurveyView.size());
+
+		// Some indications on survey view might not survive. Ensure surviving indications are shown on the survey view.
+		String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+		List<Peak> survivedPeaksForSurvey = Peak.getSurvivedPeaksForSurvey(surveyTag);
+		Log.info(String.format("Survived collection of peaks for survey-'%s' -> %s", surveyTag, LogHelper.collectionToString(survivedPeaksForSurvey, "survivedPeaksForSurvey")));
+		assertTrue(String.format("Expected survived indications on Survey view=[%d]. Actual=[%d]", survivedPeaksForSurvey.size(), indicationsOnSurveyView.size()),
+				indicationsOnSurveyView.size() == survivedPeaksForSurvey.size());
+
+		// Compare index, disposition and text on Indications set when same number of indications are showing in Driver view and Survey view..
+		if (indicationsOnDriverView.size() == indicationsOnSurveyView.size()) {
+			assertTrue(indicationsOnDriverView.equals(indicationsOnSurveyView));
+		}
 	}
 
 	/**
