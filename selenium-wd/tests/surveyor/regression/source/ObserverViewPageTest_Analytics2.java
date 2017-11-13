@@ -102,7 +102,11 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		}
 
 		if(testAccount == null){
-			testAccount = createTestAccount("Analytics_ObserverView", CapabilityType.Ethane);
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				testAccount = createTestAccountWithGisCustomer("Analytics_ObserverView", CapabilityType.Ethane);
+			} else {
+				testAccount = createTestAccount("Analytics_ObserverView", CapabilityType.Ethane);
+			}
 
 			observerName = testAccount.get("userName");
 			userPassword = testAccount.get("userPassword");

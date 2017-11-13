@@ -388,10 +388,6 @@ public class BaseTest {
 		String surveyorName = uniqueNumber + "Sur";
 		String analyzerName = uniqueNumber + "Ana";
 		String analyzerSharedKey = analyzerName + "Key";
-
-		if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-			fetchCustomerFromPool = true;
-		}
 		
 		if (fetchAnalyzerFromPool) {
 			// Fetch Analyzer from pool. Delete analyzer if already exists in DB.
@@ -399,7 +395,6 @@ public class BaseTest {
 			Log.info(String.format("Fetched Analyzer with serial number-'%s' from pool", analyzerName));
 			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
 			if (analyzer != null) {
-				analyzerSharedKey = analyzer.getSharedKey();
 				Log.info(String.format("Analyzer with serial number-'%s', sharedKey-'%s' fetched from pool ALREADY EXISTS in DB. "
 						+ "Deleting Analyzer.", analyzerName, analyzerSharedKey));
 				analyzer.cascadeDeleteAnalyzer();

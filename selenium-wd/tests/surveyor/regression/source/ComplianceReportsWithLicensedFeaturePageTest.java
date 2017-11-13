@@ -95,7 +95,11 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 		if(testAccount == null){
-			testAccount = createTestAccount("LicFeature", CapabilityType.Ethane);
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				testAccount = createTestAccountWithGisCustomer("LicFeature", CapabilityType.Ethane);
+			} else {
+				testAccount = createTestAccount("LicFeature", CapabilityType.Ethane);
+			}
 
 			userName = testAccount.get("userName");
 			userPassword = testAccount.get("userPassword");

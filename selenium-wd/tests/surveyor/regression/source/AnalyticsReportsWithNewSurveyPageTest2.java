@@ -110,32 +110,36 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 			if(testAccount == null){
-				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
-
-				userName = testAccount.get("userName");
-				userPassword = testAccount.get("userPassword");
-				customerName = testAccount.get("customerName");
-				locationName = testAccount.get("locationName");
-				analyzerSharedKey = testAccount.get("analyzerSharedKey");
-				analyzerName = testAccount.get("analyzerName");
-				analyzerType = testAccount.get("analyzerType");
-				surveyorName = testAccount.get("surveyorName");
-				customerId = testAccount.get("customerId");
-				surveyMinAmplitude = "0.035";
-				rankingMinAmplitude = "0.035";
-				analyticsMinClusterSize = "2";
-				manageLocationPageActions.open(EMPTY, NOTSET);
-				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
-				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
-				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
-				
-//				userName = "519100@email.com"; 
-//				userPassword = "sqa#Picarro$0";
-//				analyzerName = "SimAuto-Analyzer007";
-//				analyzerSharedKey = "SimAuto-AnalyzerKey007";
-//				customerName = "regcus519100Analytics_Report";
-//				locationName = "519100Loc";
+//				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+//					testAccount = createTestAccountWithGisCustomer("Analytics_Report", CapabilityType.Ethane);
+//				}else{
+//				    testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
+//				}
+//
+//				userName = testAccount.get("userName");
+//				userPassword = testAccount.get("userPassword");
+//				customerName = testAccount.get("customerName");
+//				locationName = testAccount.get("locationName");
+//				analyzerSharedKey = testAccount.get("analyzerSharedKey");
+//				analyzerName = testAccount.get("analyzerName");
+//				analyzerType = testAccount.get("analyzerType");
+//				surveyorName = testAccount.get("surveyorName");
+//				customerId = testAccount.get("customerId");
+//				surveyMinAmplitude = "0.035";
+//				rankingMinAmplitude = "0.035";
+//				analyticsMinClusterSize = "2";
+//				manageLocationPageActions.open(EMPTY, NOTSET);
+//				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+//				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
+//				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
 //				
+				userName = "353873@email.com"; 
+				userPassword = "sqa#Picarro$0";
+				analyzerName = "AutoTestAnalyzer078";
+				analyzerSharedKey = "353873AnaKey";
+				customerName = "regcus353873Analytics_Report";
+				locationName = "353873Loc";
+				
 				testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
 						,userName, userPassword, 220, SurveyType.Analytics);
 				testSurvey2 = addTestSurvey(addPeaks(), analyzerName, analyzerSharedKey, CapabilityType.Ethane, "", ""
