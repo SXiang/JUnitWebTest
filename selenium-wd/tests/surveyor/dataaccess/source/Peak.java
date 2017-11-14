@@ -246,23 +246,26 @@ public class Peak extends BaseEntity {
 		Peak objPeak = new Peak();
 		List<Peak> objPeakList = new ArrayList<Peak>();
 		Survey objSurvey = Survey.getSurvey(tag);
-		String surveyId = objSurvey.getId();
-		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
-		String analyzerId = objAnalyzer.getId().toString();
+		if (objSurvey != null) {
+			String surveyId = objSurvey.getId();
+			Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
+			String analyzerId = objAnalyzer.getId().toString();
 
-		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId)) {
-			objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId);
-		}
-		else {
-			String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "'";
-			objPeakList = objPeak.load(SQL);
-			if (objPeakList!=null && objPeakList.size()>0)
-			{
-				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId, objPeakList);
+			// Get from cache if present. Else fetch from Database.
+			if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId)) {
+				objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId);
+			}
+			else {
+				String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "'";
+				objPeakList = objPeak.load(SQL);
+				if (objPeakList!=null && objPeakList.size()>0)
+				{
+					DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId, objPeakList);
 
+				}
 			}
 		}
+
 		return objPeakList;
 	}
 
