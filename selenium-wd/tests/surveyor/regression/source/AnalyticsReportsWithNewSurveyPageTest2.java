@@ -106,7 +106,6 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 					testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
 				}
 
-				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
 				userName = testAccount.get("userName");
 				userPassword = testAccount.get("userPassword");
 				customerName = testAccount.get("customerName");

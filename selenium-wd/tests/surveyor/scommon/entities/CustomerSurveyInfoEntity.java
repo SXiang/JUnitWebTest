@@ -15,7 +15,7 @@ public class CustomerSurveyInfoEntity {
 	private Integer customerRowID;
 	private Integer db3AnalyzerRowID;
 	private String[] instructionFiles;
-	private boolean pushGISSeedData;
+	private boolean useCustomerWithGisSeed;
 	private boolean retainGISSeedData;
 	private boolean calibrationRecord;
 
@@ -133,12 +133,12 @@ public class CustomerSurveyInfoEntity {
 		this.instructionFiles = instructionFiles;
 	}
 
-	public boolean isPushGISSeedData() {
-		return pushGISSeedData;
+	public boolean isUseCustomerWithGISSeed() {
+		return useCustomerWithGisSeed;
 	}
 
-	public void setPushGISSeedData(boolean pushGISSeedData) {
-		this.pushGISSeedData = pushGISSeedData;
+	public void setUseCustomerWithGISSeed(boolean useGisSeedCustomer) {
+		this.useCustomerWithGisSeed = useGisSeedCustomer;
 	}
 
 	public boolean isRetainGISSeedData() {
@@ -156,7 +156,7 @@ public class CustomerSurveyInfoEntity {
 	public void setCalibrationRecord(boolean calibrationRecord) {
 		this.calibrationRecord = calibrationRecord;
 	}
-	
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
