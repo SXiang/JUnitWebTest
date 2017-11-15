@@ -560,6 +560,7 @@ public class BaseTest {
 			rpt.setStrCreatedBy(userName);
 
 			List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
+
 			for(int i=0;i<surveyInfoList.size(); i++){
 				ReportsSurveyInfo smf = surveyInfoList.get(i);
 				String tag = "";
@@ -573,6 +574,7 @@ public class BaseTest {
 					}
 				}
 			}
+			
 			complianceReportsPageAction.setWorkingReportsEntity(rpt);
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
 			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
@@ -605,13 +607,7 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
-		String replayScriptDefnFile = "replay-db3.defn";
-		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
-		String db3DefnFile = replayScriptDefnFile;
-		if(analyzerType.equals(CapabilityType.Ethane)){
-			db3DefnFile = replayScriptEthaneDefnFile;
-		}
-		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, "", userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
@@ -625,6 +621,9 @@ public class BaseTest {
         String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		String replayEQScriptDB3File = "Surveyor.db3";
+		String replayScriptDefnFile = "replay-db3.defn";
+		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
+		String replayScriptEthaneMeasInstructionsFile = "replay-db3-eth-meas-instructions.defn";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62, 65};
 
 		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics, SurveyType.EQ};
@@ -679,6 +678,16 @@ public class BaseTest {
 				}
 			}
 
+			if(db3DefnFile.isEmpty()){
+				db3DefnFile = replayScriptDefnFile;
+				if(analyzerType.equals(CapabilityType.Ethane)){
+					db3DefnFile = replayScriptEthaneDefnFile;
+					if(instructionFiles!=null){
+						db3DefnFile = replayScriptEthaneMeasInstructionsFile;
+					}
+				}
+			}
+			
 			int surveyRowID = surveyRowIDs[0];
 			for(int j=0; j<surveyType.length; j++){
 				if(st.equals(surveyType[j])){

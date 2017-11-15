@@ -7,6 +7,7 @@ import common.source.Log;
 import common.source.RegexUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestContext;
+import common.source.HostSimDefinitionGenerator.iGPSMode;
 import common.source.HostSimInstructions.Action;
 import common.source.HostSimInstructions.Anemometer;
 import common.source.HostSimInstructions.Measurement;
@@ -110,43 +111,41 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 			if(testAccount == null){
-//				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-//					testAccount = createTestAccountWithGisCustomer("Analytics_Report", CapabilityType.Ethane);
-//				}else{
-//				    testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
-//				}
-//
-//				userName = testAccount.get("userName");
-//				userPassword = testAccount.get("userPassword");
-//				customerName = testAccount.get("customerName");
-//				locationName = testAccount.get("locationName");
-//				analyzerSharedKey = testAccount.get("analyzerSharedKey");
-//				analyzerName = testAccount.get("analyzerName");
-//				analyzerType = testAccount.get("analyzerType");
-//				surveyorName = testAccount.get("surveyorName");
-//				customerId = testAccount.get("customerId");
-//				surveyMinAmplitude = "0.035";
-//				rankingMinAmplitude = "0.035";
-//				analyticsMinClusterSize = "2";
-//				manageLocationPageActions.open(EMPTY, NOTSET);
-//				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
-//				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
-//				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
-//				
-				userName = "353873@email.com"; 
-				userPassword = "sqa#Picarro$0";
-				analyzerName = "AutoTestAnalyzer078";
-				analyzerSharedKey = "353873AnaKey";
-				customerName = "regcus353873Analytics_Report";
-				locationName = "353873Loc";
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					testAccount = createTestAccountWithGisCustomer("Analytics_Report", CapabilityType.Ethane);
+				}else{
+				    testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
+				}
+
+				userName = testAccount.get("userName");
+				userPassword = testAccount.get("userPassword");
+				customerName = testAccount.get("customerName");
+				locationName = testAccount.get("locationName");
+				analyzerSharedKey = testAccount.get("analyzerSharedKey");
+				analyzerName = testAccount.get("analyzerName");
+				analyzerType = testAccount.get("analyzerType");
+				surveyorName = testAccount.get("surveyorName");
+				customerId = testAccount.get("customerId");
+				surveyMinAmplitude = "0.035";
+				rankingMinAmplitude = "0.035";
+				analyticsMinClusterSize = "2";
+				manageLocationPageActions.open(EMPTY, NOTSET);
+				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
 				
+				String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
+				String[] c2h6Values = {"3.5", "4.0", "3.5", "4.0", "3.5"};
+				String defnFileForMultiplePeaks = new HostSimDefinitionGenerator().generateDefaultEthDefinitionForMultiplePeaks(ch4Values, c2h6Values);
+
+				testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane, defnFileForMultiplePeaks
+						,userName, userPassword, 300, SurveyType.Analytics);
+
 				testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
-						,userName, userPassword, 220, SurveyType.Analytics);
-				testSurvey2 = addTestSurvey(addPeaks(), analyzerName, analyzerSharedKey, CapabilityType.Ethane, "", ""
 						,userName, userPassword, 220, SurveyType.Analytics);
 				
 				if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-//					pushGisData(customerId);
+					pushGisData(customerId);
 				}
 
 				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
@@ -160,22 +159,6 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
 			}
 		}
-
-    private static String[] addPeaks(){
-    	HostSimInstructions instructions = new HostSimInstructions("addPeaks");
-		instructions.addSelector(Selector.EveryM, 2000)
-			.addAnemometerAction(Action.UpdateRandom, Anemometer.Column.WS_STATUS, "1","0.1")
-			.addMeasurementAction(Action.Update, Measurement.Column.CH4, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
-		String files = null;
-		try {
-			files = String.join(",", instructions.createFile());
-		} catch (IOException e) {
-			Log.warn("Failed to create instruction files for test");
-			return null;
-		};
-		return RegexUtility.split(files, RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[1]);
-    }
     
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
@@ -373,14 +356,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	public void TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator ...");
-		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
-		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
-		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
-
-		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
-				,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
-		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag,
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag2,
 				reportDataRowID1, SurveyModeFilter.Analytics);
 
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
@@ -412,13 +388,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	public void TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication ...");
-		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
-		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
-		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
-		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane
-				,defnFilePath, userName, userPassword, 300, SurveyType.Standard);
-		String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag,
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag2,
 				reportDataRowID1, SurveyModeFilter.Standard);
 		String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
 		String reportName = testReport.get(SurveyModeFilter.Standard.toString()+"ReportName");
@@ -485,7 +455,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,minClusterSize);
 		getHomePage().logout();
 
-		testReport = addTestReport(userName, userPassword, customerName, surveyTag2, reportDataRowID1, SurveyModeFilter.Analytics);
+		testReport = addTestReport(userName, userPassword, customerName,  surveyTag2, reportDataRowID1, SurveyModeFilter.Analytics);
 
 		reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
 		reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
