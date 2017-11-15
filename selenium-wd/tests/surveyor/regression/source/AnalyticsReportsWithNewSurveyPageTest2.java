@@ -349,9 +349,8 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
 		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
 		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
-		
 		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
-			,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
+				,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
 		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
 		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag,
 				reportDataRowID1, SurveyModeFilter.Analytics);

@@ -572,7 +572,7 @@ public class BaseTest {
 						smf.setTag(tag);
 					}
 				}
-			}			
+			}
 			complianceReportsPageAction.setWorkingReportsEntity(rpt);
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
 			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
