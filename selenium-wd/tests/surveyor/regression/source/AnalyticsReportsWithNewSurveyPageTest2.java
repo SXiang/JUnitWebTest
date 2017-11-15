@@ -2,29 +2,19 @@ package surveyor.regression.source;
 
 import common.source.BaseHelper;
 import common.source.HostSimDefinitionGenerator;
-import common.source.HostSimInstructions;
 import common.source.Log;
-import common.source.RegexUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestContext;
-import common.source.HostSimDefinitionGenerator.iGPSMode;
-import common.source.HostSimInstructions.Action;
-import common.source.HostSimInstructions.Anemometer;
-import common.source.HostSimInstructions.Measurement;
-import common.source.HostSimInstructions.Selector;
-
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -111,7 +101,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 			if(testAccount == null){
-				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				if(TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 					testAccount = createTestAccountWithGisCustomer("Analytics_Report", CapabilityType.Ethane);
 				}else{
 				    testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
@@ -159,7 +149,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
 			}
 		}
-    
+
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
 
@@ -356,7 +346,14 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	public void TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator ...");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag2,
+		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
+		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+		
+		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
+			,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
+		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag,
 				reportDataRowID1, SurveyModeFilter.Analytics);
 
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
@@ -388,7 +385,13 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	public void TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication ...");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag2,
+		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
+		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane
+				,defnFilePath, userName, userPassword, 300, SurveyType.Standard);
+		String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag,
 				reportDataRowID1, SurveyModeFilter.Standard);
 		String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
 		String reportName = testReport.get(SurveyModeFilter.Standard.toString()+"ReportName");

@@ -388,7 +388,7 @@ public class BaseTest {
 		String surveyorName = uniqueNumber + "Sur";
 		String analyzerName = uniqueNumber + "Ana";
 		String analyzerSharedKey = analyzerName + "Key";
-		
+
 		if (fetchAnalyzerFromPool) {
 			// Fetch Analyzer from pool. Delete analyzer if already exists in DB.
 			analyzerName = AnalyzerSerialNumberPool.INSTANCE.fetchNext();
@@ -560,7 +560,6 @@ public class BaseTest {
 			rpt.setStrCreatedBy(userName);
 
 			List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
-
 			for(int i=0;i<surveyInfoList.size(); i++){
 				ReportsSurveyInfo smf = surveyInfoList.get(i);
 				String tag = "";
@@ -573,8 +572,7 @@ public class BaseTest {
 						smf.setTag(tag);
 					}
 				}
-			}
-			
+			}			
 			complianceReportsPageAction.setWorkingReportsEntity(rpt);
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
 			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
