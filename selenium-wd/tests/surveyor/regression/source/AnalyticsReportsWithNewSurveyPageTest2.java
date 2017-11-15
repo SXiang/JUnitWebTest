@@ -99,7 +99,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		initializePageActions();
 		initializePageObjects();
 		// Select run mode here.
-		setPropertiesForTestRunMode();
+		
 			if(testAccount == null){
 				if(TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 					testAccount = createTestAccountWithGisCustomer("Analytics_Report", CapabilityType.Ethane);
