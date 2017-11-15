@@ -5136,44 +5136,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00001]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8F97BEA6-5812-4B0E-B389-4808D25F6E46'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8985BD1B-1F97-4BC7-A46C-C497D27F0174'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8F97BEA6-5812-4B0E-B389-4808D25F6E46', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DB130C03-87A1-4FC5-9469-DD016F360BDC'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8985BD1B-1F97-4BC7-A46C-C497D27F0174', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DD6FD5CB-00EA-4BCD-A95C-1C8456CA47DE'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DB130C03-87A1-4FC5-9469-DD016F360BDC', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0091C7A4-4D7B-43D6-9C24-852D9260507B'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0091C7A4-4D7B-43D6-9C24-852D9260507B', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B5E9C1DA-4C8B-43D9-8CD8-531C4D4B37A8'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B5E9C1DA-4C8B-43D9-8CD8-531C4D4B37A8', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DD6FD5CB-00EA-4BCD-A95C-1C8456CA47DE', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00001]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A56B4525-EE50-4331-9A41-3E6F3248FD59' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5EE4DDA2-5A18-4420-A692-70179FB11596' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A56B4525-EE50-4331-9A41-3E6F3248FD59', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5EE4DDA2-5A18-4420-A692-70179FB11596', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8E7483B5-ABD6-42D5-AB21-D86D0B140F72' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BB6E64F1-3710-466D-A701-F37DE2DA4DC2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8E7483B5-ABD6-42D5-AB21-D86D0B140F72', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BB6E64F1-3710-466D-A701-F37DE2DA4DC2', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='417A0D0C-DFEE-4759-9740-B1CB830C2644' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0E2B32DB-D8D8-4101-B18B-B1A7E1735BE3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'417A0D0C-DFEE-4759-9740-B1CB830C2644', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0E2B32DB-D8D8-4101-B18B-B1A7E1735BE3', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='755B14F9-18E1-45AE-BD8C-8E976DCCA020' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3A274B61-D4B9-429C-A722-BA2F00A1A5FB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'755B14F9-18E1-45AE-BD8C-8E976DCCA020', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3A274B61-D4B9-429C-A722-BA2F00A1A5FB', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='21BDBE1A-C7DC-4AE1-9B7E-3CF8537B6FAB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6CE8AF08-1CA8-4F01-804B-842AF8FE5501' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'21BDBE1A-C7DC-4AE1-9B7E-3CF8537B6FAB', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6CE8AF08-1CA8-4F01-804B-842AF8FE5501', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3AE3D32B-ABFC-457E-A533-B5AEF0261F95' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0124236B-52F6-4208-B3E6-8B28BA2F8C79' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3AE3D32B-ABFC-457E-A533-B5AEF0261F95', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0124236B-52F6-4208-B3E6-8B28BA2F8C79', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00002' 
@@ -5183,44 +5178,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00002]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AAB8BDC2-383E-4FB7-8D6D-9FA52D98045A'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'238CEB6F-6EF9-43B3-A817-A1E211C0F432'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AAB8BDC2-383E-4FB7-8D6D-9FA52D98045A', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F82BA7A1-9D3A-46D9-863C-19DFA9EC7938'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'238CEB6F-6EF9-43B3-A817-A1E211C0F432', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8F5F341D-7BEE-4AE9-A0B0-F18CC75392B2'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F82BA7A1-9D3A-46D9-863C-19DFA9EC7938', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9A9EBEB6-681C-455F-A649-AB9F54D9DCB6'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9A9EBEB6-681C-455F-A649-AB9F54D9DCB6', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7A385DFC-127D-43A4-B517-A46572FBE29E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7A385DFC-127D-43A4-B517-A46572FBE29E', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8F5F341D-7BEE-4AE9-A0B0-F18CC75392B2', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00002]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C935E8C4-CF6C-49FF-B7FD-D1906A4054DE' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C4A60540-9657-4A17-BD5C-3E0440DE27E6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C935E8C4-CF6C-49FF-B7FD-D1906A4054DE', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C4A60540-9657-4A17-BD5C-3E0440DE27E6', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='808394BC-210F-4DFB-B27F-3E7FF23F3A4C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0DEBEB36-5600-478F-9AB0-9D1690D5EC5B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'808394BC-210F-4DFB-B27F-3E7FF23F3A4C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0DEBEB36-5600-478F-9AB0-9D1690D5EC5B', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='560A26B1-783C-4338-A974-CC44A012FF52' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='00E6DBB3-C63A-4DC4-BBC0-C0704BB420D2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'560A26B1-783C-4338-A974-CC44A012FF52', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'00E6DBB3-C63A-4DC4-BBC0-C0704BB420D2', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='57E6405C-7E72-42EA-AB06-CFD1CDE3B29E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C315F8C1-9327-441E-AB19-16A5C4AA8615' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'57E6405C-7E72-42EA-AB06-CFD1CDE3B29E', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C315F8C1-9327-441E-AB19-16A5C4AA8615', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BC01425A-AEC6-4032-87DF-842CFBD2B391' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B0DB9AD2-2652-429B-A078-A06367C440D3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BC01425A-AEC6-4032-87DF-842CFBD2B391', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B0DB9AD2-2652-429B-A078-A06367C440D3', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F2154BC0-5E0C-44C3-BEB4-E207238BAAF5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2EA9CE39-CEE9-4657-840A-43D1B9F36184' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F2154BC0-5E0C-44C3-BEB4-E207238BAAF5', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2EA9CE39-CEE9-4657-840A-43D1B9F36184', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00003' 
@@ -5230,44 +5220,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00003]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DF573B2B-7A39-4DED-9C12-569961AB2DD4'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BFB697FB-EF7A-42D7-AD20-EA4BECEC86BE'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DF573B2B-7A39-4DED-9C12-569961AB2DD4', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'51AC761B-ACB4-4242-A0E4-55A8B9F8CDFA'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BFB697FB-EF7A-42D7-AD20-EA4BECEC86BE', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A9D86534-028D-47BC-9B8F-B9FFE95C2A2A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'51AC761B-ACB4-4242-A0E4-55A8B9F8CDFA', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B6038A37-B2A2-4895-AC34-37909F67D4A1'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B6038A37-B2A2-4895-AC34-37909F67D4A1', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'966D8895-ABC4-418A-92C1-23127B3E9B3E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'966D8895-ABC4-418A-92C1-23127B3E9B3E', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A9D86534-028D-47BC-9B8F-B9FFE95C2A2A', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00003]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BC8D1E70-A8AE-4B01-B4B4-1F0911597D57' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1FF3DD0D-CFDD-4135-B1EE-7F193ED1797D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BC8D1E70-A8AE-4B01-B4B4-1F0911597D57', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1FF3DD0D-CFDD-4135-B1EE-7F193ED1797D', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='524F0734-E6DB-49E4-9605-DA53539C931A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6F1EECD3-FBB8-4502-B9F8-7F4D236AA5FF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'524F0734-E6DB-49E4-9605-DA53539C931A', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6F1EECD3-FBB8-4502-B9F8-7F4D236AA5FF', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B0A62C03-EECC-4EA3-9A89-C2C1FB32562E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9635B9EA-2431-4233-BE49-9F4601C74AD8' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B0A62C03-EECC-4EA3-9A89-C2C1FB32562E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9635B9EA-2431-4233-BE49-9F4601C74AD8', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1D35FC8C-93BD-4AC3-B8BF-CFB81734C216' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5C9D37C2-4925-4E42-B629-F5E280396059' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1D35FC8C-93BD-4AC3-B8BF-CFB81734C216', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5C9D37C2-4925-4E42-B629-F5E280396059', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0FD84827-7EDC-4DC5-AFE9-F60BF2B226A5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8158C7F6-5E56-4002-B946-BDCCDE24985E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0FD84827-7EDC-4DC5-AFE9-F60BF2B226A5', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8158C7F6-5E56-4002-B946-BDCCDE24985E', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='81C6B32A-BABA-46C8-82D1-E3071AFD37FC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0E7D22DC-B41E-4AB9-88AC-DC79D03D5F9E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'81C6B32A-BABA-46C8-82D1-E3071AFD37FC', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0E7D22DC-B41E-4AB9-88AC-DC79D03D5F9E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00004' 
@@ -5277,44 +5262,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00004]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'28816413-F7D1-4729-B373-3DFEC883B077'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9931E377-7D06-4351-89DD-E0E450339A41'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'28816413-F7D1-4729-B373-3DFEC883B077', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BC631C99-2FB7-4C4D-9B35-702935B5F341'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9931E377-7D06-4351-89DD-E0E450339A41', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'42F5088E-406A-493B-A81F-7BD4552D7B37'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BC631C99-2FB7-4C4D-9B35-702935B5F341', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BB113E71-D038-4A3D-8348-8DAFB7CE84F6'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BB113E71-D038-4A3D-8348-8DAFB7CE84F6', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6A895D49-8F28-4907-9A9D-E4898702C1DA'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6A895D49-8F28-4907-9A9D-E4898702C1DA', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'42F5088E-406A-493B-A81F-7BD4552D7B37', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00004]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B7F8D71B-0116-44DA-ADFB-3CAD6E2DF869' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='20314664-073D-4714-AFA6-EA0DB869DA1C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B7F8D71B-0116-44DA-ADFB-3CAD6E2DF869', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'20314664-073D-4714-AFA6-EA0DB869DA1C', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F5478482-29AC-4F5F-B429-23F57FB22317' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='90D9F4E5-E597-4217-B92C-3CBA6CF7488A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F5478482-29AC-4F5F-B429-23F57FB22317', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'90D9F4E5-E597-4217-B92C-3CBA6CF7488A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1988FDB1-E2A4-46BD-99A2-E2E5B965BA96' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4D512710-D8A8-4D63-9CDE-874EEB302250' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1988FDB1-E2A4-46BD-99A2-E2E5B965BA96', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4D512710-D8A8-4D63-9CDE-874EEB302250', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4E365801-8E41-426D-9B50-6BBE9F7DCD47' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A059306E-2FBC-4E5B-9383-F5D0443D7F39' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4E365801-8E41-426D-9B50-6BBE9F7DCD47', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A059306E-2FBC-4E5B-9383-F5D0443D7F39', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8E109D2B-CC88-447C-B737-459EE2D4BE2F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='76E3C744-9205-4E2D-9E4B-6749CD56E26B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8E109D2B-CC88-447C-B737-459EE2D4BE2F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'76E3C744-9205-4E2D-9E4B-6749CD56E26B', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='505FD031-EE58-4C36-A87D-DBFD1B2D13AF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='714C1982-50FE-4EBC-9C70-1BD54E05885C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'505FD031-EE58-4C36-A87D-DBFD1B2D13AF', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'714C1982-50FE-4EBC-9C70-1BD54E05885C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00005' 
@@ -5324,44 +5304,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00005]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'80E046F1-9D6C-4091-82CD-B421A961EFFA'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1D588416-35EB-45CE-B6D9-6D55FB6E6CC8'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'80E046F1-9D6C-4091-82CD-B421A961EFFA', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7E971016-087A-423E-9F3D-1DC2A6210CE8'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1D588416-35EB-45CE-B6D9-6D55FB6E6CC8', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8E18B1E1-9C56-4885-B907-E96A7B86CDA6'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7E971016-087A-423E-9F3D-1DC2A6210CE8', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7AC46E89-AEED-4787-AD49-18B9B3A14A2B'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7AC46E89-AEED-4787-AD49-18B9B3A14A2B', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7891DBE3-C802-4553-89F7-C420245538F1'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7891DBE3-C802-4553-89F7-C420245538F1', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8E18B1E1-9C56-4885-B907-E96A7B86CDA6', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00005]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3B196DCF-F59E-4DE1-A282-1113B9F7EABA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='ED218592-19DA-4938-A477-B9C73F48DB86' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3B196DCF-F59E-4DE1-A282-1113B9F7EABA', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'ED218592-19DA-4938-A477-B9C73F48DB86', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9D15C104-6323-4C19-A5A2-61D612E6D044' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5FAB0C71-9384-4EEF-826F-F0A90BE386A0' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9D15C104-6323-4C19-A5A2-61D612E6D044', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5FAB0C71-9384-4EEF-826F-F0A90BE386A0', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A995B0E3-89D9-43CB-98A1-BC3C37269927' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='74AED3EB-C1E7-4F79-AC9C-D6F484C9BDAD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A995B0E3-89D9-43CB-98A1-BC3C37269927', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'74AED3EB-C1E7-4F79-AC9C-D6F484C9BDAD', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2A28ADB7-47DA-4196-A276-1060AE573E27' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4F22C127-65B1-4355-B7DD-BF565A8ACA84' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2A28ADB7-47DA-4196-A276-1060AE573E27', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4F22C127-65B1-4355-B7DD-BF565A8ACA84', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2741180C-F72B-4289-BE2D-6DEA126C094C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8D72C18B-81B2-408F-8160-7D0CBBF8B1E4' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2741180C-F72B-4289-BE2D-6DEA126C094C', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8D72C18B-81B2-408F-8160-7D0CBBF8B1E4', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='471D580C-5993-4B6B-9306-729B4F3EBF3A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A78D103B-6045-4BFF-9177-8446FA7B7F81' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'471D580C-5993-4B6B-9306-729B4F3EBF3A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A78D103B-6045-4BFF-9177-8446FA7B7F81', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00006' 
@@ -5371,44 +5346,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00006]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BB5AAE29-F114-4B08-A216-F9514BB6CAB2'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5A64F1F8-6E54-4A57-9224-370E848E26D3'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BB5AAE29-F114-4B08-A216-F9514BB6CAB2', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D3BD79B1-A5D3-47F2-8CBA-1A448C4EEE25'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5A64F1F8-6E54-4A57-9224-370E848E26D3', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6C2469CA-2A89-4548-AEDC-CE009B966746'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D3BD79B1-A5D3-47F2-8CBA-1A448C4EEE25', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BE695A19-F315-43F5-8E16-608A76D9E327'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BE695A19-F315-43F5-8E16-608A76D9E327', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0CA8EAAB-13AF-4A34-81F7-04157DF9BFD4'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0CA8EAAB-13AF-4A34-81F7-04157DF9BFD4', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6C2469CA-2A89-4548-AEDC-CE009B966746', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00006]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9F72564D-5413-494A-8941-F5C1C7B9F6B4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='831DA1C4-1CAC-48AA-8925-8F1C11814173' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9F72564D-5413-494A-8941-F5C1C7B9F6B4', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'831DA1C4-1CAC-48AA-8925-8F1C11814173', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EAA27469-C0C5-46B1-ACC7-A43E845798CE' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2640EF72-F141-422B-A24B-987379F1D85B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EAA27469-C0C5-46B1-ACC7-A43E845798CE', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2640EF72-F141-422B-A24B-987379F1D85B', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='276E8CAE-D67F-45C1-B145-7E7CB012D6DA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='657E4816-F856-42F5-ABB8-891AF03C0615' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'276E8CAE-D67F-45C1-B145-7E7CB012D6DA', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'657E4816-F856-42F5-ABB8-891AF03C0615', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1BCF48E8-6516-4739-A691-8109F02FCEC4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B04FE164-7A8A-481C-A6F5-DF7F9F94D4AD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1BCF48E8-6516-4739-A691-8109F02FCEC4', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B04FE164-7A8A-481C-A6F5-DF7F9F94D4AD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='575AEA98-CAA4-4F72-A6FF-3288C26F9934' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AAA1BA8D-693E-4A81-96CF-A8002C807332' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'575AEA98-CAA4-4F72-A6FF-3288C26F9934', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AAA1BA8D-693E-4A81-96CF-A8002C807332', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B6C8A2A6-4D4F-496E-8FE5-3CA84139AF96' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E1597794-EFB4-4DE0-93C0-D58B59E188A7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B6C8A2A6-4D4F-496E-8FE5-3CA84139AF96', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E1597794-EFB4-4DE0-93C0-D58B59E188A7', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00007' 
@@ -5418,44 +5388,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00007]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E355DBC6-5A76-42C6-85A0-5D26AAA13B8A'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9F43B836-5F2A-4811-9BAB-32DBBD1CA521'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E355DBC6-5A76-42C6-85A0-5D26AAA13B8A', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7B44D6AD-1A9B-4AE3-A120-D4084CE79A97'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9F43B836-5F2A-4811-9BAB-32DBBD1CA521', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E4D75D7A-B2BC-46BB-B2FE-24635BCE90EB'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7B44D6AD-1A9B-4AE3-A120-D4084CE79A97', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6B0DDC7E-41B7-44F0-9FAF-DA46B98FA96F'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6B0DDC7E-41B7-44F0-9FAF-DA46B98FA96F', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D9792135-A678-4F91-B06D-68FF35C6CD0D'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D9792135-A678-4F91-B06D-68FF35C6CD0D', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E4D75D7A-B2BC-46BB-B2FE-24635BCE90EB', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00007]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5430653A-4C91-4EFA-8564-DA4926EE543F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A5F3CA5C-1C55-4573-99E8-FE2B4D7651AB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5430653A-4C91-4EFA-8564-DA4926EE543F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A5F3CA5C-1C55-4573-99E8-FE2B4D7651AB', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2C290A23-52B5-4E1A-9F70-41D970CA21C2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='01480662-C31B-4C9B-AA71-96947365BD8C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2C290A23-52B5-4E1A-9F70-41D970CA21C2', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'01480662-C31B-4C9B-AA71-96947365BD8C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='107BBC7C-1756-4A9C-A5DB-2D4DCC894F81' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='92C67EF0-830E-4DC0-8519-266744AB5B10' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'107BBC7C-1756-4A9C-A5DB-2D4DCC894F81', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'92C67EF0-830E-4DC0-8519-266744AB5B10', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BA05C233-C7E5-4453-8A13-0A9CA2BFB112' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='69467702-2237-4849-9694-1CE6E22ADB30' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BA05C233-C7E5-4453-8A13-0A9CA2BFB112', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'69467702-2237-4849-9694-1CE6E22ADB30', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F3EDC4CF-AB1E-4B22-8741-7E7E06181D6F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='288B9C6A-197B-41C3-994A-5F4C72DD7F59' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F3EDC4CF-AB1E-4B22-8741-7E7E06181D6F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'288B9C6A-197B-41C3-994A-5F4C72DD7F59', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BB6EBB0D-7127-4A44-8A0A-1093B9164175' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='28C66F7C-BE52-4C67-AC99-9F18AD170818' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BB6EBB0D-7127-4A44-8A0A-1093B9164175', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'28C66F7C-BE52-4C67-AC99-9F18AD170818', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00008' 
@@ -5465,44 +5430,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00008]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0020C4FD-688A-4A8C-A61E-8E12B42A916C'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D4CDC25B-68C1-4FB7-9735-C53068CFAB5A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0020C4FD-688A-4A8C-A61E-8E12B42A916C', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A9C64FF2-966A-429D-BE44-6F6C7A661EB1'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D4CDC25B-68C1-4FB7-9735-C53068CFAB5A', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F896010C-380A-44F1-A248-661D325160AD'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A9C64FF2-966A-429D-BE44-6F6C7A661EB1', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A71D6742-19FC-4EE1-830D-B00F78E5BA5A'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A71D6742-19FC-4EE1-830D-B00F78E5BA5A', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5FFDE631-33CD-4B84-A457-D29440533715'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5FFDE631-33CD-4B84-A457-D29440533715', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F896010C-380A-44F1-A248-661D325160AD', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00008]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B8C5DD78-8FFA-421D-9E3F-B6B44B819F08' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='691387BF-7C7B-4FE0-B7EA-BAFCB2B4E839' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B8C5DD78-8FFA-421D-9E3F-B6B44B819F08', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'691387BF-7C7B-4FE0-B7EA-BAFCB2B4E839', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='593D5910-0164-465A-9673-E1730E1770DA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AD5F7C8A-5AA2-4E4D-96DE-8DC009EC781B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'593D5910-0164-465A-9673-E1730E1770DA', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AD5F7C8A-5AA2-4E4D-96DE-8DC009EC781B', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3A79E6FC-BB66-4304-BD78-732CD27ED67D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='57DD9254-753B-4FBC-9B4D-92809FC7C6F7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3A79E6FC-BB66-4304-BD78-732CD27ED67D', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'57DD9254-753B-4FBC-9B4D-92809FC7C6F7', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='55FE483C-CA44-4895-B887-DD77A529C59D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A2102192-81B6-4391-9E11-0F437B4AD21C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'55FE483C-CA44-4895-B887-DD77A529C59D', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A2102192-81B6-4391-9E11-0F437B4AD21C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C6C0AAE4-8A7B-4324-A200-4E9720723804' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B1EFFBF1-0BF4-487F-81E2-39F7C938E6EE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C6C0AAE4-8A7B-4324-A200-4E9720723804', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B1EFFBF1-0BF4-487F-81E2-39F7C938E6EE', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8FB13865-28E5-4FFF-A713-31A780D2B1C0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BFE2D7C1-4CE7-4F2A-9164-B80A3471121C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8FB13865-28E5-4FFF-A713-31A780D2B1C0', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BFE2D7C1-4CE7-4F2A-9164-B80A3471121C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00009' 
@@ -5512,44 +5472,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00009]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B54D5D77-3986-4303-A628-F5F044DD04F8'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4276CADE-0239-4007-925F-3187BB6F8E52'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B54D5D77-3986-4303-A628-F5F044DD04F8', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DB080336-F095-45D7-A54B-EE10A2B3345A'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4276CADE-0239-4007-925F-3187BB6F8E52', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F9320387-A73F-450F-BBC8-6917FD7642F2'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DB080336-F095-45D7-A54B-EE10A2B3345A', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9C8D17E9-D298-407B-9DD0-0A79F1A74369'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9C8D17E9-D298-407B-9DD0-0A79F1A74369', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2F141C11-419E-467A-8ACB-04DDBFF0C360'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2F141C11-419E-467A-8ACB-04DDBFF0C360', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F9320387-A73F-450F-BBC8-6917FD7642F2', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00009]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='669524A4-A875-4361-AC2D-4DA41F98AE58' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B57BFFC3-9CA0-4657-9000-29CCC8D07B88' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'669524A4-A875-4361-AC2D-4DA41F98AE58', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B57BFFC3-9CA0-4657-9000-29CCC8D07B88', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A1DBC21B-AE6A-4864-8DF9-90724C13921E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0B510ACB-BFB2-4AD4-A8FA-C5DDD3548B58' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A1DBC21B-AE6A-4864-8DF9-90724C13921E', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0B510ACB-BFB2-4AD4-A8FA-C5DDD3548B58', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D273C521-920E-450B-AAD0-97C3EECA9B02' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C8431035-C2F7-4521-BBE8-9840807B56F9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D273C521-920E-450B-AAD0-97C3EECA9B02', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C8431035-C2F7-4521-BBE8-9840807B56F9', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7B4088E2-6CFF-4347-AF29-EBA2B80D7C8A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CD2FB20C-1D9A-4309-AB62-4D0DE99D5553' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7B4088E2-6CFF-4347-AF29-EBA2B80D7C8A', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CD2FB20C-1D9A-4309-AB62-4D0DE99D5553', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5C1BEA5F-E2A9-4DC1-A89B-E757953C01FE' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='65492957-31D0-4FF9-9F08-2C9F88526915' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5C1BEA5F-E2A9-4DC1-A89B-E757953C01FE', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'65492957-31D0-4FF9-9F08-2C9F88526915', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1DCFEEF3-7B6C-4EBF-AC00-9E9014B562C2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='502CCF76-365A-4568-9798-0BF7414D09D5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1DCFEEF3-7B6C-4EBF-AC00-9E9014B562C2', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'502CCF76-365A-4568-9798-0BF7414D09D5', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00010' 
@@ -5559,44 +5514,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00010]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'19410BB9-87D2-4274-86EB-E8996955D43B'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2DE9C407-22F4-4133-B46F-B21D5FE37066'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'19410BB9-87D2-4274-86EB-E8996955D43B', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'36F0FCB3-8268-49BF-9D95-6372D9468E5F'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2DE9C407-22F4-4133-B46F-B21D5FE37066', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DBFDDEF0-DF34-4713-91BA-4520DB81C292'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'36F0FCB3-8268-49BF-9D95-6372D9468E5F', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'67B73098-7611-4B20-B5C0-0A235893D8D7'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'67B73098-7611-4B20-B5C0-0A235893D8D7', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3183A5FC-935C-445B-A655-17E524556D91'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3183A5FC-935C-445B-A655-17E524556D91', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DBFDDEF0-DF34-4713-91BA-4520DB81C292', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00010]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='16773259-13AC-4994-8D82-B1B38A14DF21' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BB456172-B77E-48BB-BB0C-891C9E7D8259' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'16773259-13AC-4994-8D82-B1B38A14DF21', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BB456172-B77E-48BB-BB0C-891C9E7D8259', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C11628B5-B749-44FC-9E80-9ED4F1DEAA92' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8F3541C5-7A3D-4109-95FE-63B0B637DEA3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C11628B5-B749-44FC-9E80-9ED4F1DEAA92', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8F3541C5-7A3D-4109-95FE-63B0B637DEA3', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='970465D2-B581-48EE-8D03-A9F8926324E8' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B3BE8944-8EAF-4DA8-B459-8CCA2D1DC134' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'970465D2-B581-48EE-8D03-A9F8926324E8', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B3BE8944-8EAF-4DA8-B459-8CCA2D1DC134', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='33BAC41E-FFCD-4CBD-9341-C670C729B1AD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BC999AF3-8D50-41DE-B4B4-3ADC06C48389' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'33BAC41E-FFCD-4CBD-9341-C670C729B1AD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BC999AF3-8D50-41DE-B4B4-3ADC06C48389', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1DC14B4D-7C2D-4D2D-AE5D-6589ADFEB586' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BC5E97EE-28E8-4627-84D0-5E0583C8AA10' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1DC14B4D-7C2D-4D2D-AE5D-6589ADFEB586', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BC5E97EE-28E8-4627-84D0-5E0583C8AA10', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4D26183E-A4BB-4BE7-99EF-E38247C96238' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='45FAE974-DFF5-4F7A-B0B1-A9FC907BCD08' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4D26183E-A4BB-4BE7-99EF-E38247C96238', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'45FAE974-DFF5-4F7A-B0B1-A9FC907BCD08', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00011' 
@@ -5606,44 +5556,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00011]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'299CA2D0-BE68-4626-B829-435F5AFA1FCA'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C3A6182D-B5EA-451F-A16F-CFB0EA5BF378'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'299CA2D0-BE68-4626-B829-435F5AFA1FCA', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8E3922A3-9319-4281-A747-0BED165DA997'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C3A6182D-B5EA-451F-A16F-CFB0EA5BF378', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9AEC69BC-3EEC-410A-A65E-CD0AC3CD699A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8E3922A3-9319-4281-A747-0BED165DA997', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1531A367-9245-416D-87C7-A439EA42CF75'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1531A367-9245-416D-87C7-A439EA42CF75', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FB15DF4B-50D2-4841-B8AC-FFCD15C16AAE'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FB15DF4B-50D2-4841-B8AC-FFCD15C16AAE', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9AEC69BC-3EEC-410A-A65E-CD0AC3CD699A', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00011]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D96E78C8-F9FC-4A22-9951-28822E73A9F7' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3055B93D-14F7-4DD3-8CC0-AA0DD373944A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D96E78C8-F9FC-4A22-9951-28822E73A9F7', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3055B93D-14F7-4DD3-8CC0-AA0DD373944A', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3A05EB9E-5C8B-490C-AEA2-FCC23C662A1E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5FD126DA-C361-452A-94D6-A68E6C6BBCD2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3A05EB9E-5C8B-490C-AEA2-FCC23C662A1E', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5FD126DA-C361-452A-94D6-A68E6C6BBCD2', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DFDC2274-0FCA-4079-BFD6-FFB8FA581E05' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='19DB4D44-1BC9-4F30-B25B-0D64B89737AD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DFDC2274-0FCA-4079-BFD6-FFB8FA581E05', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'19DB4D44-1BC9-4F30-B25B-0D64B89737AD', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9A9F411B-DCF6-46ED-B43F-91A5828B087B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='86241CCA-A190-4A6D-8024-82B2445FB51C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9A9F411B-DCF6-46ED-B43F-91A5828B087B', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'86241CCA-A190-4A6D-8024-82B2445FB51C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='558C4437-8564-4590-A8A5-D4E14D957993' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E6554B40-BF2B-48CC-8B68-2E8CD0BC1408' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'558C4437-8564-4590-A8A5-D4E14D957993', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E6554B40-BF2B-48CC-8B68-2E8CD0BC1408', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='18D4ABE7-8A41-4762-9C0D-8934499A461E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FDD45DEF-7E58-442D-9E9E-E9431934AD24' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'18D4ABE7-8A41-4762-9C0D-8934499A461E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FDD45DEF-7E58-442D-9E9E-E9431934AD24', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00012' 
@@ -5653,44 +5598,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00012]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B2A9C8BF-FD2C-442C-B487-29E937D54643'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FF9573A0-812B-4FB5-892F-681075EB21DC'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B2A9C8BF-FD2C-442C-B487-29E937D54643', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6703B77E-712F-4BB4-AF4D-635A47A810C1'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FF9573A0-812B-4FB5-892F-681075EB21DC', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C86106FF-F6E3-4F84-979A-A998817DD307'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6703B77E-712F-4BB4-AF4D-635A47A810C1', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'91453780-CDF1-4B8D-B651-AD0EF639E16C'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'91453780-CDF1-4B8D-B651-AD0EF639E16C', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8F094071-56FC-4447-9775-C8926F6EB593'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8F094071-56FC-4447-9775-C8926F6EB593', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C86106FF-F6E3-4F84-979A-A998817DD307', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00012]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D4D7453B-7887-410C-BE7B-17FF34139DCF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='621D598D-2EAE-428F-BB51-1885763B02DE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D4D7453B-7887-410C-BE7B-17FF34139DCF', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'621D598D-2EAE-428F-BB51-1885763B02DE', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CA101B14-78F4-449A-939D-ACF0DCDF2DDB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B09B82FD-CC27-4B04-B609-AB068B74F537' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CA101B14-78F4-449A-939D-ACF0DCDF2DDB', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B09B82FD-CC27-4B04-B609-AB068B74F537', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F0FCF583-62EA-4D03-8FDB-565A2679C145' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='81454E24-FE28-41EA-A248-2D4E89D77A61' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F0FCF583-62EA-4D03-8FDB-565A2679C145', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'81454E24-FE28-41EA-A248-2D4E89D77A61', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='58D55D1F-A8C4-43AD-86F1-0C63C54E3A05' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='877FFF79-8344-447D-9ECE-B19887B25E20' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'58D55D1F-A8C4-43AD-86F1-0C63C54E3A05', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'877FFF79-8344-447D-9ECE-B19887B25E20', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='51761241-835F-4F46-A541-809718E12AF1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4DB003CD-731F-40FC-B799-CF65D2A18528' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'51761241-835F-4F46-A541-809718E12AF1', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4DB003CD-731F-40FC-B799-CF65D2A18528', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F1E30EB0-16A9-4A9C-B1E4-D7D63048B09A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='68AE0A8D-FA53-4D4D-B365-2A7493F759DB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F1E30EB0-16A9-4A9C-B1E4-D7D63048B09A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'68AE0A8D-FA53-4D4D-B365-2A7493F759DB', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00013' 
@@ -5700,44 +5640,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00013]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'91B4E5F4-AE17-4262-9E92-D9864F763EF9'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'80CFA48A-1B30-4113-A42D-902AFD9C5C9E'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'91B4E5F4-AE17-4262-9E92-D9864F763EF9', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0305332C-0B9B-4717-98AA-6400F9FA0BF0'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'80CFA48A-1B30-4113-A42D-902AFD9C5C9E', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9568325E-62C9-4110-800F-19590F8047CA'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0305332C-0B9B-4717-98AA-6400F9FA0BF0', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'996FAEF7-2346-4A14-ACC2-EC73F5F78B8D'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'996FAEF7-2346-4A14-ACC2-EC73F5F78B8D', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D3D1CC1F-F0AC-49F2-A676-B8F97DFC3545'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D3D1CC1F-F0AC-49F2-A676-B8F97DFC3545', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9568325E-62C9-4110-800F-19590F8047CA', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00013]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='586E6CBA-781D-4E77-A4DD-E3BAC21149B4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='37E683F5-8C58-4189-BD81-09BD15FE07EC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'586E6CBA-781D-4E77-A4DD-E3BAC21149B4', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'37E683F5-8C58-4189-BD81-09BD15FE07EC', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5F36D364-4626-4189-9746-52B08B09AB59' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7B6E3162-AD3E-488D-8595-9A326539C679' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5F36D364-4626-4189-9746-52B08B09AB59', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7B6E3162-AD3E-488D-8595-9A326539C679', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='46E8B25C-CA8E-47B2-BF7F-F7E2347C04B9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4F8C78C1-81FE-4831-871D-79498232442C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'46E8B25C-CA8E-47B2-BF7F-F7E2347C04B9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4F8C78C1-81FE-4831-871D-79498232442C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='59F64857-FAD3-4425-B050-00295EA0DCB9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='187383D5-3296-4172-B97E-106BAF228D35' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'59F64857-FAD3-4425-B050-00295EA0DCB9', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'187383D5-3296-4172-B97E-106BAF228D35', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8793C163-555F-4B5F-B969-50AD4789606F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2648B118-0EE3-4833-A361-A4775CC232C6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8793C163-555F-4B5F-B969-50AD4789606F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2648B118-0EE3-4833-A361-A4775CC232C6', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F7AD99F6-4D30-4790-BAA6-11EA070269F6' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FEAFC980-7BBA-4969-AF55-7F4A6297E6AD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F7AD99F6-4D30-4790-BAA6-11EA070269F6', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FEAFC980-7BBA-4969-AF55-7F4A6297E6AD', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00014' 
@@ -5747,44 +5682,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00014]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'632A379F-D1D0-44D5-B1CE-506EA4F56861'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1DE034FD-1204-472B-A366-1FEE29F38557'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'632A379F-D1D0-44D5-B1CE-506EA4F56861', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'16CEBBB8-6522-4F55-94FF-7825B8A7A879'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1DE034FD-1204-472B-A366-1FEE29F38557', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B7457BC5-1244-4B7E-AD22-7F266F283C6C'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'16CEBBB8-6522-4F55-94FF-7825B8A7A879', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D3422990-F354-4285-85A9-3FC7CE3B8B43'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D3422990-F354-4285-85A9-3FC7CE3B8B43', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0ED37536-7307-405C-91C0-F5EBA1EBA375'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0ED37536-7307-405C-91C0-F5EBA1EBA375', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B7457BC5-1244-4B7E-AD22-7F266F283C6C', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00014]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BCD5F511-F88A-4141-9C52-4E659804425C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='68F18F03-69E6-40E7-A804-0D29D69D773C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BCD5F511-F88A-4141-9C52-4E659804425C', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'68F18F03-69E6-40E7-A804-0D29D69D773C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B8FE73C9-5328-4DBD-8A8B-A11C283C68C3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E8B220CD-DC9A-451E-9928-1B202DC23287' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B8FE73C9-5328-4DBD-8A8B-A11C283C68C3', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E8B220CD-DC9A-451E-9928-1B202DC23287', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6AC47D2E-1AB4-461D-9631-A7BE815D1A08' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EEF61634-AED1-490A-B520-BF96FEE0E856' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6AC47D2E-1AB4-461D-9631-A7BE815D1A08', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EEF61634-AED1-490A-B520-BF96FEE0E856', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='58CDB072-515E-47F0-9C23-B4960AF89629' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5B3CEF9D-40A2-4688-BD87-57B230DA8F4D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'58CDB072-515E-47F0-9C23-B4960AF89629', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5B3CEF9D-40A2-4688-BD87-57B230DA8F4D', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B8135DDD-8EEF-4A04-9A4B-33F2D5B66CCE' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='408A1AD5-8A53-494B-8CD3-C603F74D3807' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B8135DDD-8EEF-4A04-9A4B-33F2D5B66CCE', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'408A1AD5-8A53-494B-8CD3-C603F74D3807', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='20E4B79F-E9CF-4460-919B-609DF75E415D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E6AEEC56-EE5D-4E83-A3DA-D045BD98DF5F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'20E4B79F-E9CF-4460-919B-609DF75E415D', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E6AEEC56-EE5D-4E83-A3DA-D045BD98DF5F', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00015' 
@@ -5794,44 +5724,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00015]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BB5AB42A-1870-4AA8-BC03-B833A92D4317'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'115E2793-B649-448C-A502-08880DB31CB8'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BB5AB42A-1870-4AA8-BC03-B833A92D4317', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'550718AB-A32B-4A73-93BF-04D543A47BF9'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'115E2793-B649-448C-A502-08880DB31CB8', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8C8C70A7-07D2-44D0-86B0-972B6F7E304A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'550718AB-A32B-4A73-93BF-04D543A47BF9', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'17FA9111-DECC-4864-82B6-166C9C6E5C76'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'17FA9111-DECC-4864-82B6-166C9C6E5C76', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AFCF240C-71C0-46C7-9652-B1472DEEAF89'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AFCF240C-71C0-46C7-9652-B1472DEEAF89', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8C8C70A7-07D2-44D0-86B0-972B6F7E304A', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00015]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5E43EF0A-80F8-4A4E-B50E-56F221589AE0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='53914DA5-E6B4-4E6B-AA77-D957964A9656' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5E43EF0A-80F8-4A4E-B50E-56F221589AE0', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'53914DA5-E6B4-4E6B-AA77-D957964A9656', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A0B1C79C-8FA8-408A-87F8-7AF02EF2E118' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2119606C-133C-4720-9913-0F5BBD3E52B7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A0B1C79C-8FA8-408A-87F8-7AF02EF2E118', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2119606C-133C-4720-9913-0F5BBD3E52B7', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='85780F04-FC22-4906-876B-D26E1D1F6BC9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3BF2EFCE-05A8-4F31-B5BF-E778ABA22699' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'85780F04-FC22-4906-876B-D26E1D1F6BC9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3BF2EFCE-05A8-4F31-B5BF-E778ABA22699', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='92D4E6EB-23E9-448A-8779-411C8C7D4C0F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D131454D-9E9F-4EAB-ADB6-2E1447A387B2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'92D4E6EB-23E9-448A-8779-411C8C7D4C0F', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D131454D-9E9F-4EAB-ADB6-2E1447A387B2', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0B307AEE-763F-4AA9-874E-E2A0735C311F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1CD20E5D-D684-41B5-B51B-094A4EF5855D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0B307AEE-763F-4AA9-874E-E2A0735C311F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1CD20E5D-D684-41B5-B51B-094A4EF5855D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6FCF6908-7612-434D-9CC3-6757118486D9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3E10FD30-DE09-4E8D-A8CD-5105119AF841' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6FCF6908-7612-434D-9CC3-6757118486D9', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3E10FD30-DE09-4E8D-A8CD-5105119AF841', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00016' 
@@ -5841,44 +5766,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00016]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DCC7FBD3-6EDF-4755-9E92-094051F46190'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BE29FD7A-1027-4279-9ED2-0A080A2AA4B2'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DCC7FBD3-6EDF-4755-9E92-094051F46190', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5706842C-37D9-4FBC-8C5E-C12D27D6C617'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BE29FD7A-1027-4279-9ED2-0A080A2AA4B2', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EC5566E4-AB1E-4D45-A0FE-7796E52EAD5A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5706842C-37D9-4FBC-8C5E-C12D27D6C617', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7BA7B194-DC4C-495E-9161-3C83F5236F7C'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7BA7B194-DC4C-495E-9161-3C83F5236F7C', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DBAB6C78-FEBF-46A1-AD20-0ED6C58BC533'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DBAB6C78-FEBF-46A1-AD20-0ED6C58BC533', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EC5566E4-AB1E-4D45-A0FE-7796E52EAD5A', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00016]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EBCAAB47-A6A0-4F4C-A64A-7FF0759288CA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='24521D3F-38F4-44B1-A90B-85BA1F51E845' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EBCAAB47-A6A0-4F4C-A64A-7FF0759288CA', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'24521D3F-38F4-44B1-A90B-85BA1F51E845', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='51924348-9469-4206-9665-FF7D1F572FAD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='49027A68-4A2B-4350-9E42-251AF84FB5D6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'51924348-9469-4206-9665-FF7D1F572FAD', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'49027A68-4A2B-4350-9E42-251AF84FB5D6', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E8CB803E-3901-4EB9-84AC-AB3603D0761A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8939EA76-B999-47CA-8814-0096C1DA5D4B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E8CB803E-3901-4EB9-84AC-AB3603D0761A', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8939EA76-B999-47CA-8814-0096C1DA5D4B', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='81DA8ECC-B1CE-4B3E-9754-ACA4E073222B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B6B64013-7BB4-49F8-84E0-6686880D5FCB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'81DA8ECC-B1CE-4B3E-9754-ACA4E073222B', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B6B64013-7BB4-49F8-84E0-6686880D5FCB', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F17D1124-E9DC-417D-B6E3-5329C2FD59A3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9310B991-D18F-4813-AF94-552C21982DC8' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F17D1124-E9DC-417D-B6E3-5329C2FD59A3', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9310B991-D18F-4813-AF94-552C21982DC8', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3E289CDB-9A5E-4678-801E-C5F09726918E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='084FB1C0-F1F6-41EB-963B-54C1604EB47B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3E289CDB-9A5E-4678-801E-C5F09726918E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'084FB1C0-F1F6-41EB-963B-54C1604EB47B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00017' 
@@ -5888,44 +5808,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00017]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BCA266CE-A40B-4019-A72D-03B16B1CD764'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'721298BC-DBF0-495F-860A-B1B56E1BE3DB'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BCA266CE-A40B-4019-A72D-03B16B1CD764', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DF6CD5B7-0EB1-4125-B084-94BE8521B607'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'721298BC-DBF0-495F-860A-B1B56E1BE3DB', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BC96B504-7377-4E3E-88DD-4A1E406F9043'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DF6CD5B7-0EB1-4125-B084-94BE8521B607', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B631FD38-ADDA-41EB-A1EC-0FC274024880'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B631FD38-ADDA-41EB-A1EC-0FC274024880', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DB66FDDE-4320-4840-A644-2135DE71DC3B'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DB66FDDE-4320-4840-A644-2135DE71DC3B', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BC96B504-7377-4E3E-88DD-4A1E406F9043', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00017]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B8B78ADE-7EF0-400F-A11C-BC8B94C2537E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CA6E3A73-100D-46F1-9D41-3CD894B40315' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B8B78ADE-7EF0-400F-A11C-BC8B94C2537E', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CA6E3A73-100D-46F1-9D41-3CD894B40315', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1D1C7157-39C6-4749-8C4A-9A6743A8B9FA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='14A54014-C36F-4CFB-A4FE-43A653C2D383' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1D1C7157-39C6-4749-8C4A-9A6743A8B9FA', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'14A54014-C36F-4CFB-A4FE-43A653C2D383', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1D445EF0-98EF-4787-B519-8891ABEA25E8' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4212CE58-9199-43C8-B1EB-2F222E1AC1A9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1D445EF0-98EF-4787-B519-8891ABEA25E8', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4212CE58-9199-43C8-B1EB-2F222E1AC1A9', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7BCB2311-E0DA-4704-91C5-C6D9D43DF9D2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D480538F-5BED-4291-9030-2926A418F815' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7BCB2311-E0DA-4704-91C5-C6D9D43DF9D2', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D480538F-5BED-4291-9030-2926A418F815', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='308E8902-1528-4020-9963-5AAAD6F0A94C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='40E2CF62-68FF-449A-BE25-D1C73DE0E762' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'308E8902-1528-4020-9963-5AAAD6F0A94C', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'40E2CF62-68FF-449A-BE25-D1C73DE0E762', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E8B464FB-6935-43E4-BF23-1136B62F67DF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BDB622B4-69DC-477C-BA74-98ABC5D59E0B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E8B464FB-6935-43E4-BF23-1136B62F67DF', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BDB622B4-69DC-477C-BA74-98ABC5D59E0B', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00018' 
@@ -5935,44 +5850,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00018]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'56A30628-9BDD-4595-8FF0-BD16C44417C9'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E8F1BDF2-2E9B-4C2C-820A-5F767186A6A1'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'56A30628-9BDD-4595-8FF0-BD16C44417C9', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6628DCE1-9F8D-4474-8491-473795A9A571'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E8F1BDF2-2E9B-4C2C-820A-5F767186A6A1', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AE8529B4-1C12-4989-AE44-DD67F5363C4D'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6628DCE1-9F8D-4474-8491-473795A9A571', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C7682A0B-E8B3-44E3-99F3-3BA3AC14484E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C7682A0B-E8B3-44E3-99F3-3BA3AC14484E', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'12DD885B-2EC1-47DB-AC99-85C44C615594'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'12DD885B-2EC1-47DB-AC99-85C44C615594', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AE8529B4-1C12-4989-AE44-DD67F5363C4D', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00018]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='41ACB83A-0263-43D0-8752-7C7F0D699A48' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6CBC4A37-0FC6-4465-B54A-8574C23D635B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'41ACB83A-0263-43D0-8752-7C7F0D699A48', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6CBC4A37-0FC6-4465-B54A-8574C23D635B', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3828467B-8C26-4E21-B821-94816490CE79' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7FB3477B-03A6-46EC-9A9C-D0B7E35235F8' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3828467B-8C26-4E21-B821-94816490CE79', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7FB3477B-03A6-46EC-9A9C-D0B7E35235F8', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='275D5597-92C3-4240-961B-347233D3F3A0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C7BDE90E-BC62-4230-BE64-20DC27D892B6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'275D5597-92C3-4240-961B-347233D3F3A0', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C7BDE90E-BC62-4230-BE64-20DC27D892B6', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='075C3A3B-24B1-42F0-A425-FD0C773F162A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B0E5D966-6550-4424-A204-BEBB017D33AA' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'075C3A3B-24B1-42F0-A425-FD0C773F162A', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B0E5D966-6550-4424-A204-BEBB017D33AA', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B97F8681-D32D-4157-A937-73A6FFE50CFD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FE83F805-A8AC-4C8E-B41D-8F47F9A921A5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B97F8681-D32D-4157-A937-73A6FFE50CFD', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FE83F805-A8AC-4C8E-B41D-8F47F9A921A5', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='803254D3-A888-4B8E-AFE6-57CCB79E5A52' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='787509E9-E0C7-4D32-8B0F-9B50318A9EB1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'803254D3-A888-4B8E-AFE6-57CCB79E5A52', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'787509E9-E0C7-4D32-8B0F-9B50318A9EB1', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00019' 
@@ -5982,44 +5892,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00019]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'636018E0-F367-4895-B07B-211BBEE00279'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EC90DC71-FB66-4360-8701-F962572B6367'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'636018E0-F367-4895-B07B-211BBEE00279', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'31C36B08-D396-4F2A-BF74-3D59E788DCA0'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EC90DC71-FB66-4360-8701-F962572B6367', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4413E625-6A89-420A-9DBB-4C99ED9771B7'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'31C36B08-D396-4F2A-BF74-3D59E788DCA0', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'59D546DC-D933-4505-8223-74C06442E662'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'59D546DC-D933-4505-8223-74C06442E662', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5B39187D-D0DF-4745-8459-97EC871965F4'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5B39187D-D0DF-4745-8459-97EC871965F4', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4413E625-6A89-420A-9DBB-4C99ED9771B7', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00019]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7D9A4DC0-12BD-4171-9D05-73801EBD78C2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='98B31E3F-4E58-45AC-B0EB-874A7AA49D1B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7D9A4DC0-12BD-4171-9D05-73801EBD78C2', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'98B31E3F-4E58-45AC-B0EB-874A7AA49D1B', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DE3C3E43-5846-4F7F-8B33-B3AB674D398A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8B96F41C-69BA-487F-842C-37FE807C35F1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DE3C3E43-5846-4F7F-8B33-B3AB674D398A', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8B96F41C-69BA-487F-842C-37FE807C35F1', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CF9235A5-E5F6-4126-B1A3-EEDDE454B05E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='77072B26-D735-44A1-9AE4-FD4DE85844C7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CF9235A5-E5F6-4126-B1A3-EEDDE454B05E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'77072B26-D735-44A1-9AE4-FD4DE85844C7', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='18CB7F4D-DFC3-4200-A05E-AE357BF84FDC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BF056B00-8BF4-427A-ADCB-1CC9CCFB1850' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'18CB7F4D-DFC3-4200-A05E-AE357BF84FDC', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BF056B00-8BF4-427A-ADCB-1CC9CCFB1850', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C9336F08-622E-45FA-8905-9488E43BB367' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='60898FC0-B806-482A-B2AB-4E4053DC4312' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C9336F08-622E-45FA-8905-9488E43BB367', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'60898FC0-B806-482A-B2AB-4E4053DC4312', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='29596972-5ACF-4EFB-A4B4-37D3325081E3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='44B9BE96-4281-4CA1-BF32-282D1ABE72F7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'29596972-5ACF-4EFB-A4B4-37D3325081E3', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'44B9BE96-4281-4CA1-BF32-282D1ABE72F7', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00020' 
@@ -6029,44 +5934,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00020]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'18B78918-FC9A-4AC4-B085-970B41506543'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B92CB5EF-6FFC-42C0-A2C6-7895296AC613'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'18B78918-FC9A-4AC4-B085-970B41506543', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F25B483E-8B91-47CD-83A0-38D7D045A9B3'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B92CB5EF-6FFC-42C0-A2C6-7895296AC613', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4839580B-A430-4CE5-82DF-220CD88BB819'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F25B483E-8B91-47CD-83A0-38D7D045A9B3', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EB66CA7F-B685-4784-B3AC-5F7481FDB3FC'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EB66CA7F-B685-4784-B3AC-5F7481FDB3FC', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9FA5C4AE-2050-49FD-963F-B2E64412DFF4'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9FA5C4AE-2050-49FD-963F-B2E64412DFF4', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4839580B-A430-4CE5-82DF-220CD88BB819', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00020]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3965A703-F58D-4AC1-9CCC-7555674067A0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5E6EFBE3-5F7D-407B-8C7A-9A411F68D717' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3965A703-F58D-4AC1-9CCC-7555674067A0', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5E6EFBE3-5F7D-407B-8C7A-9A411F68D717', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8B0A61FB-DEFF-4E04-A9B1-A08E9AD7C1A4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='826B97DE-0640-46E7-B9F8-CA26BC2533BC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8B0A61FB-DEFF-4E04-A9B1-A08E9AD7C1A4', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'826B97DE-0640-46E7-B9F8-CA26BC2533BC', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3A1610A4-06BD-43D0-A39A-EFEB25C36E98' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9228EF99-C161-490E-AE9D-2DA96E709037' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3A1610A4-06BD-43D0-A39A-EFEB25C36E98', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9228EF99-C161-490E-AE9D-2DA96E709037', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='54197197-59B8-440F-BC00-536F06DCB85B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DFCFCAB0-4788-4EE1-BE43-60D4D5DB9F18' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'54197197-59B8-440F-BC00-536F06DCB85B', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DFCFCAB0-4788-4EE1-BE43-60D4D5DB9F18', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1B26E313-603B-4ED2-AC64-C61D933D5496' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='51F6BA66-5641-4B8A-BECF-4E1706D3148E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1B26E313-603B-4ED2-AC64-C61D933D5496', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'51F6BA66-5641-4B8A-BECF-4E1706D3148E', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1A8AC1FA-ACA5-4127-A29D-1B919262A15A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D35F5B01-D2DE-4910-8453-348DC9322979' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1A8AC1FA-ACA5-4127-A29D-1B919262A15A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D35F5B01-D2DE-4910-8453-348DC9322979', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00021' 
@@ -6076,44 +5976,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00021]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F6793A1A-5C8C-474B-A3D8-18626DACC556'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'740EC0A1-03D2-4312-8632-D22F88C1743E'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F6793A1A-5C8C-474B-A3D8-18626DACC556', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'31C0816D-26DC-4BC1-80BC-A404DCCE6F44'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'740EC0A1-03D2-4312-8632-D22F88C1743E', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'CE2F0F7D-FB2D-4C21-AE62-771147349987'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'31C0816D-26DC-4BC1-80BC-A404DCCE6F44', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9E38E778-2DE6-41B5-9856-A4B1B3734F9D'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9E38E778-2DE6-41B5-9856-A4B1B3734F9D', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B0F1F089-9673-4EEE-A040-E3C9C9F8E08A'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B0F1F089-9673-4EEE-A040-E3C9C9F8E08A', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'CE2F0F7D-FB2D-4C21-AE62-771147349987', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00021]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8B55EEF8-83ED-4C49-9DB6-BB779D19E3FF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='39273932-5A0A-4104-94F4-F0310A7930B4' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8B55EEF8-83ED-4C49-9DB6-BB779D19E3FF', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'39273932-5A0A-4104-94F4-F0310A7930B4', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6D220AD5-99E7-49D7-B3DE-757CADB7C61D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EEF8DA65-130C-4E44-9FA4-8842D72407CF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6D220AD5-99E7-49D7-B3DE-757CADB7C61D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EEF8DA65-130C-4E44-9FA4-8842D72407CF', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0E2C0637-E7E3-401A-9710-754BF69203D2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3D1AA62D-8898-44E8-9034-9645DCC6C5E9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0E2C0637-E7E3-401A-9710-754BF69203D2', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3D1AA62D-8898-44E8-9034-9645DCC6C5E9', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A1EA5664-1BC3-4B38-B878-6C94BBE336C4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2FD2F53C-A225-4133-97FB-E1EC10E5335F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A1EA5664-1BC3-4B38-B878-6C94BBE336C4', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2FD2F53C-A225-4133-97FB-E1EC10E5335F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A4A3BAE7-EB3C-4CB2-A84A-FB9C1D85E73F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AC8B5719-EE84-44B3-8428-50B81FA7187E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A4A3BAE7-EB3C-4CB2-A84A-FB9C1D85E73F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AC8B5719-EE84-44B3-8428-50B81FA7187E', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='175B1E9B-6921-43AD-9270-56F1D5DA9F62' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='23AD6D35-91E4-4A84-ADBB-43B171404CD9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'175B1E9B-6921-43AD-9270-56F1D5DA9F62', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'23AD6D35-91E4-4A84-ADBB-43B171404CD9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00022' 
@@ -6123,44 +6018,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00022]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'720D029A-80BA-4EBB-B8AA-7482F020EA95'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5CBFE62A-150F-4966-BD12-67C5A2699872'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'720D029A-80BA-4EBB-B8AA-7482F020EA95', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'42AC527B-A0EE-4F12-9A12-07887C67A6E3'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5CBFE62A-150F-4966-BD12-67C5A2699872', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'65273B02-978B-458F-8FF4-B846B77272DF'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'42AC527B-A0EE-4F12-9A12-07887C67A6E3', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C3FC45AD-9398-48BD-B8C1-BA22E5746646'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C3FC45AD-9398-48BD-B8C1-BA22E5746646', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6E6F6007-2865-44D6-89EA-094DC96B8739'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6E6F6007-2865-44D6-89EA-094DC96B8739', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'65273B02-978B-458F-8FF4-B846B77272DF', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00022]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='79AB09DF-C5F0-45C0-A68D-7BC09013B1BB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E7D37A49-2240-40F7-9E0C-7E71A232828A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'79AB09DF-C5F0-45C0-A68D-7BC09013B1BB', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E7D37A49-2240-40F7-9E0C-7E71A232828A', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5DF04838-D1F6-485E-8DA5-4EE818AA8937' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='26833075-63EB-4CEB-B64A-493326A10C36' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5DF04838-D1F6-485E-8DA5-4EE818AA8937', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'26833075-63EB-4CEB-B64A-493326A10C36', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='83342C41-83B5-4EEF-BDD2-EFC33BAF9A25' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D3472BAD-3B62-44BC-8916-7B2B04A8ADB1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'83342C41-83B5-4EEF-BDD2-EFC33BAF9A25', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D3472BAD-3B62-44BC-8916-7B2B04A8ADB1', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='294DD862-6B89-48E8-8EE3-18A02FEF7E7C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F8B41249-FF09-4533-8862-B844D0226F53' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'294DD862-6B89-48E8-8EE3-18A02FEF7E7C', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F8B41249-FF09-4533-8862-B844D0226F53', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F1B74651-3FC0-4B45-A0BD-108D0CF1AF0D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F69F85BD-2047-4B44-9472-9F479B16D8DE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F1B74651-3FC0-4B45-A0BD-108D0CF1AF0D', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F69F85BD-2047-4B44-9472-9F479B16D8DE', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0E2738D9-C4AC-437F-9FA7-2FB2015EA495' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AC0FDE88-4BC6-46E5-9049-6B7DFC09DEDD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0E2738D9-C4AC-437F-9FA7-2FB2015EA495', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AC0FDE88-4BC6-46E5-9049-6B7DFC09DEDD', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00023' 
@@ -6170,44 +6060,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00023]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E6692B6E-E868-4310-9A09-5651B52490F0'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A63F6121-4A5A-4BF5-AE13-7CA5F7BAA79A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E6692B6E-E868-4310-9A09-5651B52490F0', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'263F9C2F-A298-417B-ADF3-1583D93D89BE'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A63F6121-4A5A-4BF5-AE13-7CA5F7BAA79A', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FBBC9083-3396-4685-A6A8-2E4FEF453121'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'263F9C2F-A298-417B-ADF3-1583D93D89BE', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8C33ACD9-0E50-4C0B-95D1-5045D78862A5'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8C33ACD9-0E50-4C0B-95D1-5045D78862A5', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'517EAA14-4550-4EAF-9219-12F5B11DAD3A'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'517EAA14-4550-4EAF-9219-12F5B11DAD3A', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FBBC9083-3396-4685-A6A8-2E4FEF453121', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00023]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A57F8EA4-9B98-4D59-A29E-8AE367E1B2F1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='290AB615-9DC2-4493-8584-EEA8EBE55BFF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A57F8EA4-9B98-4D59-A29E-8AE367E1B2F1', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'290AB615-9DC2-4493-8584-EEA8EBE55BFF', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='65361AD1-0ED6-4B5F-AD78-59A6724FD106' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='52139EEA-8FB2-46D6-8EC8-83BF50F037C7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'65361AD1-0ED6-4B5F-AD78-59A6724FD106', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'52139EEA-8FB2-46D6-8EC8-83BF50F037C7', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='65E05648-76B8-4C3F-8FF4-C57EC9C9113C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C4903DCB-9365-42F1-9910-EC326820DDED' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'65E05648-76B8-4C3F-8FF4-C57EC9C9113C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C4903DCB-9365-42F1-9910-EC326820DDED', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FAAE37A3-0EF8-44B8-90E7-584CD0A40D4A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8B8F407E-A673-4C79-92EE-3A17DE468371' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FAAE37A3-0EF8-44B8-90E7-584CD0A40D4A', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8B8F407E-A673-4C79-92EE-3A17DE468371', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7C961536-0919-4338-8640-52D9C0A60BC6' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DBA12125-8AC0-432D-8F23-41904675CAD0' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7C961536-0919-4338-8640-52D9C0A60BC6', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DBA12125-8AC0-432D-8F23-41904675CAD0', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5657EAEB-E528-4DEA-B9D9-99EE118E67F2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8903F1FA-DF1F-4451-A8D8-B7153A0A20EC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5657EAEB-E528-4DEA-B9D9-99EE118E67F2', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8903F1FA-DF1F-4451-A8D8-B7153A0A20EC', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00024' 
@@ -6217,44 +6102,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00024]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FDEE9E75-ADC3-4A28-A16F-AE1B1A88A025'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EAA1D9A0-FC6C-4235-BA18-313584707923'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FDEE9E75-ADC3-4A28-A16F-AE1B1A88A025', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A88DDB25-5FA2-4907-A61F-835F531B7BF8'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EAA1D9A0-FC6C-4235-BA18-313584707923', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A914FB16-73EB-4937-9C0D-C33A2F7ABB40'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A88DDB25-5FA2-4907-A61F-835F531B7BF8', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1CAC5225-F296-4CE1-B95C-BF51947BDB95'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1CAC5225-F296-4CE1-B95C-BF51947BDB95', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'061BECE2-BD6F-4861-9D2D-1AC68BF16CD0'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'061BECE2-BD6F-4861-9D2D-1AC68BF16CD0', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A914FB16-73EB-4937-9C0D-C33A2F7ABB40', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00024]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D0B4BFD1-2CAE-4602-BDCD-B4FA01831BA0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8175C689-026B-4632-993A-F84B2F89656A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D0B4BFD1-2CAE-4602-BDCD-B4FA01831BA0', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8175C689-026B-4632-993A-F84B2F89656A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7FA08113-141A-4A36-9BEC-D151102478E3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5A4F9376-ECA4-42A4-A536-C021814F6BE5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7FA08113-141A-4A36-9BEC-D151102478E3', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5A4F9376-ECA4-42A4-A536-C021814F6BE5', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5795DA3D-71B9-4E7D-ADBA-72E876EF3F2C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6B86990D-364C-402F-913F-904AA89D49B6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5795DA3D-71B9-4E7D-ADBA-72E876EF3F2C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6B86990D-364C-402F-913F-904AA89D49B6', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='684648D1-D6E8-4F9A-B86F-7C6F43C7A110' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CBEC9D66-DF4E-4F9E-A07E-B2A7FAB20619' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'684648D1-D6E8-4F9A-B86F-7C6F43C7A110', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CBEC9D66-DF4E-4F9E-A07E-B2A7FAB20619', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BDDEEDC6-00FA-4101-BB40-0FAE16C2DE8D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='561AFE3D-3DE4-4DF7-8F45-2880DA8AC015' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BDDEEDC6-00FA-4101-BB40-0FAE16C2DE8D', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'561AFE3D-3DE4-4DF7-8F45-2880DA8AC015', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C5530661-DEDB-441F-833E-C56EDAC65D56' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8FF73B60-DCA2-441F-A4C5-48E5D71484E9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C5530661-DEDB-441F-833E-C56EDAC65D56', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8FF73B60-DCA2-441F-A4C5-48E5D71484E9', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00025' 
@@ -6264,44 +6144,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00025]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4906E6FB-314C-4C57-AA9E-BFD64E4E017A'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'848028A1-F81C-471C-8E96-D5A1C741DF36'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4906E6FB-314C-4C57-AA9E-BFD64E4E017A', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'DDB9418F-84FA-4B8C-9557-36D39438FE20'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'848028A1-F81C-471C-8E96-D5A1C741DF36', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5143BA9C-E70E-48ED-86F2-DC78707E21ED'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'DDB9418F-84FA-4B8C-9557-36D39438FE20', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BAF1C4F4-C7F4-4DB1-B482-FD13156B8B4E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BAF1C4F4-C7F4-4DB1-B482-FD13156B8B4E', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'29976EA1-77E5-4763-954C-49D5D8D5FCC6'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'29976EA1-77E5-4763-954C-49D5D8D5FCC6', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5143BA9C-E70E-48ED-86F2-DC78707E21ED', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00025]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A2C4FB24-B57D-44DA-97DE-190899A49626' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F50B7723-D801-4B4C-B315-63D59D036DFC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A2C4FB24-B57D-44DA-97DE-190899A49626', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F50B7723-D801-4B4C-B315-63D59D036DFC', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3F6B570C-85C1-446A-AE81-593B243DD76C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D658BFE7-D756-4103-ADC6-997E7CF5CE37' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3F6B570C-85C1-446A-AE81-593B243DD76C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D658BFE7-D756-4103-ADC6-997E7CF5CE37', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='21CA044B-CC4C-4437-8799-747A2EB680C9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='01A4496C-81BB-4C56-AC72-59DE02CE7417' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'21CA044B-CC4C-4437-8799-747A2EB680C9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'01A4496C-81BB-4C56-AC72-59DE02CE7417', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DAD27591-FA4C-4342-9BB6-CDF94702499A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='084797BF-CD9A-4F11-BC9F-5A91A2657ED3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DAD27591-FA4C-4342-9BB6-CDF94702499A', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'084797BF-CD9A-4F11-BC9F-5A91A2657ED3', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FDB13374-75FB-49FD-942C-1A074418D681' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C5FFC259-1268-4BC2-84B4-A9B18F39112F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FDB13374-75FB-49FD-942C-1A074418D681', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C5FFC259-1268-4BC2-84B4-A9B18F39112F', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E747FCFB-4B00-4274-A8A5-2104A12272D7' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4FBDF2FB-6A53-4E61-97C4-DF2ECE4094F4' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E747FCFB-4B00-4274-A8A5-2104A12272D7', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4FBDF2FB-6A53-4E61-97C4-DF2ECE4094F4', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00026' 
@@ -6311,44 +6186,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00026]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F3FDFD1C-AE9C-41C6-80E2-9F66956D7D18'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'57C62A10-9F4A-4435-85C6-06A25F46E1DB'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F3FDFD1C-AE9C-41C6-80E2-9F66956D7D18', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B10D2B9A-3D38-4789-9E70-DD89036F5796'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'57C62A10-9F4A-4435-85C6-06A25F46E1DB', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9FBE559A-6FC4-4D74-A803-EAB9748080B5'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B10D2B9A-3D38-4789-9E70-DD89036F5796', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'41FB4D58-19AE-4ECE-A7D6-17D00D5DC6B5'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'41FB4D58-19AE-4ECE-A7D6-17D00D5DC6B5', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1EF4A518-90DC-45B8-AA92-F58986A55738'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1EF4A518-90DC-45B8-AA92-F58986A55738', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9FBE559A-6FC4-4D74-A803-EAB9748080B5', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00026]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CC4A4B09-CE44-4033-8D74-043812E8F772' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9BB945E9-F25D-43D2-9FB6-89C38A033AA5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CC4A4B09-CE44-4033-8D74-043812E8F772', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9BB945E9-F25D-43D2-9FB6-89C38A033AA5', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2B346196-5D0D-44CF-9155-9C2834EAB9F4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0E3B53B7-A9E1-469F-B426-4CC6075A6E0F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2B346196-5D0D-44CF-9155-9C2834EAB9F4', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0E3B53B7-A9E1-469F-B426-4CC6075A6E0F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2673ACE9-A26F-4180-AAD7-D116822D5848' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2C0E2C33-76AA-4090-A1DC-AF82B4CE842F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2673ACE9-A26F-4180-AAD7-D116822D5848', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2C0E2C33-76AA-4090-A1DC-AF82B4CE842F', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1EF857E9-DECC-4840-B77C-D2E62D15981B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='72593F57-ACF9-4E79-A3C3-2E284D3941EB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1EF857E9-DECC-4840-B77C-D2E62D15981B', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'72593F57-ACF9-4E79-A3C3-2E284D3941EB', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0885113C-AADB-41E1-802F-363DBDB01DEB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='14CDDC5D-F977-46BF-B561-E103D8F65FF0' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0885113C-AADB-41E1-802F-363DBDB01DEB', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'14CDDC5D-F977-46BF-B561-E103D8F65FF0', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='780A14C4-F553-44CB-A263-435F1C923C66' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E768A2CC-A254-425A-8A0D-B3F6676AEF3B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'780A14C4-F553-44CB-A263-435F1C923C66', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E768A2CC-A254-425A-8A0D-B3F6676AEF3B', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00027' 
@@ -6358,44 +6228,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00027]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'42BE701F-3837-4720-9069-6AB4B67B0949'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'86E5B5E8-8C67-4A23-BF82-6B436A6BC1BD'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'42BE701F-3837-4720-9069-6AB4B67B0949', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4B9D451E-CE91-4191-B6FB-5664CC7A1E54'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'86E5B5E8-8C67-4A23-BF82-6B436A6BC1BD', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1A712675-1AA6-4219-9589-1DA08E7A7953'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4B9D451E-CE91-4191-B6FB-5664CC7A1E54', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3BB6AE8E-2571-4A08-9347-8A055EA3CC82'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3BB6AE8E-2571-4A08-9347-8A055EA3CC82', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'049A838A-53C7-48BC-A213-E81424391705'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'049A838A-53C7-48BC-A213-E81424391705', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1A712675-1AA6-4219-9589-1DA08E7A7953', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00027]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='59676E7E-0977-4587-AB0C-1E0F7BF77A63' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3BF950D6-0739-48B0-BED7-54820CE4800D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'59676E7E-0977-4587-AB0C-1E0F7BF77A63', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3BF950D6-0739-48B0-BED7-54820CE4800D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='86232F2E-E090-472E-9D45-4A5274A7F55B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F17262C6-D0B1-4E8D-ACE0-BDDEF8C84F42' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'86232F2E-E090-472E-9D45-4A5274A7F55B', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F17262C6-D0B1-4E8D-ACE0-BDDEF8C84F42', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6A8D48B7-A129-4FC2-BD95-5FBFBF4216BE' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C08B0C66-91A2-490F-BE53-1815878714A4' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6A8D48B7-A129-4FC2-BD95-5FBFBF4216BE', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C08B0C66-91A2-490F-BE53-1815878714A4', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7A95D069-BB08-42D4-808F-E4D852E3ABEE' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B0BB000A-8E86-4D5F-B9D4-FF8C07C23680' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7A95D069-BB08-42D4-808F-E4D852E3ABEE', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B0BB000A-8E86-4D5F-B9D4-FF8C07C23680', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0F1DD3C1-402F-4E4E-9AD2-AF1F366021CF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='13913E99-C886-4C96-A762-69D5903B6016' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0F1DD3C1-402F-4E4E-9AD2-AF1F366021CF', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'13913E99-C886-4C96-A762-69D5903B6016', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E854FE0C-6DD9-4099-AB9B-0F799EA2370F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5F8C7CA3-7415-4B55-B4CC-E5475CA5137F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E854FE0C-6DD9-4099-AB9B-0F799EA2370F', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5F8C7CA3-7415-4B55-B4CC-E5475CA5137F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00028' 
@@ -6405,44 +6270,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00028]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'11185A63-4F53-4540-A7B6-4C00815CB18F'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9DD3A4DB-B794-4109-B4E1-415571F4F17B'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'11185A63-4F53-4540-A7B6-4C00815CB18F', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'02617B22-E386-4702-A756-F647C2B97B70'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9DD3A4DB-B794-4109-B4E1-415571F4F17B', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'75BED117-AEA5-4C4C-AC8E-FBD6F9F1FDBD'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'02617B22-E386-4702-A756-F647C2B97B70', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'52E0AF48-83F9-462F-B729-AEC5F1B9AFE2'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'52E0AF48-83F9-462F-B729-AEC5F1B9AFE2', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FFD6CA70-B6E2-43AB-A0A4-E32C081D6539'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FFD6CA70-B6E2-43AB-A0A4-E32C081D6539', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'75BED117-AEA5-4C4C-AC8E-FBD6F9F1FDBD', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00028]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B937790D-8969-4F37-85F4-702F80A418BF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3C136D5A-B393-4C08-88B5-7F52B50FFE3E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B937790D-8969-4F37-85F4-702F80A418BF', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3C136D5A-B393-4C08-88B5-7F52B50FFE3E', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3604EC62-562E-45D8-9405-47931DEFF29E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0E15B7E1-3BE0-4121-9DC4-3AA84531E314' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3604EC62-562E-45D8-9405-47931DEFF29E', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0E15B7E1-3BE0-4121-9DC4-3AA84531E314', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D634FAAA-51A8-45D5-81FB-19E379E77959' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5FBC6178-FDFA-4AD5-AC1E-4378DF9E7942' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D634FAAA-51A8-45D5-81FB-19E379E77959', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5FBC6178-FDFA-4AD5-AC1E-4378DF9E7942', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A83E88EE-9637-4883-87D6-278B75E0596E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='40289D67-757D-431C-A48B-5F1326D36F70' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A83E88EE-9637-4883-87D6-278B75E0596E', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'40289D67-757D-431C-A48B-5F1326D36F70', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='00EB8B68-2454-4827-80F0-BBF19829ACBC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='64B5D925-306E-4383-99E7-9DD4B17D3588' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'00EB8B68-2454-4827-80F0-BBF19829ACBC', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'64B5D925-306E-4383-99E7-9DD4B17D3588', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='857CAAFD-4AD6-41EE-A14D-416A19E55AA1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C28BC9FF-1100-4C65-B4C1-CA4F12771F7C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'857CAAFD-4AD6-41EE-A14D-416A19E55AA1', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C28BC9FF-1100-4C65-B4C1-CA4F12771F7C', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00029' 
@@ -6452,44 +6312,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00029]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A91381CC-7CFC-441D-B466-7D58608CB4BD'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'89695A6E-2682-48AD-99B6-87A3B2FFBFCB'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A91381CC-7CFC-441D-B466-7D58608CB4BD', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'01783701-E1BB-4C8F-8FE1-0D2C9C7083BB'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'89695A6E-2682-48AD-99B6-87A3B2FFBFCB', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'126D2099-DB76-49A6-A10A-C45C8509C4D9'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'01783701-E1BB-4C8F-8FE1-0D2C9C7083BB', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4E05C0C7-1F32-4DF5-8800-4BBEF9A6F578'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4E05C0C7-1F32-4DF5-8800-4BBEF9A6F578', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'470974A7-9D82-462B-A081-7239C17D888E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'470974A7-9D82-462B-A081-7239C17D888E', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'126D2099-DB76-49A6-A10A-C45C8509C4D9', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00029]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C3AAE277-7C71-4130-A9C0-0BFDF5FC79ED' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EB3F7462-83D4-4367-95AE-573A78D82DAC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C3AAE277-7C71-4130-A9C0-0BFDF5FC79ED', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EB3F7462-83D4-4367-95AE-573A78D82DAC', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C2B19B71-EC0D-461D-B580-A04B691F69FA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2FE01542-2B84-4E14-9014-B166B45D6E58' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C2B19B71-EC0D-461D-B580-A04B691F69FA', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2FE01542-2B84-4E14-9014-B166B45D6E58', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6A3F7BF0-E0AC-4AC1-9DDB-652D20339B83' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DE5002BF-C8FD-4D35-86FA-1718A84908BD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6A3F7BF0-E0AC-4AC1-9DDB-652D20339B83', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DE5002BF-C8FD-4D35-86FA-1718A84908BD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D7721066-1976-4CD1-8D21-89199A951BC1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7D18B68B-86C0-4A22-9E2B-A8B1802230ED' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D7721066-1976-4CD1-8D21-89199A951BC1', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7D18B68B-86C0-4A22-9E2B-A8B1802230ED', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8A4DF92C-916A-43ED-BC3E-C8074D5427DF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='402BB590-1644-4166-B422-F396E8D99C17' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8A4DF92C-916A-43ED-BC3E-C8074D5427DF', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'402BB590-1644-4166-B422-F396E8D99C17', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='976D0FE6-76FC-44A6-A824-7DB3BD0D184F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='50EA971F-7F47-46E9-A68A-62F8F4CF2E67' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'976D0FE6-76FC-44A6-A824-7DB3BD0D184F', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'50EA971F-7F47-46E9-A68A-62F8F4CF2E67', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00030' 
@@ -6499,44 +6354,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00030]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'99214463-C4FA-40D9-84EF-153F9DA1660C'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EEDB119C-F8FC-495B-833D-4230A94AE225'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'99214463-C4FA-40D9-84EF-153F9DA1660C', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0CF3B8D4-EAFB-48D5-B9A2-04F529B1DE07'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EEDB119C-F8FC-495B-833D-4230A94AE225', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E93B4AE1-E982-4C4C-B262-B69ECB62A841'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0CF3B8D4-EAFB-48D5-B9A2-04F529B1DE07', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'301EF9A6-4EA0-4E62-BDFE-E851EEC1BC29'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'301EF9A6-4EA0-4E62-BDFE-E851EEC1BC29', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'791CF11F-2CED-487E-8A3E-56D131761892'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'791CF11F-2CED-487E-8A3E-56D131761892', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E93B4AE1-E982-4C4C-B262-B69ECB62A841', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00030]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B1C24591-A4D2-4C8C-B5EB-8D0EF27040F8' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='00E83B9E-49F0-4E6C-A536-84FCD19C96A7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B1C24591-A4D2-4C8C-B5EB-8D0EF27040F8', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'00E83B9E-49F0-4E6C-A536-84FCD19C96A7', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A82570C0-D407-4BDA-83EA-22D6AD9A09B3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='24FE189F-3029-4968-AF09-7C72DB3B6F14' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A82570C0-D407-4BDA-83EA-22D6AD9A09B3', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'24FE189F-3029-4968-AF09-7C72DB3B6F14', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E2D32371-53C1-4E1E-A92A-4B1EBD2F074C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='83270D94-6A85-4010-92F0-CDF4127D7124' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E2D32371-53C1-4E1E-A92A-4B1EBD2F074C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'83270D94-6A85-4010-92F0-CDF4127D7124', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='26EC33B1-3B5B-4A9A-B81A-81319DEC8F87' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4CCF600C-4DDF-46CD-B999-416E666A2CA1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'26EC33B1-3B5B-4A9A-B81A-81319DEC8F87', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4CCF600C-4DDF-46CD-B999-416E666A2CA1', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E6643DB8-84A7-4142-8AD6-ABDCF6D45281' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D0FB3F36-B6A0-4566-8630-29BFE4A7A8B7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E6643DB8-84A7-4142-8AD6-ABDCF6D45281', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D0FB3F36-B6A0-4566-8630-29BFE4A7A8B7', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E008C8B0-83C5-4A62-BCF9-262EB4E0FADA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AF9AE61A-BF49-45F9-86E7-DB0E2368C896' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E008C8B0-83C5-4A62-BCF9-262EB4E0FADA', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AF9AE61A-BF49-45F9-86E7-DB0E2368C896', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00031' 
@@ -6546,44 +6396,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00031]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'21D1D4C6-CCA4-4039-88AC-C520D99DEDC1'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4EDFCF67-1A55-47B3-8CA1-75E6C5E9D41B'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'21D1D4C6-CCA4-4039-88AC-C520D99DEDC1', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'827DC41A-1200-49FF-A910-BD32858C2A89'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4EDFCF67-1A55-47B3-8CA1-75E6C5E9D41B', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4BF10E3A-7275-4252-979B-9A97B178751E'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'827DC41A-1200-49FF-A910-BD32858C2A89', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F1F607D6-1280-4285-9A43-40DBD1D94E21'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F1F607D6-1280-4285-9A43-40DBD1D94E21', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'70CC336F-B2EF-48DC-80F7-BB40418C036E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'70CC336F-B2EF-48DC-80F7-BB40418C036E', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4BF10E3A-7275-4252-979B-9A97B178751E', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00031]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A854EEC7-BB57-4B23-BE06-F7454CC5D897' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='31E7D81C-BF55-4C07-BB42-76320A720785' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A854EEC7-BB57-4B23-BE06-F7454CC5D897', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'31E7D81C-BF55-4C07-BB42-76320A720785', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='42700EE8-D550-443E-A1BB-70F63FD1EC77' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E234D536-D490-43D2-8620-61E807C3BB47' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'42700EE8-D550-443E-A1BB-70F63FD1EC77', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E234D536-D490-43D2-8620-61E807C3BB47', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C04BC00D-3EE0-4C63-8DBF-D6ED45F9A04E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B5437E08-0D69-4F43-A67D-EA98F838BE01' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C04BC00D-3EE0-4C63-8DBF-D6ED45F9A04E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B5437E08-0D69-4F43-A67D-EA98F838BE01', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0D937DEE-B9E8-4E9E-A389-0223622B8082' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='510436DD-759D-4814-AD76-88D2BB184E93' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0D937DEE-B9E8-4E9E-A389-0223622B8082', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'510436DD-759D-4814-AD76-88D2BB184E93', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CB813DA7-5B72-4E0B-B32E-A0B724C64E72' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CD28AA22-D470-496E-814A-85ECD099A19B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CB813DA7-5B72-4E0B-B32E-A0B724C64E72', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CD28AA22-D470-496E-814A-85ECD099A19B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A266580D-7392-4BAE-93D8-47CABA014EC4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5602C018-11FB-4156-8F93-C936F71C316F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A266580D-7392-4BAE-93D8-47CABA014EC4', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5602C018-11FB-4156-8F93-C936F71C316F', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00032' 
@@ -6593,44 +6438,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00032]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'79A8DE3F-065A-4D44-BF0A-3D80C35EF461'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3BE1ED7A-F7EE-4163-BA09-4CB25FC13B96'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'79A8DE3F-065A-4D44-BF0A-3D80C35EF461', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'595BF5F5-19CC-442F-92E0-F293BF5913F3'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3BE1ED7A-F7EE-4163-BA09-4CB25FC13B96', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EAC0C44E-FA28-44F2-84DF-5FE49AA22118'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'595BF5F5-19CC-442F-92E0-F293BF5913F3', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9F0574FE-FCF1-4239-9CAF-4734C2F8DDF3'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9F0574FE-FCF1-4239-9CAF-4734C2F8DDF3', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AF97F490-11CB-4856-802F-830168C5D5FE'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AF97F490-11CB-4856-802F-830168C5D5FE', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EAC0C44E-FA28-44F2-84DF-5FE49AA22118', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00032]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='627B6383-5BB2-4777-88DC-F9E44D604499' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1CD2772A-E124-43A7-9DAC-F7747549A7DC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'627B6383-5BB2-4777-88DC-F9E44D604499', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1CD2772A-E124-43A7-9DAC-F7747549A7DC', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9C35CCF2-EB57-4DDE-928A-CA816AB23A47' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='000EA029-6D25-4CFE-B990-18C5944FEAF6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9C35CCF2-EB57-4DDE-928A-CA816AB23A47', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'000EA029-6D25-4CFE-B990-18C5944FEAF6', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FB8113EA-FDFD-4F2E-AD9C-0D12C08EC6E7' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='536E2DD0-10BE-41FD-9B28-8DEB455F4050' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FB8113EA-FDFD-4F2E-AD9C-0D12C08EC6E7', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'536E2DD0-10BE-41FD-9B28-8DEB455F4050', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6F27843A-C0C2-433E-8E07-0B132C0CE504' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AF89F5D7-12D1-421F-BC8D-DA3E1E436F86' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6F27843A-C0C2-433E-8E07-0B132C0CE504', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AF89F5D7-12D1-421F-BC8D-DA3E1E436F86', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='69F6AD5F-C8BF-413C-A980-A9E5CCB4E04B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='498EC0E6-848E-4CCD-B224-FD62D33AAA54' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'69F6AD5F-C8BF-413C-A980-A9E5CCB4E04B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'498EC0E6-848E-4CCD-B224-FD62D33AAA54', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='18D00854-2FF8-4B9F-A7DC-0E50B647E087' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F08FBB2E-5C90-4FB4-BC61-45EF0FA20176' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'18D00854-2FF8-4B9F-A7DC-0E50B647E087', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F08FBB2E-5C90-4FB4-BC61-45EF0FA20176', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00033' 
@@ -6640,44 +6480,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00033]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9FAC7A7C-40CC-441F-8435-753FC2D2DB86'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3E316087-5379-4A6F-8E71-F5A15AC8EC9D'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9FAC7A7C-40CC-441F-8435-753FC2D2DB86', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5AD6FD07-D0E9-4ED5-B658-0CE3AC1ED5D6'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3E316087-5379-4A6F-8E71-F5A15AC8EC9D', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FAB6BD62-792C-4B76-BDC3-E3BD7BB8D17A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5AD6FD07-D0E9-4ED5-B658-0CE3AC1ED5D6', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'76C99F21-8152-4BA1-A581-63197200BF40'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'76C99F21-8152-4BA1-A581-63197200BF40', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D8C24DC4-D3B9-4928-ACDF-DC99D930A40F'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D8C24DC4-D3B9-4928-ACDF-DC99D930A40F', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FAB6BD62-792C-4B76-BDC3-E3BD7BB8D17A', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00033]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='ACA5E274-92E0-44B5-913E-9E112ABA54C9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1C97145E-CB2D-4443-80FA-8AC5813DD36B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'ACA5E274-92E0-44B5-913E-9E112ABA54C9', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1C97145E-CB2D-4443-80FA-8AC5813DD36B', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B2D2F761-5203-4606-B0A7-593DF94A7EE1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9572B729-6D94-4152-B6CA-B748C0C9EF4D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B2D2F761-5203-4606-B0A7-593DF94A7EE1', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9572B729-6D94-4152-B6CA-B748C0C9EF4D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A8430543-2A65-4CC8-AE61-F244530117AB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6ABE1B14-544F-4E5E-9329-0CB833EAC99B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A8430543-2A65-4CC8-AE61-F244530117AB', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6ABE1B14-544F-4E5E-9329-0CB833EAC99B', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='34BFE9FB-3602-4CD6-A75B-AF389BE007DF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FE8A22DA-92B8-4D31-B6B9-03B03268C041' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'34BFE9FB-3602-4CD6-A75B-AF389BE007DF', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FE8A22DA-92B8-4D31-B6B9-03B03268C041', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='64D912C4-6839-4C5C-B044-2297E1BB9F85' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='518217EA-7779-4EA0-9176-7C87D775844C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'64D912C4-6839-4C5C-B044-2297E1BB9F85', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'518217EA-7779-4EA0-9176-7C87D775844C', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7F8E564B-68F2-403C-9E92-E20027FD9457' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='93BA9877-58D1-404B-91F3-84661A924193' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7F8E564B-68F2-403C-9E92-E20027FD9457', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'93BA9877-58D1-404B-91F3-84661A924193', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00034' 
@@ -6687,44 +6522,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00034]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A2EDF71B-2504-4C3C-A8EB-D59AC900C9C1'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'34C91C9E-BAED-4BBE-96D2-CAB937A9755B'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A2EDF71B-2504-4C3C-A8EB-D59AC900C9C1', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8B07CC45-C0A9-4D5E-964D-EBAF1ED4443B'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'34C91C9E-BAED-4BBE-96D2-CAB937A9755B', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'80BBCD81-0C5A-425D-A8F2-0BF72405DD2F'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8B07CC45-C0A9-4D5E-964D-EBAF1ED4443B', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E540B08B-1F42-49F3-8A03-CD58E2BA1002'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E540B08B-1F42-49F3-8A03-CD58E2BA1002', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A92B2F48-0D19-43B5-A294-4C01D5895DA0'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A92B2F48-0D19-43B5-A294-4C01D5895DA0', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'80BBCD81-0C5A-425D-A8F2-0BF72405DD2F', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00034]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='04BD54FC-DC17-4AAE-ACEC-4998E369B94B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4DE63695-D617-4D7B-9D40-5EF9A91312C2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'04BD54FC-DC17-4AAE-ACEC-4998E369B94B', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4DE63695-D617-4D7B-9D40-5EF9A91312C2', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E64D9514-7216-4FBD-964E-C6063FB80BCF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D9665A10-728E-4CC2-84FD-7672F28AB9E5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E64D9514-7216-4FBD-964E-C6063FB80BCF', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D9665A10-728E-4CC2-84FD-7672F28AB9E5', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='584D2C31-E57D-4506-BDDA-DE984392DA1F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='28B672CE-CC36-4643-9709-01F7F18DE1BE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'584D2C31-E57D-4506-BDDA-DE984392DA1F', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'28B672CE-CC36-4643-9709-01F7F18DE1BE', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='91FEF8EC-E068-460C-8A28-695EE9CB1814' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4EFA59F2-3FBB-49DF-8E3B-0705651ABED3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'91FEF8EC-E068-460C-8A28-695EE9CB1814', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4EFA59F2-3FBB-49DF-8E3B-0705651ABED3', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FB12B82E-8A28-4095-8EB6-F7193F180D04' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='40F38ED4-BCA6-441B-B107-7679BBC30755' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FB12B82E-8A28-4095-8EB6-F7193F180D04', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'40F38ED4-BCA6-441B-B107-7679BBC30755', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='48D27BB2-4EEB-4061-A0A6-A7BEEBCE987E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='91FE3144-C000-4B34-9213-6AA263F78EDD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'48D27BB2-4EEB-4061-A0A6-A7BEEBCE987E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'91FE3144-C000-4B34-9213-6AA263F78EDD', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00035' 
@@ -6734,44 +6564,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00035]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'237863ED-3075-4FC1-9B18-4F217E052D20'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E7956374-A2F8-45AA-8020-6B5C1CCCDC74'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'237863ED-3075-4FC1-9B18-4F217E052D20', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3F4D2B5D-0FCA-40AC-83E8-FEE512C1BCE5'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E7956374-A2F8-45AA-8020-6B5C1CCCDC74', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B629ED5E-4004-4770-95C3-10D45F89A093'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3F4D2B5D-0FCA-40AC-83E8-FEE512C1BCE5', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'82E68A53-FC01-4466-A65B-1BED8FBCD800'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'82E68A53-FC01-4466-A65B-1BED8FBCD800', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'20464770-38E2-4F2D-91C0-199B03344F5F'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'20464770-38E2-4F2D-91C0-199B03344F5F', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B629ED5E-4004-4770-95C3-10D45F89A093', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00035]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='77E552F4-9B4D-4112-AEA0-6A729429C058' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FB327143-7DDE-4E7D-B22B-12083BA3DCD9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'77E552F4-9B4D-4112-AEA0-6A729429C058', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FB327143-7DDE-4E7D-B22B-12083BA3DCD9', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A2D03DB8-5F34-4A46-80F5-7D4316092E43' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0B0EDA5C-16F0-4686-8584-975B343AC6F9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A2D03DB8-5F34-4A46-80F5-7D4316092E43', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0B0EDA5C-16F0-4686-8584-975B343AC6F9', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='101F9017-E6B4-4E09-BEBF-E8703DBA1F76' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2657F4EE-DBC4-40BE-B67A-86318AABE3A2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'101F9017-E6B4-4E09-BEBF-E8703DBA1F76', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2657F4EE-DBC4-40BE-B67A-86318AABE3A2', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='362323CF-A23D-4271-A662-B19F095AD299' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9DC006F1-F06C-46DC-B1AE-8AEBF76BAD17' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'362323CF-A23D-4271-A662-B19F095AD299', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9DC006F1-F06C-46DC-B1AE-8AEBF76BAD17', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='15596844-0D3E-479E-A580-A51DDDB5A604' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6D1A0373-2A4E-4A42-A736-52C727E1D286' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'15596844-0D3E-479E-A580-A51DDDB5A604', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6D1A0373-2A4E-4A42-A736-52C727E1D286', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DFA5C6E6-DF6A-4F17-ABAE-69E317920F11' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BE21E84C-0DBB-49CA-AA80-8D66CFD2C708' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DFA5C6E6-DF6A-4F17-ABAE-69E317920F11', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BE21E84C-0DBB-49CA-AA80-8D66CFD2C708', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00036' 
@@ -6781,44 +6606,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00036]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B83D10EA-BD21-415C-ABE9-E7F6930FF2AA'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'782EBCAF-2CED-49AC-93FB-5CAA4D1F0CFC'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B83D10EA-BD21-415C-ABE9-E7F6930FF2AA', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D3CEBF52-7916-4D8B-9335-2A6DE15AD374'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'782EBCAF-2CED-49AC-93FB-5CAA4D1F0CFC', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'20B51188-D597-4623-89A6-96C5ABF16B10'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D3CEBF52-7916-4D8B-9335-2A6DE15AD374', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'366F0306-AE09-486F-B69B-5C3D66454FD8'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'366F0306-AE09-486F-B69B-5C3D66454FD8', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'151BDBA3-2444-49C0-B1CC-C834928E1350'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'151BDBA3-2444-49C0-B1CC-C834928E1350', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'20B51188-D597-4623-89A6-96C5ABF16B10', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00036]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='168ADC63-05E2-4453-8479-3C3CABF197A4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='484DDA4E-3745-43E9-8542-38F76129CAD2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'168ADC63-05E2-4453-8479-3C3CABF197A4', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'484DDA4E-3745-43E9-8542-38F76129CAD2', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CDD34CEF-70F9-486D-8E39-72D8DF2E82FF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AAF50B40-44B2-4FEF-896D-2394EC7FB56E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CDD34CEF-70F9-486D-8E39-72D8DF2E82FF', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AAF50B40-44B2-4FEF-896D-2394EC7FB56E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9ED3D903-9BD1-4250-904A-0999562C13D2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D95A1B49-9D80-4452-8F9E-B3C5FDC5D58E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9ED3D903-9BD1-4250-904A-0999562C13D2', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D95A1B49-9D80-4452-8F9E-B3C5FDC5D58E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6869A515-F68D-4A61-90C3-CFF80D7CB86C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='140B0EDB-547A-4E1E-A287-175EDF12692C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6869A515-F68D-4A61-90C3-CFF80D7CB86C', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'140B0EDB-547A-4E1E-A287-175EDF12692C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6738DDB6-A852-497F-89D9-C93CD6FAE505' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A3FFDF28-B7F0-4CAE-9977-69144D155FB2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6738DDB6-A852-497F-89D9-C93CD6FAE505', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A3FFDF28-B7F0-4CAE-9977-69144D155FB2', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DDE4094F-1463-45BD-8482-832F93070C96' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='48AFDF26-53C7-4BFF-9F87-76804AA24664' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DDE4094F-1463-45BD-8482-832F93070C96', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'48AFDF26-53C7-4BFF-9F87-76804AA24664', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00037' 
@@ -6828,44 +6648,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00037]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7D449351-BFD1-41A1-B582-80AFCAF5F89A'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0B183AC5-28C6-40F5-A957-94ACE30B627D'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7D449351-BFD1-41A1-B582-80AFCAF5F89A', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1268A5CD-4F6F-4CD2-A523-C1163057F8EA'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0B183AC5-28C6-40F5-A957-94ACE30B627D', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'97C2ED94-2049-4A11-8D78-EA9716FD5671'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1268A5CD-4F6F-4CD2-A523-C1163057F8EA', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3C3C777F-9290-4E79-81FF-3EF6A6104473'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3C3C777F-9290-4E79-81FF-3EF6A6104473', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7834ED0C-30CC-4A34-AA34-B83B0216B6D4'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7834ED0C-30CC-4A34-AA34-B83B0216B6D4', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'97C2ED94-2049-4A11-8D78-EA9716FD5671', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00037]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FE331E87-1696-4D72-8344-EE29DB2C8A7D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FBEEB46C-F974-453E-A663-FE5674B386DB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FE331E87-1696-4D72-8344-EE29DB2C8A7D', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FBEEB46C-F974-453E-A663-FE5674B386DB', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5859CFB2-323F-4471-8DF1-614F4DCEB4B5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D8EA77EE-C061-48E9-B9FF-A7CE0669D02A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5859CFB2-323F-4471-8DF1-614F4DCEB4B5', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D8EA77EE-C061-48E9-B9FF-A7CE0669D02A', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='65760371-53B4-4F3E-A039-5C4F229913E5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3994A5E8-DBDB-4D5E-B7D0-83FC44039B91' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'65760371-53B4-4F3E-A039-5C4F229913E5', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3994A5E8-DBDB-4D5E-B7D0-83FC44039B91', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C7309019-1185-4132-8BD3-2730AF8E8CC7' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AA93D729-9520-4C73-8D81-B8C2BE705DB5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C7309019-1185-4132-8BD3-2730AF8E8CC7', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AA93D729-9520-4C73-8D81-B8C2BE705DB5', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8ABB36CB-05DD-4C69-B3A0-DC838DAD9536' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4159299F-2ADC-4EBE-AF5C-82090FCC4135' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8ABB36CB-05DD-4C69-B3A0-DC838DAD9536', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4159299F-2ADC-4EBE-AF5C-82090FCC4135', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A3468784-F2BC-4F31-92A1-0F7C16A0190D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F3078298-1993-4683-9250-E69CE510E14C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A3468784-F2BC-4F31-92A1-0F7C16A0190D', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F3078298-1993-4683-9250-E69CE510E14C', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00038' 
@@ -6875,44 +6690,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00038]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'47DABBE7-EBB2-4C29-B41B-4A9D6F150251'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4E9A7E65-F75E-4E93-8936-2AFAA9E8AFD5'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'47DABBE7-EBB2-4C29-B41B-4A9D6F150251', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EB4DDB55-4A6B-4E19-93A1-0283A255E590'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4E9A7E65-F75E-4E93-8936-2AFAA9E8AFD5', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'20111846-FF56-4F6C-8468-D7C9F01AC005'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EB4DDB55-4A6B-4E19-93A1-0283A255E590', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E828013B-4A87-42AA-BF52-42C5444C356D'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E828013B-4A87-42AA-BF52-42C5444C356D', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8BAC760F-6228-4479-90E3-12B0796E9B68'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8BAC760F-6228-4479-90E3-12B0796E9B68', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'20111846-FF56-4F6C-8468-D7C9F01AC005', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00038]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5E20C7C3-5355-4778-A2F9-E96D3C807471' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0016D16A-8ED4-4114-B580-C0255182F261' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5E20C7C3-5355-4778-A2F9-E96D3C807471', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0016D16A-8ED4-4114-B580-C0255182F261', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='64A7AFCA-5BB5-4538-8616-01673890753D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C5BCB4EE-DE18-4707-AE01-03BB5B2AA141' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'64A7AFCA-5BB5-4538-8616-01673890753D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C5BCB4EE-DE18-4707-AE01-03BB5B2AA141', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='26E3098F-8E93-4C3F-9B37-EE1EADEAAE97' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C826CBA0-4E1F-425B-BD8E-D0F9F97D0C3D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'26E3098F-8E93-4C3F-9B37-EE1EADEAAE97', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C826CBA0-4E1F-425B-BD8E-D0F9F97D0C3D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B5519970-7083-4DF8-BD82-AFEED4E481D4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EA8D40DE-3781-42EB-AAAE-FD33D21348AF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B5519970-7083-4DF8-BD82-AFEED4E481D4', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EA8D40DE-3781-42EB-AAAE-FD33D21348AF', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='63991995-BAA7-43F4-ACC0-11BE459E366D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A7CB2A04-E9AE-44DF-8F05-4876B9FE3C5D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'63991995-BAA7-43F4-ACC0-11BE459E366D', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A7CB2A04-E9AE-44DF-8F05-4876B9FE3C5D', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A55A75EC-C040-4D7B-A7A2-6183E6453393' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='54A9E911-C9E8-46B2-AE38-A629ED66FE88' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A55A75EC-C040-4D7B-A7A2-6183E6453393', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'54A9E911-C9E8-46B2-AE38-A629ED66FE88', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00039' 
@@ -6922,44 +6732,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00039]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'45A64AFE-A183-4686-B58C-9D7E5123B1EA'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2C890CDF-3700-4126-ACC7-4C4B275147CE'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'45A64AFE-A183-4686-B58C-9D7E5123B1EA', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AB23979E-6FA4-4E8F-895F-6FB4BD051172'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2C890CDF-3700-4126-ACC7-4C4B275147CE', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'368AC2F0-2700-45A6-BD59-D525568BB611'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AB23979E-6FA4-4E8F-895F-6FB4BD051172', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F8ECE5C2-4AFF-4222-BC8C-079AD36795C5'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F8ECE5C2-4AFF-4222-BC8C-079AD36795C5', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'00893EE7-BA50-4591-BB04-02BA06C72809'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'00893EE7-BA50-4591-BB04-02BA06C72809', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'368AC2F0-2700-45A6-BD59-D525568BB611', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00039]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C4331D91-B52C-41B8-AA12-C4C25A3E737F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='18AC5B29-D763-4055-A26F-731E212DEFE5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C4331D91-B52C-41B8-AA12-C4C25A3E737F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'18AC5B29-D763-4055-A26F-731E212DEFE5', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9ECC6CA0-1EAE-4A50-9393-E7EE6A1DB52D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2304B1FD-7324-4783-804C-8A5D6D50105B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9ECC6CA0-1EAE-4A50-9393-E7EE6A1DB52D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2304B1FD-7324-4783-804C-8A5D6D50105B', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C658F723-76CC-4E02-8BC1-B3FD3DBCA703' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='36D013E8-87C0-44CD-9E9C-E200C17482DE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C658F723-76CC-4E02-8BC1-B3FD3DBCA703', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'36D013E8-87C0-44CD-9E9C-E200C17482DE', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='44DAFBE7-F873-4531-9262-4592566FF3AD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BDB2AE47-4909-42FF-A388-BAE68A099F32' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'44DAFBE7-F873-4531-9262-4592566FF3AD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BDB2AE47-4909-42FF-A388-BAE68A099F32', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='19A4A6C8-9E79-4A0E-B43A-1B1998C15EFA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0719F91A-7FAD-4E4B-8343-FD4D96D2A245' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'19A4A6C8-9E79-4A0E-B43A-1B1998C15EFA', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0719F91A-7FAD-4E4B-8343-FD4D96D2A245', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7A7DC8CA-DC6D-4395-AEA1-47627F0B78D1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='28BECD50-E85A-4242-A440-F5C93781550D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7A7DC8CA-DC6D-4395-AEA1-47627F0B78D1', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'28BECD50-E85A-4242-A440-F5C93781550D', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00040' 
@@ -6969,44 +6774,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00040]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F6CC8D24-2519-497D-A304-70F04F575AFB'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C7A63A26-3548-4182-BC11-D463298D2674'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F6CC8D24-2519-497D-A304-70F04F575AFB', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B859BC56-34C9-470B-A72F-913C9D3CB80F'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C7A63A26-3548-4182-BC11-D463298D2674', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4C6E5E5A-A55D-48BE-8589-B0AA4655BB96'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B859BC56-34C9-470B-A72F-913C9D3CB80F', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AE0C9DDC-8F0D-42C2-A928-A4BA6EB12645'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AE0C9DDC-8F0D-42C2-A928-A4BA6EB12645', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0207AAAF-7676-4585-931D-D95497BC36C3'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0207AAAF-7676-4585-931D-D95497BC36C3', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4C6E5E5A-A55D-48BE-8589-B0AA4655BB96', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00040]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1BBBFBE8-60DF-426A-A09E-98F5546D6B64' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2EEE4D00-A227-4D6C-9C40-853857F5E463' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1BBBFBE8-60DF-426A-A09E-98F5546D6B64', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2EEE4D00-A227-4D6C-9C40-853857F5E463', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='70AC86A1-6CD2-450B-B73B-D0CE2993FCFD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='025D85D5-C7EF-46DF-968F-5D35D45E8B02' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'70AC86A1-6CD2-450B-B73B-D0CE2993FCFD', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'025D85D5-C7EF-46DF-968F-5D35D45E8B02', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2341EE2F-BFDB-4F19-A399-8704441DC2EA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F7376F0A-C2F0-4943-A60D-D64E17121D29' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2341EE2F-BFDB-4F19-A399-8704441DC2EA', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F7376F0A-C2F0-4943-A60D-D64E17121D29', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0A9074D9-C0F7-4726-A90E-439E47616A0A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5D884700-9AB4-4013-A189-492CAEAB954B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0A9074D9-C0F7-4726-A90E-439E47616A0A', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5D884700-9AB4-4013-A189-492CAEAB954B', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='97C500F2-F956-4530-929F-BF097A96D588' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A34BC417-4EB7-4895-A9B5-371F08E02F42' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'97C500F2-F956-4530-929F-BF097A96D588', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A34BC417-4EB7-4895-A9B5-371F08E02F42', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='335968BA-48FC-488C-9040-482690733844' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4A280F6F-1A8D-48D9-AF41-2A731E027368' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'335968BA-48FC-488C-9040-482690733844', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4A280F6F-1A8D-48D9-AF41-2A731E027368', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00041' 
@@ -7016,44 +6816,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00041]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C27A69D0-B49B-42E2-84E8-0B29AE57BDE5'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A599CE30-9ADE-4CC2-9105-2B60A3D583E4'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C27A69D0-B49B-42E2-84E8-0B29AE57BDE5', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BFBB39F7-0F3F-41EF-A42C-2DD86A9C69F9'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A599CE30-9ADE-4CC2-9105-2B60A3D583E4', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F11CBE34-DD4C-4C27-9BF9-7784AA49DAB8'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BFBB39F7-0F3F-41EF-A42C-2DD86A9C69F9', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'66927641-9D34-4B36-8252-CC90D2AD0591'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'66927641-9D34-4B36-8252-CC90D2AD0591', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FEB40362-307C-434E-B506-AE801F94A493'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FEB40362-307C-434E-B506-AE801F94A493', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F11CBE34-DD4C-4C27-9BF9-7784AA49DAB8', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00041]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F34BA268-CE51-47D8-AC7B-5E97DF069B25' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AF214A15-1176-438C-B9D0-0A64ED1E1D96' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F34BA268-CE51-47D8-AC7B-5E97DF069B25', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AF214A15-1176-438C-B9D0-0A64ED1E1D96', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='845B6393-8CF6-4EC9-979A-BF1C0BCAD142' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2751981D-2618-4898-BACD-9B0E3F85D3C3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'845B6393-8CF6-4EC9-979A-BF1C0BCAD142', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2751981D-2618-4898-BACD-9B0E3F85D3C3', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D98BD3CC-B0BC-41D9-B3AA-92E02A870D07' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CE90EB1C-5BEF-4CD7-B198-4E4EC8E2109E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D98BD3CC-B0BC-41D9-B3AA-92E02A870D07', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CE90EB1C-5BEF-4CD7-B198-4E4EC8E2109E', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5078C533-7CF9-4098-A2D5-1C21CCE6C5AB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EDF4E2FD-D545-4AC1-ACA1-60B1B0098944' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5078C533-7CF9-4098-A2D5-1C21CCE6C5AB', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EDF4E2FD-D545-4AC1-ACA1-60B1B0098944', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='03AA0A5B-2C48-4F0A-9168-35AB1510EEF7' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='637F3EE5-106C-42CB-AF90-E7901682DCF3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'03AA0A5B-2C48-4F0A-9168-35AB1510EEF7', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'637F3EE5-106C-42CB-AF90-E7901682DCF3', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='014721D2-11E1-4921-92BF-9B5B8220002E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4B5E929E-2F20-44C6-8650-C00D135EBC2B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'014721D2-11E1-4921-92BF-9B5B8220002E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4B5E929E-2F20-44C6-8650-C00D135EBC2B', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00042' 
@@ -7063,44 +6858,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00042]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'29F59CC1-A7EC-421E-B0AA-F2E83568B2CD'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F9D70FCD-FE90-4882-8C32-8E91BE0E87EF'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'29F59CC1-A7EC-421E-B0AA-F2E83568B2CD', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D0F25181-AFCB-4199-A29D-F4FA7BD52FF0'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F9D70FCD-FE90-4882-8C32-8E91BE0E87EF', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F5CCDB13-5336-4EAB-B081-11C2FC4DFA3B'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D0F25181-AFCB-4199-A29D-F4FA7BD52FF0', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'09657848-69AE-48C9-BB66-356C73A4A8C9'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'09657848-69AE-48C9-BB66-356C73A4A8C9', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'63EC9A84-6537-4C6F-AEF4-61AF51A73C5D'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'63EC9A84-6537-4C6F-AEF4-61AF51A73C5D', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F5CCDB13-5336-4EAB-B081-11C2FC4DFA3B', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00042]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='673CFDEC-DD9F-4072-B57E-144488007F37' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B9BA8B55-7756-4535-A0CD-6B56D859C4FF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'673CFDEC-DD9F-4072-B57E-144488007F37', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B9BA8B55-7756-4535-A0CD-6B56D859C4FF', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F9BB9AE4-4615-4766-A15C-BC820B9ECA56' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0FB8BAAB-DC8B-41AE-B171-DB56D49452B3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F9BB9AE4-4615-4766-A15C-BC820B9ECA56', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0FB8BAAB-DC8B-41AE-B171-DB56D49452B3', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='59336D14-10EE-49FD-BF55-202F6E6A16C9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B757CB38-5078-4F06-9FDB-E8A6AE158AF4' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'59336D14-10EE-49FD-BF55-202F6E6A16C9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B757CB38-5078-4F06-9FDB-E8A6AE158AF4', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='32696918-8530-48AC-B870-DC7650862992' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9D95BC13-F827-4F58-8C96-C11258480A16' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'32696918-8530-48AC-B870-DC7650862992', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9D95BC13-F827-4F58-8C96-C11258480A16', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DB174F5B-4C6A-4BE0-85E1-CBB103565601' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4D1545FF-D542-46D2-AB39-04936D29F67C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DB174F5B-4C6A-4BE0-85E1-CBB103565601', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4D1545FF-D542-46D2-AB39-04936D29F67C', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='15C65CEE-F9A8-4CF2-843A-6E5B511E85DD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='242B5559-0503-4EF9-B36E-1F31E9ECD358' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'15C65CEE-F9A8-4CF2-843A-6E5B511E85DD', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'242B5559-0503-4EF9-B36E-1F31E9ECD358', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00043' 
@@ -7110,44 +6900,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00043]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'698A5B11-6A33-466E-9A55-DE59B3803A3D'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E96FEF84-D90D-4A60-91D6-24063F545B32'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'698A5B11-6A33-466E-9A55-DE59B3803A3D', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3D4ABFFC-4468-4E8C-AE87-C9C23C1A55BC'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E96FEF84-D90D-4A60-91D6-24063F545B32', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'31496A85-0B50-4B17-B837-15044CC488D0'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3D4ABFFC-4468-4E8C-AE87-C9C23C1A55BC', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'73964EF5-E705-4BE7-93C8-F0F1B2880C39'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'73964EF5-E705-4BE7-93C8-F0F1B2880C39', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B7BA1004-705A-4BD1-B83A-C62CA16AD0E2'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B7BA1004-705A-4BD1-B83A-C62CA16AD0E2', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'31496A85-0B50-4B17-B837-15044CC488D0', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00043]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E049531B-B584-45D4-8805-FADE712F5728' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='850B4A69-2148-4128-9830-CE1EBC49FF2B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E049531B-B584-45D4-8805-FADE712F5728', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'850B4A69-2148-4128-9830-CE1EBC49FF2B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A26885DF-8902-445C-AEF3-3588006A6A48' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C6E162BC-EFA1-4C8E-82EE-71A2266A63D5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A26885DF-8902-445C-AEF3-3588006A6A48', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C6E162BC-EFA1-4C8E-82EE-71A2266A63D5', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='94D0EB85-DC80-4FCC-A478-5449413C035B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='407A2E41-1904-4FE7-9250-C5420A22F6EB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'94D0EB85-DC80-4FCC-A478-5449413C035B', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'407A2E41-1904-4FE7-9250-C5420A22F6EB', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='06DB1385-5C64-433B-9CA9-759420119DCB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='97305DE8-5C34-4209-AA6F-197B177985E7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'06DB1385-5C64-433B-9CA9-759420119DCB', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'97305DE8-5C34-4209-AA6F-197B177985E7', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A5A1AB24-369B-4FFB-B24E-FF790BD1042A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='547E7755-47A1-488F-AE3E-A24A01EA60E1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A5A1AB24-369B-4FFB-B24E-FF790BD1042A', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'547E7755-47A1-488F-AE3E-A24A01EA60E1', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F9A3A78A-F519-4D36-9DA1-640B57078FA6' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C532E718-941A-4434-8A71-A4AAB5077CDF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F9A3A78A-F519-4D36-9DA1-640B57078FA6', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C532E718-941A-4434-8A71-A4AAB5077CDF', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00044' 
@@ -7157,44 +6942,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00044]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B51DDD80-DE17-4B7A-872C-A487364ED2AA'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9D18FF53-75E7-4F63-B6EE-36485B57FCAC'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B51DDD80-DE17-4B7A-872C-A487364ED2AA', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7F75864C-7F27-45FE-B505-9C28687BC065'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9D18FF53-75E7-4F63-B6EE-36485B57FCAC', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'26ECE4BF-FADD-4217-B5DE-01B16BC82D14'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7F75864C-7F27-45FE-B505-9C28687BC065', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AC076C13-12C3-4EEA-8AE3-5CAC8114B770'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AC076C13-12C3-4EEA-8AE3-5CAC8114B770', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'17FBCCAE-9C3C-44C3-8DCE-BF5280E891C8'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'17FBCCAE-9C3C-44C3-8DCE-BF5280E891C8', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'26ECE4BF-FADD-4217-B5DE-01B16BC82D14', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00044]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='63F06768-6AA2-45DD-AFB6-2544F57CBC95' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1E8A8104-A4B4-4557-8998-B33DAF639A19' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'63F06768-6AA2-45DD-AFB6-2544F57CBC95', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1E8A8104-A4B4-4557-8998-B33DAF639A19', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2ECB1F56-8BD4-474F-B9DB-0B52A0D92652' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CCB00E90-4B15-4B7C-BF2B-386989C35611' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2ECB1F56-8BD4-474F-B9DB-0B52A0D92652', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CCB00E90-4B15-4B7C-BF2B-386989C35611', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='15A8919E-4B21-4078-AE33-F015B16A09C5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DF8929EE-7599-4900-969C-3A78A30D9B30' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'15A8919E-4B21-4078-AE33-F015B16A09C5', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DF8929EE-7599-4900-969C-3A78A30D9B30', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A0AA9F4B-FC96-4AF0-B7AB-CF6F8FD7EDAD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='16101193-1DEE-48C3-9677-A0592475E5AE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A0AA9F4B-FC96-4AF0-B7AB-CF6F8FD7EDAD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'16101193-1DEE-48C3-9677-A0592475E5AE', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='679FB321-65C6-4B90-A451-D5294E5F41D0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6156472C-D737-4121-82FB-75B55A4864A6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'679FB321-65C6-4B90-A451-D5294E5F41D0', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6156472C-D737-4121-82FB-75B55A4864A6', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='18BF42EE-8B2B-40A2-98B1-5BB8222B6F83' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A174B2C1-B9D6-4BB7-99FF-4C818EC50257' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'18BF42EE-8B2B-40A2-98B1-5BB8222B6F83', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A174B2C1-B9D6-4BB7-99FF-4C818EC50257', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00045' 
@@ -7204,44 +6984,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00045]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'977C96E0-D0D4-47DC-8C57-8DF878C4F84E'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C8B1171C-C317-496D-B3B4-1D2D14BCB68D'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'977C96E0-D0D4-47DC-8C57-8DF878C4F84E', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FCD4A47D-3506-4B2A-91FC-7DAF19EB6D26'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C8B1171C-C317-496D-B3B4-1D2D14BCB68D', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1AED7369-DCD0-4599-A4BC-657E30853777'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FCD4A47D-3506-4B2A-91FC-7DAF19EB6D26', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'13DD2EEA-0BFE-449A-A247-C292FE72F3C3'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'13DD2EEA-0BFE-449A-A247-C292FE72F3C3', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BECCAC0B-EE64-4FE4-B48E-5CDAFBFD9BCE'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BECCAC0B-EE64-4FE4-B48E-5CDAFBFD9BCE', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1AED7369-DCD0-4599-A4BC-657E30853777', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00045]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='87BDD1E2-4649-4E03-89FF-A9BE37994734' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6D4992CF-BB62-4FD2-AA45-3E6FC74DC4F2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'87BDD1E2-4649-4E03-89FF-A9BE37994734', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6D4992CF-BB62-4FD2-AA45-3E6FC74DC4F2', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5F317C3E-82D3-4270-AEE9-D03BD8077DF7' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FFB89F43-EBD7-411B-AD98-B317BE3E7F99' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5F317C3E-82D3-4270-AEE9-D03BD8077DF7', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FFB89F43-EBD7-411B-AD98-B317BE3E7F99', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DD967B06-B26C-42F8-8AEF-70AC407D0D01' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='ABE5EB27-529B-40AA-881A-BA74729F71D7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DD967B06-B26C-42F8-8AEF-70AC407D0D01', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'ABE5EB27-529B-40AA-881A-BA74729F71D7', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C3070EDF-6EE7-4805-943D-08F0513B14F3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='155989D7-3FEA-483D-BF8D-598E2667D4A6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C3070EDF-6EE7-4805-943D-08F0513B14F3', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'155989D7-3FEA-483D-BF8D-598E2667D4A6', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C4AC4DA2-CAA3-459C-A15A-B23FA9BB5B0F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CDD59574-D781-464D-AD90-012A011245A7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C4AC4DA2-CAA3-459C-A15A-B23FA9BB5B0F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CDD59574-D781-464D-AD90-012A011245A7', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F887F69D-1312-4285-9B84-2627F69238BC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B97DB9D5-0E8A-4522-89AA-EA59866A5CBE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F887F69D-1312-4285-9B84-2627F69238BC', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B97DB9D5-0E8A-4522-89AA-EA59866A5CBE', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00046' 
@@ -7251,44 +7026,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00046]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F4435015-2DAD-4147-9A56-85D2B1293FD0'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B76C6B1C-3B78-4A6C-86B0-EB813030015A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F4435015-2DAD-4147-9A56-85D2B1293FD0', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EC6BFE78-0D19-442F-AFF7-E1FDF2EE84DD'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B76C6B1C-3B78-4A6C-86B0-EB813030015A', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9956DB2F-0446-42F3-A4EB-1BCE174CFEB9'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EC6BFE78-0D19-442F-AFF7-E1FDF2EE84DD', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0D47F43C-05E4-4240-A14C-F8FA1C7AC2E1'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0D47F43C-05E4-4240-A14C-F8FA1C7AC2E1', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8D24E50A-A500-4803-90CF-87F042B43598'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8D24E50A-A500-4803-90CF-87F042B43598', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9956DB2F-0446-42F3-A4EB-1BCE174CFEB9', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00046]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AC2EC123-4EE2-4DC5-BFF8-B822837526FD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6F19DF0B-E985-4C0B-9C6A-01608DE6871F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AC2EC123-4EE2-4DC5-BFF8-B822837526FD', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6F19DF0B-E985-4C0B-9C6A-01608DE6871F', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CCE51424-D5B7-456C-9762-B2FA26AD6674' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E0A029EB-D393-487E-ADAB-320BDA9F41D2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CCE51424-D5B7-456C-9762-B2FA26AD6674', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E0A029EB-D393-487E-ADAB-320BDA9F41D2', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='570D2D59-E596-4C8E-BFF0-E1EE9DCF50A3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D5A237F7-1AC8-4CD2-82E3-2FAD3A6D2536' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'570D2D59-E596-4C8E-BFF0-E1EE9DCF50A3', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D5A237F7-1AC8-4CD2-82E3-2FAD3A6D2536', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='794D3522-0944-4A81-AC52-BFA699F01496' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D8488594-8267-43DD-A0EC-8DAB09CEC3F2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'794D3522-0944-4A81-AC52-BFA699F01496', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D8488594-8267-43DD-A0EC-8DAB09CEC3F2', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='50276368-FFC2-49FC-80F4-1F39397CB504' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8FD7816C-9007-401F-BB7B-144E0E39E11A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'50276368-FFC2-49FC-80F4-1F39397CB504', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8FD7816C-9007-401F-BB7B-144E0E39E11A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='08601FF1-CF79-4173-9672-5CC468B20327' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='708040E9-2F0C-4DC1-9999-2D2408C81703' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'08601FF1-CF79-4173-9672-5CC468B20327', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'708040E9-2F0C-4DC1-9999-2D2408C81703', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00047' 
@@ -7298,44 +7068,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00047]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C2D0FB06-83CE-45D7-9B65-2A67F96EABFD'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'39E4E72D-7A10-4DCB-90A7-12F8746D4EC0'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C2D0FB06-83CE-45D7-9B65-2A67F96EABFD', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7B440B20-4E38-4408-8A38-418800B80275'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'39E4E72D-7A10-4DCB-90A7-12F8746D4EC0', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B9EBBA6F-D0F8-400B-B3B4-8623BCA5E709'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7B440B20-4E38-4408-8A38-418800B80275', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AFF7E9C4-CC88-48E2-8E13-9EB500DE27C3'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AFF7E9C4-CC88-48E2-8E13-9EB500DE27C3', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'ED2B04AF-2E57-4BA4-8CD7-0C9E59A8BB1D'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'ED2B04AF-2E57-4BA4-8CD7-0C9E59A8BB1D', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B9EBBA6F-D0F8-400B-B3B4-8623BCA5E709', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00047]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='512B245B-431F-407C-9630-02A0C43FF666' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C5235916-41C3-429C-8024-681602EE09E1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'512B245B-431F-407C-9630-02A0C43FF666', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C5235916-41C3-429C-8024-681602EE09E1', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AA3B3864-DC2C-489A-AD35-233D43DF9CCC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8D9A51CF-1BE5-49BA-B427-491F65660D85' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AA3B3864-DC2C-489A-AD35-233D43DF9CCC', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8D9A51CF-1BE5-49BA-B427-491F65660D85', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='31EA430D-6431-44D5-A3B8-18A2E661B9D0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='37D78A34-808B-4D40-8CC5-89FF7DC2B84E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'31EA430D-6431-44D5-A3B8-18A2E661B9D0', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'37D78A34-808B-4D40-8CC5-89FF7DC2B84E', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EE2FACCC-D68B-4544-9405-3EE2FCF79FCD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C78B7916-72CD-498C-A808-2F10A01F3EAD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EE2FACCC-D68B-4544-9405-3EE2FCF79FCD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C78B7916-72CD-498C-A808-2F10A01F3EAD', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2CE6FAB9-556D-4854-924F-B9901BB9AE90' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='46D9083A-E874-4C40-A0F7-5B2F48BCD2E0' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2CE6FAB9-556D-4854-924F-B9901BB9AE90', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'46D9083A-E874-4C40-A0F7-5B2F48BCD2E0', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8EF54A01-B68A-45D0-9C96-260586ED9B2C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CC9C3117-D09C-4482-9B0B-E6EBDA2336AF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8EF54A01-B68A-45D0-9C96-260586ED9B2C', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CC9C3117-D09C-4482-9B0B-E6EBDA2336AF', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00048' 
@@ -7345,44 +7110,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00048]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'293D0107-08E9-47E7-9BA8-035191B2EB0C'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2D152A31-3BC5-4D28-A25B-8DA560A47828'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'293D0107-08E9-47E7-9BA8-035191B2EB0C', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'408E5373-2158-4871-BDEC-6AEB556150D7'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2D152A31-3BC5-4D28-A25B-8DA560A47828', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'70FE36A9-0DCF-4DE1-9D77-45B38D158D7B'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'408E5373-2158-4871-BDEC-6AEB556150D7', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'CA62B250-FE12-41E2-AB98-5A96A704BB8B'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'CA62B250-FE12-41E2-AB98-5A96A704BB8B', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6F4CECAB-A40F-4B57-97D1-CC0C632EA969'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6F4CECAB-A40F-4B57-97D1-CC0C632EA969', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'70FE36A9-0DCF-4DE1-9D77-45B38D158D7B', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00048]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C376F69F-F798-42C9-A707-B2AAD9468606' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='79FCE680-EA96-40D1-8217-5CC93EB75DD2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C376F69F-F798-42C9-A707-B2AAD9468606', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'79FCE680-EA96-40D1-8217-5CC93EB75DD2', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8BAC613D-4BF3-4EEF-8096-92F07682BE71' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EACE3EFB-1521-489B-A43E-7AF0B0E2AF9D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8BAC613D-4BF3-4EEF-8096-92F07682BE71', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EACE3EFB-1521-489B-A43E-7AF0B0E2AF9D', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='432BBC0F-FB55-403A-B748-219BC31A467D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0DE2E94F-1860-49B4-B446-791786D2A44A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'432BBC0F-FB55-403A-B748-219BC31A467D', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0DE2E94F-1860-49B4-B446-791786D2A44A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AE8E0B1C-E701-47B7-A965-3B172EFE02DB' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='661DF8D3-A93B-401D-9E81-03CEC7EC5AE2' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AE8E0B1C-E701-47B7-A965-3B172EFE02DB', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'661DF8D3-A93B-401D-9E81-03CEC7EC5AE2', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F02019A8-270A-4FFF-A349-D145EE7AE40B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5FA82E4D-C332-4DAB-87E1-6EEACDD5E458' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F02019A8-270A-4FFF-A349-D145EE7AE40B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5FA82E4D-C332-4DAB-87E1-6EEACDD5E458', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4CDD666D-43A6-43A7-9269-646A97487614' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AAAFDF12-47DE-4FC5-96DE-50FFB4B7AE06' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4CDD666D-43A6-43A7-9269-646A97487614', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AAAFDF12-47DE-4FC5-96DE-50FFB4B7AE06', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00049' 
@@ -7392,44 +7152,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00049]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3E5D86A3-CE73-4450-B2CD-3ECA04CD2E7A'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'08EA93E9-1EF2-4D1F-8EAA-7A2305725F54'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3E5D86A3-CE73-4450-B2CD-3ECA04CD2E7A', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'71763789-5D06-4E79-9603-E779A67C81D0'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'08EA93E9-1EF2-4D1F-8EAA-7A2305725F54', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2F619030-9C3B-4C4C-8B2E-88692A9CB2B5'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'71763789-5D06-4E79-9603-E779A67C81D0', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'98506FE6-8E39-498D-BA85-55320EFC93F2'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'98506FE6-8E39-498D-BA85-55320EFC93F2', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'CC2A6FAE-3608-493F-AC25-0F8F0317EF11'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'CC2A6FAE-3608-493F-AC25-0F8F0317EF11', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2F619030-9C3B-4C4C-8B2E-88692A9CB2B5', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00049]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F0F18129-0DFD-464F-BAC8-0C5C23EFCD63' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9FC97DE7-3C8C-4D96-910C-8DE2B58760BB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F0F18129-0DFD-464F-BAC8-0C5C23EFCD63', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9FC97DE7-3C8C-4D96-910C-8DE2B58760BB', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C0FE7938-EF9D-4D67-8638-7AAE38BD0619' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7DA1B751-8DCE-4D02-BF2D-8BBDF1DB5DF6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C0FE7938-EF9D-4D67-8638-7AAE38BD0619', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7DA1B751-8DCE-4D02-BF2D-8BBDF1DB5DF6', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='08043D9F-11D6-4861-8912-7209965E90D3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4C80B884-1AAD-4C04-A2CD-C7DB2BE3F6E5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'08043D9F-11D6-4861-8912-7209965E90D3', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4C80B884-1AAD-4C04-A2CD-C7DB2BE3F6E5', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='35D4CD01-A335-4EF1-920C-1F635D49436C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A04A29C9-817B-4646-81ED-CB290431D07F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'35D4CD01-A335-4EF1-920C-1F635D49436C', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A04A29C9-817B-4646-81ED-CB290431D07F', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4F91D7B9-2E43-4303-BC93-B1377DA3213B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='711FA04C-DDCD-4C33-A1AC-785159D2CA8A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4F91D7B9-2E43-4303-BC93-B1377DA3213B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'711FA04C-DDCD-4C33-A1AC-785159D2CA8A', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EEA5E267-7C42-46BB-8D59-B8407633C115' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EB0D8256-1806-4D8D-A900-D46FF62FA4F9' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EEA5E267-7C42-46BB-8D59-B8407633C115', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EB0D8256-1806-4D8D-A900-D46FF62FA4F9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00050' 
@@ -7439,44 +7194,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00050]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5376E138-2CE8-4367-93C6-7F35692DFDFB'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'B4AF3864-9FDA-42A1-9D02-1F7937FB956A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5376E138-2CE8-4367-93C6-7F35692DFDFB', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E236997C-1C20-426E-A2F6-38D447A09473'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'B4AF3864-9FDA-42A1-9D02-1F7937FB956A', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9D274BFC-416A-400D-AD6B-3B94347DEE95'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E236997C-1C20-426E-A2F6-38D447A09473', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0F9E21B4-930A-4035-BCA6-01F6DB60DB42'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0F9E21B4-930A-4035-BCA6-01F6DB60DB42', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'45685566-2A8B-4DF4-A803-F530B909ED0A'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'45685566-2A8B-4DF4-A803-F530B909ED0A', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9D274BFC-416A-400D-AD6B-3B94347DEE95', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00050]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CE9E5CC7-E014-4A82-9029-09743C67FE4E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B2F1A19E-8008-4559-A3BE-37072C2E17C1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CE9E5CC7-E014-4A82-9029-09743C67FE4E', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B2F1A19E-8008-4559-A3BE-37072C2E17C1', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='214F3748-BB9F-4FB1-BFC1-D99546A8D466' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='24E181EE-CC61-46C5-B956-5706F7E760A6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'214F3748-BB9F-4FB1-BFC1-D99546A8D466', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'24E181EE-CC61-46C5-B956-5706F7E760A6', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='880F7954-1179-44FD-9206-4A19B75ADD4D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0B9A4F22-AED7-4D61-86E7-4BC9AA4CA3DD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'880F7954-1179-44FD-9206-4A19B75ADD4D', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0B9A4F22-AED7-4D61-86E7-4BC9AA4CA3DD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6CFE07C7-5B73-40DA-9952-99E0D024440C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E90AFA3F-6235-4EF7-86DD-539FA6963939' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6CFE07C7-5B73-40DA-9952-99E0D024440C', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E90AFA3F-6235-4EF7-86DD-539FA6963939', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='69033D27-CB9F-4C90-8AED-059995B9FFA7' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5D391251-B5A7-4F2A-9DBD-332175DA805F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'69033D27-CB9F-4C90-8AED-059995B9FFA7', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5D391251-B5A7-4F2A-9DBD-332175DA805F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BA1E46FC-7071-4E52-A9B5-957AA5CE35B1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='74F9156E-B31B-430A-8E39-0C963DF401B3' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BA1E46FC-7071-4E52-A9B5-957AA5CE35B1', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'74F9156E-B31B-430A-8E39-0C963DF401B3', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00051' 
@@ -7486,44 +7236,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00051]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'34F8EF04-BEAB-4C50-B93E-FE25AB40F931'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'73566FEA-995E-42D0-A91C-51790C759023'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'34F8EF04-BEAB-4C50-B93E-FE25AB40F931', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'76CA5B20-2602-42F3-88CA-15D2BBBACE2D'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'73566FEA-995E-42D0-A91C-51790C759023', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F6C69DB7-99B3-4489-8458-5FA32CF711A1'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'76CA5B20-2602-42F3-88CA-15D2BBBACE2D', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8560D82C-5CC3-4BB6-92AC-92D79316A0B5'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8560D82C-5CC3-4BB6-92AC-92D79316A0B5', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9CEDA8F8-194C-4B89-A710-308D2E461FF2'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9CEDA8F8-194C-4B89-A710-308D2E461FF2', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F6C69DB7-99B3-4489-8458-5FA32CF711A1', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00051]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='92618879-6097-4D08-A642-E51FD2573C3F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6805BCF5-B806-4647-8E33-3EE8A98EAA69' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'92618879-6097-4D08-A642-E51FD2573C3F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6805BCF5-B806-4647-8E33-3EE8A98EAA69', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='DB779078-5019-49EB-90E8-6CC204656A5C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='103C4600-E6EB-46BD-8EE0-1C074956CA40' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'DB779078-5019-49EB-90E8-6CC204656A5C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'103C4600-E6EB-46BD-8EE0-1C074956CA40', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D8F5A745-550B-42E8-82A0-70B09117A114' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='D6993134-5DA9-4667-9813-C2AF670D92CB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D8F5A745-550B-42E8-82A0-70B09117A114', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'D6993134-5DA9-4667-9813-C2AF670D92CB', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='11F80388-A563-4642-8581-2EAA1A68C795' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E3C470E8-B8E0-4E8E-B278-BD0E5D82D97F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'11F80388-A563-4642-8581-2EAA1A68C795', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E3C470E8-B8E0-4E8E-B278-BD0E5D82D97F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BE60034C-4A5B-409F-A747-68D9CBD0594F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F5D3C12D-7729-4494-919A-66C8261A9831' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BE60034C-4A5B-409F-A747-68D9CBD0594F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F5D3C12D-7729-4494-919A-66C8261A9831', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='28C4F7DA-CD1B-4FAF-87E1-F470AF57D7E1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6BECF8D4-01B3-40EC-AFC5-F6E4E99BF1BD' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'28C4F7DA-CD1B-4FAF-87E1-F470AF57D7E1', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6BECF8D4-01B3-40EC-AFC5-F6E4E99BF1BD', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00052' 
@@ -7533,44 +7278,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00052]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8EA50E4F-DA68-4E24-AF9F-33433068C711'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'21E59827-8AA8-4CE4-89E7-0CCC65942EF8'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8EA50E4F-DA68-4E24-AF9F-33433068C711', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'3B4D9BBB-3774-407D-A4B7-61423AE513E6'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'21E59827-8AA8-4CE4-89E7-0CCC65942EF8', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'18D10D6C-A4AF-48BA-91ED-35B2F9A345FC'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'3B4D9BBB-3774-407D-A4B7-61423AE513E6', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4586F0A2-A6FF-4C51-973A-E0510C48158C'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4586F0A2-A6FF-4C51-973A-E0510C48158C', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2131D26F-0CA3-40CB-99D8-12797AEEEF74'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2131D26F-0CA3-40CB-99D8-12797AEEEF74', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'18D10D6C-A4AF-48BA-91ED-35B2F9A345FC', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00052]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C5C6C3C2-376B-4E68-BAC9-7CBC91B62263' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3C6A71F2-B0A0-4FCD-9F86-7562A61C9668' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C5C6C3C2-376B-4E68-BAC9-7CBC91B62263', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3C6A71F2-B0A0-4FCD-9F86-7562A61C9668', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='986668C1-873D-43FA-AFD6-D296C2B07DA5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AB7B37F8-33DB-46A0-A641-7C429D7F64EC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'986668C1-873D-43FA-AFD6-D296C2B07DA5', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AB7B37F8-33DB-46A0-A641-7C429D7F64EC', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B8231DDB-751D-4D4E-A3F1-D538329BC580' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='052B3BA8-33B7-4FA2-B97D-DE5A85E13859' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B8231DDB-751D-4D4E-A3F1-D538329BC580', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'052B3BA8-33B7-4FA2-B97D-DE5A85E13859', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='01C29632-A7DA-4907-B8C9-7ACCD371DC8F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EA9BB24E-4EDD-4D5A-B3BC-D7B6E8BC0336' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'01C29632-A7DA-4907-B8C9-7ACCD371DC8F', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EA9BB24E-4EDD-4D5A-B3BC-D7B6E8BC0336', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='748C1FCD-4230-41D9-B7DC-D4F32B4DEA1B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2A3D4629-E417-420B-A10D-D7C4B55895AC' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'748C1FCD-4230-41D9-B7DC-D4F32B4DEA1B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2A3D4629-E417-420B-A10D-D7C4B55895AC', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C02C9C00-F3A1-4AF2-8309-190B766706DF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FC9C6563-3920-4B23-8AA1-CC0134EBDF9A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C02C9C00-F3A1-4AF2-8309-190B766706DF', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FC9C6563-3920-4B23-8AA1-CC0134EBDF9A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00053' 
@@ -7580,44 +7320,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00053]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F46DECAA-1B93-4CE3-9A68-BB6D31ABACE4'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'352B6EE6-4FC4-45D4-AEE1-E7869A60FD52'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F46DECAA-1B93-4CE3-9A68-BB6D31ABACE4', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'CF45E419-DC1E-42A9-97CE-DE27668772E8'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'352B6EE6-4FC4-45D4-AEE1-E7869A60FD52', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2B1D569A-FF95-4225-BEBE-269407C98DBF'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'CF45E419-DC1E-42A9-97CE-DE27668772E8', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D00B2955-8B6D-494F-88CD-A11C2777AD81'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D00B2955-8B6D-494F-88CD-A11C2777AD81', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'86628FC5-16F6-45EC-86D6-D151700706C0'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'86628FC5-16F6-45EC-86D6-D151700706C0', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2B1D569A-FF95-4225-BEBE-269407C98DBF', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00053]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A09710D3-338D-43D4-B9A9-058A6635CBD1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3C40BBFD-0D76-4D5E-8E55-5881073D0261' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A09710D3-338D-43D4-B9A9-058A6635CBD1', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3C40BBFD-0D76-4D5E-8E55-5881073D0261', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0752DE4C-F30E-4C89-88D6-A0A1CCE69438' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8281612D-E8D1-4D05-9E15-59970FEC0E73' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0752DE4C-F30E-4C89-88D6-A0A1CCE69438', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8281612D-E8D1-4D05-9E15-59970FEC0E73', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9FA91914-1B3E-4DAA-9D59-1514EAADBDE2' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='071E2CBD-19EA-48C7-9115-2A51E52CDA65' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9FA91914-1B3E-4DAA-9D59-1514EAADBDE2', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'071E2CBD-19EA-48C7-9115-2A51E52CDA65', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9D778267-8412-46FC-94A6-E0C4190EB30A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7724FDA2-5921-41BC-9926-C98C18F92411' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9D778267-8412-46FC-94A6-E0C4190EB30A', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7724FDA2-5921-41BC-9926-C98C18F92411', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8E326739-819A-4454-8606-1D2F85CA40AD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5AE5A0EF-FE99-475A-8B89-26773076624E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8E326739-819A-4454-8606-1D2F85CA40AD', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5AE5A0EF-FE99-475A-8B89-26773076624E', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='991A6152-85CC-4A29-9D7F-F32AAB71DF5E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='778978C3-7FA9-4E9F-A390-F7BC7B116908' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'991A6152-85CC-4A29-9D7F-F32AAB71DF5E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'778978C3-7FA9-4E9F-A390-F7BC7B116908', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00054' 
@@ -7627,44 +7362,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00054]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'027A0448-8E04-4481-B19B-881AE8805B69'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'957DC2DD-11A3-4229-8C56-3675EADDBA1B'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'027A0448-8E04-4481-B19B-881AE8805B69', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'9B5CF6EC-414E-45EE-8DF3-359BFE3ED81A'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'957DC2DD-11A3-4229-8C56-3675EADDBA1B', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A5620815-E43E-48AB-A758-EB3314BA3A9A'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'9B5CF6EC-414E-45EE-8DF3-359BFE3ED81A', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'8E2AE00C-D607-4AAF-8BB1-C2BF73E25CC7'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'8E2AE00C-D607-4AAF-8BB1-C2BF73E25CC7', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'888563D5-7D4D-4AA2-B358-CCCE8AF22DF1'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'888563D5-7D4D-4AA2-B358-CCCE8AF22DF1', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A5620815-E43E-48AB-A758-EB3314BA3A9A', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00054]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A1ED339F-4A12-4818-8FC1-61029C2E3A91' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='58675D8B-D081-4FF7-B875-40350E586546' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A1ED339F-4A12-4818-8FC1-61029C2E3A91', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'58675D8B-D081-4FF7-B875-40350E586546', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E068CF10-B1EA-45C2-9623-979E97B27ABC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1CACB621-3242-43C8-9E2D-1068A58241FA' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E068CF10-B1EA-45C2-9623-979E97B27ABC', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1CACB621-3242-43C8-9E2D-1068A58241FA', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8D05F12C-B6ED-48E2-8620-CF406EE895D9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='035A8B0B-447F-46A2-9C0B-B1B696CF515C' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8D05F12C-B6ED-48E2-8620-CF406EE895D9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'035A8B0B-447F-46A2-9C0B-B1B696CF515C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='61F0B8D1-123C-44AB-BF10-D4E754B177B4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B81815AF-B92D-49D1-8D09-C81815389835' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'61F0B8D1-123C-44AB-BF10-D4E754B177B4', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B81815AF-B92D-49D1-8D09-C81815389835', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C70D5AF4-1816-4820-AD55-1D89ADE40937' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FAF51368-6E76-4E94-AB8F-55D311B188E0' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C70D5AF4-1816-4820-AD55-1D89ADE40937', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FAF51368-6E76-4E94-AB8F-55D311B188E0', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='74542A75-CFF3-4935-BB90-548A83DAC3D3' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FF358055-63BD-4E49-82F8-F6A3360D3193' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'74542A75-CFF3-4935-BB90-548A83DAC3D3', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FF358055-63BD-4E49-82F8-F6A3360D3193', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00055' 
@@ -7674,44 +7404,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00055]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E1370AC4-EC61-408B-A221-C78178440498'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'846585E9-F791-4F8B-979D-31A3A794EBCF'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E1370AC4-EC61-408B-A221-C78178440498', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1C988AE1-7721-4E67-887E-B49848B10C32'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'846585E9-F791-4F8B-979D-31A3A794EBCF', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'FDE5AA35-EE75-4382-B700-3FD56BF8EEF5'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1C988AE1-7721-4E67-887E-B49848B10C32', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'59FE0318-242F-4A58-AF8A-A52084DC71FB'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'59FE0318-242F-4A58-AF8A-A52084DC71FB', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'F7914BC9-8D94-448F-A179-507A08CEA082'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'F7914BC9-8D94-448F-A179-507A08CEA082', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'FDE5AA35-EE75-4382-B700-3FD56BF8EEF5', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00055]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7103701F-662A-4B09-9494-9E9BEF9940DC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='34D39304-3ACC-4C31-BA13-645F1FE37E45' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7103701F-662A-4B09-9494-9E9BEF9940DC', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'34D39304-3ACC-4C31-BA13-645F1FE37E45', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='54A2964F-3A68-4109-BE2F-5ABE4A0729F1' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7D45F3B0-E9DD-4C60-8B18-EC4B3FD7175E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'54A2964F-3A68-4109-BE2F-5ABE4A0729F1', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7D45F3B0-E9DD-4C60-8B18-EC4B3FD7175E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='0758DC05-BD42-4CBE-8452-C32E276DE330' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='54D0105A-168C-4DCC-BDA0-D5D7B3BCFD69' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'0758DC05-BD42-4CBE-8452-C32E276DE330', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'54D0105A-168C-4DCC-BDA0-D5D7B3BCFD69', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='169B2EBD-8383-4C25-803D-7525DC281EAC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7902BC51-D1A0-4130-B1BD-BD94332A4941' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'169B2EBD-8383-4C25-803D-7525DC281EAC', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7902BC51-D1A0-4130-B1BD-BD94332A4941', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='ABA60F8A-B30B-4D4B-BF84-F4132B27C985' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='395722F1-8D3E-46C2-A35E-F908D3AFFAF6' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'ABA60F8A-B30B-4D4B-BF84-F4132B27C985', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'395722F1-8D3E-46C2-A35E-F908D3AFFAF6', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='ECB9BFC6-39B7-4F95-AE9F-6745AD70E668' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CD3BE903-8A37-409A-A936-8626D8BC7B11' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'ECB9BFC6-39B7-4F95-AE9F-6745AD70E668', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CD3BE903-8A37-409A-A936-8626D8BC7B11', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00056' 
@@ -7721,44 +7446,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00056]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'04DBDA72-2CE0-427A-8406-EF6A1EF5D4D3'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'0D265D93-ECF1-4127-B04D-0F489E70A37C'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'04DBDA72-2CE0-427A-8406-EF6A1EF5D4D3', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7041D3C1-67FE-41F7-AD96-F8FA96B54340'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'0D265D93-ECF1-4127-B04D-0F489E70A37C', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'67730AE3-6065-4ED4-9611-3478C914D936'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7041D3C1-67FE-41F7-AD96-F8FA96B54340', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'A29B1505-5201-4843-9B4B-3645EAF9BD72'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'A29B1505-5201-4843-9B4B-3645EAF9BD72', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C450C668-E215-4CF2-935F-8827F2C5DB6E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C450C668-E215-4CF2-935F-8827F2C5DB6E', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'67730AE3-6065-4ED4-9611-3478C914D936', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00056]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1305A341-8332-49A9-8DC1-CDDFEB8191DA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='50B3A0E7-538D-418C-85D2-3572F279E357' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1305A341-8332-49A9-8DC1-CDDFEB8191DA', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'50B3A0E7-538D-418C-85D2-3572F279E357', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='012C7E49-24CD-4B42-8167-20F41AB4F236' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='42C81544-0948-4471-B791-8A1097654071' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'012C7E49-24CD-4B42-8167-20F41AB4F236', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'42C81544-0948-4471-B791-8A1097654071', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8CA96FFE-74CC-43BD-9883-BD3B8ED22932' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='206F8D7C-D1FB-41DC-B01F-2D2290E9F8CB' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8CA96FFE-74CC-43BD-9883-BD3B8ED22932', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'206F8D7C-D1FB-41DC-B01F-2D2290E9F8CB', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='69BB71CA-0012-47D6-A72A-93BF63A681AC' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A0F96BEE-FEF1-48D7-B102-041641340569' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'69BB71CA-0012-47D6-A72A-93BF63A681AC', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A0F96BEE-FEF1-48D7-B102-041641340569', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C280F223-7FC9-4FE6-997A-5B0FA47D475B' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A4F74638-2A01-48E0-A9CD-BCC14853E6A8' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C280F223-7FC9-4FE6-997A-5B0FA47D475B', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A4F74638-2A01-48E0-A9CD-BCC14853E6A8', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CFDBC45F-AEAF-4B31-8B9D-3AD8DD37640C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='5DBC1B24-FA06-495A-9462-F912FA3FAAF8' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CFDBC45F-AEAF-4B31-8B9D-3AD8DD37640C', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'5DBC1B24-FA06-495A-9462-F912FA3FAAF8', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00057' 
@@ -7768,44 +7488,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00057]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6FE3679E-054B-424C-AE87-53CBFE5DBE29'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C18876EB-B401-4632-906F-86FB5D747BF8'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6FE3679E-054B-424C-AE87-53CBFE5DBE29', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E328960A-0549-429E-837F-20F310C60A9E'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C18876EB-B401-4632-906F-86FB5D747BF8', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'064143CD-07EC-46C5-B4DA-86215B1E93DD'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E328960A-0549-429E-837F-20F310C60A9E', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BB63BDF1-DB15-4D27-ACA8-9BC8A98CFC42'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BB63BDF1-DB15-4D27-ACA8-9BC8A98CFC42', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AC265C9A-1954-40F5-8F40-DBEA50644419'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AC265C9A-1954-40F5-8F40-DBEA50644419', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'064143CD-07EC-46C5-B4DA-86215B1E93DD', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00057]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A43EC78C-EA54-4B56-B69D-710E9216F763' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='C4DBF607-58AB-4C37-AA01-242593D7D81A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A43EC78C-EA54-4B56-B69D-710E9216F763', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'C4DBF607-58AB-4C37-AA01-242593D7D81A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A218D365-A7B9-4A1D-8795-809170C106AF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B0385284-DAF2-4409-A314-143EF83133D1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A218D365-A7B9-4A1D-8795-809170C106AF', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B0385284-DAF2-4409-A314-143EF83133D1', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='64FF58C6-CF95-4757-A2C9-729CEC021B0E' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6BEC6B13-009F-429A-9BB0-D71C46D376D5' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'64FF58C6-CF95-4757-A2C9-729CEC021B0E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6BEC6B13-009F-429A-9BB0-D71C46D376D5', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='05C9755F-24E4-4F30-9978-19378F8D35C4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AB90974B-B517-42E4-961E-B5BB12E5C623' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'05C9755F-24E4-4F30-9978-19378F8D35C4', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AB90974B-B517-42E4-961E-B5BB12E5C623', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='8BC52D6D-9BAA-4C4E-BA79-5EBCD5812865' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='B616C04D-A3C9-4EBF-8376-DFEEF014F76E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'8BC52D6D-9BAA-4C4E-BA79-5EBCD5812865', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'B616C04D-A3C9-4EBF-8376-DFEEF014F76E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='23402A57-8263-4803-BFB6-D1575A490CCA' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='91333DF6-A895-45EC-BF98-EB65261E363B' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'23402A57-8263-4803-BFB6-D1575A490CCA', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'91333DF6-A895-45EC-BF98-EB65261E363B', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00058' 
@@ -7815,44 +7530,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00058]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'46A9CA45-CE9A-42E4-82E4-874E792B4C70'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'EDADE55B-D4E9-4CF5-AE1C-4A319B21085D'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'46A9CA45-CE9A-42E4-82E4-874E792B4C70', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'CD6E036A-4BA3-4A68-A35D-DCF287EC11BE'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'EDADE55B-D4E9-4CF5-AE1C-4A319B21085D', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BE4F7FD9-29E1-41CA-A91B-A3266318C2F2'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'CD6E036A-4BA3-4A68-A35D-DCF287EC11BE', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BDCB43E1-11FE-445E-B569-B5E499F7FB10'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BDCB43E1-11FE-445E-B569-B5E499F7FB10', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'1D645459-8AC5-45CC-B290-4E155965F521'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'1D645459-8AC5-45CC-B290-4E155965F521', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BE4F7FD9-29E1-41CA-A91B-A3266318C2F2', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00058]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6C4AE599-E55C-4ABE-B6B8-A948EBCCEFA8' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1EFE6FA6-BDD6-4396-854F-F3A49168C992' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6C4AE599-E55C-4ABE-B6B8-A948EBCCEFA8', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1EFE6FA6-BDD6-4396-854F-F3A49168C992', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='539957E6-0207-4BE2-AAA8-4C24B2E5D703' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='ABD0C872-CA1E-4A4C-8C05-3221084B143A' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'539957E6-0207-4BE2-AAA8-4C24B2E5D703', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'ABD0C872-CA1E-4A4C-8C05-3221084B143A', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E770C3AB-6AD7-4F03-8099-A618AD7410F9' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='25947235-698D-48FB-8659-0B9EE87C4E8D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E770C3AB-6AD7-4F03-8099-A618AD7410F9', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'25947235-698D-48FB-8659-0B9EE87C4E8D', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='885591FD-D88B-418E-AB08-A3D5F7567B28' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='267DF5B9-C4FA-4642-BA2F-C8B5EE83F50E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'885591FD-D88B-418E-AB08-A3D5F7567B28', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'267DF5B9-C4FA-4642-BA2F-C8B5EE83F50E', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='30A54D93-CE15-4A1E-B98C-2EC4B5C9F5EF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2F6A82E2-88A0-49F7-A5CB-6B728B7AEAFE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'30A54D93-CE15-4A1E-B98C-2EC4B5C9F5EF', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2F6A82E2-88A0-49F7-A5CB-6B728B7AEAFE', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='7F8B3EE5-B377-4FEF-985F-E951981AB016' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F1821C75-8CEE-4D8A-84F2-5A0EC9859CE7' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'7F8B3EE5-B377-4FEF-985F-E951981AB016', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F1821C75-8CEE-4D8A-84F2-5A0EC9859CE7', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00059' 
@@ -7862,44 +7572,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00059]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'85DA7A90-396B-4E23-8DDC-533C43390819'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'E5E288D3-FC20-4FA5-987B-7336D4375AA5'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'85DA7A90-396B-4E23-8DDC-533C43390819', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'D1064737-6313-4E64-9D98-130EB4589B2A'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'E5E288D3-FC20-4FA5-987B-7336D4375AA5', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'AAA9C2D1-A745-4F55-9D1C-EBA4CE5C6243'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'D1064737-6313-4E64-9D98-130EB4589B2A', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'BA4B4A06-DC96-417A-8416-6109B2DE138A'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'BA4B4A06-DC96-417A-8416-6109B2DE138A', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'4934D25E-FA4E-4BA0-A8F8-0D2890190AE5'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'4934D25E-FA4E-4BA0-A8F8-0D2890190AE5', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'AAA9C2D1-A745-4F55-9D1C-EBA4CE5C6243', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00059]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='59D2D882-2AED-4373-9C5C-E72BB4E3733C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='F3424755-5B5F-454E-B57B-E5F3BE18CA9D' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'59D2D882-2AED-4373-9C5C-E72BB4E3733C', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'F3424755-5B5F-454E-B57B-E5F3BE18CA9D', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EED00405-4DA9-401D-807A-C72D77A2C610' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='CB139F8D-A682-4855-9A3F-7BB5DA8D4182' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EED00405-4DA9-401D-807A-C72D77A2C610', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'CB139F8D-A682-4855-9A3F-7BB5DA8D4182', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='43993956-6600-4F78-996E-787320FE3F99' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1CFAB6F0-BDF3-423A-864A-562B090BCC03' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'43993956-6600-4F78-996E-787320FE3F99', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1CFAB6F0-BDF3-423A-864A-562B090BCC03', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AC39DCC2-972B-42BD-BEF2-88FD863CE5EF' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='6CC66530-4D60-4B2F-B0DB-A6E40F12F661' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AC39DCC2-972B-42BD-BEF2-88FD863CE5EF', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'6CC66530-4D60-4B2F-B0DB-A6E40F12F661', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='32ECE5EF-5F46-42EC-B646-493EEE8B341A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A3C069FE-161D-46FB-9D23-82C7D5E142BF' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'32ECE5EF-5F46-42EC-B646-493EEE8B341A', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A3C069FE-161D-46FB-9D23-82C7D5E142BF', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='85216AF5-873D-417F-9296-EDC2512750E5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='ECCAC707-18E3-41C3-83E2-88FBAFCAA345' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'85216AF5-873D-417F-9296-EDC2512750E5', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'ECCAC707-18E3-41C3-83E2-88FBAFCAA345', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00060' 
@@ -7909,44 +7614,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00060]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'5DAA0FDD-0180-4AFB-B27B-439B36ABF29A'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'405515DB-D918-41C4-A35E-55B427698527'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'5DAA0FDD-0180-4AFB-B27B-439B36ABF29A', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2F15702A-179F-4E3D-AF3D-AEC356232FAE'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'405515DB-D918-41C4-A35E-55B427698527', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'82AEB14C-0646-445F-B147-E49AE11C3E97'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2F15702A-179F-4E3D-AF3D-AEC356232FAE', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'7DF578CC-28CE-496F-A2CC-6995483E004E'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'7DF578CC-28CE-496F-A2CC-6995483E004E', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'6BAE4CEB-A89B-4762-8BC6-5B6A9DAE6C0B'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'6BAE4CEB-A89B-4762-8BC6-5B6A9DAE6C0B', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'82AEB14C-0646-445F-B147-E49AE11C3E97', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00060]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='1191098C-5D02-4F45-BF64-B3F911CAA162' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A4B40855-C8E5-4C5F-890F-3EFAC58C83CE' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'1191098C-5D02-4F45-BF64-B3F911CAA162', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A4B40855-C8E5-4C5F-890F-3EFAC58C83CE', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='65821916-F2BB-4F02-B704-037D6363CAE4' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='E7667F6F-8F6F-4616-AE97-0B0F0BC25423' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'65821916-F2BB-4F02-B704-037D6363CAE4', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'E7667F6F-8F6F-4616-AE97-0B0F0BC25423', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='59964ABC-9A52-41AB-B236-85579944874C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AA2CACC8-FC72-4924-AB98-A92730805553' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'59964ABC-9A52-41AB-B236-85579944874C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AA2CACC8-FC72-4924-AB98-A92730805553', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AC5C2E2D-3D24-4224-9C32-0E6B29902D90' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='9458205A-F8B5-4601-95E1-DABF8CDC9ED1' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AC5C2E2D-3D24-4224-9C32-0E6B29902D90', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'9458205A-F8B5-4601-95E1-DABF8CDC9ED1', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='FC2A5654-F3B9-4ED7-B6FA-E62E70C76A4D' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='3010DD3B-B391-47E5-8F3D-65A6D5134F4F' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'FC2A5654-F3B9-4ED7-B6FA-E62E70C76A4D', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'3010DD3B-B391-47E5-8F3D-65A6D5134F4F', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='65881650-3264-4430-ACD9-F4CCDC1278A5' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='BBF875F3-B8B2-4307-BAC0-574D37894456' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'65881650-3264-4430-ACD9-F4CCDC1278A5', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'BBF875F3-B8B2-4307-BAC0-574D37894456', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
 	-------------------------------------------------------------------------------------
 	-- Customer 'AutomationSeedCustomer00061' 
@@ -7956,45 +7656,39 @@ BEGIN TRY
 
 	-- CustomerBoundaryType - [AutomationSeedCustomer00061]
 
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'684D6A64-D570-46D7-8580-5D5E8C03DBB1'
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Big Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'67BFD7D2-D594-4F06-B614-01BF7B081E5B'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'684D6A64-D570-46D7-8580-5D5E8C03DBB1', @customerId, N'District Plat', N'', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'2ACB8C28-AE7A-4103-802D-EC0D53DF51BF'
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'67BFD7D2-D594-4F06-B614-01BF7B081E5B', @customerId, N'Big Boundary', N'#B5DBF4', 2, 0, 5, 1)
+
+	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'Small Boundary', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'553E884B-1795-46E4-8B0F-75EEC3E75E25'
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'2ACB8C28-AE7A-4103-802D-EC0D53DF51BF', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 1)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District Plat', [Color]=N'', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'795529D0-0A2F-46E9-AB62-042807711B74'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'795529D0-0A2F-46E9-AB62-042807711B74', @customerId, N'District Plat', N'', 2, 0, 5, 0)
-	UPDATE [dbo].[CustomerBoundaryType] SET [CustomerId]=@customerId, [FeatureClassDescription]=N'District', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0, [Zoomlevel]=5, [IsReportable]=1 WHERE [Id]=N'C2DCDF96-4882-47CE-83E5-E975334EFAC9'
-	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'C2DCDF96-4882-47CE-83E5-E975334EFAC9', @customerId, N'District', N'#B5DBF4', 2, 0, 5, 0)
+		INSERT [dbo].[CustomerBoundaryType] ([Id], [CustomerId], [FeatureClassDescription], [Color], [LineWeight], [IsDotted], [Zoomlevel], [IsReportable]) VALUES (N'553E884B-1795-46E4-8B0F-75EEC3E75E25', @customerId, N'Small Boundary', N'#B5DBF4', 2, 0, 5, 1)
 
 	-- CustomerMaterialType - [AutomationSeedCustomer00061]
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='29D63365-1E40-484D-A559-F66EAAD415F0' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='92A80FB7-AF73-4741-B401-BB86BDB0373E' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'29D63365-1E40-484D-A559-F66EAAD415F0', @customerId, N'Copper', N'#B5DBF4', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'92A80FB7-AF73-4741-B401-BB86BDB0373E', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AE52F30B-0871-4B55-A447-99382E117C9C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='EE24787B-6904-4CEA-A4AA-FE826B028BEA' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AE52F30B-0871-4B55-A447-99382E117C9C', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'EE24787B-6904-4CEA-A4AA-FE826B028BEA', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='AE3DA88F-B202-4D45-98B8-1DCE56DD0C4C' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='PE Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='4839500D-36F7-455E-B8F4-6A8BE15662AA' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'AE3DA88F-B202-4D45-98B8-1DCE56DD0C4C', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'4839500D-36F7-455E-B8F4-6A8BE15662AA', @customerId, N'PE Plastic', N'#FDE36F', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='899961AD-DD39-4343-BCB3-B814981199BD' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Copper', [Color]=N'#B5DBF4', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='2FD930DD-9BE8-4E55-B154-5BC19E420175' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'899961AD-DD39-4343-BCB3-B814981199BD', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'2FD930DD-9BE8-4E55-B154-5BC19E420175', @customerId, N'Copper', N'#B5DBF4', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Other Plastic', [Color]=N'#FDE36F', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='400DEF81-1178-4179-8640-0797A982518F' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Protected Steel', [Color]=N'#FB9A99', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='A17A4686-C0E5-47EA-85C7-80138763AF19' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'400DEF81-1178-4179-8640-0797A982518F', @customerId, N'Other Plastic', N'#FDE36F', 2, 0)
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'A17A4686-C0E5-47EA-85C7-80138763AF19', @customerId, N'Protected Steel', N'#FB9A99', 2, 0)
 
-	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Un-protected Steel', [Color]=N'#B2DF8A', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='513C702B-AAF4-41A4-AE24-B8A47648326A' 
+	UPDATE [dbo].[CustomerMaterialType] SET [CustomerId]=@customerId, [Description]='Cast Iron', [Color]=N'#E31A1C', [LineWeight]=2, [IsDotted]=0 WHERE [Id]='39CDA543-9029-4F1C-9187-8D78F8ED7943' 
 	IF @@ROWCOUNT=0
-		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'513C702B-AAF4-41A4-AE24-B8A47648326A', @customerId, N'Un-protected Steel', N'#B2DF8A', 2, 0)
-
+		INSERT [dbo].[CustomerMaterialType] ([Id], [CustomerId], [Description], [Color], [LineWeight], [IsDotted]) VALUES (N'39CDA543-9029-4F1C-9187-8D78F8ED7943', @customerId, N'Cast Iron', N'#E31A1C', 2, 0)
 
 		
 END TRY
