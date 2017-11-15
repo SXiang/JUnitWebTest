@@ -134,6 +134,7 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 				assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 			} catch (Exception ex) {
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			}
 			return true;
@@ -207,6 +208,7 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 				assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			}
 			return true;
@@ -261,6 +263,7 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				//Generate new shape files and Enable the step once DE3355 gets fixed
 				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			}
 			return true;
@@ -323,7 +326,7 @@ public class AssessmentReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				//assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 			} catch (Exception ex) {
 				testFailed = true;
-				Log.error(ExceptionUtility.getStackTraceString(ex));
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			} finally {
 				// BaseTest will delete the current workingDataRow report. Remove the reportBeforeCopy explicitly.

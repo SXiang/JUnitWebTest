@@ -1,5 +1,6 @@
 package surveyor.regression.source;
 
+import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.TestContext;
@@ -194,6 +195,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		} catch (Exception ex) {
 			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testFailed);
 		} finally {
 			if (!testFailed) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
@@ -318,6 +320,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		} catch (Exception ex) {
 			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testFailed);
 		} finally {
 			if (!testFailed) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());

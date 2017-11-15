@@ -90,7 +90,9 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
 	protected boolean waitForReportGenerationToComplete(ReportCommonPageActions reportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
-			assertTrue("Report generation failed to complete.", reportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID));
+			if (!reportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID)) {
+				throw new Exception("Report generation failed to complete.");
+			}
 		}
 
 		return true;

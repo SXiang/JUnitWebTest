@@ -6,6 +6,8 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
+
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 
@@ -259,6 +261,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				pageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 			} catch (Exception ex) {
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			}
 			return true;
@@ -373,6 +376,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				pageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 				assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 			} catch (Exception ex) {
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			}
 			return true;
@@ -443,6 +447,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		} catch (Exception ex) {
 			testFailed = true;
 			BaseTest.reportTestFailed(ex, ComplianceReportsPageTest3.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testFailed);
 		} finally {
 			if (!testFailed) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
