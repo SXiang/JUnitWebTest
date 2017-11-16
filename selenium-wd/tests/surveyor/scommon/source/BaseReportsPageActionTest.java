@@ -1,7 +1,5 @@
 package surveyor.scommon.source;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
