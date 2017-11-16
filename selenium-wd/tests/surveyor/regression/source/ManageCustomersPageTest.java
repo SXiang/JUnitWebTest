@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -51,7 +51,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -129,7 +129,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.performSearch(customerName);
@@ -160,7 +160,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 				"Test Description: add customer - blank required fields");
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		// add customer with an empty Eula
@@ -168,15 +168,15 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("Looking for field required validation message on Eula text area - when it's empty");
 		assertTrue("There is no field required validation message on Eula text area when it's empty!", manageCustomersPage.verifyEulaValidation());
 
-		// cancel add 
+		// cancel add
 		manageCustomersPage.clickOnAddCancelBtn();
 
-		// add customer with an empty Name		
+		// add customer with an empty Name
 		manageCustomersPage.addNewCustomer("", eula);
 		Log.info("Looking for field required validation message on Name input field - when it's empty");
 		assertTrue("There is no field required validation message on Name input field when it's empty!", manageCustomersPage.verifyNameValidation());
 
-	}	
+	}
 
 	/**
 	 * Test Case ID: TC78_editCustomerBlankRequiredFields_PicAdmin
@@ -198,18 +198,18 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);	
+		manageCustomersPage.addNewCustomer(customerName, eula);
 		loginPage = manageUsersPage.logout();
 
 		// *** Start test ***
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 
 		// edit customer with an empty Eula
-		manageCustomersPage.performSearch(customerName);		
+		manageCustomersPage.performSearch(customerName);
 		manageCustomersPage.findCustomerAndOpenEditPage(customerName);
 		manageCustomersPage.setEULAText("");
 		manageCustomersPage.clickOnEditOkBtn();
@@ -217,18 +217,18 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("Looking for field required validation message on Eula text area - when it's empty");
 		assertTrue("There is no field required validation message on Eula text area when it's empty!", manageCustomersPage.verifyEulaValidation());
 
-		// cancel add 
+		// cancel add
 		manageCustomersPage.clickOnEditCancelBtn();
 
-	}			
+	}
 
 	/**
 	 * Test Case ID: TC58_AddNewCustomer_PicAdmin
-	 * Script:   	
+	 * Script:
 	 * - On Home Page, click Picarro Administration -> Manage Customers
 	 * - Click on 'Add New Customer' button
-	 * - Provide required customer details and click OK	 
-	 * Results: - 
+	 * - Provide required customer details and click OK
+	 * Results: -
 	 * - User is navigated to Manage Customers page and new customer entry is present in the table
 	 */
 	@Test
@@ -239,21 +239,21 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC58_AddNewCustomer_PicAdmin - Test Description: Adding Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);		
+		manageCustomersPage.addNewCustomer(customerName, eula);
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 	}
 
 	/**
 	 * Test Case ID: TC59_EditCustomer_PicAdmin
-	 * Script:   	 	
+	 * Script:
 	 * - On Home Page, click Picarro Administration -> Manage Customers
 	 * - Click Edit link
 	 * - Modify customer details and click OK
-	 * Results: - 
+	 * Results: -
 	 * - User is navigated to Manage Customers page and modified customer details are present in the table
 	 */
 	@Test
@@ -264,12 +264,12 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC59_EditCustomer_PicAdmin - Test Description: Editing Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		manageCustomersPage.open();		
+		manageCustomersPage.open();
 
 		Log.info("Adding new Customer - " + customerName);
-		manageCustomersPage.addNewCustomer(customerName, eula);		
+		manageCustomersPage.addNewCustomer(customerName, eula);
 
 		Log.info("Modifying Customer account status - " + customerName);
 		manageCustomersPage.changeCustomerAccountStatus(customerName, false);
@@ -281,11 +281,11 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC88_DuplicateCustomerNotAllowed_PicAdmin
-	 * Script:   	
+	 * Script:
 	 * - On Home Page, click Picarro Administration -> Manage Customers
 	 * - Click on 'Add New Customer' button
-	 * - Provide required customer details and click OK	 
-	 * Results: - 
+	 * - Provide required customer details and click OK
+	 * Results: -
 	 * - Duplicate Customer creation not allowed
 	 */
 	@Test
@@ -296,17 +296,17 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.btnAddNewCustomer.click();
 		manageCustomersPage.waitForNewPageLoad();
-		
+
 		Log.info("Set customer name - '"+CUSTOMER_PICARRO+"'");
 		manageCustomersPage.getInputCustomerName().sendKeys(CUSTOMER_PICARRO);
 		manageCustomersPage.setEULAText(eula);
+		manageCustomersPage.getbtnOk().click();
 		assertTrue(manageCustomersPage.lblNameError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ManageCustomer_ErrorMsg)));
-		manageCustomersPage.getCancelAddBtn().click();
 	}
 
 	/**
@@ -314,11 +314,11 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * Script:
 	 * - On Home Page, click Picarro Administration -> Manage Customers
 	 * - Click on 'Add New Customer' button
-	 * - Provide customer details and check the Disabled checkbox. Click OK	 
-	 * Results: - 
+	 * - Provide customer details and check the Disabled checkbox. Click OK
+	 * Results: -
 	 * - Disabled Customer's User will not be allowed to log in the application
 	 */
-	@Test  
+	@Test
 	public void TC92_DisabledCustomer_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC93";
 		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
@@ -328,7 +328,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		// create disabled customer.
@@ -359,9 +359,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * - On Home Page, and click Picarro Administration -> Manage Customers
 	 * - Click on Edit button of disabled customer
 	 * - Enable the customer and click OK
-	 * Results: - 
+	 * Results: -
 	 * - Customer's User should be able to log in the application
-	 * 
+	 *
 	 */
 	@Test
 	public void TC93_ReenableCustomer_PicAdmin() {
@@ -392,7 +392,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, 
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD,
 				CUSUSERROLEUA, locationName);
 
 		manageUsersPage.open();
@@ -411,7 +411,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * - Click on 'Add New Customer' button
 	 * - Provide more than 100,000 characters in Eula field and click OK
 	 * - Repeat the same steps for Edit Customer form
-	 * Results: - 
+	 * Results: -
 	 * - User cannot enter more than 100,000 characters and message having limit of characters displayed
 	 */
 	@Ignore
@@ -426,7 +426,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(eula100K.length() == HUNDRED_K);
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		// Add customer with 100K characters in EULA.
@@ -449,7 +449,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * - Click on 'Add New Customer' button
 	 * - Provide more than 255 characters in Name field and click OK
 	 * - Repeat the same steps for Edit customer
-	 * Results: - 
+	 * Results: -
 	 * - User cannot enter more than 255 characters and message having limit of characters displayed
 	 */
 	@Test
@@ -464,7 +464,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(customerName255.length() == MAX_CHARS);
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		// Add customer with 255 characters Customer name.
@@ -482,7 +482,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: MCP000B
 	 * Test Description: Checking Customer Account Status
-	 * 
+	 *
 	 */
 	@Ignore
 	public void MCP000B() {
@@ -492,7 +492,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning MCP000B - Test Description: Checking Customer Account Status");
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 
@@ -504,7 +504,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: MCP000C
 	 * Test Description: Changing Customer Account Status
-	 * 
+	 *
 	 */
 	@Ignore
 	public void MCP000C() {
@@ -514,7 +514,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning MCP000C - Test Description: Changing Customer Account Status");
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 
@@ -524,13 +524,13 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 			assertTrue(manageCustomersPage.getCustomerStatus(customerName).equalsIgnoreCase(CUSTOMERDISABLED));
 		else
 			fail("\nTest case MCP000C failed!\n");
-	}	
+	}
 
 	/**
 	 * Test Case ID: TC469_ManageCustomer
-	 * Script:   	
-	 * - On Home Page, click on Administration -> Manage Customer 
-	 * Results: - 
+	 * Script:
+	 * - On Home Page, click on Administration -> Manage Customer
+	 * Results: -
 	 * - User can see customers added by picarro admin
 	 * - User cannot add or edit the customer
 	 */
@@ -567,17 +567,17 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC132_ManageCustomer_SortColumns
-	 * Script:   	
+	 * Script:
 	 * - Sort records based on attributes present
-	 * Results: - 
+	 * Results: -
 	 * - User is able to sort the list of records based on specified attribute
 	 */
 	@Test
 	public void TC132_ManageCustomer_SortColumns() {
 		Log.info("\nRunning TC132_ManageCustomer_SortColumns");
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
-		assertTrue(manageCustomersPage.areTableColumnsSorted());		
+		assertTrue(manageCustomersPage.areTableColumnsSorted());
 	}
 }
