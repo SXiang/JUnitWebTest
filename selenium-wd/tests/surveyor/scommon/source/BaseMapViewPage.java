@@ -654,7 +654,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isGisBoundarySmallBoundaryButtonVisible() {
 		return isGisBoundarySmallBoundaryButtonVisible("");
 	}
-	
+
 	public boolean isGisBoundarySmallBoundaryButtonVisible(String status) {
 		return !(WebElementExtender.isAttributePresent(this.boundariesSmallBoundaryDivElement,"ng-cloak") ||
 					this.boundariesSmallBoundaryDivElement.getAttribute("class").contains("ng-hide"));
@@ -695,7 +695,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 	    return status.equalsIgnoreCase("on") == matched;
 	}
-	
+
 	public boolean isGisSwitchOn(GisSwitchType switchType) throws Exception {
 		boolean isSelected = false;
 
@@ -972,7 +972,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 	    return status.equalsIgnoreCase("on") == matched;
 	}
-	
+
 	public boolean isMapSwitchOn(MapSwitchType switchType) throws IllegalArgumentException {
 		boolean isSelected = false;
 
@@ -1097,7 +1097,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 	    return status.equalsIgnoreCase("on") == matched;
 	}
-	
+
 	public boolean isDisplaySwitchOn(DisplaySwitchType switchType) throws IllegalArgumentException {
 		boolean isSelected = false;
 
@@ -1619,7 +1619,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public void waitForFeatureInfoPopupToOpen() {
 		featureInfoPopupDiv = driver.findElement(By.id("featureinfo_modal"));
 		WebElement popupContainer = WebElementExtender.findParentElement(driver, featureInfoPopupDiv);
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return WebElementExtender.isElementPresentAndDisplayed(popupContainer);
 			}
@@ -1632,7 +1632,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public void waitForFeatureInfoPopupToClose() {
 		featureInfoPopupDiv = driver.findElement(By.id("featureinfo_modal"));
 		WebElement popupContainer = WebElementExtender.findParentElement(driver, featureInfoPopupDiv);
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !WebElementExtender.isElementPresentAndDisplayed(popupContainer);
 			}
@@ -1643,18 +1643,23 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * Verifies that the page UI is no longer blocked.
 	 */
 	public void waitForUIUnBlock() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return divBlockedUI.getAttribute("class").equalsIgnoreCase("ng-hide");
-			}
-		});
+		Log.method("waitForUIUnBlock");
+		try {
+			(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return divBlockedUI.getAttribute("class").equalsIgnoreCase("ng-hide");
+				}
+			});
+		} catch (Exception e) {
+			Log.error("Unexpected error. Check if UI is getting unblocked correctly in application.");
+		}
 	}
 
 	/**
 	 * Waits for the Gis menu to open.
 	 */
 	public void waitForGisMenuToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isGisMenuOpen();
 			}
@@ -1665,7 +1670,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * Waits for the Gis menu to close.
 	 */
 	public void waitForGisMenuToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isGisMenuClosed();
 			}
@@ -1676,7 +1681,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * Waits for the display menu to open.
 	 */
 	public void waitForDisplayMenuToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isDisplayMenuOpen();
 			}
@@ -1687,7 +1692,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * Waits for the display menu to close.
 	 */
 	public void waitForDisplayMenuToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isDisplayMenuClosed();
 			}
@@ -1698,7 +1703,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * Waits for the map menu to open.
 	 */
 	public void waitForMapMenuToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isMapMenuOpen();
 			}
@@ -1709,7 +1714,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * Waits for the map menu to close.
 	 */
 	public void waitForMapMenuToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isMapMenuClosed();
 			}

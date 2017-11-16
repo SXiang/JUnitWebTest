@@ -76,9 +76,9 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_SURVEY_EQ_TAG = "MenloNight11_17EQ02";
 	protected static final String TEST_SURVEY_EQ_TYPE = "EQ";
 	protected static final String TEST_SURVEY_EQ_USERNAME = "picdr@picarro.com";
-	protected static final String TEST_SURVEY_EQ_ID_SQACUS = "38b7995b-0e28-4f37-84a8-104b7f6f4a1a";
+	protected static final String TEST_SURVEY_EQ_ID_SQACUS = "e7d2005e-d72d-4b05-b251-f96b29da7f14";
 	protected static final String TEST_SURVEY_EQ_USERNAME_SQACUS = "sqacusdr1@email.com";
-		
+
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
 

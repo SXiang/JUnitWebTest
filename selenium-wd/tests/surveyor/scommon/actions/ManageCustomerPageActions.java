@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import common.source.EnumUtility;
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerLicenses;
@@ -41,6 +42,24 @@ public class ManageCustomerPageActions extends BasePageActions {
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
 		workingDataRow.set(null);
+	}
+
+	/**
+	 * Executes createOrFetchNewGisCustomer action.
+	 * Fetches new customer from CustomerWithGisPool if GeoServer is enabled.
+	 * Creates a new customer from UI if GeoServer is NOT enabled.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean createOrFetchNewGisCustomer(String data, Integer dataRowID) throws Exception {
+		logAction("ManageCustomersPageActions.createOrFetchNewGisCustomer", data, dataRowID);
+		if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			return fetchNewGisCustomer(data, dataRowID);
+		}
+
+		return createNewCustomer(data, dataRowID);
 	}
 
 	/**
@@ -195,6 +214,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 		else if (actionName.equals("clickByXPath")) { return this.clickByXPath(data, dataRowID); }
 		else if (actionName.equals("clickByXPathAndWait")) { return this.clickByXPathAndWait(data, dataRowID); }
 		else if (actionName.equals("createNewCustomer")) { return this.createNewCustomer(data, dataRowID); }
+		else if (actionName.equals("createOrFetchNewGisCustomer")) { return this.createOrFetchNewGisCustomer(data, dataRowID); }
 		else if (actionName.equals("editCustomerSelectLicensedFeatures")) { return this.editCustomerSelectLicensedFeatures(data, dataRowID); }
 		else if (actionName.equals("editCustomerUnSelectLicensedFeatures")) { return this.editCustomerUnSelectLicensedFeatures(data, dataRowID); }
 		else if (actionName.equals("fetchNewGisCustomer")) { return this.fetchNewGisCustomer(data, dataRowID); }
