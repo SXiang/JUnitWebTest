@@ -49,8 +49,8 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		private static ManageSurveyorAdminPage manageSurveyorAdminPage;
 		private static CustomerSurveyInfoEntity custSrvInfo ;
 		private static EQReportsPage eqReportsPage;
-		
-		
+
+
 		@BeforeClass
 		public static void beforeClass() {
 			initializeTestObjects();
@@ -61,11 +61,11 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			initializeTestObjects();
 			initializePageActions();
 			initializePageObjects();
-			
+
 			// Select run mode here.
 			setPropertiesForTestRunMode();
 		}
-		
+
 		private void initializePageObjects() {
 			PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
@@ -103,7 +103,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
 			manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
 			manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
-			PageObjectFactory pageObjectFactory = new PageObjectFactory();		
+			PageObjectFactory pageObjectFactory = new PageObjectFactory();
 			setLoginPage(pageObjectFactory.getLoginPage());
 			setHomePage(pageObjectFactory.getHomePage());
 			eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
@@ -178,7 +178,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			manageLocationPageAction.createNewLocation(EMPTY, newLocation2RowID);
 
 			manageUsersPageAction.open(EMPTY, NOTSET);
-			manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomer2UserRowID);	
+			manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomer2UserRowID);
 			getHomePage().logout();
 
 			String userName = ManageUsersPageActions.workingDataRow.get().username;
@@ -200,7 +200,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		 * - Login as Customer's Supervisor user
 		 * - Click on Reports (left side menu)
 		 * - Login as Picarro Admin
-		 * - Navigate to Manage Customer - > Edit (Customer's page) 
+		 * - Navigate to Manage Customer - > Edit (Customer's page)
 		 * - Enable EQ privilege for the customer
 		 * - Login again as Customer's Supervisor user
 		 * - Click on Reports (left side menu)
@@ -259,7 +259,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.EQ);
 			getHomePage().logout();
 
-			/*Login With EQ License*/		
+			/*Login With EQ License*/
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -321,7 +321,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
 
-			/*Login With EQ License*/		
+			/*Login With EQ License*/
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -353,7 +353,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			getLoginPage().open();
 			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 			manageUsersPageAction.open(EMPTY, NOTSET);
-			manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUAUserRowID);	
+			manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUAUserRowID);
 			String utilityAdminUsername = ManageUsersPageActions.workingDataRow.get().username;
 			getHomePage().logout();
 

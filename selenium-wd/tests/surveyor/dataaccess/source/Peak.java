@@ -1,13 +1,8 @@
 package surveyor.dataaccess.source;
 
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SURANA;
-import static surveyor.scommon.source.SurveyorConstants.RSUVMODESTD;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +52,7 @@ public class Peak extends BaseEntity {
 				.concat(this.getGpsLongitude().toString()).concat("|")
 				.concat(this.getEpochTime().toString());
 	}
-	
+
 	public float getCH4() {
 		return cH4;
 	}
@@ -240,28 +235,37 @@ public class Peak extends BaseEntity {
 		return objPeak.load(SQL);
 	}
 
+	public static List<Peak>  getSurvivedPeaksForSurvey(String surveyTag) {
+		Peak objPeak = new Peak();
+		String SQL = "SELECT P.* FROM dbo.[Peak] AS P INNER JOIN dbo.[Survey] AS S ON P.SurveyId=S.Id WHERE P.amplitude > S.MinimumAmplitude and P.passedautothreshold = 1 AND P.SurvivedCollection=1 AND S.Tag = '" + surveyTag + "'";
+		return objPeak.load(SQL);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static List<Peak> getPeaks(String tag, String analyzer) {
 		Peak objPeak = new Peak();
 		List<Peak> objPeakList = new ArrayList<Peak>();
 		Survey objSurvey = Survey.getSurvey(tag);
-		String surveyId = objSurvey.getId();
-		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
-		String analyzerId = objAnalyzer.getId().toString();
+		if (objSurvey != null) {
+			String surveyId = objSurvey.getId();
+			Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
+			String analyzerId = objAnalyzer.getId().toString();
 
-		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId)) {
-			objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId);
-		} 
-		else {
-			String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "'";
-			objPeakList = objPeak.load(SQL);
-			if (objPeakList!=null && objPeakList.size()>0)
-			{
-				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId, objPeakList);
-				
+			// Get from cache if present. Else fetch from Database.
+			if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId)) {
+				objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId);
+			}
+			else {
+				String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "'";
+				objPeakList = objPeak.load(SQL);
+				if (objPeakList!=null && objPeakList.size()>0)
+				{
+					DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId, objPeakList);
+
+				}
 			}
 		}
+
 		return objPeakList;
 	}
 
@@ -339,9 +343,9 @@ public class Peak extends BaseEntity {
 
 		return objPeakList;
 	}
-	
+
 	public boolean equalsTo(Map<String, String> map) {
-		float ch4 = Float.valueOf(map.get("CH4"));				
+		float ch4 = Float.valueOf(map.get("CH4"));
 		float epochTime = Float.valueOf(map.get("EPOCH_TIME"));
 		float sigma = Float.valueOf(map.get("SIGMA"));
 		float amplitude= Float.valueOf(map.get("AMPLITUDE"));
@@ -349,7 +353,7 @@ public class Peak extends BaseEntity {
 		float wind_n= Float.valueOf(map.get("WIND_N"));
 		float wind_e= Float.valueOf(map.get("WIND_E"));
 
-		
+
 		if(   (Float.compare(this.getEpochTime(), epochTime)==0)   && (Float.compare(this.getCH4(), ch4)==0)
 				&& (Float.compare(this.getSigma(), sigma)==0) && (Float.compare(this.getAmplitude(), amplitude)==0)
 				&& (Float.compare(this.getWindDirectionStdDev(), wind_dir_sdev)==0) && (Float.compare(this.getWindSpeedNorth(), wind_n)==0)

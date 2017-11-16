@@ -86,8 +86,10 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 
 	@After
 	public void afterTest() throws Exception {
-		String customerName = testAccount.get("customerName");
-		CustomerWithGisDataPool.releaseCustomer(customerName);
+		if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+			String customerName = testAccount.get("customerName");
+			CustomerWithGisDataPool.releaseCustomer(customerName);
+		}
 	}
 
 	private void initializePageObjects() {

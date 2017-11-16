@@ -134,7 +134,6 @@ Split-Path -Path "$inDirectory\$fileExtFilter" -Leaf -Resolve | % {
         
         Write-Host "[FOUND_MATCH] -> Copying file - $fileFullPath to $destFileFullPath ..."
         Copy-Item $fileFullPath $destFileFullPath
-        Remove-Item $fileFullPath 
     }
 }
 

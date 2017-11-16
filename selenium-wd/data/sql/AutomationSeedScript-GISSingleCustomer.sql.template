@@ -113,7 +113,6 @@ BEGIN TRY
 	DELETE [dbo].[Location] WHERE [CustomerId]='%CUSTOMER_ID%' AND ID <> @locationIdFromSeed
 
 	-- CustomerSettings, FTPConfiguration for Customer
-	DELETE [dbo].[CustomerSettings] WHERE CustomerId='%CUSTOMER_ID%'
 	DELETE [dbo].[FTPConfiguration] WHERE CustomerId='%CUSTOMER_ID%'	
 
 	------ [END] Cleanup referenced table entries ------
