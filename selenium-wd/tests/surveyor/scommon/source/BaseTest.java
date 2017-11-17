@@ -14,14 +14,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import static org.junit.Assert.*;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
@@ -64,6 +63,40 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class BaseTest {
+
+	public static class Tracker {
+		private boolean testStatus;
+		private Object extraInfo;
+
+		private Tracker(boolean initialStatus) {
+			this.testStatus = initialStatus;
+		}
+
+		public static Tracker newTracker(boolean initialStatus) {
+			return new Tracker(initialStatus);
+		}
+
+		public void setStatusFrom(Tracker other) {
+			if (this.testStatus != false) {
+				this.testStatus = other.testStatus;
+			}
+		}
+
+		public void setTestStatus(boolean testStatus) {
+			this.testStatus = testStatus;
+		}
+
+		public boolean failureEncountered() {
+			return this.testStatus != true;
+		}
+
+		public Object getExtraInfo() {
+			return extraInfo;
+		}
+		public void setExtraInfo(Object extraInfo) {
+			this.extraInfo = extraInfo;
+		}
+	}
 
 	private static List<WebDriver> spawnedWebDrivers = Collections.synchronizedList(new ArrayList<WebDriver>());
 	private static Map<String, ExtentTest> extentTestMap = Collections.synchronizedMap(new HashMap<String, ExtentTest>());
@@ -161,6 +194,23 @@ public class BaseTest {
 			setScreenCapture(screenShotOnFailure);
 			getTestSetup().setScreenCapture(screenShotOnFailure);
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
+		}
+	}
+
+	protected void withTrackerExecute(Tracker tracker, CheckedConsumer testActions) {
+		boolean retVal = false;
+		try {
+			testActions.execute();
+			retVal = true;
+		} catch (Exception e) {
+			retVal = false;
+			Log.error(String.format("EXCEPTION in withTrackerExecute() -> %s", ExceptionUtility.getStackTraceString(e)));
+		} finally {
+			if (!retVal) {
+				tracker.setTestStatus(false);
+			}
+
+			assertTrue("Failure in test actions. Refer messages in log.", retVal);
 		}
 	}
 
@@ -790,9 +840,14 @@ public class BaseTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		logoutQuitDriver();
-		// Post run result to DB if enabled.
-		postResultsToAutomationAPI();
+		try {
+			TestContext.INSTANCE.suppressTestMessageUpdate();
+			logoutQuitDriver();
+			// Post run result to DB if enabled.
+			postResultsToAutomationAPI();
+		} finally {
+			TestContext.INSTANCE.unsuppressTestMessageUpdate();
+		}
 	}
 
 	/**

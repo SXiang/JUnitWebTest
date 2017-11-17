@@ -38,6 +38,7 @@ public enum TestContext {
 	private ThreadLocalMap<String> threadTestStatus;
 
 	private Boolean isRunningOnAndroidDevice = false;
+	private Boolean suppressTestMessageUpdate = false;
 
 	private TestContext() {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
@@ -115,12 +116,18 @@ public enum TestContext {
 	}
 
 	public void updateTestMessage(String message){
+		if (isTestMessageUpdateSuppressed()) {
+			return;
+		}
+
 		if(message==null||message.isEmpty()){
 			return;
 		}
+
 		while(testMessage.size()>=numTestMessagesToRetain){
 			testMessage.remove(0);
 		}
+
 		testMessage.add(new java.util.Date() + ": " + message);
 	}
 
@@ -349,5 +356,17 @@ public enum TestContext {
 
 	public void setIsRunningOnAndroidDevice(Boolean isRunningOnAndroidDevice) {
 		this.isRunningOnAndroidDevice = isRunningOnAndroidDevice;
+	}
+
+	public Boolean isTestMessageUpdateSuppressed() {
+		return suppressTestMessageUpdate;
+	}
+
+	public void suppressTestMessageUpdate() {
+		this.suppressTestMessageUpdate = true;
+	}
+
+	public void unsuppressTestMessageUpdate() {
+		this.suppressTestMessageUpdate = false;
 	}
 }

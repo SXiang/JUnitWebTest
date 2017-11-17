@@ -44,8 +44,12 @@ param
 $IT_SHOULD_FIND_MATCHING_CUSTOMER_MATERIAL_TYPEIDS_IN_GEOSERVER_AND_AUTOMATIONDB = $true
 $IT_SHOULD_FIND_MATCHING_CUSTOMER_BOUNDARY_TYPEIDS_IN_GEOSERVER_AND_AUTOMATIONDB = $true
 
+$script:CustomerAssetInfoMap = @{}
+$script:CustomerBoundaryInfoMap = @{}
+
 $script:CustomerAssetTypeIdMap = @{}
 $script:CustomerBoundaryTypeIdMap = @{}
+
 $script:EndPoint = "$geoserverBaseUrl/geoserver/%WORKSPACE%/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=%WORKSPACE%:%GISTYPE%&maxFeatures=50&outputFormat=application%2Fjson"
 
 $OUTRESULT = New-Item "$outputFolder\testresults.txt" -Force
@@ -71,8 +75,11 @@ $csvData | % {
     $row = $_
     $customerId = $row.CustomerId
     $customerName = $row.CustomerName
-    Build-GISAssetBoundaryMappingList -map $script:CustomerAssetTypeIdMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Asset"
-    Build-GISAssetBoundaryMappingList -map $script:CustomerBoundaryTypeIdMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Boundary"
+    Build-GISAssetBoundaryMappingList -map $script:CustomerAssetInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Asset"
+    Build-GISAssetBoundaryMappingList -map $script:CustomerBoundaryInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Boundary"
+
+    Build-CustomerAssetTypeIdMap -assetInfoMap $script:CustomerAssetInfoMap -assetTypeIdMap $script:CustomerAssetTypeIdMap -customerId $customerId
+    Build-CustomerBoundaryTypeIdMap -boundaryInfoMap $script:CustomerBoundaryInfoMap -boundaryTypeIdMap $script:CustomerBoundaryTypeIdMap -customerId $customerId
 }
 
 ### TEST 1: Customer material type ids in geoserver and automation DB should match.

@@ -46,6 +46,9 @@ param
 . "$BaseScriptFolder\selenium-wd\lib\HelperScripts\DatabaseHelpers.ps1"
 . "$BaseScriptFolder\selenium-wd\lib\HelperScripts\GeoServer\Common-Functions.ps1"
 
+$script:CustomerAssetInfoMap = @{}
+$script:CustomerBoundaryInfoMap = @{}
+
 $script:CustomerAssetTypeIdMap = @{}
 $script:CustomerBoundaryTypeIdMap = @{}
 
@@ -58,12 +61,16 @@ $errorEncountered = $false
 # Build list of CBT and CMT ids
 $csvFile = "$BaseScriptFolder\selenium-wd\lib\HelperScripts\GeoServer\CustomersImportedToGeoServer.csv"
 $csvData = Import-Csv $csvFile 
+
 $csvData | % {
     $row = $_
     $customerId = $row.CustomerId
     $customerName = $row.CustomerName
-    Build-GISAssetBoundaryMappingList -map $script:CustomerAssetTypeIdMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Asset"
-    Build-GISAssetBoundaryMappingList -map $script:CustomerBoundaryTypeIdMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Boundary"
+    Build-GISAssetBoundaryMappingList -map $script:CustomerAssetInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Asset"
+    Build-GISAssetBoundaryMappingList -map $script:CustomerBoundaryInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Boundary"
+
+    Build-CustomerAssetTypeIdMap -assetInfoMap $script:CustomerAssetInfoMap -assetTypeIdMap $script:CustomerAssetTypeIdMap -customerId $customerId
+    Build-CustomerBoundaryTypeIdMap -boundaryInfoMap $script:CustomerBoundaryInfoMap -boundaryTypeIdMap $script:CustomerBoundaryTypeIdMap -customerId $customerId
 }
 
 add-content $OUTFILE ""
