@@ -659,6 +659,8 @@ public class DbSeedExecutor {
 		Log.method("DbSeedExecutor.checkCleanUpGisSeed", customerId);
 		if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 			cleanUpGisSeedInternal(customerId);
+		} else {
+			Log.info("GeoServer enabled. GIS seed cleanup skipped ...");
 		}
 	}
 

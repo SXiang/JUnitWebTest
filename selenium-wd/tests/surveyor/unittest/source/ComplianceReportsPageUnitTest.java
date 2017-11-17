@@ -7,11 +7,12 @@ import common.source.PDFUtility;
 import common.source.TestContext;
 import common.source.PDFTableUtility.PDFTable;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -120,6 +121,124 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 						e.printStackTrace();
 					}
 				});
+			}
+		}
+	}
+
+	@Test
+	public void getLISAInvestigationPDFData_VerifyMultiPageData() {
+		String pdfFile = System.getProperty("user.dir") +
+				"\\selenium-wd\\data\\test-data\\pdfutility-tests\\" +
+				"CR-05F113-Investigation.pdf";
+		String reportTitle = "TC2448-ab2e731651ee47f694e4";
+		String reportId = "05F113";
+		int[] lisas = {1,2,3,4,5,6,7,8,9};
+		
+		List<List<String>> listOfLisa = new ArrayList<>();
+		
+		List<String> list1 = new ArrayList<>();
+		List<String> list2 = new ArrayList<>();
+		List<String> list3 = new ArrayList<>();
+		List<String> list4 = new ArrayList<>();
+		List<String> list5 = new ArrayList<>();
+		List<String> list6 = new ArrayList<>();
+		List<String> list7 = new ArrayList<>();
+		List<String> list8 = new ArrayList<>();
+		List<String> list9 = new ArrayList<>();
+		
+		list1.add("1 Found Gas Leak 10/17/2017 8:03 AM PDT sqapicdr@picarro.com 0 days 00:03:53");
+		list1.add("Source: Gas Date/Time: 10/17/2017 8:07 AM PDT");
+		list1.add("Investigator: sqapicdr@picarro.comLatitude: 37.396807, Longitude: -121.98419, Precison: m");
+		list1.add("Leak Grade: 548Address: Crescent Bonaparte, 887, Cuthbert, OR");
+		list1.add("Map Number: 341Surface Reading: 6 (PPM)");
+		list1.add("Barhole Reading: 306 (PPM)");
+		list1.add("Paved Wall-To-Wall: True");
+		list1.add("Pipe Material Type: Cast IronLeak Location: Service");
+		list1.add("Surface Over Leak: Concrete");
+		list1.add("Meter Number: 583");
+		list1.add("Leak Location Remarks: rlpcjxfarpbqzqaphgvjjfhzcpozsgfctjnddmhmmncoezhxpqxqdgqgqryysgqsnmryxzlwwqlbkvrksdtrftrgqxnozochtxmzna"+
+                              "srhbuxumjzbaqtqujnefvhaeafvcyqcodilpwbnloyzeizcbhekebsdpilfhhrtaxffvnzahnynhnkcwhyvfahrsmywdbcqzsafifwjeielpeyxhbufisfheefybldypnmtpvebnwngmjvjled");
+		list1.add("Additional Notes: ywwbqkvdyjuqzulxdstqukmpctrpxupgpldnobttngdxuvpvjyadoapvszdanspsyoyxefumgbafxdopspbxhocefvsohyutvggo"+
+				"ccemreeqdlowwyntgztkbmippjnvqcydkzmwkydgpzdwrxwapgxwnkzeqgmopsfsipqacnkmpvxnkyvsrobppmolfefqbmupgsuwyqefoaiuxjnhxezxnwznyqjjoszmdeuhxomlvoptwmmntjfu");
+		
+		list3.add("3 Found Gas Leak 10/18/2017 7:35 AM PDT sqapicdr@picarro.com 0 days 00:04:23");
+		list3.add("Source: Gas Date/Time: 10/18/2017 7:39 AM PDT");
+		list3.add("Investigator: sqapicdr@picarro.comLatitude: 37.396745, Longitude: -121.984223, Precison: m");
+		list3.add("Leak Grade: 564Address: Crescent Archer, 996, Rome, AZ");
+		list3.add("Map Number: 601Surface Reading: 216 (PPM)");
+		list3.add("Barhole Reading: 112 (PPM)");
+		list3.add("Paved Wall-To-Wall: True");
+		list3.add("Pipe Material Type: Cast IronLeak Location: Service");
+		list3.add("Surface Over Leak: Concrete");
+		list3.add("Meter Number: 297");
+		list3.add("Leak Location Remarks: aphgvjjfhzcpozsgfctjnddmhmmncoezhxpqxqdgqgqryysgqsnmryxzlwwqlbkvrksdtrftrgqxnozochtxmznasrhbuxumjzba"+
+				"qtqujnefvhaeafvcyqcodilpwbnloyzeizcbhekebsdpilfhhrtaxffvnzahnynhnkcwhyvfahrsmywdbcqzsafifwjeielpeyxhbufisfheefybldypnmtpvebnwngmjvjledwpywwbqkvdyjuq");
+		list3.add("Additional Notes: lxdstqukmpctrpxupgpldnobttngdxuvpvjyadoapvszdanspsyoyxefumgbafxdopspbxhocefvsohyutvggoccemreeqdloww"+
+				"yntgztkbmippjnvqcydkzmwkydgpzdwrxwapgxwnkzeqgmopsfsipqacnkmpvxnkyvsrobppmolfefqbmupgsuwyqefoaiuxjnhxezxnwznyqjjoszmdeuhxomlvoptwmmntjfuegdxvtewosrmpeg");
+
+		list4.add("4 In Progress 10/18/2017 7:09 PM PDT sqapicdr@picarro.com");
+		list4.add("Source: Gas Date/Time: 10/18/2017 7:12 PM PDT");
+		list4.add("");
+		list4.add("");
+		list4.add("");
+		list4.add("");
+		list4.add("");
+		list4.add("");
+		list4.add("");
+		list4.add("");
+		list4.add("Leak Location Remarks: jaiohnjurnrlpcjxfarpbqzqaphgvjjfhzcpozsgfctjnddmhmmncoezhxpqxqdgqgqryysgqsnmryxzlwwqlbkvrksdtrftrgqxnozo"+
+				"chtxmznasrhbuxumjzbaqtqujnefvhaeafvcyqcodilpwbnloyzeizcbhekebsdpilfhhrtaxffvnzahnynhnkcwhyvfahrsmywdbcqzsafifwjeielpeyxhbufisfheefybldypnmtpvebnwn");
+		list4.add("Additional Notes: vjledwpywwbqkvdyjuqzulxdstqukmpctrpxupgpldnobttngdxuvpvjyadoapvszdanspsyoyxefumgbafxdopspbxhocefvsoh"+
+				"yutvggoccemreeqdlowwyntgztkbmippjnvqcydkzmwkydgpzdwrxwapgxwnkzeqgmopsfsipqacnkmpvxnkyvsrobppmolfefqbmupgsuwyqefoaiuxjnhxezxnwznyqjjoszmdeuhxomlvoptwmm");
+		
+		list5.add("5 Found Gas Leak 10/18/2017 10:48 PM PDT sqapicdr@picarro.com 0 days 00:02:45");
+		list5.add("Source: Gas Date/Time: 10/18/2017 10:50 PM PDT");
+		list5.add("");
+		list5.add("");
+		list5.add("");
+		list5.add("");
+		list5.add("");
+		list5.add("");
+		list5.add("");
+		list5.add("");
+		list5.add("Leak Location Remarks: pcjxfarpbqzqaphgvjjfhzcpozsgfctjnddmhmmncoezhxpqxqdgqgqryysgqsnmryxzlwwqlbkvrksdtrftrgqxnozochtxmznasr"+
+		"hbuxumjzbaqtqujnefvhaeafvcyqcodilpwbnloyzeizcbhekebsdpilfhhrtaxffvnzahnynhnkcwhyvfahrsmywdbcqzsafifwjeielpeyxhbufisfheefybldypnmtpvebnwngmjvjledwpy");
+		list5.add("Additional Notes: bqkvdyjuqzulxdstqukmpctrpxupgpldnobttngdxuvpvjyadoapvszdanspsyoyxefumgbafxdopspbxhocefvsohyutvggocce"+
+				"mreeqdlowwyntgztkbmippjnvqcydkzmwkydgpzdwrxwapgxwnkzeqgmopsfsipqacnkmpvxnkyvsrobppmolfefqbmupgsuwyqefoaiuxjnhxezxnwznyqjjoszmdeuhxomlvoptwmmntjfuegd");
+		
+		listOfLisa.add(list1);
+		listOfLisa.add(list2);
+		listOfLisa.add(list3);
+		listOfLisa.add(list4);
+		listOfLisa.add(list5);
+		listOfLisa.add(list6);
+		listOfLisa.add(list7);
+		listOfLisa.add(list8);
+		listOfLisa.add(list9);
+
+		for(int lisaNumber:lisas){
+			try {
+				List<String> lisa = complianceReportsPage.getLISAInvestigationPDFData(lisaNumber, reportTitle,pdfFile,reportId);
+				List<String> expectedLisa = listOfLisa.get(lisaNumber-1);
+				if(expectedLisa.isEmpty()){
+					assertTrue(lisa!=null&&!lisa.isEmpty());
+				}else{
+				for(int i=0;i<listOfLisa.get(lisaNumber-1).size();i++){
+					String expect = expectedLisa.get(i).toLowerCase();
+					String actual = lisa.get(i).toLowerCase();
+					
+					if(expect.isEmpty()){
+						assertTrue(actual!=null&&!actual.isEmpty());
+					}else if(!actual.equals(expect)){
+						Log.error("Leak detail in PDF table: "+actual);
+						Log.error("Leak detail expected: "+expect);
+						fail();
+					}
+				}
+			}
+			} catch (Exception e) {
+				Log.error(e.toString());
+				fail(e.toString());
 			}
 		}
 	}

@@ -207,7 +207,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		// Add a new user customer with Report ShapeFile first disabled and then enable it.
 		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+		manageCustomerPageAction.createOrFetchNewGisCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);
 
 		// Create new location.
@@ -313,7 +313,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		// Add a new user customer with Report ShapeFile first disabled and then enable it.
 		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+
+		manageCustomerPageAction.createOrFetchNewGisCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);
 
 		// Create new location.
@@ -413,9 +414,10 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
-		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setUseCustomerWithGISSeed(true);
 		custSrvInfo.setRetainGISSeedData(true);
 
+		boolean testFailed = false;
 		try {
 			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
 
@@ -439,13 +441,16 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 
 		} catch (Exception ex) {
+			testFailed = true;
 			BaseTest.reportTestFailed(ex, ComplianceReportsPageTest3.class.getName());
 		} finally {
-			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+			if (!testFailed) {
+				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					// monitor should cleanup customers locked for a longer period of time.
+					CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+				}
 			}
-
-			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		}
 	}
 

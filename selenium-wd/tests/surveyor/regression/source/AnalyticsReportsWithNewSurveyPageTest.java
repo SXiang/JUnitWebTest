@@ -142,7 +142,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
-		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setUseCustomerWithGISSeed(true);
 		custSrvInfo.setRetainGISSeedData(true);
 
 		try {
@@ -195,14 +195,17 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
 		} finally {
-			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-			}
-
 			if (!testFailed) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.
-				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+				FunctionUtil.warnOnError(() -> {
+					if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+						// monitor should cleanup customers locked for a longer period.
+						CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+					} else {
+						DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId());
+					}
+				});
 			}
 		}
 	}
@@ -251,7 +254,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
-		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setUseCustomerWithGISSeed(true);
 		custSrvInfo.setRetainGISSeedData(true);
 
 		try {
@@ -316,14 +319,16 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
 		} finally {
-			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-				CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-			}
-
 			if (!testFailed) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.
-				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+				FunctionUtil.warnOnError(() -> {
+					if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+						CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+					} else {
+						DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId());
+					}
+				});
 			}
 		}
 	}
