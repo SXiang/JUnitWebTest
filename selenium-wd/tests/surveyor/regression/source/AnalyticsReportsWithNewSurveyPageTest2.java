@@ -34,6 +34,7 @@ import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseTest.Tracker;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
@@ -53,9 +54,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static ManageLocationPageActions manageLocationPageActions;
 	private static DriverViewPage driverViewPage;
-
 	private static MeasurementSessionsPage measurementSessionsPage;
-
 
 	private static Map<String, String> testAccount, testSurvey;
 	private static String userName;
@@ -71,6 +70,8 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	private static String surveyMinAmplitude;
 	private static String rankingMinAmplitude;
 
+	private static Tracker classTracker = Tracker.newTracker(true);    // tracks if any of the tests failed. GIS data is not cleaned up if any of the tests failed.
+
 	@Rule
 	public TestName testName = new TestName();
 
@@ -83,11 +84,13 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	@AfterClass
 	public static void afterClass() throws Exception {
 		if(testAccount!=null && customerId!=null){
-			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-				String customerName = testAccount.get("customerName");
-				CustomerWithGisDataPool.releaseCustomer(customerName);
-			} else {
-				cleanUpGisData(customerId);
+			if (!classTracker.failureEncountered()) {
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					String customerName = testAccount.get("customerName");
+					CustomerWithGisDataPool.releaseCustomer(customerName);
+				} else {
+					cleanUpGisData(customerId);
+				}
 			}
 		}
 	}
@@ -203,60 +206,62 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 
 		String[] psFilters = {"0.01", "0.2"};
 
-		//Modify psFilter
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageLocationPageActions.open(EMPTY, NOTSET);
-		manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,psFilters[0]);
-		getHomePage().logout();
+		withTrackerExecute(classTracker, () -> {
+			//Modify psFilter
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageLocationPageActions.open(EMPTY, NOTSET);
+			manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,psFilters[0]);
+			getHomePage().logout();
 
-		//Generate report and verify indications
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			//Generate report and verify indications
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+			Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
 
-		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
-		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
-		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+			String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+			String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+			reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
 
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
-		complianceReportsPageAction.getComplianceReportsPage().invokeMetaZipFileDownload(reportTitle);
-		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
-		BaseHelper.deCompressZipFile(reportName+"-Meta", TestContext.INSTANCE.getTestSetup().getDownloadPath());
-		Map<Integer, Integer> rankingMap1 = complianceReportsPageAction.getComplianceReportsPage().getLISASAnalyticsRankingMap(reportTitle);
+			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
+			complianceReportsPageAction.getComplianceReportsPage().invokeMetaZipFileDownload(reportTitle);
+			complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
+			BaseHelper.deCompressZipFile(reportName+"-Meta", TestContext.INSTANCE.getTestSetup().getDownloadPath());
+			Map<Integer, Integer> rankingMap1 = complianceReportsPageAction.getComplianceReportsPage().getLISASAnalyticsRankingMap(reportTitle);
 
-		//Modify psFilter
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageLocationPageActions.open(EMPTY, NOTSET);
-		manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,psFilters[1]);
-		getHomePage().logout();
+			//Modify psFilter
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageLocationPageActions.open(EMPTY, NOTSET);
+			manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,psFilters[1]);
+			getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.getComplianceReportsPage().clickOnButtonInReportPage(reportTitle, userName, ReportsButtonType.Copy);
-		complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
-		reportName = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(reportTitle, userName);
-		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().clickOnButtonInReportPage(reportTitle, userName, ReportsButtonType.Copy);
+			complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
+			reportName = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportId(reportTitle, userName);
+			reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
 
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
-		complianceReportsPageAction.getComplianceReportsPage().invokeMetaZipFileDownload(reportTitle);
-		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
-		BaseHelper.deCompressZipFile(reportName+"-Meta", TestContext.INSTANCE.getTestSetup().getDownloadPath());
-		Map<Integer, Integer> rankingMap2 = complianceReportsPageAction.getComplianceReportsPage().getLISASAnalyticsRankingMap(reportTitle);
+			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
+			complianceReportsPageAction.getComplianceReportsPage().invokeMetaZipFileDownload(reportTitle);
+			complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
+			BaseHelper.deCompressZipFile(reportName+"-Meta", TestContext.INSTANCE.getTestSetup().getDownloadPath());
+			Map<Integer, Integer> rankingMap2 = complianceReportsPageAction.getComplianceReportsPage().getLISASAnalyticsRankingMap(reportTitle);
 
-		assertEquals(rankingMap1.get(Integer.valueOf(1)), rankingMap2.get(Integer.valueOf(1)));
-		assertEquals(rankingMap1.get(Integer.valueOf(2)), rankingMap2.get(Integer.valueOf(2)));
-		assertEquals(rankingMap1.get(Integer.valueOf(3)), rankingMap2.get(Integer.valueOf(3)));
-		assertTrue(rankingMap1.get(Integer.valueOf(4)) > rankingMap2.get(Integer.valueOf(4)));
+			assertEquals(rankingMap1.get(Integer.valueOf(1)), rankingMap2.get(Integer.valueOf(1)));
+			assertEquals(rankingMap1.get(Integer.valueOf(2)), rankingMap2.get(Integer.valueOf(2)));
+			assertEquals(rankingMap1.get(Integer.valueOf(3)), rankingMap2.get(Integer.valueOf(3)));
+			assertTrue(rankingMap1.get(Integer.valueOf(4)) > rankingMap2.get(Integer.valueOf(4)));
 
-		getHomePage().logout();
+			getHomePage().logout();
+		});
 	}
 
 	/**
@@ -287,29 +292,32 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		Log.info("\nRunning TC2418_AnalyticsLowSurveyMinAmplitudeAndHighRankingMinAmplitude ...");
 
 		String rankingMinAmplitudeHigh = "0.5";
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageLocationPageActions.open(EMPTY, NOTSET);
-		manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitudeHigh);
-		getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		List<Peak> listOfDBPeak = Peak.getPeaks(surveyTag, analyzerName);
-		int numPeaksBelowRankingMin = listOfDBPeak.stream().filter(p -> p.getAmplitude() < Float.valueOf(rankingMinAmplitudeHigh)).mapToInt((x) -> 1).sum();
-		assertTrue( numPeaksBelowRankingMin > 0);
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageLocationPageActions.open(EMPTY, NOTSET);
+			manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitudeHigh);
+			getHomePage().logout();
 
-		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
-		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
-		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			List<Peak> listOfDBPeak = Peak.getPeaks(surveyTag, analyzerName);
+			int numPeaksBelowRankingMin = listOfDBPeak.stream().filter(p -> p.getAmplitude() < Float.valueOf(rankingMinAmplitudeHigh)).mapToInt((x) -> 1).sum();
+			assertTrue( numPeaksBelowRankingMin > 0);
+			Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
 
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
-		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
-		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
-		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(rankingMinAmplitudeHigh, NOTSET));
+			String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+			String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+			reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+
+			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
+			complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
+			complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(rankingMinAmplitudeHigh, NOTSET));
+		});
 	}
 
 	/**
@@ -335,21 +343,24 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		Log.info("\nRunning TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator ...");
 		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
 		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
-		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
 
-		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
-				,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
-		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag,
-				reportDataRowID1, SurveyModeFilter.Analytics);
+		withTrackerExecute(classTracker, () -> {
+			String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
 
-		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
-		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+			Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
+					,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
+			String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+			Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag,
+					reportDataRowID1, SurveyModeFilter.Analytics);
+
+			String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
+			complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -374,21 +385,24 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		Log.info("\nRunning TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication ...");
 		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
 		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
-		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
-		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane
-				,defnFilePath, userName, userPassword, 300, SurveyType.Standard);
-		String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag,
-				reportDataRowID1, SurveyModeFilter.Standard);
-		String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
-		String reportName = testReport.get(SurveyModeFilter.Standard.toString()+"ReportName");
-		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
 
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
-		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+		withTrackerExecute(classTracker, () -> {
+			String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+			Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane
+					,defnFilePath, userName, userPassword, 300, SurveyType.Standard);
+			String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
+			Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag,
+					reportDataRowID1, SurveyModeFilter.Standard);
+			String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
+			String reportName = testReport.get(SurveyModeFilter.Standard.toString()+"ReportName");
+			reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+
+			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+			complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
+			complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+		});
 	}
 }
