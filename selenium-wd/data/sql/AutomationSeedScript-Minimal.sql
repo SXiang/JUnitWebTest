@@ -823,7 +823,7 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='EDA5A3A0-7B86-A343-69F6-39D8A7186DC1',[StartEpoch]=1485109206,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='60540576-77EF-198F-F284-39DF4393A70F'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('60540576-77EF-198F-F284-39DF4393A70F','EDA5A3A0-7B86-A343-69F6-39D8A7186DC1',1485109206,0,0,-4)	
-F5970731-CE37-F7F3-DB5F-39D7E2D02053
+
 -- Calibration record for 'Software Car'
 UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='2AA6AC90-B839-4787-F3B5-39D4B4DCEE95',[StartEpoch]=1287963120,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='52AA8399-A171-FB5F-C21C-39E262E8DDA0'
 IF @@ROWCOUNT=0

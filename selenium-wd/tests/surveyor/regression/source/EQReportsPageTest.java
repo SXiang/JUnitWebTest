@@ -427,8 +427,8 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 		eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		
-		eqReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-		eqReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1));
-		eqReportsPageAction.verifyViewsImagesWithBaselines_Static(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(eqReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(eqReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines_Static(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 }
