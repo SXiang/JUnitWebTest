@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -2508,68 +2509,21 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
 		Log.method("ComplianceReportsPage.verifyIndicationTable", actualPath, reportTitle);
-		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
-		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		List<String> expectedReportString = new ArrayList<String>();
-		expectedReportString.add(ComplianceReportSSRS_IndicationTable);
-		Log.info(String.format("PDF Text Content : %s", actualReportString));
-		Log.info(String.format("Expected Strings in PDF Text Content : %s",
-				LogHelper.strListToString(expectedReportString)));
-
-		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
-		for (Boolean value : actualFirstPage.values()) {
-			if (!value) {
-				Log.error("Indication table static text verification failed");
-				return false;
-			}
-		}
-
-		String matchStartString = "Disposition Confidence in Disposition";
-		String matchEndString = "Software Version";
-		List<String> indicationTables = RegexUtility.getStringsInBetween(actualReportString, matchStartString,
-				matchEndString);
-		String indicationTable = "";
-		for (String table : indicationTables) {
-			indicationTable += System.lineSeparator() + table;
-		}
-
-		Log.info(String.format("Extracted values between '%s' and '%s' are: %s", matchStartString, matchEndString,
-				indicationTable));
-
-		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		ArrayList<String> reportIndicationsList = new ArrayList<String>();
-		String extraLines = "";
-		try {
-			while ((line = bufferReader.readLine()) != null) {
-				line = TextUtility.removeNonAsciiSpecialChars(line);
-				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
-				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
-					if (!line.trim().matches(RegexUtility.SSRS_PDF_PAGE_FOOTER_PATTERN)) {
-						Log.info("Matched line as a table row!");
-						ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
-						reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "")
-								.replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
-						extraLines = "";
-					}
-				} else if (!reportIndicationsList.isEmpty()
-						&& line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)) {
-					extraLines += line.trim();
-				}
-			}
-		} finally {
-			bufferReader.close();
-		}
-		ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
-		Log.info(String.format("ReportIndications ArrayList Values : %s",
-				LogHelper.strListToString(reportIndicationsList)));
-
+		
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);
+        List<String> reportIndicationsList = new ArrayList<>();
+        for(String[] lisa:lisasIndicationTblList){
+        	String line = "";
+        	for(String field:lisa){
+        		line += field;
+        	}
+        	reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "")
+        			.replace("0.0 ", "").trim().replaceAll("\\s+", "").replace(">=", ""));
+        }
 		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
 				.getReportIndications(reportId);
 		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
@@ -2588,7 +2542,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			return false;
 		}
 
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf("LISANum");
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		if (!SortHelper.isNumberSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]))) {
