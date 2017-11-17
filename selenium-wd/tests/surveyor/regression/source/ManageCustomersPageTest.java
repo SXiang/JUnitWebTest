@@ -43,6 +43,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static HomePage homePage;
 	private static LoginPage loginPage;
+	private PageObjectFactory pageObjectFactory;
 
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
@@ -63,18 +64,34 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
+		initializeManageCustomersPage(pageObjectFactory);
+		initializeManageUsersPage(pageObjectFactory);
+		initializeManageLocationsPage(pageObjectFactory);
+		initializeHomePage(pageObjectFactory);
+		initiliazeLoginPage(pageObjectFactory);
+	}
+
+	private void initializeManageCustomersPage(PageObjectFactory pageObjectFactory) {
 		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
+	}
 
-		manageUsersPage = pageObjectFactory.getManageUsersPage();
-		PageFactory.initElements(getDriver(), manageUsersPage);
-
-		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
-		PageFactory.initElements(getDriver(), manageLocationsPage);
-
+	private void initializeHomePage(PageObjectFactory pageObjectFactory) {
 		homePage = pageObjectFactory.getHomePage();
 		PageFactory.initElements(getDriver(), homePage);
+	}
 
+	private void initializeManageLocationsPage(PageObjectFactory pageObjectFactory) {
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+	}
+
+	private void initializeManageUsersPage(PageObjectFactory pageObjectFactory) {
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
+	}
+
+	private void initiliazeLoginPage(PageObjectFactory pageObjectFactory) {
 		loginPage = pageObjectFactory.getLoginPage();
 		PageFactory.initElements(getDriver(), loginPage);
 	}
@@ -170,6 +187,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		// cancel add
 		manageCustomersPage.clickOnAddCancelBtn();
+
+		initializeManageCustomersPage(new PageObjectFactory());
 
 		// add customer with an empty Name
 		manageCustomersPage.addNewCustomer("", eula);

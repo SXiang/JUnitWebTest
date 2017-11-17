@@ -59,10 +59,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "eula-error")
 	private WebElement lblEulaError;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[6]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='button-cancel btn btn-danger']")
 	private WebElement cancelAddBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[5]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='button-cancel btn btn-danger']")
 	private WebElement cancelEditBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='active']")
