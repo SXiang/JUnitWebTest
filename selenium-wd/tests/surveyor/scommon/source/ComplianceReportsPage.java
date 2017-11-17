@@ -2509,10 +2509,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
 		Log.method("ComplianceReportsPage.verifyIndicationTable", actualPath, reportTitle);
-		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		
