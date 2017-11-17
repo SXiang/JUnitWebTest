@@ -2523,7 +2523,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
         	for(String field:lisa){
         		line += field;
         	}
-        	reportIndicationsList.add(line);
+        	reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "")
+        			.replace("0.0 ", "").trim().replaceAll("\\s+", "").replace(">=", ""));
         }
 		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
 				.getReportIndications(reportId);
@@ -2533,7 +2534,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 			String objAsString = objStoredProc.toString();
 			storedProcConvStringList
-			.add(objAsString.replace("0.0 ", "0"));
+			.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim().replace("+/-", ""));
 		}
 
 		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s",
