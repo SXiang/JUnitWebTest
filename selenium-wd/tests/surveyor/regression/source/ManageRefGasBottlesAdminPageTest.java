@@ -14,7 +14,7 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SURANA;
+import static surveyor.scommon.source.SurveyorConstants.FEDS2015ANZ;
 import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSAGE;
 
 import java.util.ArrayList;
@@ -229,7 +229,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNumber, isoValue,
 				SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		assertTrue(manageRefGasBottlesAdminPage.searchRefGasBottle(SQACUSLOC,
-				SQACUSLOCSUR, SQAPICLOC4SURANA, lotNumber, isoValue));
+				SQACUSLOCSUR, FEDS2015ANZ, lotNumber, isoValue));
 	}
 
 	/**
