@@ -3,8 +3,8 @@ package surveyor.regression.source;
 import common.source.BaseHelper;
 import common.source.HostSimDefinitionGenerator;
 import common.source.Log;
+import common.source.PDFTableUtility.PDFTable;
 import common.source.TestContext;
-
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
@@ -56,7 +56,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	private static DriverViewPage driverViewPage;
 	private static MeasurementSessionsPage measurementSessionsPage;
 
-	private static Map<String, String> testAccount, testSurvey;
+	private static Map<String, String> testAccount, testSurvey, testSurvey2;
 	private static String userName;
 	private static String userPassword;
 	private static String customerName;
@@ -65,10 +65,11 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 	private static String analyzerName;
 	private static String analyzerType;
 	private static String surveyorName;
-	private static String surveyTag;
+	private static String surveyTag, surveyTag2;
 	private static String customerId;
 	private static String surveyMinAmplitude;
 	private static String rankingMinAmplitude;
+	private static String analyticsMinClusterSize;
 
 	private static Tracker classTracker = Tracker.newTracker(true);    // tracks if any of the tests failed. GIS data is not cleaned up if any of the tests failed.
 
@@ -101,12 +102,12 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		initializePageActions();
 		initializePageObjects();
 		// Select run mode here.
-		setPropertiesForTestRunMode();
+		
 			if(testAccount == null){
-				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				if(TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
 					testAccount = createTestAccountWithGisCustomer("Analytics_Report", CapabilityType.Ethane);
-				} else {
-					testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
+				}else{
+				    testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
 				}
 
 				userName = testAccount.get("userName");
@@ -120,23 +121,35 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 				customerId = testAccount.get("customerId");
 				surveyMinAmplitude = "0.035";
 				rankingMinAmplitude = "0.035";
+				analyticsMinClusterSize = "2";
 				manageLocationPageActions.open(EMPTY, NOTSET);
 				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
 				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
-				testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
-						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
+				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
+				
+				String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
+				String[] c2h6Values = {"3.5", "4.0", "3.5", "4.0", "3.5"};
+				String defnFileForMultiplePeaks = new HostSimDefinitionGenerator().generateDefaultEthDefinitionForMultiplePeaks(ch4Values, c2h6Values);
 
+				testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane, defnFileForMultiplePeaks
+						,userName, userPassword, 300, SurveyType.Analytics);
+
+				testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
+						,userName, userPassword, 220, SurveyType.Analytics);
+				
 				if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-					pushGisData(testAccount.get("customerId"));
+					pushGisData(customerId);
 				}
 
 				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+				surveyTag2 = testSurvey2.get(SurveyType.Analytics.toString()+"Tag");
 			} else {
 				getLoginPage().open();
 				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 				manageLocationPageActions.open(EMPTY, NOTSET);
 				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
 				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,analyticsMinClusterSize);
 			}
 		}
 
@@ -346,7 +359,6 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 
 		withTrackerExecute(classTracker, () -> {
 			String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
-
 			Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
 					,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
 			String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
@@ -404,5 +416,73 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 			complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 		});
+	}
+	
+	
+	/**
+	 * Test Case ID: TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters
+	 * Test Description: Admin configuration screen for customer-location-specific analytics parameters - Min Cluster Size
+	 * Script:
+	 * - Log into the UI as a Picarro Admin and navigate to the Locations configuration page for a customer;
+	 * - Set the Min Cluster Size to "2.0";
+	 * - Navigate to Report > Compliance Reports;
+	 * - From the customer dropdown, select the same customer and Report Mode: Analytics;
+	 * - Add a Report Title, select a Report Area and add one or more surveys that have several indications,
+	 *   some of which are close to each other (within about 20 meters) 
+	 *   and some that are farther away (more than 50 meters);
+	 * - Select all Views options and all GIS layers;
+	 * - Select Indication Table and click OK
+     * - Once the report completes, navigate back to the Manage Location page for the same customer;
+     * - Set the Min Cluster Size to "10.0";
+     * - Go back to the Compliance Reports page and generate the same report as before;
+     * - Compare the two reports
+	 * Results:
+	 * - The second report should have more LISAs.
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2399, location = ComplianceReportDataProvider.class)
+	public void TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2399_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParameters ...");
+		
+		String minClusterSize= "2";
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,minClusterSize);
+		getHomePage().logout();
+
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag2, reportDataRowID1, SurveyModeFilter.Analytics);
+
+		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
+		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+		List<String[]> lisaTable1 = complianceReportsPageAction.getComplianceReportsPage().getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);
+
+		minClusterSize= "10";
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().editAnalyticsMinClusterSize(customerName,locationName,minClusterSize);
+		getHomePage().logout();
+
+		testReport = addTestReport(userName, userPassword, customerName,  surveyTag2, reportDataRowID1, SurveyModeFilter.Analytics);
+
+		reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
+		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+		
+		List<String[]> lisaTable2 = complianceReportsPageAction.getComplianceReportsPage().getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);	
+		assertTrue(lisaTable2.size()>lisaTable1.size());	
 	}
 }
