@@ -14,14 +14,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import static org.junit.Assert.*;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
@@ -64,6 +63,40 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class BaseTest {
+
+	public static class Tracker {
+		private boolean testStatus;
+		private Object extraInfo;
+
+		private Tracker(boolean initialStatus) {
+			this.testStatus = initialStatus;
+		}
+
+		public static Tracker newTracker(boolean initialStatus) {
+			return new Tracker(initialStatus);
+		}
+
+		public void setStatusFrom(Tracker other) {
+			if (this.testStatus != false) {
+				this.testStatus = other.testStatus;
+			}
+		}
+
+		public void setTestStatus(boolean testStatus) {
+			this.testStatus = testStatus;
+		}
+
+		public boolean failureEncountered() {
+			return this.testStatus != true;
+		}
+
+		public Object getExtraInfo() {
+			return extraInfo;
+		}
+		public void setExtraInfo(Object extraInfo) {
+			this.extraInfo = extraInfo;
+		}
+	}
 
 	private static List<WebDriver> spawnedWebDrivers = Collections.synchronizedList(new ArrayList<WebDriver>());
 	private static Map<String, ExtentTest> extentTestMap = Collections.synchronizedMap(new HashMap<String, ExtentTest>());
@@ -161,6 +194,23 @@ public class BaseTest {
 			setScreenCapture(screenShotOnFailure);
 			getTestSetup().setScreenCapture(screenShotOnFailure);
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
+		}
+	}
+
+	protected void withTrackerExecute(Tracker tracker, CheckedConsumer testActions) {
+		boolean retVal = false;
+		try {
+			testActions.execute();
+			retVal = true;
+		} catch (Exception e) {
+			retVal = false;
+			Log.error(String.format("EXCEPTION in withTrackerExecute() -> %s", ExceptionUtility.getStackTraceString(e)));
+		} finally {
+			if (!retVal) {
+				tracker.setTestStatus(false);
+			}
+
+			assertTrue("Failure in test actions. Refer messages in log.", retVal);
 		}
 	}
 
@@ -395,7 +445,6 @@ public class BaseTest {
 			Log.info(String.format("Fetched Analyzer with serial number-'%s' from pool", analyzerName));
 			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
 			if (analyzer != null) {
-				analyzerSharedKey = analyzer.getSharedKey();
 				Log.info(String.format("Analyzer with serial number-'%s', sharedKey-'%s' fetched from pool ALREADY EXISTS in DB. "
 						+ "Deleting Analyzer.", analyzerName, analyzerSharedKey));
 				analyzer.cascadeDeleteAnalyzer();
@@ -606,13 +655,7 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
-		String replayScriptDefnFile = "replay-db3.defn";
-		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
-		String db3DefnFile = replayScriptDefnFile;
-		if(analyzerType.equals(CapabilityType.Ethane)){
-			db3DefnFile = replayScriptEthaneDefnFile;
-		}
-		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, "", userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
@@ -620,9 +663,15 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3file, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
+		return addTestSurvey(null, analyzerName, analyzerSharedKey, analyzerType, db3file, db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+	public Map<String, String> addTestSurvey(String[] instructionFiles, String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3file, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
         String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		String replayEQScriptDB3File = "Surveyor.db3";
+		String replayScriptDefnFile = "replay-db3.defn";
+		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
+		String replayScriptEthaneMeasInstructionsFile = "replay-db3-eth-meas-instructions.defn";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62, 65};
 
 		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics, SurveyType.EQ};
@@ -677,6 +726,16 @@ public class BaseTest {
 				}
 			}
 
+			if(db3DefnFile.isEmpty()){
+				db3DefnFile = replayScriptDefnFile;
+				if(analyzerType.equals(CapabilityType.Ethane)){
+					db3DefnFile = replayScriptEthaneDefnFile;
+					if(instructionFiles!=null){
+						db3DefnFile = replayScriptEthaneMeasInstructionsFile;
+					}
+				}
+			}
+			
 			int surveyRowID = surveyRowIDs[0];
 			for(int j=0; j<surveyType.length; j++){
 				if(st.equals(surveyType[j])){
@@ -686,7 +745,7 @@ public class BaseTest {
 			}
 
 			/* Step 2: startAnalyzerSurvey */
-			startAnalyzerSurvey(testEnvironmentAction, drivingSurveyType, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
+			startAnalyzerSurvey(testEnvironmentAction, drivingSurveyType, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds, instructionFiles);
 			/* Step 3: stopAnalyzerSurvey */
 			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 			testSurvey.put(st.name()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
@@ -708,18 +767,30 @@ public class BaseTest {
 			analyzerName, analyzerSharedKey);
 	}
 
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
+			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,
+    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds, null);
+	}
+	
     protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
-		String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+		String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds, String[] instructionFiles) throws Exception{
     	startAnalyzerSurvey(testEnvironmentAction, DrivingSurveyType.Default, driverViewPageAction,
     			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
     }
 
-	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
+    protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
 			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+    	startAnalyzerSurvey(testEnvironmentAction, surveyType, driverViewPageAction,
+    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds,null);
+    }
+    
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
+			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds, String[] instructionFiles) throws Exception{
 		TestSetup.restartAnalyzer();
 		driverViewPageAction.open("", -1);
 		driverViewPageAction.waitForConnectionToComplete("", -1);
-		TestSetup.replayDB3Script(db3DefnFile, db3file);
+		TestSetup.replayDB3Script(db3DefnFile, db3file, instructionFiles);
 		driverViewPageAction.clickOnModeButton("", -1);
 		if(surveyType.equals(DrivingSurveyType.EQ)){
 			driverViewPageAction.startEQDrivingSurvey("", surveyRowID);
@@ -769,9 +840,14 @@ public class BaseTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		logoutQuitDriver();
-		// Post run result to DB if enabled.
-		postResultsToAutomationAPI();
+		try {
+			TestContext.INSTANCE.suppressTestMessageUpdate();
+			logoutQuitDriver();
+			// Post run result to DB if enabled.
+			postResultsToAutomationAPI();
+		} finally {
+			TestContext.INSTANCE.unsuppressTestMessageUpdate();
+		}
 	}
 
 	/**
