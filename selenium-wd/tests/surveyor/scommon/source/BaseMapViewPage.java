@@ -666,19 +666,24 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public boolean isSurveyModeWarningContentCorrect(String expectedText){
-		String[][] cssValues = {{"color", "rgba(0, 128, 0, 1)"},{"font-weight","bold"}};
+		String[][] cssValues = {{"color", "rgba(0, 128, 0, 1)"},{"font-weight","bold|700"}};
 		String text = getElementText(activeSurveyModeDialog);
 		if(!text.equals(expectedText)){
 			Log.warn("Expected text: "+expectedText+", Actual text: "+text);
 			return false;
 		}
+
 		for(String[] css:cssValues){
 			String value = activeSurveyModeDialog.getCssValue(css[0]);
-			if(!value.equals(css[1])){
+			List<String> expectedValues = RegexUtility.split(css[1], RegexUtility.VERTICAL_BAR_SPLIT_REGEX_PATTERN);
+			boolean match = expectedValues.stream()
+				.anyMatch(val -> value.equals(val));
+			if(!match){
 				Log.warn("Expected css Value: "+css[1]+", Actual css Value: "+value);
 				return false;
 			}
 		}
+
 		return true;
 	}
 
