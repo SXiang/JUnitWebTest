@@ -264,7 +264,7 @@ public class LocationDataReader extends BaseDataReader {
 		String carWindAngleMin = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_CarWindAngleMin, TESTDATA_SHEET_NAME);
 		String carWindAngleMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_CarWindAngleMax, TESTDATA_SHEET_NAME);
 		String dBScanSpatialScale = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_DBScanSpatialScale, TESTDATA_SHEET_NAME);
-		String eQMinClusterSize = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_MinClusterSize, TESTDATA_SHEET_NAME);
+		String eQMinClusterSize = excelUtility.getIntegerCellData(dataRowID, Excel_TestData_Col_MinClusterSize, TESTDATA_SHEET_NAME);
 		String backgroundFilterThreshold = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_BackgroundFilterThreshold, TESTDATA_SHEET_NAME);
 		String pPMTriggerThreshold = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_PPMTriggerThreshold, TESTDATA_SHEET_NAME);
 		String accelerationMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_AccelerationMax, TESTDATA_SHEET_NAME);

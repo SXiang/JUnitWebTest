@@ -66,6 +66,8 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	private String db3DefnFile = "replay-db3-eth.defn";
 	private String db3File = "AnalyticsSurvey-RFADS2024-03.db3";
 
+	private static Tracker classTracker = Tracker.newTracker(true);    // tracks if any of the tests failed. GIS data is not cleaned up if any of the tests failed.
+
 	public ObserverViewPageTest_Analytics2() throws IOException {
 		super();
 	}
@@ -78,11 +80,13 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	@AfterClass
 	public static void afterClass() throws Exception {
 		if(testAccount!=null && testAccount.get("customerId")!=null){
-			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
-				String customerName = testAccount.get("customerName");
-				CustomerWithGisDataPool.releaseCustomer(customerName);
-			} else {
-				cleanUpGisData(testAccount.get("customerId"));
+			if (!classTracker.failureEncountered()) {
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					String customerName = testAccount.get("customerName");
+					CustomerWithGisDataPool.releaseCustomer(customerName);
+				} else {
+					cleanUpGisData(testAccount.get("customerId"));
+				}
 			}
 		}
 	}
@@ -173,33 +177,35 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	public void TC2346_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode() throws Exception{
 		Log.info("\nTestcase - TC2346_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageLocationPageActions.open(EMPTY, NOTSET);
-		String surMinAmp = "0.4";
-		manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surMinAmp);
-		getHomePage().logout();
-		getLoginPage().loginNormalAs(userName, userPassword);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageLocationPageActions.open(EMPTY, NOTSET);
+			String surMinAmp = "0.4";
+			manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surMinAmp);
+			getHomePage().logout();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		/* Step 1. setup analyzer configuration */
-		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
+			/* Step 1. setup analyzer configuration */
+			updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
 
-		/* Step 2: startAnalyzerSurvey */
-		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
+			/* Step 2: startAnalyzerSurvey */
+			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
 
-		/* Step 3: ObserverView and verifications */
-		loginPageActionList.get(0).open(EMPTY, NOTSET);
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
+			/* Step 3: ObserverView and verifications */
+			loginPageActionList.get(0).open(EMPTY, NOTSET);
+			loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
 
-		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
-		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("300", NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifySurveyAmplitudes(surMinAmp, NOTSET));
+			homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
+			observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
+			observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+			testEnvironmentAction.idleForSeconds("300", NOTSET);
+			assertTrue(observerViewPageActionList.get(0).verifySurveyAmplitudes(surMinAmp, NOTSET));
 
-		/* Step 4: stopAnalyzerSurvey */
-		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+			/* Step 4: stopAnalyzerSurvey */
+			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		});
 	}
 
 	/**
@@ -218,32 +224,34 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	public void TC2348_ObserverViewAnalyticsSurveyActiveIsDisplayed() throws Exception{
 		Log.info("\nTestcase - TC2348_ObserverViewAnalyticsSurveyActiveIsDisplayed\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		loginPageActionList.get(0).open(EMPTY, NOTSET);
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
+			loginPageActionList.get(0).open(EMPTY, NOTSET);
+			loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
 
-		/* Step 1. setup analyzer configuration */
-		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
+			/* Step 1. setup analyzer configuration */
+			updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
 
-		/* Step 2: startAnalyzerSurvey */
-		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
+			/* Step 2: startAnalyzerSurvey */
+			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
 
-		/* Step 3: ObserverView and verifications */
-		loginPageActionList.get(0).getLoginPage().open();
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
+			/* Step 3: ObserverView and verifications */
+			loginPageActionList.get(0).getLoginPage().open();
+			loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
 
-		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
-		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
-		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
-		assertTrue(observerViewPageActionList.get(0).verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
+			observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
+			observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+			assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+			observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
+			assertTrue(observerViewPageActionList.get(0).verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 
-		/* Step 4: stopAnalyzerSurvey */
-		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+			/* Step 4: stopAnalyzerSurvey */
+			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		});
 	}
 
 	/**
@@ -262,30 +270,32 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	public void TC2351_ObserverViewAnalyticsSurveyModeHasNoCaptureOrRefGasFeatures() throws Exception{
 		Log.info("\nTestcase - TC2351_ObserverViewAnalyticsSurveyModeHasNoCaptureOrRefGasFeatures\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		/* Step 1. setup analyzer configuration */
-		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
+			/* Step 1. setup analyzer configuration */
+			updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
 
-		/* Step 2: startAnalyzerSurvey */
-		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
+			/* Step 2: startAnalyzerSurvey */
+			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
 
-		/* Step 3: ObserverView and verifications */
-		loginPageActionList.get(0).open(EMPTY, NOTSET);
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
+			/* Step 3: ObserverView and verifications */
+			loginPageActionList.get(0).open(EMPTY, NOTSET);
+			loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
 
-		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
-		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
-		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
-		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
+			homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
+			observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
+			observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+			assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+			observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
+			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+			assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 
-		/* Step 4: stopAnalyzerSurvey */
-		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+			/* Step 4: stopAnalyzerSurvey */
+			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		});
 	}
 
 	/**
@@ -305,43 +315,44 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	public void TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys() throws Exception{
 		Log.info("\nTestcase - TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		/* Step 1. setup analyzer configuration */
-		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
+			/* Step 1. setup analyzer configuration */
+			updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
 
-		/* Step 2: startAnalyzerSurvey */
-		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
+			/* Step 2: startAnalyzerSurvey */
+			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
 
-		/* Step 3: ObserverView and verifications */
-		loginPageActionList.get(0).open(EMPTY, NOTSET);
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
+			/* Step 3: ObserverView and verifications */
+			loginPageActionList.get(0).open(EMPTY, NOTSET);
+			loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
 
-		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
-		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().setZoomLevel(zoomLevelForIndication);
-		testEnvironmentAction.idleForSeconds("200", NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("5", NOTSET);
-		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)){
-			observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
-			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isSurveyModeDialogShown());
+			homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
+			observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
+			observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+			observerViewPageActionList.get(0).getObserverViewPage().setZoomLevel(zoomLevelForIndication);
+			testEnvironmentAction.idleForSeconds("200", NOTSET);
+			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+			testEnvironmentAction.stopReplay(EMPTY, NOTSET);
+			testEnvironmentAction.idleForSeconds("5", NOTSET);
+			if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)){
+				observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
+				assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isSurveyModeDialogShown());
+				observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+				testEnvironmentAction.idleForSeconds("5", NOTSET);
+				observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+			}
 			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 			testEnvironmentAction.idleForSeconds("5", NOTSET);
 			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		}
-		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		testEnvironmentAction.idleForSeconds("5", NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		/* Step 4: stopAnalyzerSurvey */
-		// post stopping replay, if method execution does not occur in allocated timeframe 'heartbeat is not received' error event can be thrown.
-		// which could cause ElementNotFound exception to get thrown.
-		FunctionUtil.warnOnError(() -> stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName));
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+			/* Step 4: stopAnalyzerSurvey */
+			// post stopping replay, if method execution does not occur in allocated timeframe 'heartbeat is not received' error event can be thrown.
+			// which could cause ElementNotFound exception to get thrown.
+			FunctionUtil.warnOnError(() -> stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName));
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		});
 	}
-
 }

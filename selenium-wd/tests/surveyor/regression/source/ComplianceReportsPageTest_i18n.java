@@ -39,7 +39,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 	private static LatLongSelectionControl latLongSelectionControl = null;
 	private static PreferencesPage preferencesPage;
 	private static String i18nUserName,customerName = SQACUS, userPassword=USERPASSWORD, locationName=SQACUSLOC, userRole=SQACUSUA;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -55,7 +55,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-		
+
 		if(i18nUserName == null){
 			i18nUserName = addTestUser(customerName, userPassword, userRole, locationName);
 		}
@@ -95,7 +95,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
-	
+
 	/**
 	 * Test Case ID: TC1380_I18NGenerateComplianceReportAndDownloadSSRSAndViews
 	 * Test Description: Internationalization - Generate compliance report and download SSRS and report views
@@ -105,7 +105,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 	 *	- Draw report area and click OK
 	 *	- Fill out the required fields
 	 *	- Once the report has completed, click on the Compliance Viewer button and download report PDF and report views PDF
-	 * Results: 
+	 * Results:
 	 *	- The New Compliance Report page should have field names displayed in the selected language
 	 *	- The Lat/Long values should be correct, with 15 digits to the right of the decimal
 	 *	- SSRS PDF should have all appropriate text (field names, column names, etc) in the selected language
@@ -121,7 +121,7 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 		loginPageAction.login(i18nUserName+":"+userPassword, getUserRowID(userDataRowID));
 		preferencesPage.open();
 		preferencesPage.setSelectedCulture(UserLanguage.CHINESE);
-		
+
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -135,20 +135,17 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
         assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
         assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+    }
 
-		
-		
-	}
-	
 	/**
 	 * Test Case ID: TC1381_I18NGenerateComplianceReportUsingCopyAndDownloadSSRSAndViews
 	 * Test Description: Internationalization - Generate compliance report using copy functionality and download SSRS and report views
-	 * Script: 
+	 * Script:
 	 *	- In Preferences select foreign language
 	 *- On the Compliance Reports page, select a report that was generated in English and click the Copy button
 	 *	- On the Copy Compliance Report page, change the Report Title as necessary and click OK
 	 *	- Once the report has completed, click on the Compliance Viewer button and download report PDF and report views PDF
-	 * Results: 
+	 * Results:
 	 * - The Copy Compliance Report page should have field names displayed in the selected language
 	 *	- The Lat Long values should be correct, with 15 digits to the right of the decimal
 	 *	- SSRS PDF should have all appropriate text (field names, column names, etc) in the selected language
@@ -163,17 +160,17 @@ public class ComplianceReportsPageTest_i18n extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 	}
-	
+
 	/**
 	 * Test Case ID: TC1382_I18NReprocessSSRSReports
 	 * Test Description: Internationalization - Reprocess SSRS reports
-	 * Script: 
+	 * Script:
 	 *	- Generate compliance report in English language
 	 *	- Once report is generated successfully, in Preferences select foreign language for the user
 	 *	- Log into PCubed as Picarro Admin
 	 *	- On the Compliance Reports page, select a report that was generated in English and click the Reprocess button, then click the Reprocess Report button on the popup
 	 *	- Once the report has completed, click on the Compliance Viewer button and download report PDF and report views PDF
-	 * Results: 
+	 * Results:
 	 *	- SSRS PDF should have all appropriate text (field names, column names, etc) in the selected language
 	 *	- Map view footer should be translated in selected language
 	 */

@@ -217,7 +217,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2238 = "dataProviderPageActionsComplianceReports_TC2238";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2239 = "dataProviderPageActionsComplianceReports_TC2239";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2243 = "dataProviderPageActionsComplianceReports_TC2243";
-
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2399 = "dataProviderPageActionsComplianceReports_TC2399";
+	
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
@@ -1521,5 +1522,10 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC2243() {
 		return new Object[][] { { "TC2243" /* TestCaseID */, 6 /* userDataRowID */, 301 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC2399() {
+		return new Object[][] { { "TC2399" /* TestCaseID */, 6 /* userDataRowID */, 308 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 }

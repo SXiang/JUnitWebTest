@@ -1,5 +1,6 @@
 package surveyor.regression.source;
 
+import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.TestContext;
@@ -125,7 +126,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
 
-		Boolean testFailed = false;
+		Tracker testTracker = Tracker.newTracker(true);
 
 		final int DB3_ANALYZER_ROW_ID = 71;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
@@ -192,10 +193,11 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(newAnalyticsRankingMinAmp, NOTSET));
 
 		} catch (Exception ex) {
-			testFailed = true;
+			testTracker.setTestStatus(false);
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testTracker.failureEncountered());
 		} finally {
-			if (!testFailed) {
+			if (!testTracker.failureEncountered()) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.
 				FunctionUtil.warnOnError(() -> {
@@ -237,7 +239,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
 
-		Boolean testFailed = false;
+		Tracker testTracker = Tracker.newTracker(true);
 
 		final int DB3_ANALYZER_ROW_ID = 69;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
@@ -316,10 +318,11 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 		} catch (Exception ex) {
-			testFailed = true;
+			testTracker.setTestStatus(false);
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testTracker.failureEncountered());
 		} finally {
-			if (!testFailed) {
+			if (!testTracker.failureEncountered()) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.
 				FunctionUtil.warnOnError(() -> {
