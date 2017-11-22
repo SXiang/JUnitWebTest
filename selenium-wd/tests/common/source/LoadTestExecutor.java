@@ -9,14 +9,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class LoadTestExecutor {
+	private static final String AB_INSTALLER_ARTIFACTORY_PATH = "test-artifacts/apache-benchmark/httpd-2.4.29-Win64-VC15.zip";
+	private static final String INSTALL_LOAD_TESTING_TOOLS_CMD = "Install-LoadTestingTools.cmd";
 	private static final String EXECUTE_LOAD_APITEST_CMD = "Execute-LoadAPITest.cmd";
 	private static final String LOAD_TEST_RESULT_FORMAT = "LoadTest-%d-%s.result";
-	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
-	private static final Integer MAX_RETRIES_IN_POLL = 5;
-
+	private static final String LoadPerformanceFolder = "LoadPerformance";
 	private static final String LoadStatAPITestCaseResultIdLabel = "LoadStatAPITestCaseResultId";
 	private static final String OutputResultFileLabel = "OutputResultFile";
 	private static final String OutputResultDataFileLabel = "OutputResultDataFile";
+	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
+	private static final Integer MAX_RETRIES_IN_POLL = 5;
 
 	public static final String LABEL_MATCH_REGEX_WITH_PLACEHOLDER = "%s\\s+=\\s+(.+)";
 
@@ -102,12 +104,34 @@ public class LoadTestExecutor {
 		Long runUUID = TestContext.INSTANCE.getTestSetup().getRunUUID();
 		testExecutor.setRunTriggerId(runUUID != null ? runUUID : 0L);
 		testExecutor.setOutputFolder(TestContext.INSTANCE.getTestSetup().getDefaultLogFolder());
+		testExecutor.ensureLoadTestingToolsPresent();
 		return testExecutor;
+	}
+
+	private void ensureLoadTestingToolsPresent() throws IOException {
+		String apiCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + LoadPerformanceFolder;
+		String apiCmdFullPath = apiCmdFolder + File.separator + INSTALL_LOAD_TESTING_TOOLS_CMD;
+		String artifactoryBaseUrl = TestContext.INSTANCE.getTestSetup().getArtifactoryBaseUrl();
+		String artifactoryAPIKey = TestContext.INSTANCE.getTestSetup().getArtifactoryAPIKey();
+		String artifactoryRepository = TestContext.INSTANCE.getTestSetup().getArtifactoryRepository();
+		String installFolder = TestContext.INSTANCE.getTestSetup().getAbRootFolder();
+		String command = "cd \"" + apiCmdFolder + "\" && " + apiCmdFullPath +
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+						getWorkingFolder(),
+						artifactoryBaseUrl,
+						artifactoryAPIKey,
+						artifactoryRepository,
+						AB_INSTALLER_ARTIFACTORY_PATH,
+						installFolder );
+
+		String scrubbedCommand = command.replace(artifactoryAPIKey, "<api-key-hidden>");
+		Log.info("Ensuring load testing tools present. Command -> " + scrubbedCommand);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	public TestResult executeTest(String testCaseName, String apiURL, String contentType, String requestBody, HttpMethod method,
 			Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		String apiCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String apiCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + LoadPerformanceFolder;
 		String apiCmdFullPath = apiCmdFolder + File.separator + EXECUTE_LOAD_APITEST_CMD;
 		String command = "cd \"" + apiCmdFolder + "\" && " + apiCmdFullPath +
 				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d %d %d \"%s\" \"%s\"",
