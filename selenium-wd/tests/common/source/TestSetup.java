@@ -227,6 +227,9 @@ public class TestSetup {
 	private String dbServerMachineUsername;
 	private String dbServerMachinePassword;
 
+	private String pathToABExe;
+	private String defaultLogFolder;
+
 	public TestSetup() {
 		initialize();
 	}
@@ -734,6 +737,9 @@ public class TestSetup {
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
 			setDBServerMachineProperties();
+
+			this.setPathToABExe(this.testProp.getProperty("pathToABExe"));
+			this.setDefaultLogFolder(this.testProp.getProperty("defaultLogFolder"));
 
 			this.setGeoServerEnabled(Boolean.valueOf(this.testProp.getProperty("geoServer.Enabled")));
 
@@ -1929,5 +1935,21 @@ public class TestSetup {
 
 	public void setGeoServerEnabled(boolean geoServerEnabled) {
 		this.geoServerEnabled = geoServerEnabled;
+	}
+
+	public String getPathToABExe() {
+		return pathToABExe;
+	}
+
+	public void setPathToABExe(String pathToABExe) {
+		this.pathToABExe = pathToABExe;
+	}
+
+	public String getDefaultLogFolder() {
+		return defaultLogFolder;
+	}
+
+	public void setDefaultLogFolder(String defaultLogFolder) {
+		this.defaultLogFolder = defaultLogFolder;
 	}
 }
