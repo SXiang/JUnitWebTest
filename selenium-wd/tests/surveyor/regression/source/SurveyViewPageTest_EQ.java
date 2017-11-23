@@ -53,10 +53,10 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().turnOnEightHourHistory(EMPTY, NOTSET);
 
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsVisible(EMPTY, NOTSET));
 
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
