@@ -278,6 +278,24 @@
     </junit>
     <echo message="junit build : ${build}" />
   </target>
+  <target name="geoserverapiloadtests" depends="compileperformance" description="Run geoserver api load test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Performance" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/performance/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+      	  <include name="**/ProdGeoServerDriverViewAPITest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
   <target name="performancetests-setup" depends="compileperformance" description="Run performance test cases">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="Performance" />
@@ -881,7 +899,12 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/ComplianceReportsPageTest_Ethane.class" />
+  	        	<include name="**/ACLandVisibilityTest.class" />
+				<include name="**/ManageCustomersPageTest.class" />
+				<include name="**/SurveyViewPageTest2.class" />
+				<include name="**/SurveyViewPageTest3.class" />
+				<include name="**/SurveyViewPageTest6.class" />
+				<include name="**/SurveyViewPageTest_EQ.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

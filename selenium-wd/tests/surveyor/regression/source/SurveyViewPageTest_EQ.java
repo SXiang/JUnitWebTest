@@ -6,7 +6,6 @@ import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.Survey;
-
 import static org.junit.Assert.*;
 import java.io.IOException;
 

@@ -98,7 +98,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		PageFactory.initElements(getDriver(), measurementSessionsPage);
 		surveyViewPage = pageObjectFactory.getSurveyViewPage();
 		PageFactory.initElements(getDriver(), surveyViewPage);
-		
+
 		preferencesPage = pageObjectFactory.getPreferencesPage();
 		PageFactory.initElements(getDriver(), preferencesPage);
 		fleetMapPage = pageObjectFactory.getFleetMapPage();
@@ -158,18 +158,18 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		loginPage.open();
 		loginPage.loginNormalAs(userName, password);
-		
+
 		/* Verify Customer Administration Link */
 		homePage.waitForPageLoad();
 		homePage.openCusAdminMenu();
 		assertTrue(homePage.verifyCustomerAdministrationLinks());
-		
-		/* Verify Customer Surveyors */ 
+
+		/* Verify Customer Surveyors */
 		homePage.getLinkSurveyors().click();
 		surveyorPage.waitForPageLoad();
 		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(customerName));
 
-		/* Verify Customer Driving Survey Link */ 
+		/* Verify Customer Driving Survey Link */
 		homePage.getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(userName, UserRoleType.UtilityAdmin, strListTagCus, strListTagPic));
@@ -183,28 +183,29 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		surveyViewPage.hideGisMenu();
 		surveyViewPage.setZoomLevelForAssets();
-		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
-		
+		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
+		//assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
+
 		/* Verify  Reports */
 		homePage.open();
 		homePage.openReportsMenu();
 		homePage.getLinkCompliance().click();
 		complianceReportsPage.waitForPageLoad();
 		assertTrue(complianceReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
+
 		homePage.getLinkAssessment().click();
 		assessmentReportsPage.waitForPageLoad();
 		assertTrue(assessmentReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
+
 		homePage.getLinkEQ().click();
 		eqReportsPage.waitForPageLoad();
 		assertTrue(eqReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
+
 		homePage.getLinkFacilityEQ().click();
 		facilityEQReportsPage.waitForPageLoad();
 		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));
 	}
-	
+
 
 	/**
 	 * Test Case ID: TC29_VerifyLoginProfile_Supervisor():
@@ -221,27 +222,26 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * - E7. User is able to see surveys associated only to his surveyor units and not other user's surveys
 	 * - E8. User is able to see GIS Assets data associated with that particular Customer and not other GIS Assets not associated to that Customer (must zoom in to one of the 3 highest levels)
 	 * - E9 User is able to see reports associated only to that customer and not other customer's user's reports
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	
+
 	@Test
 	public void TC29_VerifyLoginProfile_Supervisor() throws Exception {
 		String userName = SQACUSSU;
 		String password = USERPASSWORD;
 		String customerName = SQACUS;
 
-		Log.info(
-				"\nRunning TC29_VerifyLoginProfile_Supervisor - Test Description: Verify Login Profile for Supervisor");
+		Log.info("\nRunning TC29_VerifyLoginProfile_Supervisor - Test Description: Verify Login Profile for Supervisor");
 
 		loginPage.open();
 		loginPage.loginNormalAs(userName, password);
 
-		/* Verify Customer Surveyors */ 
+		/* Verify Customer Surveyors */
 		homePage.getLinkSurveyors().click();
 		surveyorPage.waitForPageLoad();
 		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(customerName));
 
-		/* Verify Customer Driving Survey Link */ 
+		/* Verify Customer Driving Survey Link */
 		homePage.getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(userName, UserRoleType.Supervisor, strListTagCus, strListTagPic));
@@ -255,28 +255,29 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		surveyViewPage.hideGisMenu();
 		surveyViewPage.setZoomLevelForAssets();
-		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
-		
+		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
+		//assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
+
 		/* Verify  Reports */
 		homePage.open();
 		homePage.openReportsMenu();
 		homePage.getLinkCompliance().click();
 		complianceReportsPage.waitForPageLoad();
 		assertTrue(complianceReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
+
 		homePage.getLinkAssessment().click();
 		assessmentReportsPage.waitForPageLoad();
 		assertTrue(assessmentReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
+
 		homePage.getLinkEQ().click();
 		eqReportsPage.waitForPageLoad();
 		assertTrue(eqReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
+
 		homePage.getLinkFacilityEQ().click();
 		facilityEQReportsPage.waitForPageLoad();
-		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));	
+		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));
 	}
-	
+
 	/**
 	 * Test Case ID: TC29_VerifyLoginProfile_PicarroAdmin():
 	 * Verify Login Profile for Picarro Admin
@@ -292,21 +293,21 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC29_VerifyLoginProfile_PicarroAdmin() {
 		String userName = PICDFADMIN;
 		String password = PICADMINPSWD;
-		
+
 
 		Log.info(
 				"\nRunning TC29_VerifyLoginProfile_PicarroAdmin - Test Description: Verify Login Profile for Picarro Admin");
 
 		loginPage.open();
 		loginPage.loginNormalAs(userName, password);
-		
+
 		/* Verify Picarro Administration Links/Logs */
 		homePage.waitForPageLoad();
 		homePage.openPicarroAdminMenu();
 		assertTrue(homePage.verifyPicarroAdministrationLinks());
 		assertTrue(homePage.verifyPicarroAdministrationLogs());
 	}
-	
+
 	/**
 	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole Test Description:
 	 * Check ACLV for customer user with Driver role
@@ -545,7 +546,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyorPage.waitForPageLoad();
 		surveyorPage.performSearch(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
-		assertTrue(surveyorPage.getTableRows().size() > 0);	
+		assertTrue(surveyorPage.getTableRows().size() > 0);
 		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(SQACUS));
 	}
 
@@ -1112,11 +1113,11 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(homePage.checkVisibilityForPicarroSUP(userName));
 		homePage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: TC57_FleetMap_PicAdminRole
 	 * Test Description: Fleet Map displaying labels and last known locations of all vehicles to picarro admin
-	 * One or more surveyors are online 
+	 * One or more surveyors are online
 	 * Customer has Fleet map and Observer View priviledge
 	 * Steps:
 	 * - Log in and navigate to home page
@@ -1154,5 +1155,5 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.logout();
 	}
-	
+
 }
