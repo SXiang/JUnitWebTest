@@ -1,7 +1,11 @@
-﻿$script:EndPoint = "$geoserverBaseUrl/geoserver/%WORKSPACE%/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=%WORKSPACE%:%GISTYPE%&maxFeatures=%MAXFEATURECOUNT%&outputFormat=application%2Fjson"
+﻿$geoserverBaseUrl="http://20.20.152.180:8080"
+$script:EndPoint = "$geoserverBaseUrl/geoserver/%WORKSPACE%/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=%WORKSPACE%:%GISTYPE%&maxFeatures=%MAXFEATURECOUNT%&outputFormat=application%2Fjson"
 
 $script:DefaultMaxFeatures = 10000
 $script:FeaturesMaxLimit   = 50000
+
+$ASSET_FEATURE_CLASSNAME = "Asset"
+$BOUNDARY_FEATURE_CLASSNAME = "Boundary"
 
 # use for debug print.
 function Print-MapValues($map) {
@@ -47,18 +51,22 @@ function Build-CustomerBoundaryTypeIdMap($boundaryInfoMap, $boundaryTypeIdMap, $
     }
 }
 
-function Build-GISAssetBoundaryMappingList($map, $geoserverUsername, $geoserverPassword, $customerId, $customerName, $gisType) {
-    $webClient = New-Object System.Net.WebClient
-    $networkCreds = New-Object System.Net.NetworkCredential($geoserverUsername, $geoserverPassword)
-    $webClient.Credentials = $networkCreds
-    $workspace  = $customerName
-    $geoServerUrl = $script:EndPoint.Replace("%WORKSPACE%", $workspace)
+function Build-GISAssetBoundaryMappingList($map, $geoserverUsername, $geoserverPassword, $customerId, $workspaceName, $gisType) {
+    $geoServerUrl = $script:EndPoint.Replace("%WORKSPACE%", $workspaceName)
     $geoServerUrl = $geoServerUrl.Replace("%GISTYPE%", $gisType)
     $geoServerUrl = $geoServerUrl.Replace("%MAXFEATURECOUNT%", "${script:DefaultMaxFeatures}")
 
+    $loginURL = "$geoserverBaseUrl/geoserver/web/"
+    $loginResponse = Invoke-WebRequest $loginURL -SessionVariable wSession
+    $html = $loginResponse.parsedHTML
+    $form = $loginResponse.forms[0]
+    $form.Fields.Username = $geoserverUsername
+    $form.Fields.Password = $geoserverPassword
+    $loginResponse = Invoke-WebRequest -Uri $loginURL -WebSession $wSession -Method POST -Body $form.Fields
+
     Write-Host "Invoking request -> $geoServerUrl "
-    
-    $responseString = $webClient.DownloadString($geoServerUrl)
+
+    $responseString = Invoke-WebRequest -Uri $geoServerUrl -WebSession $wSession -Method GET 
     $objResponse = ConvertFrom-Json $responseString
     
     Write-Host "Got response -> $objResponse "
@@ -74,16 +82,15 @@ function Build-GISAssetBoundaryMappingList($map, $geoserverUsername, $geoserverP
             $totalFeatures = $script:FeaturesMaxLimit
         }
     
-        Build-GISAssetBoundaryMappingListWithMax -map $map -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType $gisType -maxFeatures $totalFeatures
+        Build-GISAssetBoundaryMappingListWithMax -map $map -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -workspaceName $workspaceName -gisType $gisType -maxFeatures $totalFeatures
     }
 }
 
-function Build-GISAssetBoundaryMappingListWithMax($map, $geoserverUsername, $geoserverPassword, $customerId, $customerName, $gisType, $maxFeatures) {
+function Build-GISAssetBoundaryMappingListWithMax($map, $geoserverUsername, $geoserverPassword, $customerId, $workspaceName, $gisType, $maxFeatures) {
     $webClient = New-Object System.Net.WebClient
     $networkCreds = New-Object System.Net.NetworkCredential($geoserverUsername, $geoserverPassword)
     $webClient.Credentials = $networkCreds
-    $workspace  = $customerName
-    $geoServerUrl = $script:EndPoint.Replace("%WORKSPACE%", $workspace).Replace("%GISTYPE%", $gisType).Replace("%MAXFEATURECOUNT%", "$maxFeatures")
+    $geoServerUrl = $script:EndPoint.Replace("%WORKSPACE%", $workspaceName).Replace("%GISTYPE%", $gisType).Replace("%MAXFEATURECOUNT%", "$maxFeatures")
     
     Write-Host "Invoking request -> $geoServerUrl "
     
@@ -100,7 +107,7 @@ function Build-MapFromResponse($map, $response, $customerId, $gisType) {
     $features | %{
         $f = $_
 
-        if ($gisType -eq "Boundary") {
+        if ($gisType -eq $BOUNDARY_FEATURE_CLASSNAME) {
             $BId = $f.properties.Id
             $CBTId = $f.properties.CustomerBo
             $CBTId = $CBTId.Replace("{", "").Replace("}", "")
@@ -115,7 +122,7 @@ function Build-MapFromResponse($map, $response, $customerId, $gisType) {
 
             AddTo-CustomerGisMapTable -map $map -customerID $customerId -propertiesObject $Object
         
-        } elseif ($gisType -eq "Asset") {
+        } elseif ($gisType -eq $ASSET_FEATURE_CLASSNAME) {
             $AId = $f.properties.Id
             $CMTId = $f.properties.CustomerMa
             $CMTId = $CMTId.Replace("{", "").Replace("}", "")    
