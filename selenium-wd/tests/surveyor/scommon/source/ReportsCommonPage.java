@@ -3362,7 +3362,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyGapsTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ReportsCommonPage.verifyGapsTable", actualPath, reportTitle);
+//		Log.method("ReportsCommonPage.verifyGapsTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
