@@ -549,6 +549,18 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return true;
 	}
 
+	public void setEQMinClusterSize(String eqMinClusterSize){
+		Log.info("Set EQ minClusterSize - '"+ eqMinClusterSize+"'");
+		this.feqMinClusterSize.clear();
+		this.feqMinClusterSize.sendKeys(eqMinClusterSize);
+	}
+
+	public void setAnalyticsMinClusterSize(String analyticsMinClusterSize){
+		Log.info("Set Analytics minClusterSize - '"+ analyticsMinClusterSize+"'");
+		this.minClusterSz.clear();
+		this.minClusterSz.sendKeys(analyticsMinClusterSize);
+	}
+	
 	public void setSurveyMinAmp(String surMinAmp){
 		Log.info("Set Survey Min Amp - '" + surMinAmp + "'");
 		this.surMinAmp.clear();
@@ -1527,6 +1539,18 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		clickOnOkBtn();
 	}
 
+	public void editAnalyticsMinClusterSize(String customerName, String locationName, String analyticsMinClusterSize){
+		findExistingLocationAndClickEdit(customerName, locationName);
+		setAnalyticsMinClusterSize(analyticsMinClusterSize);
+		clickOnOkBtn();
+	}
+
+	public void editEQMinClusterSize(String customerName, String locationName, String eqMinClusterSize){
+		findExistingLocationAndClickEdit(customerName, locationName);
+		setEQMinClusterSize(eqMinClusterSize);
+		clickOnOkBtn();
+	}
+	
 	public void editLocationPSFilterThreshold(String customerName, String locationName, String psFilterThreshold){
 		findExistingLocationAndClickEdit(customerName, locationName);
 		setPsFilter(psFilterThreshold);

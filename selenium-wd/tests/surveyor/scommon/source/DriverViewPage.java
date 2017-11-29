@@ -164,6 +164,9 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "survey_start_survey")
 	private WebElement startSurvey;
 
+	@FindBy(id = "survey_cancel_survey")
+	private WebElement cancelSurvey;
+
 	@FindBy(id = "survey_radiation_strong")
 	private WebElement radiationStrong;
 
@@ -713,7 +716,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage clickStartSurvey() {
 		Log.info("Clicking on StartSurvey button..");
-		startSurvey.click();
+		jsClick(startSurvey);
 		return this;
 	}
 

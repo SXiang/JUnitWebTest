@@ -15,7 +15,10 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 
 	public BaseSurveyViewPageTest() throws IOException {
 	}
+
 	protected static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";
+	protected static final String SIMAUTO_EQANALYZER_ETH1 = "SimAuto-EQAnalyzer-Eth1";
+	protected static final String SIMAUTO_EQANALYZER_SQACUS_ETH1 = "SimAuto-EQAnalyzer-SqaCus-Eth1";
 	protected static final String SURVEY_INFO_SURVEYOR = "Surveyor: Software Car";
 	protected static final String SURVEY_INFO_ANALYZER = "Analyzer: FDDS2038";
 	protected static final String SURVEY_INFO_SURVEYOR_2 = "Surveyor: Nissan Rogue - Picarro";
@@ -72,11 +75,9 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
 
-	protected static final String TEST_SURVEY_EQ_ID = "c7f7018c-2497-4818-a996-e8ad120526ab";
 	protected static final String TEST_SURVEY_EQ_TAG = "MenloNight11_17EQ02";
 	protected static final String TEST_SURVEY_EQ_TYPE = "EQ";
 	protected static final String TEST_SURVEY_EQ_USERNAME = "picdr@picarro.com";
-	protected static final String TEST_SURVEY_EQ_ID_SQACUS = "e7d2005e-d72d-4b05-b251-f96b29da7f14";
 	protected static final String TEST_SURVEY_EQ_USERNAME_SQACUS = "sqacusdr1@email.com";
 
 	protected static final String EMPTY = "";
