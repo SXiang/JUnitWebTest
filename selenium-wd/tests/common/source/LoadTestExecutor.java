@@ -97,6 +97,10 @@ public class LoadTestExecutor {
 	}
 
 	public static LoadTestExecutor newExecutor() throws IOException {
+		return getDefaultExecutor();
+	}
+
+	private static LoadTestExecutor getDefaultExecutor() throws IOException {
 		LoadTestExecutor testExecutor = new LoadTestExecutor();
 		testExecutor.setWorkingFolder(TestSetup.getRootPath());
 		testExecutor.setAutomationReportingAPIBaseUrl(TestContext.INSTANCE.getTestSetup().getAutomationReportingApiEndpoint());
@@ -215,6 +219,7 @@ public class LoadTestExecutor {
 			TestResultData testResultData = new TestResultData();
 			fileLines.stream().forEach(line -> setResultDataProperty(testResultData, line));
 			testResult.setTestResultData(testResultData);
+			testResult.setTestPass(true);
 			return testResult;
 		}
 

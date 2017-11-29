@@ -37,5 +37,6 @@ public class ProdGeoServerDriverViewAPITest extends BaseTest {
 		TestResult testResult = loadTestExecutor.executeTest(testCaseName, apiURL, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 		assertTrue(String.format("Load test failed. Test result file '%s' NOT found.", loadTestExecutor.getTestResultFile()), testResult != null);
 		Log.info(String.format("Test result -> %s", testResult.toString()));
+		assertTrue("Load Test status = [FAIL]. Refer errors in logs.", testResult.isTestPass());
 	}
 }

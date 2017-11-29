@@ -160,6 +160,12 @@ function VerifyExtract-Response($outLogFile) {
     $allResponsesOK -and $contentLengthCorrect -and $foundStart
 }
 
+$LOAD_TEST_RESULT_FILE = "$OutputFolder\LoadTest-$RunUUID-${TestCaseName}.result"
+if (Test-Path $LOAD_TEST_RESULT_FILE) {
+    Write-Host "Cleaning up previous run result files for test - $LOAD_TEST_RESULT_FILE"
+    Remove-Item $LOAD_TEST_RESULT_FILE -Force
+}
+
 # ----------------------------------------------------------------------------------------------
 # 1. Run Apache benchmark and gather API perf metrics.
 # ----------------------------------------------------------------------------------------------
@@ -285,7 +291,7 @@ Write-Host "Posting load API stats data successful! Response -> $responseContent
 # 5. Record test result in success marker file.
 # ----------------------------------------------------------------------------------------------
 
-$successMarkerFile = New-Item "$OutputFolder\LoadTest-$RunUUID-${TestCaseName}.result" -Force
+$successMarkerFile = New-Item $LOAD_TEST_RESULT_FILE -Force
 Add-Content $successMarkerFile "LoadStatAPITestCaseResultId = $apiResultId"
 Add-Content $successMarkerFile "OutputResultFile = $outResultFile"
 Add-Content $successMarkerFile "OutputResultDataFile = $OutDataFile"
