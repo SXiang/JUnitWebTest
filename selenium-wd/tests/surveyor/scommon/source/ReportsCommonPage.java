@@ -3362,7 +3362,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyGapsTable(String actualPath, String reportTitle) throws IOException {
-//		Log.method("ReportsCommonPage.verifyGapsTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyGapsTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -3379,6 +3379,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				return false;
 			}
 		}
+		actualReportString = actualReportString.substring(actualReportString.indexOf(ComplianceReportSSRS_GapTable));
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;

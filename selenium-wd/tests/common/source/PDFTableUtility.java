@@ -217,8 +217,8 @@ public class PDFTableUtility extends PDFUtility{
 	}
 
 	public static String trimTableRow(String line){
-		String nelPattern = "[\\u0085]*";
-		line = line.replaceAll(nelPattern, "");
+		String controlCharactersPattern = "[\\u0085\\u0003]*";
+		line = line.replaceAll(controlCharactersPattern, "");
 		line = line.replaceAll(pdfParagraphEnd, "");
 		line = line.replaceAll(pdfParagraphStart, "");
 		return line;
