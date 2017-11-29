@@ -208,7 +208,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	public void clickOnBackMapButton(){
 		backMapButton.click();
-		WebElementExtender.waitForElementToBeClickable(timeout, driver, button_Investigate);
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, buttonInvestigator);
 	}
 	
 	public void investigateItem(String item){

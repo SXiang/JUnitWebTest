@@ -1523,13 +1523,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsComplianceReports_TC2243() {
 		return new Object[][] { { "TC2243" /* TestCaseID */, 6 /* userDataRowID */, 301 /* NOT USED - reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
-<<<<<<< HEAD
-
-=======
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC2399() {
 		return new Object[][] { { "TC2399" /* TestCaseID */, 6 /* userDataRowID */, 308 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
->>>>>>> origin/master
 }
