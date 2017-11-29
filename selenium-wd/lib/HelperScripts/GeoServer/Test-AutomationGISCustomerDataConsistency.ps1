@@ -50,8 +50,6 @@ $script:CustomerBoundaryInfoMap = @{}
 $script:CustomerAssetTypeIdMap = @{}
 $script:CustomerBoundaryTypeIdMap = @{}
 
-$script:EndPoint = "$geoserverBaseUrl/geoserver/%WORKSPACE%/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=%WORKSPACE%:%GISTYPE%&maxFeatures=50&outputFormat=application%2Fjson"
-
 $OUTRESULT = New-Item "$outputFolder\testresults.txt" -Force
 
 $ConnString = "Server=$DatabaseIP;Database=$DatabaseName;User Id=$DatabaseUser;Password=$DatabasePwd;"
@@ -74,9 +72,9 @@ $csvData = Import-Csv $csvFile
 $csvData | % {
     $row = $_
     $customerId = $row.CustomerId
-    $customerName = $row.CustomerName
-    Build-GISAssetBoundaryMappingList -map $script:CustomerAssetInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Asset"
-    Build-GISAssetBoundaryMappingList -map $script:CustomerBoundaryInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -customerName $customerName -gisType "Boundary"
+    $workspaceName = $row.WorkspaceName
+    Build-GISAssetBoundaryMappingList -map $script:CustomerAssetInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -workspaceName $workspaceName -gisType $ASSET_FEATURE_CLASSNAME
+    Build-GISAssetBoundaryMappingList -map $script:CustomerBoundaryInfoMap -geoserverUsername $geoserverUsername -geoserverPassword $geoserverPassword -customerId $customerId -workspaceName $workspaceName -gisType $BOUNDARY_FEATURE_CLASSNAME
 
     Build-CustomerAssetTypeIdMap -assetInfoMap $script:CustomerAssetInfoMap -assetTypeIdMap $script:CustomerAssetTypeIdMap -customerId $customerId
     Build-CustomerBoundaryTypeIdMap -boundaryInfoMap $script:CustomerBoundaryInfoMap -boundaryTypeIdMap $script:CustomerBoundaryTypeIdMap -customerId $customerId
@@ -107,6 +105,13 @@ if ($IT_SHOULD_FIND_MATCHING_CUSTOMER_MATERIAL_TYPEIDS_IN_GEOSERVER_AND_AUTOMATI
         }
         
         $cmtQuery = "SELECT * FROM [$DatabaseName].[dbo].[CustomerMaterialType] WHERE CustomerId='$custId' AND ID NOT IN ($inclause)"
+
+        # for Picarro and SQACus customers skip 'Cast Iron' and 'Other Plastic' from customer material types.
+        if (($custId -eq "B1252204-04FB-4A67-82D4-3F4666FD855C") -or ($custId -eq "00000000-0000-0000-0000-000000000002")) {
+            $cmtQuery += " AND [Description] NOT IN ('Cast Iron', 'Other Plastic')"
+        }        
+
+        Write-Host "`$cmtQuery -> $cmtQuery"
         $objCMTs = Get-DatabaseData -connectionString $ConnString -query $cmtQuery -isSQLServer:$true
 
         Write-ToOutput -line "Verifying CustomerMaterialType Ids for customer - $custId"
@@ -160,6 +165,7 @@ if ($IT_SHOULD_FIND_MATCHING_CUSTOMER_BOUNDARY_TYPEIDS_IN_GEOSERVER_AND_AUTOMATI
         }
         
         $cbtQuery = "SELECT * FROM [$DatabaseName].[dbo].[CustomerBoundaryType] WHERE CustomerId='$custId' AND ID NOT IN ($inclause)"
+        Write-Host "`$cbtQuery -> $cbtQuery"
         $objCBTs = Get-DatabaseData -connectionString $ConnString -query $cbtQuery -isSQLServer:$true
 
         Write-ToOutput -line "Verifying CustomerBoundaryType Ids for customer - $custId"

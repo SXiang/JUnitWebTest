@@ -227,6 +227,14 @@ public class TestSetup {
 	private String dbServerMachineUsername;
 	private String dbServerMachinePassword;
 
+	private String abRootFolder;
+	private String pathToABExe;
+	private String defaultLogFolder;
+
+	private String artifactoryBaseUrl;
+	private String artifactoryAPIKey;
+	private String artifactoryRepository;
+
 	public TestSetup() {
 		initialize();
 	}
@@ -734,6 +742,14 @@ public class TestSetup {
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
 			setDBServerMachineProperties();
+
+			this.setAbRootFolder(this.testProp.getProperty("abRootFolder"));
+			this.setPathToABExe(this.testProp.getProperty("pathToABExe"));
+			this.setDefaultLogFolder(this.testProp.getProperty("defaultLogFolder"));
+
+			this.setArtifactoryBaseUrl(this.testProp.getProperty("artifactory.BaseUrl"));
+			this.setArtifactoryAPIKey(this.testProp.getProperty("artifactory.APIKey"));
+ 			this.setArtifactoryRepository(this.testProp.getProperty("artifactory.Repository"));
 
 			this.setGeoServerEnabled(Boolean.valueOf(this.testProp.getProperty("geoServer.Enabled")));
 
@@ -1929,5 +1945,53 @@ public class TestSetup {
 
 	public void setGeoServerEnabled(boolean geoServerEnabled) {
 		this.geoServerEnabled = geoServerEnabled;
+	}
+
+	public String getAbRootFolder() {
+		return abRootFolder;
+	}
+
+	public void setAbRootFolder(String abRootFolder) {
+		this.abRootFolder = abRootFolder;
+	}
+
+	public String getPathToABExe() {
+		return pathToABExe;
+	}
+
+	public void setPathToABExe(String pathToABExe) {
+		this.pathToABExe = pathToABExe;
+	}
+
+	public String getDefaultLogFolder() {
+		return defaultLogFolder;
+	}
+
+	public void setDefaultLogFolder(String defaultLogFolder) {
+		this.defaultLogFolder = defaultLogFolder;
+	}
+
+	public String getArtifactoryBaseUrl() {
+		return artifactoryBaseUrl;
+	}
+
+	public void setArtifactoryBaseUrl(String artifactoryBaseUrl) {
+		this.artifactoryBaseUrl = artifactoryBaseUrl;
+	}
+
+	public String getArtifactoryAPIKey() {
+		return new CryptoUtility().decrypt(artifactoryAPIKey);
+	}
+
+	public void setArtifactoryAPIKey(String artifactoryAPIKey) {
+		this.artifactoryAPIKey = artifactoryAPIKey;
+	}
+
+	public String getArtifactoryRepository() {
+		return artifactoryRepository;
+	}
+
+	public void setArtifactoryRepository(String artifactoryRepository) {
+		this.artifactoryRepository = artifactoryRepository;
 	}
 }
