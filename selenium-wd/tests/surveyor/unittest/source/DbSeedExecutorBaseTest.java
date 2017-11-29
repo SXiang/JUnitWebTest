@@ -20,6 +20,7 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.Asset;
 import surveyor.dataaccess.source.Boundary;
 import surveyor.dataaccess.source.ConnectionFactory;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerBoundaryType;
 import surveyor.dataaccess.source.CustomerMaterialType;
 import surveyor.dbseed.source.AnemometerRawDbSeedBuilder;
@@ -33,18 +34,18 @@ import surveyor.dbseed.source.DbStateVerifier;
 import surveyor.dbseed.source.FieldOfViewDbSeedBuilder;
 import surveyor.dbseed.source.GPSRawDbSeedBuilder;
 import surveyor.dbseed.source.MeasurementDbSeedBuilder;
-import surveyor.dbseed.source.NoteDbSeedBuilder;
 import surveyor.dbseed.source.PeakDbSeedBuilder;
 import surveyor.dbseed.source.SegmentDbSeedBuilder;
 import surveyor.dbseed.source.SurveyConditionDbSeedBuilder;
 import surveyor.dbseed.source.SurveyDbSeedBuilder;
 import surveyor.dbseed.source.SurveyResultDbSeedBuilder;
 import surveyor.scommon.source.BaseTest;
+import surveyor.scommon.source.SurveyorConstants;
 
 public class DbSeedExecutorBaseTest extends BaseTest {
 
 	protected void verifyGenericSeedDataIsPresent() throws Exception, SQLException {
-		// Verify generic seed data is now present in the DB.
+		// Verify generic seed data is present in the DB.
 		Connection connection = null;
 		boolean isGenericSeedPresent = false;
 		try {
@@ -55,6 +56,23 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 		}
 		Assert.assertTrue(isGenericSeedPresent);
 	}
+
+	protected void verifyGisCustomerSeedDataIsPresent() throws Exception, SQLException {
+		final Integer expectedCount = 61;
+		final String gisCustomerNamePrefix = "AutomationSeedCustomer";
+		Integer actualCount = 0;
+		Connection connection = null;
+		try {
+			connection = ConnectionFactory.createConnection();
+			Customer customer = Customer.getCustomer(SurveyorConstants.CUSTOMER_PICARRO);
+			actualCount = customer.executeSingleInt("SELECT COUNT(*) FROM dbo.[Customer] WHERE Name LIKE '" + gisCustomerNamePrefix + "%'");
+		} finally {
+			connection.close();
+		}
+
+		Assert.assertTrue(actualCount == expectedCount);
+	}
+
 
 	protected void verifyGisRefreshSeedDataIsPresent(String customerId) throws Exception {
 		Connection connection = null;
@@ -135,7 +153,6 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 				FieldOfViewDbSeedBuilder fieldOfViewDbSeedBuilder = (FieldOfViewDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("FieldOfView-%s.csv", surveyTag));
 				PeakDbSeedBuilder peakDbSeedBuilder = (PeakDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Peak-%s.csv", surveyTag));
 				SegmentDbSeedBuilder segmentDbSeedBuilder = (SegmentDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Segment-%s.csv", surveyTag));
-				NoteDbSeedBuilder noteDbSeedBuilder = (NoteDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Note-%s.csv", surveyTag));
 
 				// check if survey data is present in database for this survey tag.
 				final String surveyCsvFilePath = surveyDbSeedBuilder.getSeedFilePath();
@@ -152,7 +169,6 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 				final Integer minFieldOfViewCount = FileUtility.getLineCountInFile(Paths.get(fieldOfViewDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minPeakCount = FileUtility.getLineCountInFile(Paths.get(peakDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minSegmentCount = FileUtility.getLineCountInFile(Paths.get(segmentDbSeedBuilder.getSeedFilePath())) - 2;
-				final Integer minNoteCount = FileUtility.getLineCountInFile(Paths.get(noteDbSeedBuilder.getSeedFilePath())) - 2;
 				final List<Map<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
 
 				final String surveyId = firstSurveyRow.get(0).get("Id");

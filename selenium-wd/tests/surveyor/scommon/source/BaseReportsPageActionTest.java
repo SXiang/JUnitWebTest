@@ -7,7 +7,9 @@ import org.junit.Assert;
 
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
@@ -84,10 +86,14 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		reportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
 	}
 
-	protected void waitForReportGenerationToComplete(ReportCommonPageActions reportsPageAction, Integer reportDataRowID) throws Exception {
+	protected boolean waitForReportGenerationToComplete(ReportCommonPageActions reportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
-			reportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
+			if (!reportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID)) {
+				throw new Exception("Report generation failed to complete.");
+			}
 		}
+
+		return true;
 	}
 
 	protected static Integer getUserRowID(Integer dataRowID) {
@@ -127,46 +133,81 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	 * @param reportDataRowID - report row id
 	 * @param testActions - test actions to run
 	 * @return
+	 * @throws Exception
 	 */
-	protected boolean executeAsNewCustomerWithSurveyAndGISData(ReportCommonPageActions pageAction, CustomerSurveyInfoEntity custSrvInfo, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) {
+	protected boolean executeAsNewCustomerWithSurveyAndGISData(ReportCommonPageActions pageAction, CustomerSurveyInfoEntity custSrvInfo, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) throws Exception {
+		boolean retVal = false;
 		try {
+			ensureCustomerWithGisSeedRetained(custSrvInfo);
 			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
+			retVal = testActions.test(pageAction);
 		} catch (Exception e) {
-			Log.error(String.format("EXCEPTION when creating customer and survey. Error -> %s",
+			retVal = false;
+			Log.error(String.format("EXCEPTION in executeAsNewCustomerWithSurveyAndGISData() when creating customer and survey. Error -> %s",
 					ExceptionUtility.getStackTraceString(e)));
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(e)));
+		} finally {
+			if (retVal) {
+				// cleanup if test actions passed.
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					// monitor should cleanup customers locked for longer period of time.
+					CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+				} else {
+					try {
+						// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+						pageAction.open(EMPTY, getReportRowID(reportDataRowID));
+						pageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID));
+						Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+						DbSeedExecutor.cleanUpGisSeed(customer.getId());
+					} catch (Exception e) {
+						Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+					}
+				}
+			}
 		}
 
-		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-		return executeAsCustomerWithGISData(pageAction, customer.getId(), reportDataRowID, testActions);
+		return retVal;
 	}
 
 	/**
 	 * Executes GIS seed for specified customer and runs the steps specified in Predicate.
+	 * Use this method to execute test actions using a Customer that has already been fetched from GIS pool or created from UI.
 	 * @param pageAction - page action object
 	 * @param customerId - guid of customer in DB
 	 * @param reportDataRowID - report row id
 	 * @param testActions - test actions to run
 	 * @return
+	 * @throws Exception
 	 */
-	protected boolean executeAsCustomerWithGISData(ReportCommonPageActions pageAction, String customerId, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) {
+	protected boolean executeAsCustomerWithGISData(ReportCommonPageActions pageAction, String customerId, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) throws Exception {
+		Log.method("executeAsCustomerWithGISData", pageAction, customerId, reportDataRowID, "<predicate method>");
 		boolean retVal = false;
+		boolean pushedGisSeedData = false;
 		try {
-			// Add GIS seed for customer.
-			DbSeedExecutor.executeGisSeed(customerId);
+			if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				DbSeedExecutor.executeGisSeed(customerId);
+				pushedGisSeedData = true;
+			}
 
 			retVal = testActions.test(pageAction);
 
 		} catch (Exception ex) {
+			Log.error(String.format("EXCEPTION in executeAsCustomerWithGISData(). Error -> %s",
+					ExceptionUtility.getStackTraceString(ex)));
 			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
 
 		} finally {
-			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
-			pageAction.open(EMPTY, getReportRowID(reportDataRowID));
-			try {
-				pageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID));
-				DbSeedExecutor.cleanUpGisSeed(customerId);
-			} catch (Exception e) {
-				Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+			if (retVal) {
+				// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+				pageAction.open(EMPTY, getReportRowID(reportDataRowID));
+				try {
+					pageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID));
+					if (pushedGisSeedData) {
+						DbSeedExecutor.cleanUpGisSeed(customerId);
+					}
+				} catch (Exception e) {
+					Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+				}
 			}
 		}
 
@@ -183,5 +224,10 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 				Log.error(String.format("Error creating report. Exception - %s", ExceptionUtility.getStackTraceString(e)));
 			}
 		});
+	}
+
+	private void ensureCustomerWithGisSeedRetained(CustomerSurveyInfoEntity custSrvInfo) {
+		custSrvInfo.setUseCustomerWithGISSeed(true);
+		custSrvInfo.setRetainGISSeedData(true);
 	}
 }

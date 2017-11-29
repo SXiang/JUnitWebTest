@@ -180,27 +180,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC165_SortReportListBasedCompletionDateOtherAttributes
-	 * Test Description: Sort report list based on completion date and other attributes
-	 * Script: -
-	 *	- Sort report list by report title or created by or date attributes present on all reports screen
-	 * Results: -
-	 *	- - User is able to sort the list of reports based on specified attribute
-	 *	- - Sorting by Report Name not allowed
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC165, location = ComplianceReportDataProvider.class)
-	public void TC165_SortReportListBasedCompletionDateOtherAttributes(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC165_SortReportListBasedCompletionDateOtherAttributes ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours
 	 * Test Description: Verify "Max Survey Duration Reached" message is displayed to user if user tries to add surveys having total duration above 100 hours
 	 * Script: -
@@ -211,7 +190,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Max Survey Duration Reached message is displayed on the search button
 	 *	- - User is able to add survey which doesnot exceed 100 hours duration  range
 	 */
-	@Test /*Need survey equals 100 hours */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC194, location = ComplianceReportDataProvider.class)
 	public void TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -228,12 +207,12 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		getComplianceReportsPage().fillReport(rpt);
 
 		/* Add 100 hours survey */ //Uncomment the following 4 lines whenever the survey is ready - US3885
-//		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PIC4HR01TAG);
-//		getComplianceReportsPage().clickOnSearchSurveyButton();
-//		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
+		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PIC4HR01TAG);
+		getComplianceReportsPage().clickOnSearchSurveyButton();
+		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
 
 		/* Add greater than 100 hours survey */
-//		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC4HR01TAG);
+		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC4HR01TAG);
 		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
 		getComplianceReportsPage().clickOnSearchSurveyButton();
 		assertTrue(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
@@ -315,7 +294,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - The   breadcrumb color should be red from the point of data latency until the point   where data latency ends
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC622, location = ComplianceReportDataProvider.class)
 	public void TC622_ComplianceReportsCheckRedTraceDueDataLatency(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -326,6 +305,11 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+
+        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID1)));
 	}
 
 	/**

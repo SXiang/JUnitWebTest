@@ -6,6 +6,8 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
+
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 
@@ -19,6 +21,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageAnalyzerPageActions;
@@ -59,7 +62,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
 	private static ManageSurveyorPageActions manageSurveyorPageAction;
 	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -206,7 +209,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		// Add a new user customer with Report ShapeFile first disabled and then enable it.
 		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+		manageCustomerPageAction.createOrFetchNewGisCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);
 
 		// Create new location.
@@ -258,6 +261,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				pageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 			} catch (Exception ex) {
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			}
 			return true;
@@ -312,7 +316,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		// Add a new user customer with Report ShapeFile first disabled and then enable it.
 		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+
+		manageCustomerPageAction.createOrFetchNewGisCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);
 
 		// Create new location.
@@ -371,12 +376,13 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				pageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 				assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 			} catch (Exception ex) {
+				Log.error(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
 				return false;
 			}
 			return true;
 		}));
 	}
-	
+
 	/**
 	 * Test Case ID: TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags
 	 * Test Description: - Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags
@@ -412,9 +418,10 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
-		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setUseCustomerWithGISSeed(true);
 		custSrvInfo.setRetainGISSeedData(true);
 
+		boolean testFailed = false;
 		try {
 			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
 
@@ -422,7 +429,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
 					DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
-			
+
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 
@@ -436,11 +443,19 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 			assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 			assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-			
+
 		} catch (Exception ex) {
+			testFailed = true;
 			BaseTest.reportTestFailed(ex, ComplianceReportsPageTest3.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testFailed);
 		} finally {
-			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+			if (!testFailed) {
+				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					// monitor should cleanup customers locked for a longer period of time.
+					CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+				}
+			}
 		}
 	}
 

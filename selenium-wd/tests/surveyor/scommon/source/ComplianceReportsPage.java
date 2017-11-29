@@ -30,8 +30,6 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -41,6 +39,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -49,7 +48,6 @@ import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -90,7 +88,6 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
-import common.source.RetryUtil;
 import common.source.SortHelper;
 import common.source.TestContext;
 
@@ -203,6 +200,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
 	protected WebElement reportMode;
 
+	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
+	protected WebElement btnDeleteConfirm;
+	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
+
 	public WebElement getSurveyModalErrorMsg(){
 		return this.surveyModalErrorMsg;
 	}
@@ -290,6 +291,16 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		this.waitForCancelChangeReportModeButton();
 		this.btnChangeModeCancel.click();
 		return isReportModeSelected(mode);
+	}
+
+	@Override
+	public WebElement getBtnDeleteConfirm() {
+		return btnDeleteConfirm;
+	}
+
+	@Override
+	public String getBtnDeleteConfirmXpath() {
+		return btnDeleteConfirmXpath;
 	}
 
 	/**
@@ -2498,68 +2509,21 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
 		Log.method("ComplianceReportsPage.verifyIndicationTable", actualPath, reportTitle);
-		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
-		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		List<String> expectedReportString = new ArrayList<String>();
-		expectedReportString.add(ComplianceReportSSRS_IndicationTable);
-		Log.info(String.format("PDF Text Content : %s", actualReportString));
-		Log.info(String.format("Expected Strings in PDF Text Content : %s",
-				LogHelper.strListToString(expectedReportString)));
-
-		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
-		for (Boolean value : actualFirstPage.values()) {
-			if (!value) {
-				Log.error("Indication table static text verification failed");
-				return false;
-			}
-		}
-
-		String matchStartString = "Disposition Confidence in Disposition";
-		String matchEndString = "Software Version";
-		List<String> indicationTables = RegexUtility.getStringsInBetween(actualReportString, matchStartString,
-				matchEndString);
-		String indicationTable = "";
-		for (String table : indicationTables) {
-			indicationTable += System.lineSeparator() + table;
-		}
-
-		Log.info(String.format("Extracted values between '%s' and '%s' are: %s", matchStartString, matchEndString,
-				indicationTable));
-
-		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		ArrayList<String> reportIndicationsList = new ArrayList<String>();
-		String extraLines = "";
-		try {
-			while ((line = bufferReader.readLine()) != null) {
-				line = TextUtility.removeNonAsciiSpecialChars(line);
-				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
-				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
-					if (!line.trim().matches(RegexUtility.SSRS_PDF_PAGE_FOOTER_PATTERN)) {
-						Log.info("Matched line as a table row!");
-						ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
-						reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "")
-								.replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
-						extraLines = "";
-					}
-				} else if (!reportIndicationsList.isEmpty()
-						&& line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)) {
-					extraLines += line.trim();
-				}
-			}
-		} finally {
-			bufferReader.close();
-		}
-		ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
-		Log.info(String.format("ReportIndications ArrayList Values : %s",
-				LogHelper.strListToString(reportIndicationsList)));
-
+		
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);
+        List<String> reportIndicationsList = new ArrayList<>();
+        for(String[] lisa:lisasIndicationTblList){
+        	String line = "";
+        	for(String field:lisa){
+        		line += field;
+        	}
+        	reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "")
+        			.replace("0.0 ", "").trim().replaceAll("\\s+", "").replace(">=", ""));
+        }
 		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
 				.getReportIndications(reportId);
 		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
@@ -2578,7 +2542,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			return false;
 		}
 
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE, reportTitle);
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf("LISANum");
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		if (!SortHelper.isNumberSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]))) {
@@ -2600,70 +2563,59 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 */
 	public List<String> getLISAInvestigationPDFData(Integer lisaNumber, String reportTitle) throws Exception {
 		Log.method("ComplianceReportsPage.getLISAInvestigationPDFData", lisaNumber, reportTitle);
-		String actualPath =  getDownloadPath(ReportFileType.InvestigationPDF, reportTitle);
-
-		PDFUtility pdfUtility = new PDFUtility();
+		String actualPath =  getDownloadPath(ReportFileType.InvestigationPDF, reportTitle);	
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6).toUpperCase() + "-Investigation.pdf";
 		String reportName = reportId;
-		setReportName(reportName);
-		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		setReportName(reportName);		
+		return getLISAInvestigationPDFData(lisaNumber, reportTitle, actualReport, reportId);
+	}
+	
+    public List<String> getLISAInvestigationPDFData(Integer lisaNumber, String reportTitle, String actualReport, String reportId) throws Exception {
+    	PDFUtility pdfUtility = new PDFUtility();
+		String investigationResultTable = pdfUtility.extractPDFText(actualReport);
 
 		final String datePrinted = Resources.getResource(ResourceKeys.ReportSSRS_DatePrinted);
-		final Integer numPages = getPageCountInSSRSPDF(actualReportString);
-		List<String> lisaInvestigationDetails = new ArrayList<String>();
-		Integer pageTextLength = 0;
+		reportId = reportId.substring(0, 6).toUpperCase();	
+		 String[] reportHeaders = {"^LISAInvestigation Table\\s*$","^"+datePrinted+".+$","^"+reportId+"\\s*$","^"+reportTitle+"\\s*$",
+				 "^"+LisaInvestigationReportSSRS_InvestigationReport+"\\s*$", "^"+_HEADERS_Investigator + "\\s"+ _HEADERS_Duration+"\\s$"};
+		 for(String rptHeader:reportHeaders){
+			 investigationResultTable = investigationResultTable.replaceAll("(?m)"+rptHeader+"\r\n", "");
+		 }
+		 
+		List<String> lisaInvestigationDetails = new ArrayList<String>();		
 		boolean detailsFound = false;
-		for (int pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-			BufferedReader bufferReader = null;
-			try {
-				String investigationResultTable = "";
-
-				if (pageNumber == 1) {
-					investigationResultTable = RegexUtility.getStringInBetween(actualReportString,
-							_HEADERS_Investigator + " "+ _HEADERS_Duration, LisaInvestigationReportSSRS_InvestigationReport);
-				} else {
-					String remainingPdfText = actualReportString.substring(pageTextLength);
-					investigationResultTable = RegexUtility.getStringInBetween(remainingPdfText, reportTitle, reportTitle);
-				}
-
-				pageTextLength += investigationResultTable.length();
-
-				InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
-				bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-				String line = null;
-				while ((line = bufferReader.readLine()) != null) {
-					if (!line.isEmpty()){
-						if(!detailsFound){
-							if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
-								lisaInvestigationDetails.add(line.trim());
-								detailsFound = true;
+		InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+		String line = null;
+		while ((line = bufferReader.readLine()) != null) {
+			if (!line.isEmpty()){
+				if(!detailsFound){
+					if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
+						lisaInvestigationDetails.add(line.trim());
+						detailsFound = true;
+					}
+				}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
+					// skip text in box on top right.
+					if(!line.matches("^"+datePrinted+" .*") && !line.trim().equals(reportId) && !BaseHelper.isNullOrEmpty(line.trim())) {
+						if (line.contains(":")) {
+							if (!line.endsWith(": ")) {
+								line = line.trim();
 							}
-						}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
-							// skip text in box on top right.
-							if(!line.matches("^"+datePrinted+" .*") && !line.trim().equals(reportId.substring(0, 6)) && !BaseHelper.isNullOrEmpty(line.trim())) {
-								if (line.contains(":")) {
-									if (!line.endsWith(": ")) {
-										line = line.trim();
-									}
 
-									lisaInvestigationDetails.add(line);
-								} else {
-									// continuation from previous line.
-									int lastIdx = lisaInvestigationDetails.size()-1;
-									String prevLine = lisaInvestigationDetails.get(lastIdx);
-									lisaInvestigationDetails.set(lastIdx, prevLine + line.trim());
-								}
-							}
-						}else{
-							detailsFound = false;
-							break;
+							lisaInvestigationDetails.add(line);
+						} else {
+							// continuation from previous line.
+							int lastIdx = lisaInvestigationDetails.size()-1;
+							String prevLine = lisaInvestigationDetails.get(lastIdx);
+							lisaInvestigationDetails.set(lastIdx, prevLine + line.trim());
 						}
 					}
+				}else{
+					detailsFound = false;
+					break;
 				}
-			} finally {
-				bufferReader.close();
 			}
 		}
 

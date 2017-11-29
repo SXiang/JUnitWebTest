@@ -4,12 +4,15 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 
 import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
+import common.source.TestContext;
+
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -32,6 +35,7 @@ import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -52,9 +56,23 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static Map<String, String> testAccount, testSurvey, testReport;
 
+	private static Tracker classTracker = Tracker.newTracker(true);    // tracks if any of the tests failed. GIS data is not cleaned up if any of the tests failed.
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
+	}
+
+	@AfterClass
+	public static void afterClass() throws Exception {
+		if (!classTracker.failureEncountered()) {
+			if (testAccount != null) {
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					String customerName = testAccount.get("customerName");
+					CustomerWithGisDataPool.releaseCustomer(customerName);
+				}
+			}
+		}
 	}
 
 	@Before
@@ -69,7 +87,12 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		setPropertiesForTestRunMode();
 
 		if(testAccount == null){
-			testAccount = createTestAccount("CusWithoutAsset");
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				testAccount = createTestAccountWithGisCustomer("CusWithAsset");
+			} else {
+				testAccount = createTestAccount("CusWithoutAsset");
+			}
+
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
 					,testAccount.get("userName"), testAccount.get("userPassword"), 20 /*surveyRuntimeInSeconds*/, SurveyType.Standard);
 		}
@@ -137,8 +160,11 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 
 		Customer customer = Customer.getCustomer(customerName);
 		String customerId = customer.getId();
+
 		String rptTitle = "";
 		String strCreatedBy = "";
+
+		Tracker testTracker = Tracker.newTracker(true);
 
 		try {
 			// Push GIS seed for newly created customer
@@ -169,11 +195,15 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			clickOnComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer);
 			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
 		} catch (Exception ex) {
+			testTracker.setTestStatus(false);
 			BaseTest.reportTestFailed(ex, ComplianceReportsNewCustomerShapeMetadataTest.class.getName());
 		} finally {
-			cleanupReports(rptTitle, strCreatedBy);
-			// Remove GIS seed from the customer.
-			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
+			classTracker.setStatusFrom(testTracker);
+			if (!testTracker.failureEncountered()) {
+				cleanupReports(rptTitle, strCreatedBy);
+				// Remove GIS seed from the customer.
+				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
+			}
 		}
 	}
 
@@ -191,18 +221,18 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification ...");
 
-		Boolean testFailed = false;
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
 
 		Customer customer = Customer.getCustomer(customerName);
 		String customerId = customer.getId();
+
+		Tracker testTracker = Tracker.newTracker(true);
+
 		String rptTitle = "";
 		String strCreatedBy = "";
-
 		try {
-
 			// Push GIS seed for newly created customer
 			DbSeedExecutor.executeGisSeed(customerId);
 			String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
@@ -234,10 +264,11 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
 
 		} catch (Exception ex) {
-			testFailed = true;
+			testTracker.setTestStatus(false);
 			BaseTest.reportTestFailed(ex, ComplianceReportsNewCustomerShapeMetadataTest.class.getName());
 		} finally {
-			if (!testFailed) {
+			classTracker.setStatusFrom(testTracker);
+			if (!testTracker.failureEncountered()) {
 				cleanupReports(rptTitle, strCreatedBy);
 				// Remove GIS seed from the customer.
 				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
@@ -263,8 +294,6 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer ...");
 
-		Boolean testFailed = false;
-
 		// Unselect Report metadata and Report ShapeFile license features for the new customer.
 		String customerName = testAccount.get("customerName");
 
@@ -279,6 +308,8 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, getReportMetaReportShapeLicFeatures());
 		getHomePage().logout();
+
+		Tracker testTracker = Tracker.newTracker(true);
 
 		try {
 			// Push GIS seed for newly created customer
@@ -303,11 +334,11 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
 
 		} catch (Exception ex) {
-			testFailed = true;
+			testTracker.setTestStatus(false);
 			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
-
 		} finally {
-			if (!testFailed) {
+			classTracker.setStatusFrom(testTracker);
+			if (!testTracker.failureEncountered()) {
 				cleanupReports(rptTitle, strCreatedBy);
 				// Remove GIS seed from the customer.
 				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
@@ -343,7 +374,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 	private void copyReportAndWaitForReportGenerationToComplete(String rptTitle, String strCreatedBy) {
 		copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy, strCreatedBy);
 	}
-	
+
 	private void copyReportAndWaitForReportGenerationToComplete(String rptTitle, String strCreatedBy, String strCreatedBy1 ) {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);

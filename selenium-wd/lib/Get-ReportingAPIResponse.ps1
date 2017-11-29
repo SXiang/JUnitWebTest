@@ -15,7 +15,13 @@ param
   [String] $AutomationReportingAPIBaseUrl="http://localhost:63087",         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
 
   [Parameter(Mandatory=$false)]
-  [String] $APIRelativeUrl="api/EnvironmentBuilds?environmentName=SQAAuto"
+  [String] $APIRelativeUrl="api/EnvironmentBuilds?environmentName=SQAAuto",
+
+  [Parameter(Mandatory=$false)]
+  [String] $Method="GET",
+
+  [Parameter(Mandatory=$false)]
+  [String] $Body=""
 )
 
 $libFolder = "selenium-wd\lib"
@@ -35,7 +41,10 @@ $Headers = @{
     Token = $authToken
 }
 
-#Write-Host "Get results for $AutomationReportingAPIBaseUrl/$APIRelativeUrl ..."
-$response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$APIRelativeUrl" -Headers $Headers -Method GET
-#Write-Host "Get results successful! Response = $response"
+if ($Method -eq "POST") {
+    $response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$APIRelativeUrl" -Headers $Headers -Method $Method -Body $Body -ContentType "application/json"
+} else {
+    $response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$APIRelativeUrl" -Headers $Headers -Method $Method
+}
+
 $response.Content

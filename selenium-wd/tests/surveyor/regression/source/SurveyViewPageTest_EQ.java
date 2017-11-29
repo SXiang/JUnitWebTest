@@ -2,11 +2,10 @@ package surveyor.regression.source;
 
 import org.junit.Test;
 import common.source.Log;
+import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.entities.FeatureInfoEntity;
-import surveyor.scommon.source.BaseMapViewPage.FeatureInfo;
-
+import surveyor.dataaccess.source.Survey;
 import static org.junit.Assert.*;
 import java.io.IOException;
 
@@ -42,7 +41,11 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		Log.info("\nRunning TC1070_SurveyViewInSatelliteView_PicarroSupport ...");
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, USER_ROW_ID_PICARRO_SUPPORT);   /* Picarro Support */
-		getSurveyViewPageAction().open(TEST_SURVEY_EQ_ID, NOTSET);
+
+		final String analyzerId = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_EQANALYZER_ETH1).getId().toString();
+		final String surveyEQId = Survey.getSurveys(TEST_SURVEY_EQ_TAG).stream().filter(s -> s.getAnalyzerId().equals(analyzerId)).findFirst().orElse(null).getId();
+
+		getSurveyViewPageAction().open(surveyEQId, NOTSET);
 		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
@@ -50,11 +53,11 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().turnOnEightHourHistory(EMPTY, NOTSET);
 
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
-		
+		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsVisible(EMPTY, NOTSET));
+
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -69,15 +72,16 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER_4, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR_4, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_F, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 //		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 //		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
-		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
+		//assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}
 
 	/**
@@ -103,19 +107,23 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		Log.info("\nRunning TC1077_SurveyViewInMapView_CustomerDriver ...");
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, USER_ROW_ID_SQACUS_DRIVER);   /* SQACUS Driver */
-		getSurveyViewPageAction().open(TEST_SURVEY_EQ_ID_SQACUS, NOTSET);
+
+		final String analyzerId = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_EQANALYZER_SQACUS_ETH1).getId().toString();
+		final String surveyEQSqacusId = Survey.getSurveys(TEST_SURVEY_EQ_TAG).stream().filter(s -> s.getAnalyzerId().equals(analyzerId)).findFirst().orElse(null).getId();
+
+		getSurveyViewPageAction().open(surveyEQSqacusId, NOTSET);
 		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnEightHourHistory(EMPTY, NOTSET);
-		
+
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
-		
+
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -129,14 +137,15 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER_6, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR_6, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_F, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		
+
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
-		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
+		//assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}
 }

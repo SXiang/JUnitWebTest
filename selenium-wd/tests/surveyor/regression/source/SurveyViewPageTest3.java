@@ -893,6 +893,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssets (EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnAllBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_OPERATOR1_TAG, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_OPERATOR1_TYPE, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_OPERATOR1_USERNAME, NOTSET));

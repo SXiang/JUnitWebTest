@@ -7,6 +7,9 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+
+import java.awt.Rectangle;
+
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 
@@ -532,7 +535,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-		int workingLisa = 9;
+		int workingLisa = 8;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
@@ -545,7 +548,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap", new Rectangle(0, 700, 0, 0)));
 
 		mobileLoginPage.logout();
 	}
@@ -597,7 +600,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-		int workingLisa = 9;
+		int workingLisa = 8;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
@@ -610,7 +613,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap", new Rectangle(0, 700, 0, 0)));
 
 		mobileLoginPage.logout();
 	}

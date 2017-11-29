@@ -87,13 +87,17 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	public void postTestMethodProcessing() {
 		Log.method("BaseReportsPageTest.postTestMethodProcessing");
 		try {
+			TestContext.INSTANCE.suppressTestMessageUpdate();
 			cleanUp();
 			if (getReportsPage() != null) {
 				getReportsPage().logout();
 			}
 		} catch (Exception e) {
+			TestContext.INSTANCE.unsuppressTestMessageUpdate();
 			Log.warn(String.format("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message: %s",
 					ExceptionUtility.getStackTraceString(e)));
+		} finally {
+			TestContext.INSTANCE.unsuppressTestMessageUpdate();
 		}
 	}
 

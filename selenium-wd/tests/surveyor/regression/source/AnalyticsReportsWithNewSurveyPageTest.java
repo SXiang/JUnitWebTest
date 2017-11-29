@@ -1,5 +1,6 @@
 package surveyor.regression.source;
 
+import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.TestContext;
@@ -23,6 +24,7 @@ import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -124,7 +126,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
 
-		Boolean testFailed = false;
+		Tracker testTracker = Tracker.newTracker(true);
 
 		final int DB3_ANALYZER_ROW_ID = 71;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
@@ -141,7 +143,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
-		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setUseCustomerWithGISSeed(true);
 		custSrvInfo.setRetainGISSeedData(true);
 
 		try {
@@ -191,13 +193,21 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(newAnalyticsRankingMinAmp, NOTSET));
 
 		} catch (Exception ex) {
-			testFailed = true;
+			testTracker.setTestStatus(false);
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testTracker.failureEncountered());
 		} finally {
-			if (!testFailed) {
+			if (!testTracker.failureEncountered()) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.
-				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+				FunctionUtil.warnOnError(() -> {
+					if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+						// monitor should cleanup customers locked for a longer period.
+						CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+					} else {
+						DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId());
+					}
+				});
 			}
 		}
 	}
@@ -229,7 +239,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
 
-		Boolean testFailed = false;
+		Tracker testTracker = Tracker.newTracker(true);
 
 		final int DB3_ANALYZER_ROW_ID = 69;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
@@ -246,7 +256,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
-		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setUseCustomerWithGISSeed(true);
 		custSrvInfo.setRetainGISSeedData(true);
 
 		try {
@@ -308,13 +318,20 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 		} catch (Exception ex) {
-			testFailed = true;
+			testTracker.setTestStatus(false);
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+			assertTrue(String.format("Failure encountered in test. Exception -> %s", ExceptionUtility.getStackTraceString(ex)), !testTracker.failureEncountered());
 		} finally {
-			if (!testFailed) {
+			if (!testTracker.failureEncountered()) {
 				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 				// Remove GIS seed from the customer.
-				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+				FunctionUtil.warnOnError(() -> {
+					if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+						CustomerWithGisDataPool.releaseCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+					} else {
+						DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId());
+					}
+				});
 			}
 		}
 	}

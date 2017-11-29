@@ -900,11 +900,12 @@ public class SurveyorBasePage extends BasePage {
 					Log.info("jQuery NOT available. Skipping wait on jQuery(':animated')");
 					return true;
 				}
+
 				return false;
 			}
 		};
 		try{
-			(new WebDriverWait(driver, 2*timeout)).until(jQueryAnimationComplete);
+			(new WebDriverWait(driver, 5)).until(jQueryAnimationComplete);
 		}catch(Exception e){
 			Log.warn("Failed to wait for animation to complete "+e);
 		}

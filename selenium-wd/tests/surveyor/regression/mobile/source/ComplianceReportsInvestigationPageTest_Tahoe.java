@@ -484,7 +484,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		// Assign Lisas to user
-		int workingLisa = 9;
+		int workingLisa = 8;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
@@ -497,7 +497,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap", new Rectangle(0, 700, 0, 0)));
 
 		mobileLoginPage.logout();
 	}
@@ -543,7 +543,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 		// Assign Lisas to user
-		int workingGap = 9;
+		int workingGap = 1;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectGapsByNumber(reportName, workingGap);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
@@ -556,7 +556,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnGap(reportName, workingGap);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationGapMap"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationGapMap", new Rectangle(100, 615, 180, 200)));
 
 		mobileLoginPage.logout();
 	}

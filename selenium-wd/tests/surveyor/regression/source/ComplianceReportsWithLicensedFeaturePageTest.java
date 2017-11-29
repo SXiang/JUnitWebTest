@@ -13,9 +13,9 @@ import common.source.Log;
 import common.source.LogHelper;
 import common.source.RetryUtil;
 import common.source.Screenshotter;
+import common.source.TestContext;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -40,12 +40,12 @@ import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.CustomerLicenses;
+import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.CustomerLicenses.License;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPageActionTest {
@@ -62,6 +62,9 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	private static String analyzerName;
 	private static String customerId;
 	private static String surveyTag;
+
+	private static Tracker classTracker = Tracker.newTracker(true);    // tracks if any of the tests failed. GIS data is not cleaned up if any of the tests failed.
+
 	@Rule
 	public TestName testName = new TestName();
 
@@ -72,9 +75,16 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	}
 
 	@AfterClass
-	public static void afterClass() {
+	public static void afterClass() throws Exception {
 		if(testAccount!=null && customerId!=null){
-			cleanUpGisData(customerId);
+			if (!classTracker.failureEncountered()) {
+				if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+					String customerName = testAccount.get("customerName");
+					CustomerWithGisDataPool.releaseCustomer(customerName);
+				} else {
+					cleanUpGisData(customerId);
+				}
+			}
 		}
 	}
 
@@ -89,14 +99,23 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 		if(testAccount == null){
-			testAccount = createTestAccount("LicFeature");	
+			if (TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				testAccount = createTestAccountWithGisCustomer("LicFeature", CapabilityType.Ethane);
+			} else {
+				testAccount = createTestAccount("LicFeature", CapabilityType.Ethane);
+			}
+
 			userName = testAccount.get("userName");
 			userPassword = testAccount.get("userPassword");
 			customerName = testAccount.get("customerName");
 			analyzerSharedKey = testAccount.get("analyzerSharedKey");
 			analyzerName = testAccount.get("analyzerName");
 			customerId = testAccount.get("customerId");
-			pushGisData(customerId);	
+
+			if (!TestContext.INSTANCE.getTestSetup().isGeoServerEnabled()) {
+				pushGisData(customerId);
+			}
+
 			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword);
 			testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
 					"Surveyor_FEDS2067_std.db3", "replay-db3.defn", userName, userPassword, 150, SurveyType.Standard);
@@ -157,18 +176,20 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled ...");
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE);
-		getHomePage().logout();
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);		
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE);
+			getHomePage().logout();
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -190,19 +211,21 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification ...");
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
-		getHomePage().logout();
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);		
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+			getHomePage().logout();
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -225,27 +248,29 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration ...");
-				
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		addTestReport(PICDFADMIN, PICADMINPSWD, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+
+			addTestReport(PICDFADMIN, PICADMINPSWD, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -264,24 +289,26 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport ...");
 
-		testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+			String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.Resubmit, false);
-		complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1));
-		getHomePage().logout();
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.Resubmit, false);
+			assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1)));
+			getHomePage().logout();
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -306,24 +333,26 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC791_ReportShapefilePermissionExistingCustomer_NewComplianceReportGeneration ...");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
-		
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+
+			complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -348,24 +377,26 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC792_ReportMetaDataPermissionExistingCustomer_NewComplianceReportGeneration ...");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
-		
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
-		assertTrue(complianceReportsPageAction.verifyReportSurveyMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyGapMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("true:false:true:false", getReportRowID(reportDataRowID1)));
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertTrue(complianceReportsPageAction.verifyReportSurveyMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(complianceReportsPageAction.verifyGapMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("true:false:true:false", getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -390,35 +421,36 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC793_ReportShapefilePermissionExistingCustomer_CopyComplianceReportGeneration ...");
 
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+
+			complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -443,34 +475,36 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC794_ReportShapefilePermissionExistingCustomer_ReprocessComplianceReport ...");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
 
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(userName, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1));
-		getHomePage().logout();
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnResubmitButton(userName, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1)));
+			getHomePage().logout();
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+
+			complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertTrue(complianceReportsPageAction.verifyShapeZipFilesArePresent("GAP", getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -495,31 +529,33 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC795_ReportMetaDataPermissionExistingCustomer_CopyComplianceReportGeneration ...");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("false:false:true:false", getReportRowID(reportDataRowID1)));
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+
+			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("false:false:true:false", getReportRowID(reportDataRowID1)));
+		});
 	}
 
 	/**
@@ -544,40 +580,42 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport ...");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+		withTrackerExecute(classTracker, () -> {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
+			addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Standard);
 
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(userName, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1));
-		getHomePage().logout();
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.REPORTSHAPEFILE, LicensedFeatures.REPORTMETADATA);
 
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));	
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("false:false:true:false", getReportRowID(reportDataRowID1)));
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnResubmitButton(userName, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(userName, getReportRowID(reportDataRowID1)));
+			getHomePage().logout();
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("false:false:true:false", getReportRowID(reportDataRowID1)));
+		});
 	}
-	
+
 	/**
 	 * Test Case ID: TC1496_AddLISABoxOptonToExistingCustomer
 	 * Test Description: Add LISA Box option to existing customer
-	 * Script: 
+	 * Script:
 	 *	- A customer that does not have LISA Box 1.0 option enabled
 	 *	- Customer has license for GIS Layers, Highlight LISA Assets
 	 *	- Log into PCubed as Picarro Admin
@@ -590,12 +628,12 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 *	- Once the report has completed generation, click on the Compliance Viewer button and then the View thumbnail
 	 *	- Click on the Shape File button
 	 *	- Run the Shape Files through GIS software like ArcGIS
-	 * Results: 
+	 * Results:
 	 *	- In the report view, the LISA box should be rectagular in shape and circumscribe the LISA itself
 	 *	- All LISA boxes should have a minimum width of 100 feet, regardless of the shape of the LISA itself
 	 *	- There should be a 50 foot buffer between the LISA bubble and the side of the box perpendicular to the line bisecting the LISA
 	 *	- The segment of Main contained within the LISA box should be highlighted
-	 *	-  Any Service assets that are contained in or touch a LISA box should be highlighted along its entire length 
+	 *	-  Any Service assets that are contained in or touch a LISA box should be highlighted along its entire length
 	 *	- The main to which each of the highlighted Services are attached should also be highlighted, up to 25 feet on either side of the "T" connected to the Service
 	 *	- Overlapping LISA boxes should not be combined into a single box. Each LISA should have its own LISA box drawn as a distinct box unto itself
 	 *	- The report View should have all LISAs in the shape of boxes, not fans or circles
@@ -606,55 +644,57 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC1496_AddLISABoxOptonToExistingCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning  TC1496_AddLISABoxOptonToExistingCustomer...");
-		
-		String surveyTag1 = testSurvey.get(SurveyType.Standard.toString()+"Tag");
-		String surveyTag2 = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		/* UnSelect LisaBox1.0 */
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.LISABOX10);
-		getHomePage().logout();
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);		
-		addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID2, SurveyModeFilter.Standard);
-		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID2));		
-        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID2));
-        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID2));
-        complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
-		
-		assertTrue(complianceReportsPageAction.verifyNumberOfLISAsInShapeFilesEquals("2", getReportRowID(reportDataRowID2)));
-        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID2)));
-        
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		/* Select LisaBox1.0 */
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.LISABOX10);
-		getHomePage().logout();
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);		
-		addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID1, SurveyModeFilter.Standard);
-		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));		
-        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		
-		assertTrue(complianceReportsPageAction.verifyNumberOfLISAsInShapeFilesEquals("2", getReportRowID(reportDataRowID1)));
-        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID1)));
-        
-		getHomePage().logout();
+		withTrackerExecute(classTracker, () -> {
+			String surveyTag1 = testSurvey.get(SurveyType.Standard.toString()+"Tag");
+			String surveyTag2 = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			/* UnSelect LisaBox1.0 */
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.LISABOX10);
+			getHomePage().logout();
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID2, SurveyModeFilter.Standard);
+
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
+			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID2));
+	        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID2));
+	        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID2));
+	        complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID2));
+			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+
+			assertTrue(complianceReportsPageAction.verifyNumberOfLISAsInShapeFilesEquals("2", getReportRowID(reportDataRowID2)));
+	        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID2)));
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			/* Select LisaBox1.0 */
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.LISABOX10);
+			getHomePage().logout();
+
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
+			addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID1, SurveyModeFilter.Standard);
+
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+	        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+	        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+	        complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertTrue(complianceReportsPageAction.verifyNumberOfLISAsInShapeFilesEquals("2", getReportRowID(reportDataRowID1)));
+	        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("FALSE", getReportRowID(reportDataRowID1)));
+
+			getHomePage().logout();
+		});
 	}
-	
+
 	/* * Test Case ID: TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense
 	 * Script:
 	 * 	 * - Log into UI as Picarro admin and navigate to Manage Customers page
@@ -675,72 +715,74 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense() throws Exception {
 		Log.info("\nRunning TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense");
 
-		String userName = testAccount.get("userName");
-		String userPassword = testAccount.get("userPassword");
-		String customerName = testAccount.get("customerName");
+		withTrackerExecute(classTracker, () -> {
+			String userName = testAccount.get("userName");
+			String userPassword = testAccount.get("userPassword");
+			String customerName = testAccount.get("customerName");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		/* Unselect RR and Manual */
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
+			/* Unselect RR and Manual */
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
 
-		getHomePage().logout();
+			getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyStandardReportModeIsShownOnPage(EMPTY, NOTSET));
-		assertFalse(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
-		assertFalse(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		getHomePage().logout();
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
+			assertTrue(complianceReportsPageAction.verifyStandardReportModeIsShownOnPage(EMPTY, NOTSET));
+			assertFalse(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
+			assertFalse(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
+			assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+			getHomePage().logout();
 
-		/* Select RR */
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			/* Select RR */
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
 
-		getHomePage().logout();
+			getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
-		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
+			assertTrue(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
+			assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 
-		getHomePage().logout();
+			getHomePage().logout();
 
-		/* Select Manual */
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			/* Select Manual */
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
 
-		getHomePage().logout();
+			getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
-		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		getHomePage().logout();
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
+			assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
+			assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+			getHomePage().logout();
+		});
 	}
 
 	/* * Test Case ID: TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance
@@ -763,77 +805,79 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance() throws Exception {
 		Log.info("\nRunning TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance");
 
-		String userName = testAccount.get("userName");
-		String userPassword = testAccount.get("userPassword");
-		String customerName = testAccount.get("customerName");
+		withTrackerExecute(classTracker, () -> {
+			String userName = testAccount.get("userName");
+			String userPassword = testAccount.get("userPassword");
+			String customerName = testAccount.get("customerName");
 
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
-		String rptTitle = testReport.get(SurveyType.Standard+"Title");
-		String strCreatedBy = testReport.get("userName");
+			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
+			String rptTitle = testReport.get(SurveyType.Standard+"Title");
+			String strCreatedBy = testReport.get("userName");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		/* Unselect RR and Manual */
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
-		getHomePage().logout();
+			/* Unselect RR and Manual */
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
+			getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertTrue(complianceReportsPageAction.verifyStandardReportModeIsShownOnPage(EMPTY, NOTSET));
-		assertFalse(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
-		assertFalse(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		getHomePage().logout();
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
+			complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+			assertTrue(complianceReportsPageAction.verifyStandardReportModeIsShownOnPage(EMPTY, NOTSET));
+			assertFalse(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
+			assertFalse(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
+			assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+			getHomePage().logout();
 
-		/* Select RR */
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			/* Select RR */
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
 
-		getHomePage().logout();
+			getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
-		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
+			complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+			assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
+			assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 
-		getHomePage().logout();
+			getHomePage().logout();
 
-		/* Select Manual */
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			/* Select Manual */
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
 
-		getHomePage().logout();
+			getHomePage().logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
-		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		getHomePage().logout();
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
+			complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+			complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
+			assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
+			complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+			getHomePage().logout();
+		});
 	}
 
 	/* * Test Case ID: TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense
@@ -853,58 +897,60 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense() throws Exception {
 		Log.info("\nRunning TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense");
 
-		LicensedFeatures[] lfs = {LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL};
-		SurveyModeFilter[] surveyModeFilter = {SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
-		String errorPattern = ComplianceReportsPage.ComplianceReport_LicenseMissing;
-		testReport = addTestReport(userName, userPassword);
-		String strCreatedBy = userName;
+		withTrackerExecute(classTracker, () -> {
+			LicensedFeatures[] lfs = {LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL};
+			SurveyModeFilter[] surveyModeFilter = {SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
+			String errorPattern = ComplianceReportsPage.ComplianceReport_LicenseMissing;
+			testReport = addTestReport(userName, userPassword);
+			String strCreatedBy = userName;
 
-		for(int i=0; i<lfs.length; i++){
-			getLoginPage().open();
-			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			for(int i=0; i<lfs.length; i++){
+				getLoginPage().open();
+				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-			// unselecting licenses failing intermittently in CI runs. adding retries.
-			final Integer idx = i;
-			boolean actionSuccess = RetryUtil.retryOnException(
-					() -> {
-						manageCustomerPageAction.open(EMPTY, NOTSET);
-						LicensedFeatures license = lfs[idx];
-						Log.info(String.format("Unselecting license - '%s'", license.toString()));
-						manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, license);
-						List<License> customerLicenses = new CustomerLicenses().getLicenses(customerName);
-						Log.info(String.format("Licenses assigned to customer-[%s] -> %s", customerName, LogHelper.collectionToString(customerLicenses, "Customer Licenses")));
-						return !customerLicenses.contains(license.toString());
-					},
-					() -> { return true; },
-					Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
-					Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+				// unselecting licenses failing intermittently in CI runs. adding retries.
+				final Integer idx = i;
+				boolean actionSuccess = RetryUtil.retryOnException(
+						() -> {
+							manageCustomerPageAction.open(EMPTY, NOTSET);
+							LicensedFeatures license = lfs[idx];
+							Log.info(String.format("Unselecting license - '%s'", license.toString()));
+							manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, license);
+							List<License> customerLicenses = new CustomerLicenses().getLicenses(customerName);
+							Log.info(String.format("Licenses assigned to customer-[%s] -> %s", customerName, LogHelper.collectionToString(customerLicenses, "Customer Licenses")));
+							return !customerLicenses.contains(license.toString());
+						},
+						() -> { return true; },
+						Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+						Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
 
-			if (!actionSuccess) {
-				LicensedFeatures license = lfs[i];
-				Log.info(String.format("License-'%s' was NOT removed correctly.", license.toString()));
+				if (!actionSuccess) {
+					LicensedFeatures license = lfs[i];
+					Log.info(String.format("License-'%s' was NOT removed correctly.", license.toString()));
+				}
+
+				getHomePage().logout();
+				getLoginPage().open();
+				getLoginPage().loginNormalAs(userName, userPassword);
+
+				String rptTitle = testReport.get(surveyModeFilter[i].toString()+"Title");
+				String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString());
+				complianceReportsPageAction.open(EMPTY, NOTSET);
+
+				List<License> customerLicenses = new CustomerLicenses().getLicenses(customerName);
+				Log.info(String.format("Licenses assigned to customer-[%s] -> %s", customerName, LogHelper.collectionToString(customerLicenses, "Customer Licenses")));
+
+				Screenshotter.captureWebDriverScreenshot(getDriver(), "TC2112_BeforeCopyReportClick");
+				complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
+				Screenshotter.captureWebDriverScreenshot(getDriver(), "TC2112_AfterCopyReportClick");
+
+				List<String> licenseMissingText = getHomePage().getLicenseMissingText();
+				Log.info(String.format("[ACTUAL] License missing text found on page -> %s", LogHelper.listToString(licenseMissingText)));
+				Log.info(String.format("[EXPECTED] Error message -> %s", errorMsg));
+				assertTrue(licenseMissingText.contains(errorMsg));
+				getHomePage().logout();
 			}
-
-			getHomePage().logout();
-			getLoginPage().open();
-			getLoginPage().loginNormalAs(userName, userPassword);
-
-			String rptTitle = testReport.get(surveyModeFilter[i].toString()+"Title");
-			String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString());
-			complianceReportsPageAction.open(EMPTY, NOTSET);
-
-			List<License> customerLicenses = new CustomerLicenses().getLicenses(customerName);
-			Log.info(String.format("Licenses assigned to customer-[%s] -> %s", customerName, LogHelper.collectionToString(customerLicenses, "Customer Licenses")));
-
-			Screenshotter.captureWebDriverScreenshot(getDriver(), "TC2112_BeforeCopyReportClick");
-			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-			Screenshotter.captureWebDriverScreenshot(getDriver(), "TC2112_AfterCopyReportClick");
-
-			List<String> licenseMissingText = getHomePage().getLicenseMissingText();
-			Log.info(String.format("[ACTUAL] License missing text found on page -> %s", LogHelper.listToString(licenseMissingText)));
-			Log.info(String.format("[EXPECTED] Error message -> %s", errorMsg));
-			assertTrue(licenseMissingText.contains(errorMsg));
-			getHomePage().logout();
-		}
+		});
 	}
 
 	/* * Test Case ID: TC2134_CurtainViewNotAvailableWithoutLicense
