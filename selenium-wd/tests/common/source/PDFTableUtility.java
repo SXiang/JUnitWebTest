@@ -15,7 +15,7 @@ import org.testng.Assert;
 
 public class PDFTableUtility extends PDFUtility{
 
-	protected String pageFooterPattern = "^Report Author:.*$|^Date Printed:.*$|^.*@picarro.com$";
+	protected String pageFooterPattern = "^Report Author:.*$|^Date Printed:.*$|^.*@picarro.com$|^[A-Z]{3}$";
 	protected String pageHeaderPattern = "";
 	protected String ignorableLinePattern = "";
 
