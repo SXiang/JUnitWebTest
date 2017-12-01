@@ -832,7 +832,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYGAPTB, "0");
-		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "1");
 		tablesList.add(tableMap);
 
@@ -1122,7 +1122,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *  - - Click on OK
 	 * Results: -
 	 *	- - User friendly message should be displayed to user:
-	 *	- View(s) with Assets, Please select at least one Asset Layer
+	 *	- Percent Coverage Assets And/Or View(s) with Assets, Please select at least one Asset Layer
 	 *	- View(s) with Boundaries, Please select at least one Boundary Layer
 	 */
 	@Test
@@ -1181,7 +1181,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		this.getComplianceReportsPage().addViews(getTestSetup().getLoginUser(), viewList2);
 		this.getComplianceReportsPage().clickOnOKButton();
-		AssertHelper.equals("View(s) with Assets, Please select at least one Asset Layer", this.getComplianceReportsPage().getAssetErrorText().getText());
+		AssertHelper.equals("Percent Coverage Assets And/Or View(s) with Assets, Please select at least one Asset Layer", this.getComplianceReportsPage().getAssetErrorText().getText());
 		AssertHelper.equals("View(s) with Boundaries, Please select at least one Boundary Layer", this.getComplianceReportsPage().getBoundaryErrorText().getText());
 	}
 

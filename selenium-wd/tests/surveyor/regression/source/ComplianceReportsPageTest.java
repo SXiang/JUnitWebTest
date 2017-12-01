@@ -92,7 +92,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	protected static final Integer DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS = 2400;  // Max timeout= 40 mins for report gen.
 
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
-	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
+	private String STRReportAssetNotSelectedMsg = "Percent Coverage Assets And/Or View(s) with Assets, Please select at least one Asset Layer";
 	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
 	private static Map<String, String> testCaseMap = Collections.synchronizedMap(new HashMap<String, String>());
 
