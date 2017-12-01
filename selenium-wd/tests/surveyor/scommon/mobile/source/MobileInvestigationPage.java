@@ -85,7 +85,7 @@ public class MobileInvestigationPage extends MobileBasePage {
 	}
 
 	public MobileInvestigatePage clickOnGap(String reportName, int lisaNumber, InvestigationEntity investigationEntity){
-		return clickOnLisa(reportName+"-Gaps-"+lisaNumber, investigationEntity);
+		return clickOnGap(reportName+"-Gaps-"+lisaNumber, investigationEntity);
 	}
 	
 	public MobileInvestigatePage clickOnGap(String gapNumber, InvestigationEntity investigationEntity){
