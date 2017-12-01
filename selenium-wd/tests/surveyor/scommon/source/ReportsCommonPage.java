@@ -3379,6 +3379,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				return false;
 			}
 		}
+		actualReportString = actualReportString.substring(actualReportString.indexOf(ComplianceReportSSRS_GapTable));
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
