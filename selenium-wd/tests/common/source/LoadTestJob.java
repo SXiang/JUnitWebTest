@@ -9,7 +9,8 @@ public class LoadTestJob {
 	private String testCaseName;
 	private String apiURL;
 	private String contentType;
-	private String requestBody;
+	private String username;
+	private String password;
 	private HttpMethod method;
 	private Integer concurrentRequests;
 	private Integer requestsInOneSession;
@@ -30,18 +31,25 @@ public class LoadTestJob {
 		this.apiURL = apiURL;
 		return this;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public LoadTestJob setUsername(String username) {
+		this.username = username;
+		return this;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public LoadTestJob setPassword(String password) {
+		this.password = password;
+		return this;
+	}
 	public String getContentType() {
 		return contentType;
 	}
 	public LoadTestJob setContentType(String contentType) {
 		this.contentType = contentType;
-		return this;
-	}
-	public String getRequestBody() {
-		return requestBody;
-	}
-	public LoadTestJob setRequestBody(String requestBody) {
-		this.requestBody = requestBody;
 		return this;
 	}
 	public HttpMethod getMethod() {

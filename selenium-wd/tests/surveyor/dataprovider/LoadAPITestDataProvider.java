@@ -1,9 +1,6 @@
 package surveyor.dataprovider;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import org.junit.runners.model.InitializationError;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -25,6 +22,8 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 
 		final String contentType = "application/x-www-form-urlencoded";
 		final String requestBody = "username=PICARRO_VIEWER&password=PICARRO_VIEWER";
+		final String username = "PICARRO_VIEWER";
+		final String password = "PICARRO_VIEWER";
 		final HttpMethod method = HttpMethod.POST;
 		final Integer concurrentRequests = 100;
 		final Integer requestsInOneSession = 10;
@@ -183,44 +182,44 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 		final Integer expectedResponseContentLength_38 = 206569;
 
 		return new Object[][] {
-			{ testCaseName_1, apiURL_1, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_1 },
-			{ testCaseName_2, apiURL_2, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_2 },
-			{ testCaseName_3, apiURL_3, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_3 },
-			{ testCaseName_4, apiURL_4, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_4 },
-			{ testCaseName_5, apiURL_5, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_5 },
-			{ testCaseName_6, apiURL_6, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_6 },
-			{ testCaseName_7, apiURL_7, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_7 },
-			{ testCaseName_8, apiURL_8, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_8 },
-			{ testCaseName_9, apiURL_9, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_9 },
-			{ testCaseName_10, apiURL_10, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_10 },
-			{ testCaseName_11, apiURL_11, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_11 },
-			{ testCaseName_12, apiURL_12, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_12 },
-			{ testCaseName_13, apiURL_13, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_13 },
-			{ testCaseName_14, apiURL_14, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_14 },
-			{ testCaseName_15, apiURL_15, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_15 },
-			{ testCaseName_16, apiURL_16, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_16 },
-			{ testCaseName_17, apiURL_17, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_17 },
-			{ testCaseName_18, apiURL_18, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_18 },
-			{ testCaseName_19, apiURL_19, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_19 },
-			{ testCaseName_20, apiURL_20, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_20 },
-			{ testCaseName_21, apiURL_21, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_21 },
-			{ testCaseName_22, apiURL_22, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_22 },
-			{ testCaseName_23, apiURL_23, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_23 },
-			{ testCaseName_24, apiURL_24, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_24 },
-			{ testCaseName_25, apiURL_25, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_25 },
-			{ testCaseName_26, apiURL_26, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_26 },
-			{ testCaseName_27, apiURL_27, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_27 },
-			{ testCaseName_28, apiURL_28, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_28 },
-			{ testCaseName_29, apiURL_29, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_29 },
-			{ testCaseName_30, apiURL_30, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_30 },
-			{ testCaseName_31, apiURL_31, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_31 },
-			{ testCaseName_32, apiURL_32, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_32 },
-			{ testCaseName_33, apiURL_33, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_33 },
-			{ testCaseName_34, apiURL_34, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_34 },
-			{ testCaseName_35, apiURL_35, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_35 },
-			{ testCaseName_36, apiURL_36, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_36 },
-			{ testCaseName_37, apiURL_37, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_37 },
-			{ testCaseName_38, apiURL_38, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_38 },
+			{ testCaseName_1, apiURL_1, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_1 },
+			{ testCaseName_2, apiURL_2, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_2 },
+			{ testCaseName_3, apiURL_3, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_3 },
+			{ testCaseName_4, apiURL_4, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_4 },
+			{ testCaseName_5, apiURL_5, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_5 },
+			{ testCaseName_6, apiURL_6, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_6 },
+			{ testCaseName_7, apiURL_7, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_7 },
+			{ testCaseName_8, apiURL_8, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_8 },
+			{ testCaseName_9, apiURL_9, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_9 },
+			{ testCaseName_10, apiURL_10, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_10 },
+			{ testCaseName_11, apiURL_11, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_11 },
+			{ testCaseName_12, apiURL_12, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_12 },
+			{ testCaseName_13, apiURL_13, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_13 },
+			{ testCaseName_14, apiURL_14, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_14 },
+			{ testCaseName_15, apiURL_15, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_15 },
+			{ testCaseName_16, apiURL_16, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_16 },
+			{ testCaseName_17, apiURL_17, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_17 },
+			{ testCaseName_18, apiURL_18, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_18 },
+			{ testCaseName_19, apiURL_19, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_19 },
+			{ testCaseName_20, apiURL_20, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_20 },
+			{ testCaseName_21, apiURL_21, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_21 },
+			{ testCaseName_22, apiURL_22, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_22 },
+			{ testCaseName_23, apiURL_23, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_23 },
+			{ testCaseName_24, apiURL_24, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_24 },
+			{ testCaseName_25, apiURL_25, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_25 },
+			{ testCaseName_26, apiURL_26, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_26 },
+			{ testCaseName_27, apiURL_27, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_27 },
+			{ testCaseName_28, apiURL_28, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_28 },
+			{ testCaseName_29, apiURL_29, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_29 },
+			{ testCaseName_30, apiURL_30, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_30 },
+			{ testCaseName_31, apiURL_31, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_31 },
+			{ testCaseName_32, apiURL_32, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_32 },
+			{ testCaseName_33, apiURL_33, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_33 },
+			{ testCaseName_34, apiURL_34, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_34 },
+			{ testCaseName_35, apiURL_35, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_35 },
+			{ testCaseName_36, apiURL_36, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_36 },
+			{ testCaseName_37, apiURL_37, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_37 },
+			{ testCaseName_38, apiURL_38, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength_38 },
 		};
 	}
 
@@ -228,7 +227,9 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderProdGeoServerMultipleCustomersInParallelAPITest() {
 
 		final String contentType = "application/x-www-form-urlencoded";
-		final String requestBody = "username=PICARRO_VIEWER&password=PICARRO_VIEWER";
+		//final String requestBody = "username=PICARRO_VIEWER&password=PICARRO_VIEWER";
+		final String username = "PICARRO_VIEWER";
+		final String password = "PICARRO_VIEWER";
 		final HttpMethod method = HttpMethod.POST;
 		final Integer concurrentRequests = 100;
 		final Integer requestsInOneSession = 10;
@@ -261,7 +262,8 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 				.setExpectedResponseContentLength(expectedResponseContentLength_1)
 				.setMethod(method)
 				.setNumPrimingRuns(numPrimingRuns)
-				.setRequestBody(requestBody)
+				.setUsername(username)
+				.setPassword(password)
 				.setRequestsInOneSession(requestsInOneSession)
 				.setTestCaseName(testCaseName_1);
 
@@ -272,7 +274,8 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 				.setExpectedResponseContentLength(expectedResponseContentLength_2)
 				.setMethod(method)
 				.setNumPrimingRuns(numPrimingRuns)
-				.setRequestBody(requestBody)
+				.setUsername(username)
+				.setPassword(password)
 				.setRequestsInOneSession(requestsInOneSession)
 				.setTestCaseName(testCaseName_2);
 
@@ -283,7 +286,8 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 				.setExpectedResponseContentLength(expectedResponseContentLength_3)
 				.setMethod(method)
 				.setNumPrimingRuns(numPrimingRuns)
-				.setRequestBody(requestBody)
+				.setUsername(username)
+				.setPassword(password)
 				.setRequestsInOneSession(requestsInOneSession)
 				.setTestCaseName(testCaseName_3);
 
@@ -294,7 +298,8 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 				.setExpectedResponseContentLength(expectedResponseContentLength_4)
 				.setMethod(method)
 				.setNumPrimingRuns(numPrimingRuns)
-				.setRequestBody(requestBody)
+				.setUsername(username)
+				.setPassword(password)
 				.setRequestsInOneSession(requestsInOneSession)
 				.setTestCaseName(testCaseName_4);
 
@@ -305,7 +310,8 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 				.setExpectedResponseContentLength(expectedResponseContentLength_5)
 				.setMethod(method)
 				.setNumPrimingRuns(numPrimingRuns)
-				.setRequestBody(requestBody)
+				.setUsername(username)
+				.setPassword(password)
 				.setRequestsInOneSession(requestsInOneSession)
 				.setTestCaseName(testCaseName_5);
 

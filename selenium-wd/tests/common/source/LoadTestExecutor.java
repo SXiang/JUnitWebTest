@@ -133,19 +133,21 @@ public class LoadTestExecutor {
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
-	public TestResult executeTest(String testCaseName, String apiURL, String contentType, String requestBody, HttpMethod method,
+	public TestResult executeTest(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method,
 			Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		String apiCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + LoadPerformanceFolder;
 		String apiCmdFullPath = apiCmdFolder + File.separator + EXECUTE_LOAD_APITEST_CMD;
 		String command = "cd \"" + apiCmdFolder + "\" && " + apiCmdFullPath +
-				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d %d %d \"%s\" \"%s\"",
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d %d %d %d \"%s\" \"%s\"",
 						getWorkingFolder(),
 						getAutomationReportingAPIBaseUrl(),
 						getAbExeFolder(),
 						apiURL,
 						method.toString(),
 						contentType,
-						requestBody,
+						username,
+						password,
+						1,   /*UseBasicAuthentication*/
 						expectedResponseContentLength,
 						concurrentRequests,
 						requestsInOneSession,

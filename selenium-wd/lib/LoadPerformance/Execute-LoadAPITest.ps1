@@ -41,7 +41,13 @@ param
   [String] $ContentType,                           # ContentType for the request. Eg. application/x-www-form-urlencoded
 
   [Parameter(Mandatory=$true)]
-  [String] $RequestBody,                           # Request Body.   
+  [String] $Username,                              # API username.   
+
+  [Parameter(Mandatory=$true)]
+  [String] $Password,                              # API password.   
+
+  [Parameter(Mandatory=$true)]
+  [Boolean] $UseBasicAuthentication,               # Whether or not to use Basic Authentication.   
 
   [Parameter(Mandatory=$true)]
   [Int64] $ResponseContentLength,                  # Expected response content length. Test is considered FAIL if response content length does NOT match. This check is made to avoid recording result data for incorrect responses.
@@ -175,6 +181,18 @@ Write-Host "Running Apache Benchmark for API -> $ApiEndpointUrl"
 $currDir = $pwd
 cd $ABExeFolder
 
+$authHeader = ""
+$RequestBody = ""
+if ($UseBasicAuthentication) {
+    $authInfo = "${Username}:${Password}"
+    $authInfoBase64 = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($authInfo))
+    $authValue = "Basic $authInfoBase64"
+    $authHeader = "Authorization: $authValue"
+    Write-Host "Created authentication header -> $authHeader"
+} else {
+    $RequestBody = "username=$Username&password=$Password"
+}
+
 if ($Method -eq "POST") {
     $ReqBodyFile = New-Item "$BuildWorkingDir\selenium-wd\data\reqbody-$guid.txt"
     Write-Host "Creating request body file - '$ReqBodyFile' with content -> $RequestBody"
@@ -189,7 +207,7 @@ if ($Method -eq "POST") {
 
     Write-Host "Executing Apache Benchmark run [concurrency=$NumConcurrentRequests, requests=$NumRequestsInOneSession]"
     $script:ABStartTime = [System.DateTime]::UtcNow
-    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl" > "$outResultFile"
+    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl" > "$outResultFile"
     $script:ABEndTime = [System.DateTime]::UtcNow
     Write-Host "Done with Apache Benchmark run"
     
@@ -198,7 +216,7 @@ if ($Method -eq "POST") {
     Write-Host "Deleted request body file - '$ReqBodyFile'"
 } else {
     $script:ABStartTime = [System.DateTime]::UtcNow
-    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -q -T $ContentType -k "$ApiEndpointUrl" > "$outResultFile"
+    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -q -T $ContentType -k "$ApiEndpointUrl" > "$outResultFile"
     $script:ABEndTime = [System.DateTime]::UtcNow
 }
 
@@ -213,7 +231,9 @@ Write-Host "Done with API call."
 $success = VerifyExtract-Response -outLogFile $outResultFile
 if (-not $success) {
     Write-Host "ERROR: Response verification failed. Found total = ${script:SuccessResponseCount} success responses. Expected content length=$ResponseContentLength, found content length=${script:ContentLength} "
-    exit
+    
+    # TODO: Temporarily commented to gather contentlengths.
+    #exit
 } 
 
 # ----------------------------------------------------------------------------------------------
