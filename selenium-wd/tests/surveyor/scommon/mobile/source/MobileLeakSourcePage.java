@@ -413,9 +413,9 @@ public class MobileLeakSourcePage extends MobileBasePage {
 
 	public boolean verifyMetaLeakDetails(String[][] expects, Map<String, String> lisaInvestigationDetails) {
 		for(int i=0;i<expects[0].length; i++) {
-			String actual = lisaInvestigationDetails.get(expects[0][i]).toLowerCase().trim();
-			String expect = expects[1][i].toLowerCase();
-			if(!expect.equals("null")&&!actual.equals(expect)){
+			String actual = lisaInvestigationDetails.getOrDefault(expects[0][i], "null");
+			String expect = expects[1][i];
+			if(!expect.equalsIgnoreCase("null")&&!actual.trim().equalsIgnoreCase(expect)){
 				Log.error("Leak detail in PDF table: "+expects[0][i]+" = "+actual);
 				Log.error("Leak detail expected: "+expects[0][i]+" = "+expect);
 				return false;
