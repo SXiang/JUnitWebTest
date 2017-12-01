@@ -415,7 +415,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 		for(int i=0;i<expects[0].length; i++) {
 			String actual = lisaInvestigationDetails.get(expects[0][i]).toLowerCase().trim();
 			String expect = expects[1][i].toLowerCase();
-			if(!actual.equals(expect)){
+			if(!expect.equals("null")&&!actual.equals(expect)){
 				Log.error("Leak detail in PDF table: "+expects[0][i]+" = "+actual);
 				Log.error("Leak detail expected: "+expects[0][i]+" = "+expect);
 				return false;

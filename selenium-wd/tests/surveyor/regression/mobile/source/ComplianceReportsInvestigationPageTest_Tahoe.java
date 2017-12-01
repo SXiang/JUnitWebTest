@@ -132,7 +132,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		
 		// Assign Lisas to user
 		int workingLisa = 1;
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -206,6 +205,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
 		String reportName = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
@@ -224,7 +224,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 
 		// Assign Lisas to user
 		int workingLisa = 1;
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -313,7 +312,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 
 		// Assign Lisas to user
 		int workingLisa = 1;
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -387,6 +385,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
 		String reportName = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
@@ -405,7 +404,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 
 		// Assign Lisas to user
 		int workingLisa = 1;
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -434,8 +432,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
-
-		
 		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(1,reportDataRowID)));
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(1,reportDataRowID)));
 

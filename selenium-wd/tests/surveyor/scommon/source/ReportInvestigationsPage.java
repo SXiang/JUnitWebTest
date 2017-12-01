@@ -47,6 +47,9 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "buttonAssignPeaks")
 	protected WebElement buttonAssignPeaks;
 
+	@FindBy(how = How.ID, using = "buttonAssignInvestigator")
+	protected WebElement buttonAssignInvestigator;
+	
 	@FindBy(how = How.ID, using = "buttonInvestigator")
 	protected WebElement buttonInvestigator;
 
@@ -223,7 +226,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, button_Investigate);
 		button_Investigate.click();
 	}
-	
+
 	public void clickOnInvestigate(){
 		buttonInvestigate.click();
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
