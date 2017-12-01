@@ -40,7 +40,7 @@ public class MobileInvestigationPage extends MobileBasePage {
 	}
 
 	public MobileInvestigatePage clickOnLisa(String reportName, int lisaNumber){
-		return clickOnLisa(reportName+"-LISA-"+lisaNumber);
+		return clickOnLisa(reportName, lisaNumber, null);
 	}
 	
 	public MobileInvestigatePage clickOnLisa(String lisaNumber){
@@ -50,7 +50,11 @@ public class MobileInvestigationPage extends MobileBasePage {
 	public MobileInvestigatePage clickOnLisa(String lisaNumber, IndicationStatus status){
 		return clickOnLisa(lisaNumber, status, null);
 	}	
-	
+
+	public MobileInvestigatePage clickOnLisa(String reportName, int lisaNumber, InvestigationEntity investigationEntity){
+		return clickOnLisa(reportName+"-LISA-"+lisaNumber, investigationEntity);
+	}
+
 	public MobileInvestigatePage clickOnLisa(String lisaNumber, InvestigationEntity investigationEntity){
 		return clickOnLisa(lisaNumber, null, investigationEntity);
 	}
@@ -69,7 +73,7 @@ public class MobileInvestigationPage extends MobileBasePage {
 	}
 
 	public MobileInvestigatePage clickOnGap(String reportName, int gapNumber){
-		return clickOnGap(reportName+"-Gap-"+gapNumber);
+		return clickOnGap(reportName, gapNumber, null);
 	}
 	
 	public MobileInvestigatePage clickOnGap(String gapNumber){
@@ -78,6 +82,10 @@ public class MobileInvestigationPage extends MobileBasePage {
 	
 	public MobileInvestigatePage clickOnGap(String gapNumber, IndicationStatus status){
 		return clickOnGap(gapNumber, status, null);
+	}
+
+	public MobileInvestigatePage clickOnGap(String reportName, int lisaNumber, InvestigationEntity investigationEntity){
+		return clickOnLisa(reportName+"-Gaps-"+lisaNumber, investigationEntity);
 	}
 	
 	public MobileInvestigatePage clickOnGap(String gapNumber, InvestigationEntity investigationEntity){

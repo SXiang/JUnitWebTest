@@ -142,7 +142,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -234,7 +234,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -322,7 +322,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -414,7 +414,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
