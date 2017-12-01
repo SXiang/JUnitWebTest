@@ -703,7 +703,7 @@ public class BasePage {
 		String actualFile = Paths
 				.get(testSetup.getDownloadPath(), File.separator + testCaseID + File.separator + name + ".png").toString();
 		ScreenShotOnFailure.captureWebDriverScreenShot(driver, actualFile, rect);
-		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
+		boolean generateBaseline = true;//TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		if (!verifyScreenshotWithBase(actualFile, baseFile, generateBaseline)) {
 			return false;
 		}
