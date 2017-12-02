@@ -227,7 +227,6 @@ public class LoadAPITestDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderProdGeoServerMultipleCustomersInParallelAPITest() {
 
 		final String contentType = "application/x-www-form-urlencoded";
-		//final String requestBody = "username=PICARRO_VIEWER&password=PICARRO_VIEWER";
 		final String username = "PICARRO_VIEWER";
 		final String password = "PICARRO_VIEWER";
 		final HttpMethod method = HttpMethod.POST;

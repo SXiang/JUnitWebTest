@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,6 +18,7 @@ import common.source.LoadTestExecutor.TestResult;
 import common.source.LoadTestJob;
 import common.source.LoadTestParallelExecutor;
 import surveyor.dataprovider.LoadAPITestDataProvider;
+import surveyor.dataprovider.LoadAPITestMultipleCustomersDataProvider;
 import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -31,6 +33,33 @@ public class ProdGeoServerMultipleCustomerAPITest extends BaseTest {
 	}
 
 	@Test
+	@UseDataProvider(value = LoadAPITestMultipleCustomersDataProvider.LOAD_TEST_LOW_FREQUENCY_API_PROVIDER_GEO_SERVER_MULTIPLE_CUSTOMERS_IN_PARALLEL, location = LoadAPITestMultipleCustomersDataProvider.class)
+	public void multipleCustomersInParallelGeoserverAPITest_LowFrequency(List<LoadTestJob> loadTestJobs) throws Exception {
+		Log.method("ProdGeoServerMultipleCustomerAPITest.multipleCustomersInParallelGeoserverAPITest_LowFrequency", LogHelper.collectionToString(loadTestJobs, "loadTestJobs"));
+
+		List<TestResult> results = executeTest(loadTestJobs);
+		assertResults(results, loadTestJobs.size());
+	}
+
+	@Test
+	@UseDataProvider(value = LoadAPITestMultipleCustomersDataProvider.LOAD_TEST_MEDIUM_FREQUENCY_API_PROVIDER_GEO_SERVER_MULTIPLE_CUSTOMERS_IN_PARALLEL, location = LoadAPITestMultipleCustomersDataProvider.class)
+	public void multipleCustomersInParallelGeoserverAPITest_MediumFrequency(List<LoadTestJob> loadTestJobs) throws Exception {
+		Log.method("ProdGeoServerMultipleCustomerAPITest.multipleCustomersInParallelGeoserverAPITest_MediumFrequency", LogHelper.collectionToString(loadTestJobs, "loadTestJobs"));
+
+		List<TestResult> results = executeTest(loadTestJobs);
+		assertResults(results, loadTestJobs.size());
+	}
+
+	@Test
+	@UseDataProvider(value = LoadAPITestMultipleCustomersDataProvider.LOAD_TEST_HIGH_FREQUENCY_API_PROVIDER_GEO_SERVER_MULTIPLE_CUSTOMERS_IN_PARALLEL, location = LoadAPITestMultipleCustomersDataProvider.class)
+	public void multipleCustomersInParallelGeoserverAPITest_HighFrequency(List<LoadTestJob> loadTestJobs) throws Exception {
+		Log.method("ProdGeoServerMultipleCustomerAPITest.multipleCustomersInParallelGeoserverAPITest_HighFrequency", LogHelper.collectionToString(loadTestJobs, "loadTestJobs"));
+
+		List<TestResult> results = executeTest(loadTestJobs);
+		assertResults(results, loadTestJobs.size());
+	}
+
+	@Ignore
 	@UseDataProvider(value = LoadAPITestDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_MULTIPLE_CUSTOMERS_IN_PARALLEL, location = LoadAPITestDataProvider.class)
 	public void multipleCustomersInParallelDriverViewAPITest(List<LoadTestJob> loadTestJobs) throws Exception {
 		Log.method("ProdGeoServerMultipleCustomerAPITest.multipleCustomersInParallelDriverViewAPITest", LogHelper.collectionToString(loadTestJobs, "loadTestJobs"));
@@ -48,7 +77,10 @@ public class ProdGeoServerMultipleCustomerAPITest extends BaseTest {
 	}
 
 	private List<TestResult> executeTest(List<LoadTestJob> loadTestJobs) throws Exception {
-		loadTestJobs.forEach(job -> parallelTestExecutor.addTestJob(job));
+		loadTestJobs.forEach(job -> {
+			Log.info(String.format("[ProdGeoServerMultipleCustomerAPITest.executeTest] job -> %s", job.toString()));
+			parallelTestExecutor.addTestJob(job);
+		});
 		return parallelTestExecutor.startTest().getTestResults();
 	}
 

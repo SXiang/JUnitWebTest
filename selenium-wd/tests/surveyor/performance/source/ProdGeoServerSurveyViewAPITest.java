@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -31,7 +32,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	@Test
 	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_01, location = LoadAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest01(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest01", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
 		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,
@@ -41,47 +42,57 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	@Test
 	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_02, location = LoadAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest02(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest02", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
 		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,
 				numPrimingRuns, expectedResponseContentLength);
 	}
 
-	@Test
+	@Ignore
 	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_03, location = LoadAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest03(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest03", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
 		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,
 				numPrimingRuns, expectedResponseContentLength);
 	}
 
-	@Test
+	@Ignore
 	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_04, location = LoadAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest04(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest04", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
 		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,
 				numPrimingRuns, expectedResponseContentLength);
 	}
 
-	@Test
+	@Ignore
 	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_05, location = LoadAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest05(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest05", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
 		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,
 				numPrimingRuns, expectedResponseContentLength);
 	}
 
-	@Test
+	@Ignore
 	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_06, location = LoadAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest06(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest06", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
+
+		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,
+				numPrimingRuns, expectedResponseContentLength);
+	}
+
+	@Ignore
+	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_07, location = LoadAPITestSurveyViewDataProvider.class)
+	public void executeSurveyViewAPITest07(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest07", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
 		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,
@@ -89,9 +100,9 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Test
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_07, location = LoadAPITestSurveyViewDataProvider.class)
-	public void executeSurveyViewAPITest07(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
+	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_08, location = LoadAPITestSurveyViewDataProvider.class)
+	public void executeSurveyViewAPITest08(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
+		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest08", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
 		executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession,

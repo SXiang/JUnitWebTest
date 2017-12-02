@@ -80,6 +80,7 @@ $outResultFile = "$OutputFolder\ab.output-$guid.txt"
 $OutDataFile = "$OutputFolder\loadmetrics.out-$guid.data"
 
 $VERBOSE_LEVEL = 2
+$MAX_TIMEOUT_IN_SECS = 30
 
 $script:RawResponseLines = New-Object System.Collections.ArrayList
 $script:ContentLength = 0
@@ -201,13 +202,13 @@ if ($Method -eq "POST") {
 
     if ($NumPrimingRuns -gt 0) {
         Write-Host "Executing $NumPrimingRuns priming run(s) ..."
-        .\ab.exe -n $NumPrimingRuns -c $NumPrimingRuns -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl"
+        .\ab.exe -n $NumPrimingRuns -c $NumPrimingRuns -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl -s $MAX_TIMEOUT_IN_SECS"
         Write-Host "Done with priming run(s)"
     }
 
     Write-Host "Executing Apache Benchmark run [concurrency=$NumConcurrentRequests, requests=$NumRequestsInOneSession]"
     $script:ABStartTime = [System.DateTime]::UtcNow
-    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl" > "$outResultFile"
+    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl -s $MAX_TIMEOUT_IN_SECS" > "$outResultFile"
     $script:ABEndTime = [System.DateTime]::UtcNow
     Write-Host "Done with Apache Benchmark run"
     
@@ -216,7 +217,7 @@ if ($Method -eq "POST") {
     Write-Host "Deleted request body file - '$ReqBodyFile'"
 } else {
     $script:ABStartTime = [System.DateTime]::UtcNow
-    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -q -T $ContentType -k "$ApiEndpointUrl" > "$outResultFile"
+    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -q -T $ContentType -k "$ApiEndpointUrl -s $MAX_TIMEOUT_IN_SECS" > "$outResultFile"
     $script:ABEndTime = [System.DateTime]::UtcNow
 }
 
@@ -231,9 +232,7 @@ Write-Host "Done with API call."
 $success = VerifyExtract-Response -outLogFile $outResultFile
 if (-not $success) {
     Write-Host "ERROR: Response verification failed. Found total = ${script:SuccessResponseCount} success responses. Expected content length=$ResponseContentLength, found content length=${script:ContentLength} "
-    
-    # TODO: Temporarily commented to gather contentlengths.
-    #exit
+    exit
 } 
 
 # ----------------------------------------------------------------------------------------------
@@ -315,3 +314,5 @@ $successMarkerFile = New-Item $LOAD_TEST_RESULT_FILE -Force
 Add-Content $successMarkerFile "LoadStatAPITestCaseResultId = $apiResultId"
 Add-Content $successMarkerFile "OutputResultFile = $outResultFile"
 Add-Content $successMarkerFile "OutputResultDataFile = $OutDataFile"
+
+Write-Host "Load test result file written to -> $successMarkerFile"
