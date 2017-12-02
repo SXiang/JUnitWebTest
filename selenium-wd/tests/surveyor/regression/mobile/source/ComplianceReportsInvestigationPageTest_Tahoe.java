@@ -123,15 +123,9 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
 		
-		// Verify Investigators map
-		
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.clickOnInvestigator();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2793", "investigatorMapLisa", new Rectangle(0,0,0,0)));
-		reportInvestigationsPage.clickOnBackMapButton();
-		
 		// Assign Lisas to user
 		int workingLisa = 1;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -217,13 +211,9 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
 
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.clickOnInvestigator();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2794", "investigatorMapLisa", new Rectangle(0,0,0,0)));
-		reportInvestigationsPage.clickOnBackMapButton();
-
 		// Assign Lisas to user
 		int workingLisa = 1;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -305,13 +295,9 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
 
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.clickOnInvestigator();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2828", "investigatorMapLisa", new Rectangle(0,0,0,0)));
-		reportInvestigationsPage.clickOnBackMapButton();
-
 		// Assign Lisas to user
 		int workingLisa = 1;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -397,13 +383,9 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines_Static("false", getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID);
 
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.clickOnInvestigator();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline("TC2829", "investigatorMapLisa", new Rectangle(0,0,0,0)));
-		reportInvestigationsPage.clickOnBackMapButton();
-
 		// Assign Lisas to user
 		int workingLisa = 1;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisasByNumber(reportName, workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
