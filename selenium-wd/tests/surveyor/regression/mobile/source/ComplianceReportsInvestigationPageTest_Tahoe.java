@@ -97,7 +97,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	 * Results: -
 	 *	- Assets should not be intersected with any LISAs
 	 *	- LISAs should be present on Investigation List screen
-	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
 	 *	- User should be able to investigate LISAs successfully
 	 *	- Investigate PDF and CSV should have correct LISA information and other details
 	 */
@@ -182,7 +181,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	 * Results: -
 	 *	-Assets should not be intersected with any LISAs
 	 *	- LISAs should be present on Investigation List screen
-	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
 	 *	- User should be able to investigate LISAs successfully
 	 *	- Investigate PDF and CSV should have correct LISA information and other details
 	 */
@@ -269,7 +267,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	 * Results: -
 	 *	- Assets should not be intersected with any LISAs
 	 *	- LISAs should be present on Investigation List screen
-	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
 	 *	- User should be able to investigate LISAs successfully
 	 *	- Investigate PDF and CSV should have correct LISA information and other details
 	 */
@@ -354,7 +351,6 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 	 * Results: -
 	 *	- Assets should not be intersected with any LISAs
 	 *	- LISAs should be present on Investigation List screen
-	 *	- LISAs should be present instead of Assets in Assign Investigator Map screen
 	 *	- User should be able to investigate LISAs successfully
 	 *	- Investigate PDF and CSV should have correct LISA information and other details
 	 */
