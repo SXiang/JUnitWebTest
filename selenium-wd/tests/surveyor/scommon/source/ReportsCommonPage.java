@@ -1022,7 +1022,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean checkAndGenerateBaselineShapeFiles(String unzipFolder, String testCaseID) throws Exception {
 		Log.method("ReportsCommonPage.checkAndGenerateBaselineShapeFiles", unzipFolder, testCaseID);
-		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
+		boolean isGenerateBaselineShapeFiles =  true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		Path unzipDirectory = Paths.get(unzipFolder);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
 		for (String filePath : filesInDirectory) {
@@ -3550,7 +3550,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				String pathToBaseImage = Paths
 						.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString()
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
-				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+				boolean generateBaseline = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
 					Log.info("Image verification failed");
 					return false;
