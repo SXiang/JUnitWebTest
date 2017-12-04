@@ -90,7 +90,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	public boolean verifyPageLoaded(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyPageLoaded", data, dataRowID);
 		this.getSurveyViewPage().waitForPageLoad();
-		this.getSurveyViewPage().waitForUIUnBlock();
 		return true;
 	}
 

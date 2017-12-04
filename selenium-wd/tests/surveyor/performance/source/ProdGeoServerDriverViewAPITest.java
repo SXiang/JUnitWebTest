@@ -30,12 +30,13 @@ public class ProdGeoServerDriverViewAPITest extends BaseTest {
 
 	@Test
 	@UseDataProvider(value = LoadAPITestDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_DRIVERVIEW_API, location = LoadAPITestDataProvider.class)
-	public void executeDriverViewAPITest(String testCaseName, String apiURL, String contentType, String requestBody, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
-		Log.method("ProdGeoServerDriverViewAPITest.executeDriverViewAPITest", testCaseName, apiURL, contentType, requestBody, method, concurrentRequests,
+	public void executeDriverViewAPITest(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
+		Log.method("ProdGeoServerDriverViewAPITest.executeDriverViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 
-		TestResult testResult = loadTestExecutor.executeTest(testCaseName, apiURL, contentType, requestBody, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
+		TestResult testResult = loadTestExecutor.executeTest(testCaseName, apiURL, contentType, username, password, method, concurrentRequests, requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
 		assertTrue(String.format("Load test failed. Test result file '%s' NOT found.", loadTestExecutor.getTestResultFile()), testResult != null);
 		Log.info(String.format("Test result -> %s", testResult.toString()));
+		assertTrue("Load Test status = [FAIL]. Refer errors in logs.", testResult.isTestPass());
 	}
 }
