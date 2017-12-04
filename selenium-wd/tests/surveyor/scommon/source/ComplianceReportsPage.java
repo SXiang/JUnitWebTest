@@ -1339,7 +1339,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
-		expectedReportString.add(ComplianceReportSSRS_PercentCoverageForecast);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 
 		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);

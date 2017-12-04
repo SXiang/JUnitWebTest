@@ -1,7 +1,6 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CR_CF_FORECASTBOUNDARYINVALID_MESSAGE;
 
 import org.junit.Before;
 import org.junit.Ignore;
