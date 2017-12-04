@@ -27,7 +27,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
@@ -142,7 +141,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -382,7 +380,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -457,7 +454,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -536,7 +532,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -613,7 +608,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx

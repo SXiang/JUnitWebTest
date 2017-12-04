@@ -81,36 +81,8 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary
-	 * Test Description: Check error message is displayed if Percent Coverage Forecast check box is selected on Copy Compliance Report screens along with Custom boundary
-	 * Script: -
-	 *	- - Log in to application as Customer admin user and navigate to Copy Compliance Report page
-	 *	- - Click OK
-	 * Results: -
-	 *	- - User friendly error messages are displayed: Selected Percent Coverage Forecast, Please select Customer Boundary
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1314, location = ComplianceReportDataProvider.class)
-	public void TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
-
-		// Copy report, select Custom boundary and Percent Coverage Forecast.
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-        assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_FORECASTBOUNDARYINVALID_MESSAGE));
-	}
-
-	/**
-	 * Test Case ID: TC1353_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast3SurveysDifferentTagsWhenNoFOVPresentThese3Surveys
-	 * Test Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags when no FOV is present for these 3 surveys
+	 * Test Case ID: TC1353_GenerateComplianceReportCustomerAdmin3SurveysDifferentTagsWhenNoFOVPresentThese3Surveys
+	 * Test Description: Generate Compliance Report as Customer Admin, include 3 surveys with different tags when no FOV is present for these 3 surveys
 	 * Script: -
 	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
@@ -118,7 +90,6 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Select Customer boundary and select any Plat
 	 *	- - Add 3 Surveys (present in the selected plat) with different tag values and these surveys should not have any FOV
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
@@ -128,9 +99,9 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1353, location = ComplianceReportDataProvider.class)
-	public void TC1353_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast3SurveysDifferentTagsWhenNoFOVPresentThese3Surveys(
+	public void TC1353_GenerateComplianceReportCustomerAdminInclude3SurveysDifferentTagsWhenNoFOVPresentThese3Surveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1353_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast3SurveysDifferentTagsWhenNoFOVPresentThese3Surveys ...");
+		Log.info("\nRunning TC1353_GenerateComplianceReportCustomerAdminInclude3SurveysDifferentTagsWhenNoFOVPresentThese3Surveys ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -140,7 +111,6 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -186,8 +156,8 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1354_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys
-	 * Test Description: Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and 2 surveys with different tags when no FOV is present for these 2 surveys
+	 * Test Case ID: TC1354_GenerateComplianceReportPicarroAdmin2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys
+	 * Test Description: Generate Compliance Report as Picarro Admin, include 2 surveys with different tags when no FOV is present for these 2 surveys
 	 * Script: -
 	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
@@ -195,7 +165,6 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Select Customer boundary and select any Plat
 	 *	- - Add 2 Surveys (present in the selected plat) with different tag values and these surveys should not have any FOV (May be some capture or just a dot no action performed after starting the survey)
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
@@ -205,9 +174,9 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 */
 	@Ignore /* Need surveys available for this test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1354, location = ComplianceReportDataProvider.class)
-	public void TC1354_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys(
+	public void TC1354_GenerateComplianceReportPicarroAdmin2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1354_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys ...");
+		Log.info("\nRunning TC1354_GenerateComplianceReportPicarroAdmin2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -223,8 +192,8 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1355_GenerateComplianceReportPicarroSupportIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhenNoFOVPresentTheseSurveys
-	 * Test Description: Generate Compliance Report as Picarro Support, include Percent Coverage Forecast and 4 or more than 4 surveys with different tags when no FOV is present for these surveys
+	 * Test Case ID: TC1355_GenerateComplianceReportPicarroSupportInclude4OrMoreThan4SurveysDifferentTagsWhenNoFOVPresentTheseSurveys
+	 * Test Description: Generate Compliance Report as Picarro Support, include 4 or more than 4 surveys with different tags when no FOV is present for these surveys
 	 * Script: -
 	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
@@ -232,20 +201,18 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Select Customer boundary and select any Plat
 	 *	- - Add 4 Surveys (present in the selected plat) with different tag values and these surveys should not have any FOV (May be some capture or just a dot no action performed after starting the survey)
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
 	 * Results: -
 	 *	- - Report generated successfully
 	 *	- - Coverage Value should be zero
-	 *	- - No Coverage Forecast Available message is displayed
 	 */
 	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1355, location = ComplianceReportDataProvider.class)
-	public void TC1355_GenerateComplianceReportPicarroSupportIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhenNoFOVPresentTheseSurveys(
+	public void TC1355_GenerateComplianceReportPicarroSupportInclude4OrMoreThan4SurveysDifferentTagsWhenNoFOVPresentTheseSurveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1355_GenerateComplianceReportPicarroSupportIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhenNoFOVPresentTheseSurveys ...");
+		Log.info("\nRunning TC1355_GenerateComplianceReportPicarroSupportInclude4OrMoreThan4SurveysDifferentTagsWhenNoFOVPresentTheseSurveys ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -258,12 +225,11 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyReportPDFMatches("No Coverage Forecast Available", NOTSET));
 	}
 
 	/**
-	 * Test Case ID: TC1356_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2Or3SurveysDifferentTagsWhenSurveysAreNotPartOfSelectedPlat
-	 * Test Description: Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and 2 or 3 surveys with different tags when surveys are not part of selected Plat
+	 * Test Case ID: TC1356_GenerateComplianceReportPicarroAdminInclude2Or3SurveysDifferentTagsWhenSurveysAreNotPartOfSelectedPlat
+	 * Test Description: Generate Compliance Report as Picarro Admin, include2 or 3 surveys with different tags when surveys are not part of selected Plat
 	 * Script: -
 	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
@@ -272,7 +238,6 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Add 2 or 3 Surveys with different tag values and these surveys should not be part of selected plat
 	 *	- Eg. Plat selected is in Menlo Park area and survey is from santa clara area
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
@@ -282,9 +247,9 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 */
 	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1356, location = ComplianceReportDataProvider.class)
-	public void TC1356_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2Or3SurveysDifferentTagsWhenSurveysAreNotPartOfSelectedPlat(
+	public void TC1356_GenerateComplianceReportPicarroAdminInclude2Or3SurveysDifferentTagsWhenSurveysAreNotPartOfSelectedPlat(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1356_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2Or3SurveysDifferentTagsWhenSurveysAreNotPartOfSelectedPlat ...");
+		Log.info("\nRunning TC1356_GenerateComplianceReportPicarroAdminInclude2Or3SurveysDifferentTagsWhenSurveysAreNotPartOfSelectedPlat ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -300,8 +265,8 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1357_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhereSurveysAreNotPartOfSelectedPlat
-	 * Test Description: Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and 4 or more than 4 surveys with different tags where surveys are not part of selected Plat
+	 * Test Case ID: TC1357_GenerateComplianceReportPicarroAdminInclude4OrMoreThan4SurveysDifferentTagsWhereSurveysAreNotPartOfSelectedPlat
+	 * Test Description: Generate Compliance Report as Picarro Admin, include 4 or more than 4 surveys with different tags where surveys are not part of selected Plat
 	 * Script: -
 	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
@@ -310,20 +275,18 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Add 4 or more than 4 surveyswith different tag values and these surveys should not be part of selected plat
 	 *	- Eg. Plat selected is in Menlo Park area and survey is from santa clara area
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
 	 * Results: -
 	 *	- - Report generated successfully
 	 *	- - Reported Coverage should be 0
-	 *	- - No Coverage Forecast Available message should be displayed
 	 */
 	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1357, location = ComplianceReportDataProvider.class)
-	public void TC1357_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhereSurveysAreNotPartOfSelectedPlat(
+	public void TC1357_GenerateComplianceReportPicarroAdminInclude4OrMoreThan4SurveysDifferentTagsWhereSurveysAreNotPartOfSelectedPlat(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1357_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhereSurveysAreNotPartOfSelectedPlat ...");
+		Log.info("\nRunning TC1357_GenerateComplianceReportPicarroAdminInclude4OrMoreThan4SurveysDifferentTagsWhereSurveysAreNotPartOfSelectedPlat ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -336,7 +299,6 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyReportPDFMatches("No Coverage Forecast Available", NOTSET));
 	}
 
 	/**

@@ -17,7 +17,6 @@ public class ReportOptTabularPDFContentDataReader extends BaseDataReader {
 	public static final int Excel_TestData_Report_Col_GapTable = 3;
 	public static final int Excel_TestData_Report_Col_PercentCoverageAssets = 4;
 	public static final int Excel_TestData_Report_Col_PercentCoverageReportArea = 5;
-	public static final int Excel_TestData_Report_Col_PercentCoverageForecast = 6;
  
 	public class ReportOptTabularPDFContentDataRow {
 		public String rowID;
@@ -26,16 +25,14 @@ public class ReportOptTabularPDFContentDataReader extends BaseDataReader {
 		public String gapTable;
 		public String percentCoverageAssets;
 		public String percentCoverageReportArea;
-		public String percentCoverageForecast;
  
-		public ReportOptTabularPDFContentDataRow(String rowID, String indicationTable, String isotopicAnalysis, String gapTable, String percentCoverageAssets, String percentCoverageReportArea, String percentCoverageForecast) {
+		public ReportOptTabularPDFContentDataRow(String rowID, String indicationTable, String isotopicAnalysis, String gapTable, String percentCoverageAssets, String percentCoverageReportArea) {
 			this.rowID = rowID;
 			this.indicationTable = indicationTable;
 			this.isotopicAnalysis = isotopicAnalysis;
 			this.gapTable = gapTable;
 			this.percentCoverageAssets = percentCoverageAssets;
 			this.percentCoverageReportArea = percentCoverageReportArea;
-			this.percentCoverageForecast = percentCoverageForecast;
 		}
 	}	
  
@@ -60,10 +57,9 @@ public class ReportOptTabularPDFContentDataReader extends BaseDataReader {
 		String gapTable = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_GapTable, TESTDATA_SHEET_NAME);
 		String percentCoverageAssets = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_PercentCoverageAssets, TESTDATA_SHEET_NAME);
 		String percentCoverageReportArea = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_PercentCoverageReportArea, TESTDATA_SHEET_NAME);
-		String percentCoverageForecast = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_PercentCoverageForecast, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], indicationTable=[%s], isotopicAnalysis=[%s], gapTable=[%s], percentCoverageAssets=[%s], percentCoverageReportArea=[%s], percentCoverageForecast=[%s]", rowID, indicationTable, isotopicAnalysis, gapTable, percentCoverageAssets, percentCoverageReportArea, percentCoverageForecast));
+		Log.info(String.format("Found data row: rowID=[%s], indicationTable=[%s], isotopicAnalysis=[%s], gapTable=[%s], percentCoverageAssets=[%s]", rowID, indicationTable, isotopicAnalysis, gapTable, percentCoverageAssets, percentCoverageReportArea));
 		
-		return new ReportOptTabularPDFContentDataRow(rowID, indicationTable, isotopicAnalysis, gapTable, percentCoverageAssets, percentCoverageReportArea, percentCoverageForecast);
+		return new ReportOptTabularPDFContentDataRow(rowID, indicationTable, isotopicAnalysis, gapTable, percentCoverageAssets, percentCoverageReportArea);
 	}
 }

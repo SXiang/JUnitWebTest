@@ -16,7 +16,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
@@ -114,8 +113,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	private boolean areTabularPDFContentSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
 		return isPDFGapSelectionMatch(dataRow) && isPDFIndicationSelectionMatch(dataRow) &&
-				isPDFIsotopicAnalysisSelectionMatch(dataRow) && isPDFPercentCoverageAssetsSelectionMatch(dataRow) &&
-				isPDFPercentCoverageForecastSelectionMatch(dataRow) && isPDFPercentCoverageReportAreaSelectionMatch(dataRow);
+				isPDFIsotopicAnalysisSelectionMatch(dataRow) && isPDFPercentCoverageAssetsSelectionMatch(dataRow) && isPDFPercentCoverageReportAreaSelectionMatch(dataRow);
 	}
 
 	/**
@@ -302,13 +300,11 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		String showGapTable = reader.getDataRow(dataRowID).gapTable.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showPercentCovAssetsTable = reader.getDataRow(dataRowID).percentCoverageAssets.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showPercentCoverageReportAreaTable = reader.getDataRow(dataRowID).percentCoverageReportArea.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showPercentCoverageForecastTable = reader.getDataRow(dataRowID).percentCoverageForecast.equalsIgnoreCase("TRUE") ? "1" : "0";
 		tableMap.put(KEYINDTB, showIndicationsTable);
 		tableMap.put(KEYISOANA, showIsoAnalysisTable);
 		tableMap.put(KEYGAPTB, showGapTable);
 		tableMap.put(KEYPCA, showPercentCovAssetsTable);
 		tableMap.put(KEYPCRA, showPercentCoverageReportAreaTable);
-		tableMap.put(KEYPCF, showPercentCoverageForecastTable);
 	}
 
 	protected void fillViewLayersInfo(Map<String, String> viewLayerMap,
@@ -521,10 +517,6 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	private boolean isPDFPercentCoverageAssetsSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
 		return dataRow.percentCoverageAssets.equalsIgnoreCase("FALSE") || (dataRow.percentCoverageAssets.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFPercentCoverageAssetsSelected());
-	}
-
-	private boolean isPDFPercentCoverageForecastSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return dataRow.percentCoverageForecast.equalsIgnoreCase("FALSE") || (dataRow.percentCoverageForecast.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFPercentCoverageForecastSelected());
 	}
 
 	private boolean isPDFPercentCoverageReportAreaSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {

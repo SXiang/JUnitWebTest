@@ -403,9 +403,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(id = "report-show-gaps")
 	protected WebElement checkBoxGap;
 
-	@FindBy(id = "report-show-percent-coverage-forecast")
-	protected WebElement checkBoxPCF;
-
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#report-menu']")
 	protected WebElement linkReportMenu;
 
@@ -746,10 +743,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isPDFPercentCoverageReportAreaSelected() {
 		return checkBoxPCRA.isSelected();
-	}
-
-	public boolean isPDFPercentCoverageForecastSelected() {
-		return checkBoxPCF.isSelected();
 	}
 
 	public void setSurveyRowsPagination(String numPages) {
