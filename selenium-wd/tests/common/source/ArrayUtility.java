@@ -47,6 +47,20 @@ public class ArrayUtility {
 		return retVal;
 	}
 
+	public static <T> boolean listDeepEquals(List<T> list1, List<T> list2) {
+		if (list1 == null && list2 == null) {
+			return true;
+		}
+
+		if (list1 == null || list2 == null) {
+			return false;
+		}
+
+		Object[] arr1 = list1.toArray();
+		Object[] arr2 = list2.toArray();
+		return Arrays.deepEquals(arr1, arr2);
+	}
+
 	public static List<String> getDistinctValues(List<String> stringValues) {
 		List<String> outputList = Collections.synchronizedList(new ArrayList<String>());
 		if (stringValues != null) {

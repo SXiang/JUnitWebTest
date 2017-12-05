@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import common.source.Log;
 
 public class Peak extends BaseEntity {
@@ -52,6 +55,33 @@ public class Peak extends BaseEntity {
 				.concat(this.getGpsLongitude().toString()).concat("|")
 				.concat(this.getEpochTime().toString());
 	}
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.getAnalyzerId()).append(this.getSurveyId())
+        		.append(this.getCH4()).append(this.getAmplitude())
+        		.append(this.getLisa()).append(this.getWindSpeedEast())
+        		.append(this.getWindSpeedNorth()).append(this.getGpsLatitude())
+        		.append(this.getGpsLongitude()).append(this.getEpochTime())
+        		.toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if ((other instanceof Peak) == false) {
+            return false;
+        }
+        Peak rhs = ((Peak) other);
+        return new EqualsBuilder().append(this.getAnalyzerId(), rhs.getAnalyzerId()).append(this.getSurveyId(), rhs.getSurveyId())
+        		.append(this.getCH4(), rhs.getCH4()).append(this.getAmplitude(), rhs.getAmplitude())
+        		.append(this.getLisa(), rhs.getLisa()).append(this.getWindSpeedEast(), rhs.getWindSpeedEast())
+        		.append(this.getWindSpeedNorth(), rhs.getWindSpeedNorth()).append(this.getGpsLatitude(), rhs.getGpsLatitude())
+        		.append(this.getGpsLongitude(), rhs.getGpsLongitude()).append(this.getEpochTime(), rhs.getEpochTime())
+        		.isEquals();
+    }
 
 	public float getCH4() {
 		return cH4;

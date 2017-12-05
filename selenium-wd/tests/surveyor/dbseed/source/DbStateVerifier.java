@@ -3,11 +3,20 @@ package surveyor.dbseed.source;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
+
+import common.source.ArrayUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import surveyor.dataaccess.source.Analyzer;
+import surveyor.dataaccess.source.CaptureEvent;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.FieldOfView;
 import surveyor.dataaccess.source.Location;
+import surveyor.dataaccess.source.Peak;
+import surveyor.dataaccess.source.Segment;
+import surveyor.dataaccess.source.SurveyResult;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataaccess.source.User;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -771,5 +780,30 @@ public class DbStateVerifier {
 		}
 
 		return true;
+	}
+
+	public boolean isCaptureEventSeedMatch(List<CaptureEvent> captureEventList, String surveyTag, String analyzerSerialNumber) {
+		List<CaptureEvent> captureEvents = CaptureEvent.getCaptureEvent(surveyTag, analyzerSerialNumber);
+		return ArrayUtility.listDeepEquals(captureEventList, captureEvents);
+	}
+
+	public boolean isFieldOfViewSeedMatch(List<FieldOfView> fovList, String surveyId) {
+		List<FieldOfView> fovs = FieldOfView.getFieldOfView(surveyId);
+		return ArrayUtility.listDeepEquals(fovList, fovs);
+	}
+
+	public boolean isPeakSeedMatch(List<Peak> peakList, String surveyTag, String analyzerSerialNumber) {
+		List<Peak> peaks = Peak.getPeaks(surveyTag, analyzerSerialNumber);
+		return ArrayUtility.listDeepEquals(peakList, peaks);
+	}
+
+	public boolean isSegmentSeedMatch(List<Segment> segmentList, String surveyId) {
+		List<Segment> segments = Segment.getSegment(surveyId);
+		return ArrayUtility.listDeepEquals(segmentList, segments);
+	}
+
+	public boolean isSurveyResultSeedMatch(List<SurveyResult> surveyResultList, String surveyId) {
+		List<SurveyResult> surveyResults = SurveyResult.getSurveyResult(surveyId);
+		return ArrayUtility.listDeepEquals(surveyResultList, surveyResults);
 	}
 }

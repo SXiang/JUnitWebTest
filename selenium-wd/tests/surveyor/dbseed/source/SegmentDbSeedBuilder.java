@@ -2,12 +2,14 @@ package surveyor.dbseed.source;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import surveyor.dataaccess.source.Segment;
 
 public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[Segment]";
@@ -28,12 +30,12 @@ public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
 	public DbSeed build() throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		DbSeed seedData = new DbSeed();
-		
-        try  
-        {              
+
+        try
+        {
     		CSVUtility csvUtility = new CSVUtility();
     		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
-    		
+
     		boolean geomFileExists = false;
     		String geomSeedFilePath = workingCSVFile.replace(SEGMENT_SEED_FILE_PREFIX, SEGMENT_GEOM_SEED_FILE_PREFIX);
     		List<String> geomRows = readGeomFile(geomSeedFilePath);
@@ -52,18 +54,35 @@ public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
     			// Convert Geom type to WKT and convert back to Geom again when executing INSERT statements.
     			if (geomFileExists) {
     				shape = String.format("geometry::STGeomFromText('%s', %d)", geomRows.get(rowIdx), SRID);
-    			} 
+    			}
 
     			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, surveyId, order, mode, shape));
     			rowIdx++;
 			}
-    		
+
             seedData.setDestinationTableName(TABLE_NAME);
         }
-        catch (Exception e)  
-        {  
-            Log.error(ExceptionUtility.getStackTraceString(e));  
-        }  
+        catch (Exception e)
+        {
+            Log.error(ExceptionUtility.getStackTraceString(e));
+        }
 		return seedData;
+	}
+
+	public static List<Segment> readRowsFromSeed(String seedFileTag) throws FileNotFoundException, IOException {
+		String seedFilename = String.format("Segment-%s.csv", seedFileTag);
+		List<Map<String, String>> seedFileLines = new SegmentDbSeedBuilder(seedFilename).getSeedFileLines();
+		List<Segment> segments = new ArrayList<>();
+		seedFileLines.stream()
+			.forEach(row -> {
+				Segment segment = new Segment();
+				segment.setMode(Integer.valueOf(row.get("Mode")));
+				segment.setOrder(Integer.valueOf(row.get("Order")));
+				segment.setShape(row.get("Shape"));
+				segment.setSurveyId(String.valueOf(row.get("SurveyId")));
+				segments.add(segment);
+			});
+
+		return segments;
 	}
 }

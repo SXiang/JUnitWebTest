@@ -2,12 +2,14 @@ package surveyor.dbseed.source;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import surveyor.dataaccess.source.FieldOfView;
 
 public class FieldOfViewDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[FieldOfView]";
@@ -47,5 +49,22 @@ public class FieldOfViewDbSeedBuilder extends BaseDbSeedBuilder {
             Log.error(ExceptionUtility.getStackTraceString(e));
         }
 		return seedData;
+	}
+
+	public static List<FieldOfView> readRowsFromSeed(String seedFileTag) throws FileNotFoundException, IOException {
+		String seedFilename = String.format("FieldOfView-%s.csv", seedFileTag);
+		List<Map<String, String>> seedFileLines = new FieldOfViewDbSeedBuilder(seedFilename).getSeedFileLines();
+		List<FieldOfView> fieldOfViews = new ArrayList<>();
+		seedFileLines.stream()
+			.forEach(row -> {
+				FieldOfView fieldOfView = new FieldOfView();
+				fieldOfView.setAnalyzerId(String.valueOf(row.get("AnalyzerId")));
+				fieldOfView.setEpochTime(Float.valueOf(row.get("EpochTime")));
+				fieldOfView.setShape(row.get("Shape") != "NULL" ? row.get("Shape") : null);
+				fieldOfView.setSurveyId(row.get("SurveyId") != "NULL" ? String.valueOf(row.get("SurveyId")) : "");
+				fieldOfViews.add(fieldOfView);
+			});
+
+		return fieldOfViews;
 	}
 }

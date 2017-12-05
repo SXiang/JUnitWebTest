@@ -215,6 +215,13 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
+	public void detectFix01_SurveyDataSeedTest() throws Exception {
+		String[] surveyFileTags = { "op-pic-1" };
+		DbSeedExecutor.detectFixSurveySeed(surveyFileTags);
+		verifySurveySeedDataIsPresent();
+	}
+
+	@Test
 	public void cleanup01_GisDataSeedTest_SpecificCustomer_VerifyNoErrors() throws Exception {
 		Log.info("\nRunning cleanup01_GisDataSeedTest_SpecificCustomer_VerifyNoErrors ...");
 

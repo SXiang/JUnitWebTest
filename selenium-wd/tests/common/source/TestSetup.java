@@ -910,6 +910,9 @@ public class TestSetup {
 				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 			}
 		}
+
+		// Detect/fix survey seed data that could have been polluted during test executions.
+		String[] surveysWithKnownDataIssuesDuringTestExecution = { "op-pic-1" };
 	}
 
 	private void setAWSProperties() {
