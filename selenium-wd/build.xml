@@ -291,7 +291,7 @@
       <batchtest fork="yes" todir="${reports}/performance/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-      	  <include name="**/ProdGeoServerDriverViewAPITest.class" />
+      	  <include name="**/ProdGeoServerMultipleCustomerAPITest.class" />
         </fileset>
       </batchtest>
     </junit>
