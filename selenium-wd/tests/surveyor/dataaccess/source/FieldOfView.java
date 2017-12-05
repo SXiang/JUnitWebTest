@@ -7,11 +7,14 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import common.source.Log;
 
-public class FieldOfView extends BaseEntity {
-	private static final String CACHE_KEY = "FIELDOFVIEW.";
+@SuppressWarnings("rawtypes")
+public class FieldOfView extends BaseEntity implements Comparable {
+	public static final String CACHE_KEY = "FIELDOFVIEW.";
 
 	private Object analyzerId;
 	private Float epochTime;
@@ -32,10 +35,17 @@ public class FieldOfView extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.getAnalyzerId()).append(this.getEpochTime())
-        		.append(this.getShape()).append(this.getSurveyId())
+        return new HashCodeBuilder().append(nullOrUpper(this.getAnalyzerId()))
+        		.append(this.getEpochTime())
+        		.append(nullOrUpper(this.getShape()))
+        		.append(nullOrUpper(this.getSurveyId()))
         		.toHashCode();
     }
+
+	@Override
+	public int compareTo(Object other) {
+		return Float.compare(this.getEpochTime(), ((FieldOfView)other).getEpochTime());
+	}
 
     @Override
     public boolean equals(Object other) {
@@ -46,11 +56,16 @@ public class FieldOfView extends BaseEntity {
             return false;
         }
         FieldOfView rhs = ((FieldOfView) other);
-        return new EqualsBuilder().append(this.getAnalyzerId(), rhs.getAnalyzerId())
+        return new EqualsBuilder().append(nullOrUpper(this.getAnalyzerId()), nullOrUpper(rhs.getAnalyzerId()))
         		.append(this.getEpochTime(), rhs.getEpochTime())
-        		.append(this.getShape(), rhs.getShape())
-        		.append(this.getSurveyId(), rhs.getSurveyId())
+        		.append(nullOrUpper(this.getShape()), nullOrUpper(rhs.getShape()))
+        		.append(nullOrUpper(this.getSurveyId()), nullOrUpper(rhs.getSurveyId()))
         		.isEquals();
+    }
+
+    @Override
+    public String toString() {
+    	return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }
 
 	public Object getAnalyzerId() {
@@ -97,7 +112,7 @@ public class FieldOfView extends BaseEntity {
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY+surveyId)) {
 			objFieldOfViewList = (List<FieldOfView>)DBCache.INSTANCE.get(CACHE_KEY+surveyId);
 		} else {
-			String SQL = "SELECT * FROM dbo.[FieldOfView] WHERE SurveyId='" + surveyId + "'";
+			String SQL = "SELECT [AnalyzerId],[EpochTime],CONVERT(VARBINARY(MAX), [Shape]) AS Shape,[SurveyId] FROM dbo.[FieldOfView] WHERE SurveyId='" + surveyId + "'";
 			objFieldOfViewList = load(SQL);
 			if (objFieldOfViewList!=null && objFieldOfViewList.size()>0) {
 				DBCache.INSTANCE.set(CACHE_KEY + surveyId, objFieldOfViewList);
@@ -111,7 +126,7 @@ public class FieldOfView extends BaseEntity {
 		try {
 			objFieldOfView.setAnalyzerId(resultSet.getObject("AnalyzerId"));
 			objFieldOfView.setEpochTime(getFloatColumnValue(resultSet,"EpochTime"));
-			objFieldOfView.setShape(resultSet.getObject("Shape"));
+			objFieldOfView.setShape(resultSet.getString("Shape"));
 			objFieldOfView.setSurveyId(resultSet.getObject("SurveyId"));
 		} catch (SQLException e) {
 			Log.error(e.toString());

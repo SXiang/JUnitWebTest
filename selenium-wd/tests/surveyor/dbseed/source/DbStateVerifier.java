@@ -12,6 +12,7 @@ import common.source.Log;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.CaptureEvent;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.FieldOfView;
 import surveyor.dataaccess.source.Location;
 import surveyor.dataaccess.source.Peak;
@@ -783,26 +784,36 @@ public class DbStateVerifier {
 	}
 
 	public boolean isCaptureEventSeedMatch(List<CaptureEvent> captureEventList, String surveyTag, String analyzerSerialNumber) {
+		Log.method("DbStateVerifier.isCaptureEventSeedMatch", captureEventList, surveyTag, analyzerSerialNumber);
+		DBCache.INSTANCE.purgeCache(CaptureEvent.CACHE_KEY);
 		List<CaptureEvent> captureEvents = CaptureEvent.getCaptureEvent(surveyTag, analyzerSerialNumber);
 		return ArrayUtility.listDeepEquals(captureEventList, captureEvents);
 	}
 
 	public boolean isFieldOfViewSeedMatch(List<FieldOfView> fovList, String surveyId) {
+		Log.method("DbStateVerifier.isFieldOfViewSeedMatch", fovList, surveyId);
+		DBCache.INSTANCE.purgeCache(FieldOfView.CACHE_KEY);
 		List<FieldOfView> fovs = FieldOfView.getFieldOfView(surveyId);
 		return ArrayUtility.listDeepEquals(fovList, fovs);
 	}
 
 	public boolean isPeakSeedMatch(List<Peak> peakList, String surveyTag, String analyzerSerialNumber) {
+		Log.method("DbStateVerifier.isPeakSeedMatch", peakList, surveyTag, analyzerSerialNumber);
+		DBCache.INSTANCE.purgeCache(Peak.CACHE_KEY);
 		List<Peak> peaks = Peak.getPeaks(surveyTag, analyzerSerialNumber);
 		return ArrayUtility.listDeepEquals(peakList, peaks);
 	}
 
 	public boolean isSegmentSeedMatch(List<Segment> segmentList, String surveyId) {
+		Log.method("DbStateVerifier.isSegmentSeedMatch", segmentList, surveyId);
+		DBCache.INSTANCE.purgeCache(Segment.CACHE_KEY);
 		List<Segment> segments = Segment.getSegment(surveyId);
 		return ArrayUtility.listDeepEquals(segmentList, segments);
 	}
 
 	public boolean isSurveyResultSeedMatch(List<SurveyResult> surveyResultList, String surveyId) {
+		Log.method("DbStateVerifier.isSurveyResultSeedMatch", surveyResultList, surveyId);
+		DBCache.INSTANCE.purgeCache(SurveyResult.CACHE_KEY);
 		List<SurveyResult> surveyResults = SurveyResult.getSurveyResult(surveyId);
 		return ArrayUtility.listDeepEquals(surveyResultList, surveyResults);
 	}

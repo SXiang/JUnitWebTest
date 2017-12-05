@@ -86,11 +86,13 @@ public class DbSeedExecutor {
 	 * Fixes polluted surveys and adds logs for investigation.
 	 * @param surveyFileTags - surveys to detect/fix
 	 * @throws Exception
+	 * @return - whether pollution was detected and correction was applied.
 	 */
-	public static void detectFixSurveySeed(String[] surveyFileTags) throws Exception {
+	public static boolean detectFixSurveySeed(String[] surveyFileTags) throws Exception {
 		Log.method("DbSeedExecutor.detectFixSurveySeed", LogHelper.arrayToString(surveyFileTags));
 
 		Connection connection = null;
+		boolean applyCorrection = false;
 		try {
 			connection = ConnectionFactory.createConnection();
 			DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
@@ -114,8 +116,6 @@ public class DbSeedExecutor {
 						throw new Exception(String.format("Did NOT find survey for tag='%s' and AnalyzerId='%s'", surveyTag, analyzerId));
 					}
 
-					boolean applyCorrection = false;
-
 					// Detect/fix survey results data.
 					if (!dbStateVerifier.isSegmentSeedMatch(SegmentDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
 						dbStateCorrector.append(TableName.SEGMENT);
@@ -123,6 +123,7 @@ public class DbSeedExecutor {
 					}
 
 					if (!dbStateVerifier.isSurveyResultSeedMatch(SurveyResultDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
+						dbStateCorrector.append(TableName.SEGMENT);     // segment has FK to SurveyResult table.
 						dbStateCorrector.append(TableName.SURVEYRESULT);
 						applyCorrection = true;
 					}
@@ -151,6 +152,8 @@ public class DbSeedExecutor {
 		} finally {
 			connection.close();
 		}
+
+		return applyCorrection;
 	}
 
 	private static List<Map<String, String>> getSurveyFileLines(String surveyFileTag) throws FileNotFoundException, IOException {

@@ -58,7 +58,19 @@ public class ArrayUtility {
 
 		Object[] arr1 = list1.toArray();
 		Object[] arr2 = list2.toArray();
-		return Arrays.deepEquals(arr1, arr2);
+
+		Arrays.sort(arr1);
+		Arrays.sort(arr2);
+
+		boolean retVal = Arrays.deepEquals(arr1, arr2);
+
+		if (!retVal) {
+			// log if equals fails.
+			Log.method("listDeepEquals", LogHelper.collectionToString(list1, "list1"), LogHelper.collectionToString(list2, "list2"));
+			Log.info("[ArrayUtility.listDeepEquals] Returning -> " + retVal);
+		}
+
+		return retVal;
 	}
 
 	public static List<String> getDistinctValues(List<String> stringValues) {

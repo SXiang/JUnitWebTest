@@ -58,10 +58,10 @@ public class FieldOfViewDbSeedBuilder extends BaseDbSeedBuilder {
 		seedFileLines.stream()
 			.forEach(row -> {
 				FieldOfView fieldOfView = new FieldOfView();
-				fieldOfView.setAnalyzerId(String.valueOf(row.get("AnalyzerId")));
+				fieldOfView.setAnalyzerId(String.valueOf(row.get("AnalyzerId")).toUpperCase());
 				fieldOfView.setEpochTime(Float.valueOf(row.get("EpochTime")));
-				fieldOfView.setShape(row.get("Shape") != "NULL" ? row.get("Shape") : null);
-				fieldOfView.setSurveyId(row.get("SurveyId") != "NULL" ? String.valueOf(row.get("SurveyId")) : "");
+				fieldOfView.setShape(row.get("Shape") != "NULL" ? row.get("Shape").toString().replace("0x", "") : null);
+				fieldOfView.setSurveyId(row.get("SurveyId") != "NULL" ? String.valueOf(row.get("SurveyId")).toUpperCase() : "");
 				fieldOfViews.add(fieldOfView);
 			});
 

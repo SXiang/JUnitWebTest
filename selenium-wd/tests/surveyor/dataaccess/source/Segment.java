@@ -8,11 +8,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import common.source.Log;
 
-public class Segment extends BaseEntity {
-	private static final String CACHE_KEY = "SEGMENT.";
+public class Segment extends BaseEntity implements Comparable {
+	public static final String CACHE_KEY = "SEGMENT.";
 
 	private Integer mode;
 	private Object shape;
@@ -31,11 +33,16 @@ public class Segment extends BaseEntity {
 		this.surveyId = surveyId;
 	}
 
+	@Override
+	public int compareTo(Object other) {
+		return Integer.compare(this.getOrder(), ((Segment)other).getOrder());
+	}
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getMode())
-        		.append(this.getShape()).append(this.getOrder())
-        		.append(this.getSurveyId())
+        		.append(nullOrUpper(this.getShape())).append(this.getOrder())
+        		.append(nullOrUpper(this.getSurveyId()))
         		.toHashCode();
     }
 
@@ -49,9 +56,14 @@ public class Segment extends BaseEntity {
         }
         Segment rhs = ((Segment) other);
         return new EqualsBuilder().append(this.getMode(), rhs.getMode())
-        		.append(this.getShape(), rhs.getShape()).append(this.getOrder(), rhs.getOrder())
-        		.append(this.getSurveyId(), rhs.getSurveyId())
+        		.append(nullOrUpper(this.getShape()), nullOrUpper(rhs.getShape())).append(this.getOrder(), rhs.getOrder())
+        		.append(nullOrUpper(this.getSurveyId()), nullOrUpper(rhs.getSurveyId()))
         		.isEquals();
+    }
+
+    @Override
+    public String toString() {
+    	return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }
 
 	public Integer getMode() {
@@ -98,7 +110,7 @@ public class Segment extends BaseEntity {
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY+surveyId)) {
 			objSegmentList = (List<Segment>)DBCache.INSTANCE.get(CACHE_KEY+surveyId);
 		} else {
-			String SQL = "SELECT * FROM dbo.[Segment] WHERE SurveyId='" + surveyId + "'";
+			String SQL = "SELECT [SurveyId],[Order],[Mode],CONVERT(VARBINARY(MAX), [Shape]) AS Shape FROM dbo.[Segment] WHERE SurveyId='" + surveyId + "'";
 			objSegmentList = load(SQL);
 			if (objSegmentList!=null && objSegmentList.size()>0) {
 				DBCache.INSTANCE.set(CACHE_KEY + surveyId, objSegmentList);
@@ -111,7 +123,7 @@ public class Segment extends BaseEntity {
 		Segment objSegment = new Segment();
 		try {
 			objSegment.setMode(getIntColumnValue(resultSet,"Mode"));
-			objSegment.setShape(resultSet.getObject("Shape"));
+			objSegment.setShape(resultSet.getString("Shape"));
 			objSegment.setOrder(getIntColumnValue(resultSet,"Order"));
 			objSegment.setSurveyId(resultSet.getObject("SurveyId"));
 		} catch (SQLException e) {

@@ -76,7 +76,7 @@ public class CaptureEventDbSeedBuilder extends BaseDbSeedBuilder {
 		seedFileLines.stream()
 			.forEach(row -> {
 				CaptureEvent captureEvent = new CaptureEvent();
-				captureEvent.setAnalyzerId(String.valueOf(row.get("AnalyzerId")));
+				captureEvent.setAnalyzerId(String.valueOf(row.get("AnalyzerId")).toUpperCase());
 				captureEvent.setCaptureType(Boolean.valueOf(row.get("CaptureType")));
 				captureEvent.setClassificationConfidence(row.get("ClassificationConfidence") != "NULL" ? Float.valueOf(row.get("ClassificationConfidence")) : Float.MIN_VALUE);
 				captureEvent.setConcentration(Float.valueOf(row.get("Concentration")));
@@ -89,12 +89,12 @@ public class CaptureEventDbSeedBuilder extends BaseDbSeedBuilder {
 				captureEvent.setEthaneRatioSdev(row.get("EthaneRatioSdev") != "NULL" ? Float.valueOf(row.get("EthaneRatioSdev")) : Float.MIN_VALUE);
 				captureEvent.setGpsLatitude(Float.valueOf(row.get("GpsLatitude")));
 				captureEvent.setGpsLongitude(Float.valueOf(row.get("GpsLongitude")));
-				captureEvent.setId(String.valueOf(row.get("Id")));
+				captureEvent.setId(String.valueOf(row.get("Id")).toString());
 				captureEvent.setReplayLMin(Float.valueOf(row.get("ReplayLMin")));
 				captureEvent.setReplayMax(Float.valueOf(row.get("ReplayMax")));
 				captureEvent.setReplayRMin(Float.valueOf(row.get("ReplayRMin")));
-				captureEvent.setShape(row.get("Shape"));
-				captureEvent.setSurveyId(row.get("SurveyId") != "NULL" ? String.valueOf(row.get("SurveyId")) : "");
+				captureEvent.setShape(row.get("Shape").toString().replace("0x", ""));
+				captureEvent.setSurveyId(row.get("SurveyId") != "NULL" ? String.valueOf(row.get("SurveyId")).toUpperCase() : "");
 				captureEvent.setUncertainty(Float.valueOf(row.get("Uncertainty")));
 				captureEvents.add(captureEvent);
 			});

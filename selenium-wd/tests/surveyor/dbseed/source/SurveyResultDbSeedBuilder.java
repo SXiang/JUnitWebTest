@@ -76,9 +76,9 @@ public class SurveyResultDbSeedBuilder extends BaseDbSeedBuilder {
 		seedFileLines.stream()
 			.forEach(row -> {
 				SurveyResult surveyResult = new SurveyResult();
-				surveyResult.setBreadcrumb(row.get("Breadcrumb") != "NULL" ? row.get("Breadcrumb") : null);
-				surveyResult.setFieldOfView(row.get("FieldOfView") != "NULL" ? row.get("FieldOfView") : null);
-				surveyResult.setSurveyId(String.valueOf(row.get("SurveyId")));
+				surveyResult.setBreadcrumb(row.get("Breadcrumb") != "NULL" ? row.get("Breadcrumb").toString().replace("0x", "") : null);
+				surveyResult.setFieldOfView(row.get("FieldOfView") != "NULL" ? row.get("FieldOfView").toString().replace("0x", "") : null);
+				surveyResult.setSurveyId(String.valueOf(row.get("SurveyId")).toUpperCase());
 				surveyResults.add(surveyResult);
 			});
 

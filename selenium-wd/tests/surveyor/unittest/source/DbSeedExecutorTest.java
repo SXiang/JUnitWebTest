@@ -2,8 +2,8 @@ package surveyor.unittest.source;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
-
 import common.source.Log;
+import common.source.TestContext;
 import common.source.TestSetup;
 
 import static org.junit.Assert.*;
@@ -11,6 +11,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.DBCache;
+import surveyor.dataaccess.source.Survey;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
@@ -19,6 +20,8 @@ import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.source.BaseTest;
 
 public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
+	private static final String OP_PIC_1_SURVEY_ID_FROM_SEED = "1556ac85-a125-0347-2a02-39d4b529c6bd";
+	private static final String OP_PIC_1_ANALZYER_ID_FROM_SEED = "34a34021-8814-8a01-9183-39d4b4de03be";
 	private static LoginPageActions loginPageAction;
 	private static ManageCustomerPageActions manageCustomerPageAction;
 
@@ -215,21 +218,126 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
-	public void detectFix01_SurveyDataSeedTest_NoPollutionDetection() throws Exception {
+	public void detectFix01_SurveyDataSeedTest_NoPollutionDetection_PicarroSurvey() throws Exception {
 		String[] surveyFileTags = { "op-pic-1" };
 
-		// fix: survey pollution should NOT be detected.
-		DbSeedExecutor.detectFixSurveySeed(surveyFileTags);
+		if (!TestContext.INSTANCE.getTestSetup().getDbIpAddress().equals("127.0.0.1")) {
+			Log.warn("Test skipped. NOT running on localhost DB");
+			return;
+		}
+
+		// Trigger detectFix first to get survey in good state (as data might have changed from other test executions).
+		String surveyId = OP_PIC_1_SURVEY_ID_FROM_SEED;
+		String analyzerId = OP_PIC_1_ANALZYER_ID_FROM_SEED;
+
+		Survey survey = new Survey();
+		survey.executeNonQuery(String.format("UPDATE [dbo].[CaptureEvent] SET Disposition=Disposition+1 WHERE SurveyId='%s' AND AnalyzerId='%s'", surveyId, analyzerId));
+		assertTrue("Survey seed data polluted. Seed data correction should have been applied.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == true);
+
+		// Then check again and ensure no pollution is detected.
+		assertTrue("Survey seed data correct. No pollution should have been detected.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == false);
 	}
 
 	@Test
-	public void detectFix01_SurveyDataSeedTest_PollutionDetected() throws Exception {
+	public void detectFix02_SurveyDataSeedTest_NoPollutionDetection_SQACusSurvey() throws Exception {
+		String[] surveyFileTags = { "op-pic-sqacus-1" };
+		assertTrue("Survey seed data correct. No pollution should have been detected.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == false);
+	}
+
+	/**
+	 * This test updates DB seed data and will be skipped if NOT running on localhost DB.
+ 	*/
+	@Test
+	public void detectFix03_SurveyDataSeedTest_CaptureEvent_PollutionDetected() throws Exception {
 		String[] surveyFileTags = { "op-pic-1" };
 
-		// todo: update some values in CaptureEvent for the survey.
+		if (!TestContext.INSTANCE.getTestSetup().getDbIpAddress().equals("127.0.0.1")) {
+			Log.warn("Test skipped. NOT running on localhost DB");
+			return;
+		}
 
-		// fix: survey pollution should be detected correctly.
-		DbSeedExecutor.detectFixSurveySeed(surveyFileTags);
+		String surveyId = OP_PIC_1_SURVEY_ID_FROM_SEED;
+		String analyzerId = OP_PIC_1_ANALZYER_ID_FROM_SEED;
+
+		Survey survey = new Survey();
+		survey.executeNonQuery(String.format("UPDATE [dbo].[CaptureEvent] SET Disposition=Disposition+1 WHERE SurveyId='%s' AND AnalyzerId='%s'", surveyId, analyzerId));
+		assertTrue("Survey seed data polluted. Seed data correction should have been applied.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == true);
+	}
+
+	/**
+	 * This test updates DB seed data and will be skipped if NOT running on localhost DB.
+ 	*/
+	@Test
+	public void detectFix04_SurveyDataSeedTest_FieldOfView_PollutionDetected() throws Exception {
+		String[] surveyFileTags = { "op-pic-1" };
+
+		if (!TestContext.INSTANCE.getTestSetup().getDbIpAddress().equals("127.0.0.1")) {
+			Log.warn("Test skipped. NOT running on localhost DB");
+			return;
+		}
+
+		String surveyId = OP_PIC_1_SURVEY_ID_FROM_SEED;
+		String analyzerId = OP_PIC_1_ANALZYER_ID_FROM_SEED;
+
+		Survey survey = new Survey();
+		survey.executeNonQuery(String.format("UPDATE [dbo].[FieldOfView] SET EpochTime=EpochTime+1 WHERE SurveyId='%s' AND AnalyzerId='%s'", surveyId, analyzerId));
+		assertTrue("Survey seed data polluted. Seed data correction should have been applied.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == true);
+	}
+
+	/**
+	 * This test updates DB seed data and will be skipped if NOT running on localhost DB.
+ 	*/
+	@Test
+	public void detectFix05_SurveyDataSeedTest_Peak_PollutionDetected() throws Exception {
+		String[] surveyFileTags = { "op-pic-1" };
+
+		if (!TestContext.INSTANCE.getTestSetup().getDbIpAddress().equals("127.0.0.1")) {
+			Log.warn("Test skipped. NOT running on localhost DB");
+			return;
+		}
+
+		String surveyId = OP_PIC_1_SURVEY_ID_FROM_SEED;
+		String analyzerId = OP_PIC_1_ANALZYER_ID_FROM_SEED;
+
+		Survey survey = new Survey();
+		survey.executeNonQuery(String.format("UPDATE [dbo].[Peak] SET Amplitude=Amplitude+1 WHERE SurveyId='%s' AND AnalyzerId='%s'", surveyId, analyzerId));
+		assertTrue("Survey seed data polluted. Seed data correction should have been applied.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == true);
+	}
+
+	/**
+	 * This test updates DB seed data and will be skipped if NOT running on localhost DB.
+ 	*/
+	@Test
+	public void detectFix06_SurveyDataSeedTest_Segment_PollutionDetected() throws Exception {
+		String[] surveyFileTags = { "op-pic-1" };
+
+		if (!TestContext.INSTANCE.getTestSetup().getDbIpAddress().equals("127.0.0.1")) {
+			Log.warn("Test skipped. NOT running on localhost DB");
+			return;
+		}
+
+		String surveyId = OP_PIC_1_SURVEY_ID_FROM_SEED;
+		Survey survey = new Survey();
+		survey.executeNonQuery(String.format("UPDATE [dbo].[Segment] SET Mode=Mode+1 WHERE SurveyId='%s'", surveyId));
+		assertTrue("Survey seed data polluted. Seed data correction should have been applied.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == true);
+	}
+
+	/**
+	 * This test updates DB seed data and will be skipped if NOT running on localhost DB.
+ 	*/
+	@Test
+	public void detectFix07_SurveyDataSeedTest_SurveyResult_PollutionDetected() throws Exception {
+		String[] surveyFileTags = { "op-pic-1" };
+
+		if (!TestContext.INSTANCE.getTestSetup().getDbIpAddress().equals("127.0.0.1")) {
+			Log.warn("Test skipped. NOT running on localhost DB");
+			return;
+		}
+
+		String surveyId = OP_PIC_1_SURVEY_ID_FROM_SEED;
+		Survey survey = new Survey();
+		survey.executeNonQuery(String.format("UPDATE [dbo].[SurveyResult] SET FieldOfView=Breadcrumb WHERE SurveyId='%s'", surveyId));
+		assertTrue("Survey seed data polluted. Seed data correction should have been applied.", DbSeedExecutor.detectFixSurveySeed(surveyFileTags) == true);
 	}
 
 	@Test

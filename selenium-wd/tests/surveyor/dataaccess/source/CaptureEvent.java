@@ -9,11 +9,14 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import common.source.Log;
 
-public class CaptureEvent extends BaseEntity {
-	private static final String CACHE_KEY = "CAPTUREEVENT.";
+@SuppressWarnings("rawtypes")
+public class CaptureEvent extends BaseEntity implements Comparable {
+	public static final String CACHE_KEY = "CAPTUREEVENT.";
 
 	private String id;
 	private float uncertainty;
@@ -53,11 +56,22 @@ public class CaptureEvent extends BaseEntity {
 				.concat(this.getDisposition().toString()).concat("|");
 	}
 
+	@Override
+	public int compareTo(Object other) {
+		return Float.compare(this.getEpochTime(), ((CaptureEvent)other).getEpochTime());
+	}
+
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.getAnalyzerId()).append(this.getSurveyId())
-        		.append(this.getDistance()).append(this.getDelta()).append(this.getGpsLatitude()).append(this.getGpsLongitude())
-        		.append(this.getConcentration()).append(this.getClassificationConfidence()).append(this.getDisposition())
+        return new HashCodeBuilder().append(nullOrUpper(this.getAnalyzerId()))
+        		.append(nullOrUpper(this.getSurveyId()))
+        		.append(this.getDistance())
+        		.append(this.getDelta())
+        		.append(this.getGpsLatitude())
+        		.append(this.getGpsLongitude())
+        		.append(this.getConcentration())
+        		.append(this.getClassificationConfidence())
+        		.append(this.getDisposition())
         		.toHashCode();
     }
 
@@ -70,7 +84,8 @@ public class CaptureEvent extends BaseEntity {
             return false;
         }
         CaptureEvent rhs = ((CaptureEvent) other);
-        return new EqualsBuilder().append(this.getAnalyzerId(), rhs.getAnalyzerId()).append(this.getSurveyId(), rhs.getSurveyId())
+        return new EqualsBuilder().append(nullOrUpper(this.getAnalyzerId()), nullOrUpper(rhs.getAnalyzerId()))
+        		.append(nullOrUpper(this.getSurveyId()), nullOrUpper(rhs.getSurveyId()))
         		.append(this.getDistance(), rhs.getDistance()).append(this.getDelta(), rhs.getDelta())
         		.append(this.getGpsLatitude(), rhs.getGpsLatitude()).append(this.getGpsLongitude(), rhs.getGpsLongitude())
         		.append(this.getConcentration(), rhs.getConcentration()).append(this.getClassificationConfidence(), rhs.getClassificationConfidence())
@@ -250,7 +265,7 @@ public class CaptureEvent extends BaseEntity {
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY+surveyId)) {
 			objCaptureEvent = (CaptureEvent)DBCache.INSTANCE.get(CACHE_KEY+surveyId);
 		} else {
-			String SQL = "SELECT * FROM dbo.[CaptureEvent] WHERE SurveyId='" + surveyId + "'";
+			String SQL = "SELECT [Id],[AnalyzerId],[EpochTime],[DateTime],[GpsLatitude],[GpsLongitude],CONVERT(VARBINARY(MAX), [Shape]) AS Shape,[Disposition],[Delta],[Concentration],[Uncertainty],[CaptureType],[Distance],[ReplayMax],[ReplayLMin],[ReplayRMin],[SurveyId],[EthaneRatio],[EthaneRatioSdev],[ClassificationConfidence] FROM dbo.[CaptureEvent] WHERE SurveyId='" + surveyId + "'";
 			ArrayList<CaptureEvent> objCaptureEventList = load(SQL);
 			if (objCaptureEventList!=null && objCaptureEventList.size()>0) {
 				objCaptureEvent = objCaptureEventList.get(0);
@@ -272,7 +287,7 @@ public class CaptureEvent extends BaseEntity {
 			objCaptureEvent.setAnalyzerId(resultSet.getString("AnalyzerId"));
 			objCaptureEvent.setEthaneRatio(getFloatColumnValue(resultSet,"EthaneRatio"));
 			objCaptureEvent.setSurveyId(resultSet.getString("SurveyId"));
-			objCaptureEvent.setShape(resultSet.getObject("Shape"));
+			objCaptureEvent.setShape(resultSet.getString("Shape"));
 			objCaptureEvent.setDistance(getFloatColumnValue(resultSet,"Distance"));
 			objCaptureEvent.setEpochTime(getFloatColumnValue(resultSet,"EpochTime"));
 			objCaptureEvent.setReplayRMin(getFloatColumnValue(resultSet,"ReplayRMin"));
@@ -321,27 +336,30 @@ public class CaptureEvent extends BaseEntity {
 	public static List<CaptureEvent> getCaptureEvent(String tag, String analyzer) {
 		CaptureEvent objCaptureEvent = new CaptureEvent();
 		List<CaptureEvent> objCaptureEventList = new ArrayList<CaptureEvent>();
+		List<Survey> objSurveys = Survey.getSurveys(tag);
+		if (objSurveys != null && objSurveys.size()>0) {
+			Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
+			String analyzerId = objAnalyzer.getId().toString();
+			for (Survey objSurvey : objSurveys) {
+				String surveyId = objSurvey.getId();
+				if (objSurvey.getAnalyzerId().toString().equalsIgnoreCase(analyzerId)) {
+					// Get from cache if present. Else fetch from Database.
+					if (DBCache.INSTANCE.containsKey(CACHE_KEY + surveyId+ "_" + analyzerId)) {
+						objCaptureEventList = (List<CaptureEvent>)DBCache.INSTANCE.get(CACHE_KEY + surveyId +  "_" + analyzerId);
+					}
+					else {
+						String SQL = "SELECT [Id],[AnalyzerId],[EpochTime],[DateTime],[GpsLatitude],[GpsLongitude],CONVERT(VARBINARY(MAX), [Shape]) AS Shape,[Disposition],[Delta],[Concentration],[Uncertainty],[CaptureType],[Distance],[ReplayMax],[ReplayLMin],[ReplayRMin],[SurveyId],[EthaneRatio],[EthaneRatioSdev],[ClassificationConfidence] FROM dbo.[CaptureEvent] WHERE SurveyId = '" + surveyId + "' AND AnalyzerId= '" + analyzerId + "'";
 
-
-		Survey objSurvey = Survey.getSurvey(tag);
-		String surveyId = objSurvey.getId();
-
-		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
-		String analyzerId = objAnalyzer.getId().toString();
-
-		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY + surveyId+ "_" + analyzerId)) {
-			objCaptureEventList = (List<CaptureEvent>)DBCache.INSTANCE.get(CACHE_KEY + surveyId +  "_" + analyzerId);
-		}
-		else {
-			String SQL = "SELECT * FROM dbo.[CaptureEvent] WHERE SurveyId = '" + surveyId + "' AND AnalyzerId= '" + analyzerId + "'";
-
-			objCaptureEventList = objCaptureEvent.load(SQL);
-			if (objCaptureEventList!=null && objCaptureEventList.size()>0)
-			{
-				DBCache.INSTANCE.set(CACHE_KEY + surveyId + "_" + analyzerId, objCaptureEventList);
+						objCaptureEventList = objCaptureEvent.load(SQL);
+						if (objCaptureEventList!=null && objCaptureEventList.size()>0)
+						{
+							DBCache.INSTANCE.set(CACHE_KEY + surveyId + "_" + analyzerId, objCaptureEventList);
+						}
+					}
+				}
 			}
 		}
+
 		return objCaptureEventList;
 	}
 

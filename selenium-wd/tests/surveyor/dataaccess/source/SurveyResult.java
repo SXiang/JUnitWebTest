@@ -7,11 +7,14 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import common.source.Log;
 
-public class SurveyResult extends BaseEntity {
-	private static final String CACHE_KEY = "SURVEYRESULT.";
+@SuppressWarnings("rawtypes")
+public class SurveyResult extends BaseEntity implements Comparable {
+	public static final String CACHE_KEY = "SURVEYRESULT.";
 
 	private Object breadcrumb;
 	private Object fieldOfView;
@@ -28,26 +31,37 @@ public class SurveyResult extends BaseEntity {
 		this.surveyId = surveyId;
 	}
 
+	@Override
+	public int compareTo(Object other) {
+		return Integer.compare(this.hashCode(), other.hashCode());
+	}
+
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.getBreadcrumb())
-        		.append(this.getFieldOfView()).append(this.getSurveyId())
+        return new HashCodeBuilder().append(nullOrUpper(this.getBreadcrumb()))
+        		.append(nullOrUpper(this.getFieldOfView()))
+        		.append(nullOrUpper(this.getSurveyId()))
         		.toHashCode();
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
+    	if (other == this) {
             return true;
         }
         if ((other instanceof SurveyResult) == false) {
             return false;
         }
         SurveyResult rhs = ((SurveyResult) other);
-        return new EqualsBuilder().append(this.getBreadcrumb(), rhs.getBreadcrumb())
-        		.append(this.getFieldOfView(), rhs.getFieldOfView())
-        		.append(this.getSurveyId(), rhs.getSurveyId())
+        return new EqualsBuilder().append(nullOrUpper(this.getBreadcrumb()), nullOrUpper(rhs.getBreadcrumb()))
+        		.append(nullOrUpper(this.getFieldOfView()), nullOrUpper(rhs.getFieldOfView()))
+        		.append(nullOrUpper(this.getSurveyId()), nullOrUpper(rhs.getSurveyId()))
         		.isEquals();
+    }
+
+    @Override
+    public String toString() {
+    	return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }
 
 	public Object getBreadcrumb() {
@@ -86,7 +100,7 @@ public class SurveyResult extends BaseEntity {
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY+surveyId)) {
 			objSurveyResultList = (List<SurveyResult>)DBCache.INSTANCE.get(CACHE_KEY+surveyId);
 		} else {
-			String SQL = "SELECT * FROM dbo.[SurveyResult] WHERE SurveyId='" + surveyId + "'";
+			String SQL = "SELECT [SurveyId],CONVERT(VARBINARY(MAX), [FieldOfView]) AS FieldOfView,CONVERT(VARBINARY(MAX), [Breadcrumb]) AS Breadcrumb FROM dbo.[SurveyResult] WHERE SurveyId='" + surveyId + "'";
 			objSurveyResultList = load(SQL);
 			if (objSurveyResultList!=null && objSurveyResultList.size()>0) {
 				DBCache.INSTANCE.set(CACHE_KEY + surveyId, objSurveyResultList);
@@ -98,8 +112,8 @@ public class SurveyResult extends BaseEntity {
 	private static SurveyResult loadFrom(ResultSet resultSet) {
 		SurveyResult objSurveyResult = new SurveyResult();
 		try {
-			objSurveyResult.setBreadcrumb(resultSet.getObject("Breadcrumb"));
-			objSurveyResult.setFieldOfView(resultSet.getObject("FieldOfView"));
+			objSurveyResult.setBreadcrumb(resultSet.getString("Breadcrumb"));
+			objSurveyResult.setFieldOfView(resultSet.getString("FieldOfView"));
 			objSurveyResult.setSurveyId(resultSet.getObject("SurveyId"));
 		} catch (SQLException e) {
 			Log.error(e.toString());

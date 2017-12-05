@@ -78,8 +78,8 @@ public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
 				Segment segment = new Segment();
 				segment.setMode(Integer.valueOf(row.get("Mode")));
 				segment.setOrder(Integer.valueOf(row.get("Order")));
-				segment.setShape(row.get("Shape"));
-				segment.setSurveyId(String.valueOf(row.get("SurveyId")));
+				segment.setShape(row.get("Shape").toString().replace("0x", ""));
+				segment.setSurveyId(String.valueOf(row.get("SurveyId")).toUpperCase());
 				segments.add(segment);
 			});
 
