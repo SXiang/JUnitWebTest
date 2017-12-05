@@ -40,7 +40,7 @@ public class SSRSViewNamesParser {
 		String line = null;
 		try {
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.length() > 3) {
+				if (line.matches(RegexUtility.VIEWS_TABLE_LINE_REGEX_PATTERN)) {
 					String[] split = line.split("\\s+");
 					String viewName = line.replace(split[split.length - 1], "").trim();
 					actualViewNamesList.add(viewName);
@@ -71,12 +71,10 @@ public class SSRSViewNamesParser {
 						break;
 					}
 
-					if (line.length() > 3) {
+					if (line.matches(RegexUtility.VIEWS_TABLE_LINE_REGEX_PATTERN)) {
 						String[] split = line.split("\\s+");
 						String viewName = line.replace(split[split.length - 1], "").trim();
 						actualViewNamesList.add(viewName);
-					}else if(line.trim().length()>0){
-						break;
 					}
 				}
 			}
