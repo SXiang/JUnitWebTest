@@ -29,6 +29,11 @@ public class LeakDetailEntity extends InvestigationEntity{
 		private String leakLocationRemarks;
 		private String latitude;
 		private String longitude;
+		
+		private String reportId="null";
+		private String reportName="null";
+		private String totalInvestigationDuration="null";
+		private String foundDateTime="null";
 
 		public static enum LeakLocation {
 			OTHER ("Other"),
@@ -339,16 +344,18 @@ public class LeakDetailEntity extends InvestigationEntity{
 
 		public String[][] toCSVLeakDetails(boolean ignoreLocation){
 			String[][] csvRow ={
-					{boxType+"Number", "InvestigationStatus", "Investigator", "LeakCoordinates", "GpsPrecision",
-					"LeakType", "AddressStreetNumber", "AddressApartmentNumber", "AddressStreetName", "MapNumber",
-					"SurfaceReading", "BarholeReading", "LeakGrade", "LeakLocationType", "PipeMaterialType",
-					"IsPavedWallToWall", "SurfaceOverLeakType","MeterNumber", "LocationRemarks", "Notes",
-					"LeakSourceType"},
-					{boxType+" "+indicationNumber, investigationStatus, userName, ignoreLocation ? "" : latitude+","+longitude, "m",
-					leakType, streetNumber, apartmentNumber, streetName, mapNumber,
-					surfaceReading+" ("+surfaceReadingUnit+")", barholeReading+" ("+barholeReadingUnit+")", leakGrade, leakLocationType, pipeMaterialType,
-					String.valueOf(pavedWallToWall), surfaceOverLeak, meterNumber, leakLocationRemarks, additionalNotes,
-					leakSourceType}
+					{boxType+"Number", "ReportId", "ReportName", "InvestigationStatus", "TotalInvestigationDuration", 
+					"Investigator", "FoundDateTime","LeakCoordinates", "GpsPrecision", "LeakType", 
+					"AddressStreetNumber", "AddressApartmentNumber", "AddressStreetName", "AddressCity","AddressState",
+					"MapNumber", "SurfaceReading", "BarholeReading", "LeakGrade", "LeakLocationType", 
+					"PipeMaterialType", "IsPavedWallToWall", "SurfaceOverLeakType","MeterNumber", "LocationRemarks", 
+					"Notes", "LeakSourceType"},
+					{boxType+" "+indicationNumber, reportId, reportName, investigationStatus, totalInvestigationDuration, 
+					userName, foundDateTime, ignoreLocation ? "" : latitude+","+longitude, "m", leakType,
+					streetNumber, apartmentNumber, streetName, city, state, 
+					mapNumber, surfaceReading+" ("+surfaceReadingUnit+")", barholeReading+" ("+barholeReadingUnit+")", leakGrade, leakLocationType, 
+					pipeMaterialType, String.valueOf(pavedWallToWall), surfaceOverLeak, meterNumber, leakLocationRemarks, 
+					additionalNotes, leakSourceType}
 			};
 			return csvRow;
 		}
