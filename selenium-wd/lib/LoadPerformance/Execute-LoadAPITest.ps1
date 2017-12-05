@@ -202,13 +202,15 @@ if ($Method -eq "POST") {
 
     if ($NumPrimingRuns -gt 0) {
         Write-Host "Executing $NumPrimingRuns priming run(s) ..."
-        .\ab.exe -n $NumPrimingRuns -c $NumPrimingRuns -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl -s $MAX_TIMEOUT_IN_SECS"
+
+        .\ab.exe -n $NumPrimingRuns -c $NumPrimingRuns -p "$ReqBodyFile" -q -T $ContentType -k -s $MAX_TIMEOUT_IN_SECS "$ApiEndpointUrl"
         Write-Host "Done with priming run(s)"
     }
 
     Write-Host "Executing Apache Benchmark run [concurrency=$NumConcurrentRequests, requests=$NumRequestsInOneSession]"
     $script:ABStartTime = [System.DateTime]::UtcNow
-    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -p "$ReqBodyFile" -q -T $ContentType -k "$ApiEndpointUrl -s $MAX_TIMEOUT_IN_SECS" > "$outResultFile"
+
+    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -p "$ReqBodyFile" -q -T $ContentType -k -s $MAX_TIMEOUT_IN_SECS "$ApiEndpointUrl" > "$outResultFile"
     $script:ABEndTime = [System.DateTime]::UtcNow
     Write-Host "Done with Apache Benchmark run"
     
@@ -217,7 +219,7 @@ if ($Method -eq "POST") {
     Write-Host "Deleted request body file - '$ReqBodyFile'"
 } else {
     $script:ABStartTime = [System.DateTime]::UtcNow
-    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -q -T $ContentType -k "$ApiEndpointUrl -s $MAX_TIMEOUT_IN_SECS" > "$outResultFile"
+    .\ab.exe -n $NumConcurrentRequests -c $NumRequestsInOneSession -v $VERBOSE_LEVEL -g "$OutDataFile" -H "$authHeader" -q -T $ContentType -k -s $MAX_TIMEOUT_IN_SECS "$ApiEndpointUrl" > "$outResultFile"
     $script:ABEndTime = [System.DateTime]::UtcNow
 }
 
