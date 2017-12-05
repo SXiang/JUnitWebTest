@@ -67,7 +67,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
-		final String[] surveyTags = {"stnd-sqacudr-sqacus-6"};
+		final String[] surveyTags = {"op-pic-1"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
 		verifySurveySeedDataIsPresent(surveyTags);
 	}
@@ -215,10 +215,21 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
-	public void detectFix01_SurveyDataSeedTest() throws Exception {
+	public void detectFix01_SurveyDataSeedTest_NoPollutionDetection() throws Exception {
 		String[] surveyFileTags = { "op-pic-1" };
+
+		// fix: survey pollution should NOT be detected.
 		DbSeedExecutor.detectFixSurveySeed(surveyFileTags);
-		verifySurveySeedDataIsPresent();
+	}
+
+	@Test
+	public void detectFix01_SurveyDataSeedTest_PollutionDetected() throws Exception {
+		String[] surveyFileTags = { "op-pic-1" };
+
+		// todo: update some values in CaptureEvent for the survey.
+
+		// fix: survey pollution should be detected correctly.
+		DbSeedExecutor.detectFixSurveySeed(surveyFileTags);
 	}
 
 	@Test

@@ -101,11 +101,11 @@ public class DbSeedExecutor {
 					List<Map<String, String>> surveyFileLines = getSurveyFileLines(surveyFileTag);
 
 					// Get survey tag and AnalyzerId from Survey-*.csv
-					String surveyTag = surveyFileLines.get(1).get("Tag");
-					String analyzerId = surveyFileLines.get(1).get("AnalyzerId");
+					String surveyTag = surveyFileLines.get(0).get("Tag");
+					String analyzerId = surveyFileLines.get(0).get("AnalyzerId");
 					String analyzerSerialNumber = Analyzer.getAnalyzer(analyzerId).getSerialNumber();
 					String surveyId = null;
-					Survey survey = Survey.getSurveys(surveyTag).stream().filter(s -> s.getAnalyzerId().equals(analyzerId)).findFirst().orElse(null);
+					Survey survey = Survey.getSurveys(surveyTag).stream().filter(s -> s.getAnalyzerId().equalsIgnoreCase(analyzerId)).findFirst().orElse(null);
 					if (survey != null) {
 						surveyId = survey.getId();
 					}
