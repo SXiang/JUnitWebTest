@@ -75,6 +75,8 @@ public class SSRSViewNamesParser {
 						String[] split = line.split("\\s+");
 						String viewName = line.replace(split[split.length - 1], "").trim();
 						actualViewNamesList.add(viewName);
+					}else if(line.trim().length()>0){
+						break;
 					}
 				}
 			}
