@@ -36,6 +36,10 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	/* ComplianceReportInvestigationPageTest_Tahoe */
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2201 = "dataProviderPageActionsInvestigationReports_TC2201";
 	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2202 = "dataProviderPageActionsInvestigationReports_TC2202";
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2793 = "dataProviderPageActionsInvestigationReports_TC2793";
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2794 = "dataProviderPageActionsInvestigationReports_TC2794";
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2828 = "dataProviderPageActionsInvestigationReports_TC2828";
+	public static final String INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2829 = "dataProviderPageActionsInvestigationReports_TC2829";
 
 	public InvestigationReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -163,6 +167,26 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC2202() {
 		return new Object[][] { { "TC2202" /* TestCaseID */, 18 /* userDataRowID */, 16 /* mobileUserDataRowID */, 306 /* reportDataRowID1 */} };
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC2793() {
+		return new Object[][] { { "TC2793" /* TestCaseID */, 17 /* userDataRowID */, 16 /* mobileUserDataRowID */, 309 /* reportDataRowID1 */} };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC2794() {
+		return new Object[][] { { "TC2794" /* TestCaseID */, 17 /* userDataRowID */, 16 /* mobileUserDataRowID */, 310 /* reportDataRowID1 */} };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC2828() {
+		return new Object[][] { { "TC2828" /* TestCaseID */, 17 /* userDataRowID */, 16 /* mobileUserDataRowID */, 311 /* reportDataRowID1 */} };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsInvestigationReports_TC2829() {
+		return new Object[][] { { "TC2829" /* TestCaseID */, 17 /* userDataRowID */, 16 /* mobileUserDataRowID */, 312 /* reportDataRowID1 */} };
 	}
 	
 }
