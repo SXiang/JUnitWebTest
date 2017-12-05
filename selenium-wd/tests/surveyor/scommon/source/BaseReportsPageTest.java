@@ -42,9 +42,9 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 
 	public BaseReportsPageTest() {
 		this.isCollectReportJobPerfMetric = TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric();
-		this.isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
-		this.isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-		this.isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
+		this.isGenerateBaselineSSRSImages = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+		this.isGenerateBaselineViewImages = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+		this.isGenerateBaselineShapeFiles = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		initializeProperties();
 	}
 
