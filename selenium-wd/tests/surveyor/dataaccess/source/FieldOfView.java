@@ -44,7 +44,7 @@ public class FieldOfView extends BaseEntity implements Comparable {
 
 	@Override
 	public int compareTo(Object other) {
-		return Float.compare(this.getEpochTime(), ((FieldOfView)other).getEpochTime());
+		return Integer.compare(this.hashCode(), other.hashCode());
 	}
 
     @Override
