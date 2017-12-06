@@ -132,6 +132,19 @@ public class DataAccessUnitTests {
 		Log.info("Executing testCustomerLicenses_GetCustomerLicensesByCustomerName_Invalid() ...");
 		testCustomerLicenses_GetCustomerLicensesByCustomerName_Invalid();
 
+		Log.info("Executing testFieldOfView_GetFieldOfViewBySurveyId_Valid() ...");
+		testFieldOfView_GetFieldOfViewBySurveyId_Valid();
+		Log.info("Executing testFieldOfView_GetFieldOfViewBySurveyId_Invalid() ...");
+		testFieldOfView_GetFieldOfViewBySurveyId_Invalid();
+		Log.info("Executing testSurveyResult_GetSurveyResultBySurveyId_Valid() ...");
+		testSurveyResult_GetSurveyResultBySurveyId_Valid();
+		Log.info("Executing testSurveyResult_GetSurveyResultBySurveyId_Invalid() ...");
+		testSurveyResult_GetSurveyResultBySurveyId_Invalid();
+		Log.info("Executing testSegment_GetSegmentBySurveyId_Valid() ...");
+		testSegment_GetSegmentBySurveyId_Valid();
+		Log.info("Executing testSegment_GetSegmentBySurveyId_Invalid() ...");
+		testSegment_GetSegmentBySurveyId_Invalid();
+
 		Log.info("DONE!");
 	}
 
@@ -499,5 +512,41 @@ public class DataAccessUnitTests {
 		String invalidCustomerName = "custInvalid";
 		List<License> customerLicenses = new CustomerLicenses().getLicenses(invalidCustomerName);
 		Assert.assertTrue(customerLicenses == null, "Invalid customer. No licenses should be found.");
+	}
+
+	private static void testFieldOfView_GetFieldOfViewBySurveyId_Valid() {
+		String validSurveyId = "1556AC85-A125-0347-2A02-39D4B529C6BD";
+		List<FieldOfView> fovList = FieldOfView.getFieldOfView(validSurveyId);
+		Assert.assertTrue(fovList != null && fovList.size() > 0, "Value cannot be NULL and list should have values.");
+	}
+
+	private static void testFieldOfView_GetFieldOfViewBySurveyId_Invalid() {
+		String invalidSurveyId = "0556AC85-A125-0347-2A02-39D4B529C6BC";
+		List<FieldOfView> fovList = FieldOfView.getFieldOfView(invalidSurveyId);
+		Assert.assertTrue(fovList == null || fovList.size() == 0, "Value should be NULL or size=0.");
+	}
+
+	private static void testSurveyResult_GetSurveyResultBySurveyId_Valid() {
+		String validSurveyId = "1556AC85-A125-0347-2A02-39D4B529C6BD";
+		List<SurveyResult> surveyResultList = SurveyResult.getSurveyResult(validSurveyId);
+		Assert.assertTrue(surveyResultList != null && surveyResultList.size() > 0, "Value cannot be NULL and list should have values.");
+	}
+
+	private static void testSurveyResult_GetSurveyResultBySurveyId_Invalid() {
+		String invalidSurveyId = "0556AC85-A125-0347-2A02-39D4B529C6BC";
+		List<SurveyResult> surveyResultList = SurveyResult.getSurveyResult(invalidSurveyId);
+		Assert.assertTrue(surveyResultList == null || surveyResultList.size() == 0, "Value should be NULL or size=0.");
+	}
+
+	private static void testSegment_GetSegmentBySurveyId_Valid() {
+		String validSurveyId = "1556AC85-A125-0347-2A02-39D4B529C6BD";
+		List<Segment> segmentList = Segment.getSegment(validSurveyId);
+		Assert.assertTrue(segmentList != null && segmentList.size() > 0, "Value cannot be NULL and list should have values.");
+	}
+
+	private static void testSegment_GetSegmentBySurveyId_Invalid() {
+		String invalidSurveyId = "0556AC85-A125-0347-2A02-39D4B529C6BC";
+		List<Segment> segmentList = Segment.getSegment(invalidSurveyId);
+		Assert.assertTrue(segmentList == null || segmentList.size() == 0, "Value should be NULL or size=0.");
 	}
 }

@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import common.source.Log;
 
-public class Peak extends BaseEntity {
-	private static final String CACHE_KEY = "PEAK.";
+@SuppressWarnings("rawtypes")
+public class Peak extends BaseEntity implements Comparable {
+	public static final String CACHE_KEY = "PEAK.";
 
 	private Object position;
 	private float windSpeedEast;
@@ -52,6 +56,41 @@ public class Peak extends BaseEntity {
 				.concat(this.getGpsLongitude().toString()).concat("|")
 				.concat(this.getEpochTime().toString());
 	}
+
+	@Override
+	public int compareTo(Object other) {
+		return Float.compare(this.getEpochTime(), ((Peak)other).getEpochTime());
+	}
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(nullOrUpper(this.getAnalyzerId()))
+        		.append(nullOrUpper(this.getSurveyId()))
+        		.append(this.getCH4()).append(this.getAmplitude())
+        		.append(nullOrUpper(this.getLisa())).append(this.getWindSpeedEast())
+        		.append(this.getWindSpeedNorth()).append(this.getGpsLatitude())
+        		.append(this.getGpsLongitude()).append(this.getEpochTime())
+        		.toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+    	if (other == this) {
+            return true;
+        }
+        if ((other instanceof Peak) == false) {
+            return false;
+        }
+        Peak rhs = ((Peak) other);
+        return new EqualsBuilder().append(nullOrUpper(this.getAnalyzerId()), nullOrUpper(rhs.getAnalyzerId()))
+        		.append(nullOrUpper(this.getSurveyId()), nullOrUpper(rhs.getSurveyId()))
+        		.append(this.getCH4(), rhs.getCH4()).append(this.getAmplitude(), rhs.getAmplitude())
+        		.append(nullOrUpper(this.getLisa()), nullOrUpper(rhs.getLisa()))
+        		.append(this.getWindSpeedEast(), rhs.getWindSpeedEast())
+        		.append(this.getWindSpeedNorth(), rhs.getWindSpeedNorth()).append(this.getGpsLatitude(), rhs.getGpsLatitude())
+        		.append(this.getGpsLongitude(), rhs.getGpsLongitude()).append(this.getEpochTime(), rhs.getEpochTime())
+        		.isEquals();
+    }
 
 	public float getCH4() {
 		return cH4;
@@ -245,23 +284,26 @@ public class Peak extends BaseEntity {
 	public static List<Peak> getPeaks(String tag, String analyzer) {
 		Peak objPeak = new Peak();
 		List<Peak> objPeakList = new ArrayList<Peak>();
-		Survey objSurvey = Survey.getSurvey(tag);
-		if (objSurvey != null) {
-			String surveyId = objSurvey.getId();
+		List<Survey> objSurveys = Survey.getSurveys(tag);
+		if (objSurveys != null && objSurveys.size()>0) {
 			Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
 			String analyzerId = objAnalyzer.getId().toString();
+			for (Survey objSurvey : objSurveys) {
+				String surveyId = objSurvey.getId();
+				if (objSurvey.getAnalyzerId().toString().equalsIgnoreCase(analyzerId)) {
+					// Get from cache if present. Else fetch from Database.
+					if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId)) {
+						objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId);
+					}
+					else {
+						String SQL = "SELECT [AnalyzerId],[EpochTime],[Amplitude],[CH4],CONVERT(VARBINARY(MAX), [Position]) AS Position,CONVERT(VARBINARY(MAX), [Lisa]) AS Lisa,[LisaOpeningAngle],[LisaBearing],[CarBearing],[Major],[Minor],[CarSpeedNorth],[CarSpeedEast],[WindDirectionStdDev],[WindSpeedNorth],[WindSpeedEast],[Sigma],[Distance],[GpsLatitude],[GpsLongitude],[PassedAutoThreshold],[SurveyId],[EthaneRatio],[EthaneRatioSdevRaw],[EthaneRatioSdev],[EthaneConcentrationSdev],[EthyleneRatio],[EthyleneRatioSdevRaw],[EthyleneRatioSdev],[EthyleneConcentrationSdev],[PipEnergy],[MethanePeaktoPeak],[Disposition],[ClassificationConfidence],[SurvivedCollection] FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "'";
+						objPeakList = objPeak.load(SQL);
+						if (objPeakList!=null && objPeakList.size()>0)
+						{
+							DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId, objPeakList);
 
-			// Get from cache if present. Else fetch from Database.
-			if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId)) {
-				objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId);
-			}
-			else {
-				String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "'";
-				objPeakList = objPeak.load(SQL);
-				if (objPeakList!=null && objPeakList.size()>0)
-				{
-					DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId, objPeakList);
-
+						}
+					}
 				}
 			}
 		}
@@ -305,10 +347,10 @@ public class Peak extends BaseEntity {
 			objPeak.setGpsLongitude(getFloatColumnValue(resultSet,"GpsLongitude"));
 			objPeak.setWindSpeedEast(getFloatColumnValue(resultSet,"WindSpeedEast"));
 			objPeak.setCarSpeedNorth(getFloatColumnValue(resultSet,"CarSpeedNorth"));
-			objPeak.setPosition(resultSet.getObject("Position"));
+			objPeak.setPosition(resultSet.getString("Position"));
 			objPeak.setLisaOpeningAngle(getFloatColumnValue(resultSet,"LisaOpeningAngle"));
 			objPeak.setMajor(getFloatColumnValue(resultSet,"Major"));
-			objPeak.setLisa(resultSet.getObject("Lisa"));
+			objPeak.setLisa(resultSet.getString("Lisa"));
 			objPeak.setMinor(getFloatColumnValue(resultSet,"Minor"));
 			objPeak.setLisaBearing(getFloatColumnValue(resultSet,"LisaBearing"));
 			objPeak.setAmplitude(getFloatColumnValue(resultSet,"Amplitude"));

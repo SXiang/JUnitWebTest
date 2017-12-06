@@ -1,4 +1,4 @@
-package surveyor.performance.source;
+package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 import java.util.HashMap;
@@ -22,8 +22,11 @@ import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyViewPage;
-import surveyor.regression.source.BaseMapViewTest;
 
+/**
+ * NOTE: This test class is intended to collect Geoserver API calls upon execution and is
+ *       intentionally NOT enabled in any of the test suites.
+ */
 @RunWith(SurveyorTestRunner.class)
 public class LoadTestGeoServerUrlCollectorTest extends BaseMapViewTest {
 

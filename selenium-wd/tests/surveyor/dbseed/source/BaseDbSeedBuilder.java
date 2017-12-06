@@ -16,7 +16,7 @@ import common.source.TestContext;
 import common.source.TestSetup;
 
 public class BaseDbSeedBuilder {
-	
+
 	public static final String SURVEY_SEED_DATA_FOLDER = "SurveySeedData";
 	public static final Integer	SRID = 4326;
 
@@ -31,7 +31,7 @@ public class BaseDbSeedBuilder {
 	public String getSeedFilePath() {
 		return SeedDataFilePath;
 	}
-	
+
 	public DbSeed getDbSeedData() {
 		return dbSeedData;
 	}
@@ -39,7 +39,7 @@ public class BaseDbSeedBuilder {
 	public void setDbSeedData(DbSeed dbSeedData) {
 		this.dbSeedData = dbSeedData;
 	}
-	
+
 	public DbSeedBuilderCache getDbSeedCache() {
 		return dbSeedCache;
 	}
@@ -54,7 +54,7 @@ public class BaseDbSeedBuilder {
 		}
 		return value;
 	}
-	
+
 	protected String createCSVFileWithCustomerData(String customerID, String primaryKeyColName, String tableName) throws FileNotFoundException, IOException {
 		if (SeedDataFilePath == null) {
 			throw new IllegalStateException("SeedData FilePath NOT set. Ensure SeedDataFilePath is set before calling createCSVFilesWithCustomerData().");
@@ -69,13 +69,13 @@ public class BaseDbSeedBuilder {
 		CSVUtility csvUtility = new CSVUtility();
 		List<String> headings = csvUtility.getHeadings(SeedDataFilePath);
 		List<Map<String, String>> allRows = csvUtility.getAllRows(SeedDataFilePath);
-		String custSeedFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + 
+		String custSeedFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator +
 				String.format("%s-%s.csv", TestContext.INSTANCE.getTestSetup().getFixedSizePseudoRandomString(10), customerID);
-		
+
 		List<String> filelines = new ArrayList<String>();
 		// Add all the headers to the file lines.
 		filelines.add(CSVUtility.createCsvString(headings));
-		
+
 		// Add each row to the file lines.
 		for (int i = 0; i < allRows.size(); i++) {
 			List<String> rowLineText = new ArrayList<String>();
@@ -95,26 +95,31 @@ public class BaseDbSeedBuilder {
 						String newId = UUID.randomUUID().toString();
 						getDbSeedCache().addTablePKIdCacheEntry(tableName, new TablePKCacheItem(oldId, newId));
 						rowLineText.add(newId);
-					} else {						
+					} else {
 						rowLineText.add(allRows.get(i).get(colName));
 					}
 				}
 			}
 			filelines.add(CSVUtility.createCsvString(rowLineText));
 		}
-		
+
 		FileUtility.writeToFile(custSeedFilePath, filelines.toArray(new String[filelines.size()]));
 		customerCSVFile = custSeedFilePath;
 
 		return customerCSVFile;
 	}
-	
+
+	public List<Map<String, String>> getSeedFileLines() throws FileNotFoundException, IOException {
+		CSVUtility csvUtility = new CSVUtility();
+		return csvUtility.getAllRows(getSeedFilePath());
+	}
+
 	/**
 	 * For shape geometry type which cannot be inserted directly as binary using JDBC insert statements,
 	 * we store the data in WKT format and then insert using geometry::STGeomFromText('<WKT>')
 	 * A geom file stores the data for geometry type for all the rows.
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public List<String> readGeomFile(String geomFilePath) throws IOException {
 		if (!FileUtility.fileExists(geomFilePath)) {
@@ -122,13 +127,13 @@ public class BaseDbSeedBuilder {
 		}
 		return FileUtility.readFileLinesToList(geomFilePath);
 	}
-	
+
 	public void close() {
 		DbSeed dbSeedData = this.getDbSeedData();
 		if (dbSeedData != null) {
 			SQLServerBulkCSVFileRecord fileRecord = (SQLServerBulkCSVFileRecord)dbSeedData.getSeedData();
 			if (fileRecord !=null) {
-				if (fileRecord != null) try { fileRecord.close(); } catch(Exception e) {} 
+				if (fileRecord != null) try { fileRecord.close(); } catch(Exception e) {}
 			}
 		}
 	}
