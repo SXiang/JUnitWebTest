@@ -17,7 +17,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
@@ -133,7 +132,6 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		tableMap.put(KEYGAPTB, gaptable);
 		tableMap.put(KEYPCA, pca);
 		tableMap.put(KEYPCRA, pcra);
-		tableMap.put(KEYPCF, pcf);
 		return tableMap;
 	}
 

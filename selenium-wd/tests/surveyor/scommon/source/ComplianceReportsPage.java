@@ -11,7 +11,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
@@ -79,7 +78,6 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDrivingSurveys;
 import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
-import surveyor.dataaccess.source.StoredProcComplianceGetCoverageForecast;
 import surveyor.dataaccess.source.StoredProcComplianceGetEthaneCapture;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
@@ -160,9 +158,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(id = "report-ethene-possible-natural-gas")
 	protected WebElement checkBoxPossibleNaturalGas;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-forecast']")
-	protected WebElement percentCoverForecast;
-
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
 
@@ -210,10 +205,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	public WebElement getProceedMsg(){
 		return this.proceedMsg;
-	}
-
-	public WebElement getPercentCoverForecast() {
-		return this.percentCoverForecast;
 	}
 
 	public WebElement getCheckBoxStndRptMode() {
@@ -977,10 +968,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		SelectElement(checkBoxPCA);
 	}
 
-	public void selectPercentCoverageForecastCheckBox() {
-		SelectElement(checkBoxPCF);
-	}
-
 	public void selectGapTableCheckBox() {
 		SelectElement(checkBoxGapTb);
 	}
@@ -1352,7 +1339,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
-		expectedReportString.add(ComplianceReportSSRS_PercentCoverageForecast);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 
 		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
@@ -1363,94 +1349,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			}
 		}
 		Log.info("Show Coverage Table verification passed");
-		return true;
-	}
-
-	/**
-	 * Method to verify the show Coverage Forecast Table in SSRS
-	 *
-	 * @param actualPath
-	 * @param reportTitle
-	 * @return
-	 * @throws IOException
-	 */
-	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.verifyCoverageForecastValuesTable", actualPath, reportTitle);
-		return verifyCoverageForecastValuesTable(actualPath, reportTitle, true);
-	}
-
-	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPrediction)
-			throws IOException {
-		Log.method("ComplianceReportsPage.verifyCoverageForecastValuesTable", actualPath, reportTitle, withPrediction);
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String reportName = "CR-" + reportId;
-		setReportName(reportName);
-		Map<String, List<String[]>> coverageForecastMap = getSSRSCoverageForecastTableInfo(actualPath, reportTitle);
-		List<String[]> coverageForecast = coverageForecastMap.get("coverageForecast");
-		List<String[]> coverageForecastTo70 = coverageForecastMap.get("coverageForecastTo70");
-		if (!withPrediction && !coverageForecastTo70.isEmpty()) {
-			return false;
-		}
-		return verifyCoverageForecastValuesTableWithDBData(reportId, coverageForecast, coverageForecastTo70,
-				withPrediction);
-	}
-
-	public Map<String, List<String[]>> getSSRSCoverageForecastTableInfo(String actualPath, String reportTitle) throws IOException{
-		Map<String, List<String[]>> coverageForecastMap = new HashMap<String, List<String[]>>();
-		PDFTableUtility pdfTableUtility = new PDFTableUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
-		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
-		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport,
-				PDFTable.COVERAGEFORECASTTO70);
-		coverageForecastMap.put("coverageForecast", coverageForecast);
-		coverageForecastMap.put("coverageForecastTo70", coverageForecastTo70);
-		return coverageForecastMap;
-	}
-
-	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast,
-			List<String[]> coverageForecastTo70, boolean withPrediction) {
-		int startIndex = 0;
-		StoredProcComplianceGetCoverageForecast coverageForecastObj = new StoredProcComplianceGetCoverageForecast();
-		String[] row = null;
-		if (!coverageForecast.isEmpty()) {
-			row = coverageForecast.get(startIndex);
-			String precentageWithLisa = row[0].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithLISAs, "")
-					.trim();
-			String precentageWithoutLisa = row[1]
-					.replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs, "").trim();
-			coverageForecastObj.setPercentageWithLisa(precentageWithLisa);
-			coverageForecastObj.setPercentageWithoutLisa(precentageWithoutLisa);
-		}
-		if (!coverageForecastTo70.isEmpty()) {
-			startIndex = 1;
-			row = coverageForecastTo70.get(startIndex++);
-			String precentageAdditional0 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage, "")
-					.trim();
-			row = coverageForecastTo70.get(startIndex++);
-			String precentageAdditional1 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage, "")
-					.trim();
-			row = coverageForecastTo70.get(startIndex);
-			String precentageAdditional2 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage, "")
-					.trim();
-
-			coverageForecastObj.setCoverageProbability0(precentageAdditional0);
-			coverageForecastObj.setCoverageProbability1(precentageAdditional1);
-			coverageForecastObj.setCoverageProbability2(precentageAdditional2);
-		}
-		StoredProcComplianceGetCoverageForecast storedForecastObj = StoredProcComplianceGetCoverageForecast
-				.getCoverage(reportId);
-
-		if (!storedForecastObj.isCoverageValuesEquals(coverageForecastObj, withPrediction)) {
-			Log.info("Coverage Values data verification failed");
-			return false;
-		}
-		Log.info("Coverage Forecast Values data verification passed");
-		if (!storedForecastObj.isCoverageValuesFormated(coverageForecastObj, withPrediction)) {
-			return false;
-		}
 		return true;
 	}
 
@@ -2764,12 +2662,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
 		}
-		if (tablesList.get(0).get(KEYPCF) != null) {
-			if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
-				selectPercentCoverageForecastCheckBox();
-			}
-		}
-
+		
 		// 6. Optional View layers
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
 		if (viewLayersList != null && viewLayersList.size() > 0) {

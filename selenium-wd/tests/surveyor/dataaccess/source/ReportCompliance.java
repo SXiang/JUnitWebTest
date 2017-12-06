@@ -28,7 +28,6 @@ public class ReportCompliance extends BaseEntity {
 	private Boolean isLisaInvestigationComplete;
 	private Boolean showIsotopicAnalysis;
 	private Boolean showIndications;
-	private Boolean showPercentCoverageForecast;
  
 	public ReportCompliance() {
 		super();
@@ -186,14 +185,6 @@ public class ReportCompliance extends BaseEntity {
 		this.showIndications = showIndications;
 	}
  
-	public Boolean getShowPercentCoverageForecast() {
-		return showPercentCoverageForecast;
-	}
- 
-	public void setShowPercentCoverageForecast(Boolean showPercentCoverageForecast) {
-		this.showPercentCoverageForecast = showPercentCoverageForecast;
-	}
- 
 	public static ReportCompliance getReportCompliance(String reportId) {
 		ReportCompliance objReportCompliance = new ReportCompliance().get(reportId);
 		return objReportCompliance;
@@ -238,7 +229,6 @@ public class ReportCompliance extends BaseEntity {
 			objReportCompliance.setIsLisaInvestigationComplete(resultSet.getBoolean("IsLisaInvestigationComplete"));
 			objReportCompliance.setShowIsotopicAnalysis(resultSet.getBoolean("ShowIsotopicAnalysis"));
 			objReportCompliance.setShowIndications(resultSet.getBoolean("ShowIndications"));
-			objReportCompliance.setShowPercentCoverageForecast(resultSet.getBoolean("ShowPercentCoverageForecast"));
 		} catch (SQLException e) {
 			Log.error("Class ReportCompliance | " + e.toString());
 		}

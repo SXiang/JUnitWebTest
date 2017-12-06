@@ -30,8 +30,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
@@ -194,7 +192,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tableMap.put(KEYGAPTB, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -256,7 +253,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tableMap.put(KEYGAPTB, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -913,7 +909,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tableMap1.put(KEYGAPTB, "0");
 		tableMap1.put(KEYPCA, "0");
 		tableMap1.put(KEYPCRA, "0");
-		tableMap1.put(KEYPCF, "0");
 		tablesList1.add(tableMap1);
 
 		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
@@ -923,7 +918,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tableMap2.put(KEYGAPTB, "1");
 		tableMap2.put(KEYPCA, "0");
 		tableMap2.put(KEYPCRA, "0");
-		tableMap2.put(KEYPCF, "0");
 		tablesList2.add(tableMap2);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -1255,100 +1249,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser
-	 * Script: -
-	 * - - Log in to application as Picarro user and navigate to New Compliance Report page
-	 * - - Click on Cancel and navigate to Copy compliance screen
-	 * Results: -
-	 *	- - Percent Coverage Forecast check box is present on UI
-	 */
-	@Test
-	public void TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser() throws Exception {
-		Log.info("\nRunning TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 5);   /* Picarro Customer*/
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewReportPage();
-		assertTrue(this.getComplianceReportsPage().getPercentCoverReportArea().isDisplayed());
-		this.getComplianceReportsPage().clickOnCancelBtn();
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
-		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertTrue(this.getComplianceReportsPage().getPercentCoverReportArea().isDisplayed());
-	}
-
-	/**
-	 * Test Case ID: TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets
-	 * Script: -
-	 * - - Log in to application as Customer admin user and navigate to New Compliance Report page
-	 * - - Click on Cancel and navigate to Copy compliance screen
-	 * Results: -
-	 *	- - Percent Coverage Forecast check box is present on UI
-	 */
-	@Test
-	public void TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets() throws Exception {
-		Log.info("\nRunning TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin*/
-
-		this.getComplianceReportsPage().open();
-
-		this.getComplianceReportsPage().clickOnNewReportBtn();
-		assertTrue(this.getComplianceReportsPage().getPercentCoverForecast().isDisplayed());
-		this.getComplianceReportsPage().clickOnCancelBtn();
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		String testCaseID = "TC1306";
-		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
-		this.getComplianceReportsPage().open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYGAPTB, "1");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tablesList.add(tableMap);
-
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
-
-		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-
-		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-
-		this.getComplianceReportsPage().addNewReport(rpt);
-		this.getComplianceReportsPage().waitForPageLoad();
-		this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser());
-		this.getComplianceReportsPage().getInputSearch().sendKeys(rptTitle);
-		this.getComplianceReportsPage().waitForPageLoad();
-		this.getComplianceReportsPage().clickOnCopyReport(rptTitle, getTestSetup().getLoginUser());
-		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertTrue(this.getComplianceReportsPage().getPercentCoverForecast().isDisplayed());
-		this.getComplianceReportsPage().clickOnCancelBtn();
-	}
-
-	/**
 	 * Test Case ID: TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports
 	 * Script: -
 	 *	- - Log in to application as picarro admin
@@ -1496,178 +1396,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary
-	 * Script: -
-	 * - - Log in to application as Customer admin user and navigate to New Compliance Report page
-	 * - - Select Custom Boundary and provide Lat/Long co-ordinates
-	 * - - Add 2 surveys with different tag value
-	 * - - Select Percent Coverage Forecast check box
-	 * - - Click OK
-	 * Results: -
-	 *	- - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select Customer Boundary"
-	 */
-	@Test
-	public void TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary() throws Exception {
-		Log.info("\nRunning TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
-		String testCaseID = "TC1313";
-		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
-
-		this.getComplianceReportsPage().open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYGAPTB, "1");
-		tableMap.put(KEYPCA, "1");
-		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "1");
-		tablesList.add(tableMap);
-
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
-
-		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-		tagList.add("Standard");
-
-		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt.setViewLayersList(viewLayerList);
-
-		this.getComplianceReportsPage().addNewReport(rpt);
-		AssertHelper.equals("Selected Percent Coverage Forecast, Please select Customer Boundary", this.getComplianceReportsPage().getAssetErrorText().getText());
-	}
-
-	/**
-	 * Test Case ID: TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens
-	 * Script: -
-	 *	- - Log in to application as Customer admin user and navigate to Copy Compliance Report page
-	 *	- - Select Custom boundary and select Lat/Long co-ordinates
-	 *	- - Click OK
-	 *	- - Select Customer boundary and click OK
-	 *	- - Select Custom boundary and provide Lat/Long co-ordinates
-	 *	- - Add 2 or more surveys with different tag values
-	 *	- - Click OK
-
-	 * Results: -
-	 *	- - User friendly error messages are displayed:
-	 *	- -  "Selected Percent Coverage Forecast, Please select Customer Boundary"
-	 *	- - "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
-	 *	- - User friendly error messages are displayed:
-	 *	- - "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
-	 *	- - User friendly error messages are displayed:
-	 *	- - "Selected Percent Coverage Forecast, Please select Customer Boundary"
-	 */
-	@Test
-	public void TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens() throws Exception {
-		Log.info("\nRunning TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
-		String testCaseID = "TC1315";
-		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
-
-		this.getComplianceReportsPage().open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-
-		List<String> listBoundary2 = new ArrayList<String>();
-		listBoundary2.add(IMGMAPHEIGHT);
-		listBoundary2.add(IMGMAPWIDTH);
-		listBoundary2.add(RNELAT);
-		listBoundary2.add(RNELON);
-		listBoundary2.add(RSWLAT);
-		listBoundary2.add(RSWLON);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYGAPTB, "1");
-		tableMap.put(KEYPCA, "1");
-		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "1");
-		tablesList.add(tableMap);
-
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
-
-		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-
-		List<String> tagList1 = new ArrayList<String>();
-		tagList1.add(PICADMNSTDTAG);
-
-		List<String> tagList2 = new ArrayList<String>();
-		tagList2.add(PICADMNSTDTAG);
-		tagList2.add("standard");
-
-		// Selenium bug: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5233
-		// ISSUE: Selenium won't click at the correct offset in Lat/Long map selector.
-		// WORKAROUND: Use input text fields instead of using Lat/Long -> rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_HEIGHT, RECT_WIDTH);
-		listBoundary.add(NELAT_SMALL);
-		listBoundary.add(NELON_SMALL);
-		listBoundary.add(SWLAT_SMALL);
-		listBoundary.add(SWLON_SMALL);
-
-		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt.setViewLayersList(viewLayerList);
-
-		this.getComplianceReportsPage().addNewReport(rpt);
-		AssertHelper.equals("Selected Percent Coverage Forecast, Please select Customer Boundary", this.getComplianceReportsPage().getAssetErrorText().getText());
-		AssertHelper.equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags", this.getComplianceReportsPage().getBoundaryErrorText().getText());
-
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-
-		ComplianceReportEntity rpt2 = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt2.setViewLayersList(viewLayerList);
-		rpt2.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
-
-		this.getComplianceReportsPage().addNewReport(rpt2);
-		Log.info("!!!!!" + this.getComplianceReportsPage().getAssetErrorText().getText()+ "!!!!!");
-		AssertHelper.equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags", this.getComplianceReportsPage().getAssetErrorText().getText());
-
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		ComplianceReportEntity rpt3 = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary2, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt3.setViewLayersList(viewLayerList);
-
-		this.getComplianceReportsPage().addNewReport(rpt3);
-		AssertHelper.equals("Selected Percent Coverage Forecast, Please select Customer Boundary", this.getComplianceReportsPage().getAssetErrorText().getText());
-
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		this.getComplianceReportsPage().clickOnCancelBtn();
-	}
-
-	/**
 	 * Test Case ID: TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected
 	 * Script: -
 	 * - - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
@@ -1709,7 +1437,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx

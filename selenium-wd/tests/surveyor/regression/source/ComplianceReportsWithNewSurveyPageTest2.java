@@ -144,39 +144,6 @@ public class ComplianceReportsWithNewSurveyPageTest2 extends BaseReportsPageActi
 	}
 
 	/**
-	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
-	 * Script: -
-	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
-	 *  - - Click on Cancel and navigate to Copy compliance screen
-	 * Results: -
-	 *	- - Percent Coverage Forecast check box is not present on UI
-	 */
-	@Test
-	public void TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets() throws Exception {
-		Log.info("\nRunning TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets ...");
-
-		String userName = testAccount.get("userName");
-		String userPassword = testAccount.get("userPassword");
-
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
-
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-
-		this.getComplianceReportsPage().open();
-
-		this.getComplianceReportsPage().getNewReportBtn().click();
-		this.getComplianceReportsPage().waitForNewPageLoad();
-
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
-		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
-	}
-
-	/**
 	 *  Test Case ID: TC2423_ReportsUsEToMRatioFromLatestSurvey() {
 	 *  Description: Analytics - Use the values from latest survey included in report - (sort by date desc)
 	 *   for both report and copy report to avoid picking up the survey which was inserted first in ReportDrivingSurveys table.

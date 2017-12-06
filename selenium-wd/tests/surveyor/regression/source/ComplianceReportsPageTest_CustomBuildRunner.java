@@ -303,8 +303,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	}
 
 	/**
-	 * Test Case ID: TC1321 Test Description: Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast Note: Need 3 standard mode survey tags, Need to change qacus
-	 * to include Percentage Forecast
+	 * Test Case ID: TC1321 Test Description: Generate Compliance Report as Customer Supervisor userNote: Need 3 standard mode survey tags, Need to change qacus
 	 * @throws Exception
 	 */
 	@Test
@@ -312,7 +311,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		String testCaseID = "TC1321";
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID
-				+ ": Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast, %s\n", rptTitle);
+				+ ": Generate Compliance Report as Customer Supervisor user, %s\n", rptTitle);
 
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
@@ -374,8 +373,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	}
 
 	/**
-	 * Test Case ID: TC1351 Test Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags Note: Need 3 standard mode survey tags,
-	 * Need to change qacus to include Percentage Forecast
+	 * Test Case ID: TC1351 Test Description: Generate Compliance Report as Customer Admin, include 3 surveys with different tags Note: Need 3 standard mode survey tags
 	 * @throws Exception
 	 */
 	@Test
@@ -383,7 +381,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		String testCaseID = "TC1321";
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID
-				+ ": Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags, %s\n", rptTitle);
+				+ ": Generate Compliance Report as Customer Admin, include 3 surveys with different tags, %s\n", rptTitle);
 
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
