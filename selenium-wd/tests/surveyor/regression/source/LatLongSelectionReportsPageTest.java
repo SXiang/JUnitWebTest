@@ -9,7 +9,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
@@ -188,14 +187,13 @@ public class LatLongSelectionReportsPageTest extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast
+	 * Test Case ID: TC1318_GenerateMultipleComplianceReportsDifferentAssetLayer
 	 * Script: -
 	 *	- - Log in as Customer Admin (eg. PG&E util admin)
 	 *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
 	 *	- - Time Zone : PST, Survey Mode: Standard
 	 *	- - Select Customer boundary and select any Plat
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
 	 *	- - Asset Layer : All (Eg. Copper and Protected Steel)
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
@@ -206,11 +204,10 @@ public class LatLongSelectionReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Report generated successfully
 	 *	- - Percent Coverage value is not dependent of Assets so value should not change
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys , Probability to Obtain 70% Coverage
 	 */
 	@Test //using user as "picarro admin"
-	public void TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast() throws Exception {
-		Log.info("\nRunning TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast ...");
+	public void TC1318_GenerateMultipleComplianceReportsDifferentAssetLayer() throws Exception {
+		Log.info("\nRunning TC1318_GenerateMultipleComplianceReportsDifferentAssetLayer ...");
 
 		initializeComplianceReportTest();
 
@@ -243,7 +240,6 @@ public class LatLongSelectionReportsPageTest extends BaseReportsPageActionTest {
 		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "1");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -276,11 +272,6 @@ public class LatLongSelectionReportsPageTest extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));
-				}
-			}
 		}
 		else
 			fail("\nTestcase TC1318 failed.\n");
@@ -294,11 +285,6 @@ public class LatLongSelectionReportsPageTest extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle2, getTestSetup().getLoginUser(), testCaseID+"_2"))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt2, getTestSetup().getDownloadPath()));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle2));
-				}
-			}
 		}
 		else
 			fail("\nTestcase TC1318 failed.\n");
@@ -311,11 +297,6 @@ public class LatLongSelectionReportsPageTest extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle3, getTestSetup().getLoginUser(), testCaseID+"_3"))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, getTestSetup().getDownloadPath()));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle3));
-				}
-			}
 		}
 		else
 			fail("\nTestcase TC1318 failed.\n");

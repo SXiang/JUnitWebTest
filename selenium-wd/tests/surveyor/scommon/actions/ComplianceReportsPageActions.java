@@ -192,18 +192,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	/**
-	 * Executes selectPercentCoverageForecastCheckBox action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean selectPercentCoverageForecastCheckBox(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.selectPercentCoverageForecastCheckBox", data, dataRowID);
-		this.getComplianceReportsPage().selectPercentCoverageForecastCheckBox();
-		return true;
-	}
-
-	/**
 	 * Executes selectReportMode action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -476,27 +464,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		return retVal;
 	}
 
-	/**
-	 * Executes verifySSRSCoverageForecastTableInfo action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception
-	 */
-	public boolean verifySSRSCoverageForecastTableInfo(String data, Integer dataRowID) throws Exception {
-		return verifySSRSCoverageForecastTableInfo(data, dataRowID,true);
-	}
-	public boolean verifySSRSCoverageForecastTableInfo(String data, Integer dataRowID, boolean withPredication) throws Exception {
-		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfo", data, dataRowID);
-		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.get().title,withPredication);
-	}
-	public Map<String, List<String[]>> getSSRSCoverageForecastTableInfo(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfoWithPreviousResult", data, dataRowID);
-		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return this.getComplianceReportsPage().getSSRSCoverageForecastTableInfo(downloadPath, workingDataRow.get().title);
-	}
-
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -507,7 +474,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		else if (actionName.equals("clickOnInvestigatePDFButton")) { return this.clickOnInvestigatePDFButton(data, dataRowID); }
 		else if (actionName.equals("enterLISAOpacity")) { return this.enterLISAOpacity(data, dataRowID); }
 		else if (actionName.equals("investigateReport")) { return this.investigateReport(data, dataRowID); }
-		else if (actionName.equals("selectPercentCoverageForecastCheckBox")) { return this.selectPercentCoverageForecastCheckBox(data, dataRowID); }
 		else if (actionName.equals("selectReportMode")) { return this.selectReportMode(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyticsPeakInfoIsCorrectInDB")) { return this.verifyAnalyticsPeakInfoIsCorrectInDB(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFDownload")) { return this.verifyInvestigatePDFDownload(data, dataRowID); }
@@ -525,7 +491,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		else if (actionName.equals("verifySearchedSurveysMatchSelectedMode")) { return this.verifySearchedSurveysMatchSelectedMode(data, dataRowID); }
 		else if (actionName.equals("waitForInvestigationPDFDownloadToComplete")) { return this.waitForInvestigationPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForInvestigationCSVFileDownloadToComplete")) { return this.waitForInvestigationCSVFileDownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("verifySSRSCoverageForecastTableInfo")) { return this.verifySSRSCoverageForecastTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyticsReportModeIsShownOnPage")) { return this.verifyAnalyticsReportModeIsShownOnPage(data, dataRowID); }
 		return false;
 	}
@@ -658,14 +623,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 
         reportEntity.setSearchAreaPreference(srchAreaPref);
         addAdditionalWorkingDataForReports(reportEntity);
-	}
-
-	@Override
-	protected void selectReportSpecificTabularPDFContent(ReportOptTabularPDFContentDataRow pdfContentDataRow) {
-		Boolean selectPercentCoverageForecast = Boolean.valueOf(pdfContentDataRow.percentCoverageForecast);
-		if (selectPercentCoverageForecast) {
-			this.getComplianceReportsPage().selectPercentCoverageForecastCheckBox();
-		}
 	}
 
 	@Override

@@ -384,8 +384,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	}
 
 	/**
-	 * Test Case ID: TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags
-	 * Test Description: - Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags
+	 * Test Case ID: TC1320_GenerateComplianceReportCustomerAdmin2SurveysDifferentTags
+	 * Test Description: - Generate Compliance Report as Customer Admin, include 2 surveys with different tags
 	 * Script: -
 	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
@@ -394,14 +394,13 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	 *	- - Click on OK and click Compliance Viewer button
 	 * Results: -
 	 *	- - Report generated successfully- Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1320, location = ComplianceReportDataProvider.class)
-	public void TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags(
+	public void TC1320_GenerateComplianceReportCustomerAdminInclude2SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags ..." +
-			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags");
+		Log.info("\nRunning TC1320_GenerateComplianceReportCustomerAdminInclude2SurveysDifferentTags ..." +
+			 "\nTest Description: Generate Compliance Report as Customer Admin, include 2 surveys with different tags");
 
 		final int DB3_ANALYZER_ROW_ID = 75;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 5;	 		  /* Survey information  */
@@ -442,7 +441,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 
 			assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-			assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 
 		} catch (Exception ex) {
 			testFailed = true;

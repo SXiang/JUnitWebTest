@@ -194,7 +194,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);
 	public static final String ComplianceReportSSRS_ShowCoverage = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowCoverage);
 	public static final String ComplianceReportSSRS_PercentCoverageAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageAssets);
-	public static final String ComplianceReportSSRS_PercentCoverageForecast = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageForecast);
 	public static final String ComplianceReportSSRS_PercentCoverageReportArea = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageReportArea);
 	public static final String ComplianceReportSSRS_PercentServiceCoverageWithLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoveragewithLISAs);
 	public static final String ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs);
@@ -2017,7 +2016,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
-		expectedReportString.add(ComplianceReportSSRS_PercentCoverageForecast);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 
 		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);

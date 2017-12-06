@@ -246,7 +246,6 @@ public final class SurveyorConstants {
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYGAPTB = "Gap Table";
 	public static final String KEYPCA = "Percent Coverage Assets";
-	public static final String KEYPCF = "Percent Coverage Forecast";
 	public static final String KEYPCRA = "Percent Coverage Report Area";
 
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
@@ -473,9 +472,6 @@ public final class SurveyorConstants {
 	/*
 	 * Error messages for compliance report
 	 */
-	public static final String CR_CF_AREAINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAreaInvalidMessage);
-	public static final String CR_CF_ASSETSINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAssetsInvalidMessage);
-	public static final String CR_CF_FORECASTBOUNDARYINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastBoundaryInvalidMessage);
 	public static final String CR_SURVEYMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
 	public static final String CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE = "No Coverage Forecast Available";
 	public static final String DIALOG_SELECTEDAREALSTOOLARGE_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooLarge);

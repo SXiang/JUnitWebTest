@@ -68,8 +68,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast
-	 * Test Description: - Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast
+	 * Test Case ID: TC1319_GenerateComplianceReportPicarroSupportUser
+	 * Test Description: - Generate Compliance Report as Picarro Support user
 	 * Script: -
 	 *	- - Log in as Picarro Support user
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
@@ -79,14 +79,13 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Report generated successfully
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-     *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319, location = ComplianceReportDataProvider.class)
-	public void TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast(
+	public void TC1319_GenerateComplianceReportPicarroSupportUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast");
+		Log.info("\nRunning TC1319_GenerateComplianceReportPicarroSupportUser ..." +
+			 "\nTest Description: Generate Compliance Report as Picarro Support user");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -99,399 +98,11 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 
 		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-
-		/**
-	 * Test Case ID: TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected
-	 * Test Description: - Check error message is displayed if Percent Coverage Forecast check box is selected on New Compliance Report screens
-	 *                     and user has included only no or one or multiple survey with same tag
-	 * Script: -
-	 *  Log in to application as Customer admin user and navigate to New Compliance Report page
-     * - -  Select Customer Boundary
-     *  - - Select Percent Coverage Forecast check box
-     *  - - Click OK
-	 *	- - Add one survey
-	 *	- - Add 2 or 3 surveys with same tag value
-	 *	- - Add 2 or 3 surveys with different tag value
-	 * Results: -
-	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
-	 *	- - Error message will not be displayed to user when different tag value surveys are included
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339, location = ComplianceReportDataProvider.class)
-	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
-		Log.info("\nRunning TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected ..." +
-			 "\nTest Description: Check error mesage is displayed if Percent Coverage Forecast check box is selected on New Compliance Report screens and user has included only no or one or multiple survey with same tag");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-
-		//Add 1 survey
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-        complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
-		//Add 2 surveys, same tag
-        complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
-		//Add 2 surveys, different tags
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 	}
 
 	/**
-	 * Test Case ID: TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR
-	 * Test Description: - Check error mesage is displayed if Percent Coverage Forecast check box is selected on Copy Compliance Report
-	 *                     screens and user has included no or only one or multiple survey with same tag
-	 * Script: -
-	 *	- Log in to application as Customer admin user and navigate to Copy Compliance Report page
-     *  - Select Percent Coverage Forecast check box
-     *  - Click OK
-     *  - Add 2 or 3 survey with same tag value
-     *  - Click OK
-     *  - Delete all the survey and don't included any survey
-     *  - Click OK
-     *  - Add 2 or 3 surveys with different tag value
-	 * Results: -
-	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
-	 *	- - Error message will not be displayed to user when different tag value surveys are included
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1340, location = ComplianceReportDataProvider.class)
-	public void TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2,Integer reportDataRowID3, Integer reportDataRowID4) throws Exception {
-		Log.info("\nRunning TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected ..." +
-			 "\nTest Description: Check error mesage is displayed if Percent Coverage Forecast check box is selected on Copy Compliance Report screens and user has included no or only one or multiple survey with same tag");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
-
-		//Add no survey
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
-        complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-
-		//Select Percent Coverage Forecast check box
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
-		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-
-		//Add 2 surveys, same tags
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
-		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-
-		//Add 2 surveys, different tags
-        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
-		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID4));
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID4));
-	}
-
-	/**
-	 * Test Case ID: TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags
-	 * Test Description: - Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 4 or more surveys with different tags
-	 * Script: -
-	 *	- - Log in as Customer Admin user (Eg. PG&E Util Admin)
-     *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
-	 *	- - Time Zone : MST, Survey Mode: Rapid Response
-	 *	- - Select Customer boundary and select any Plat
-	 *	- - Add 4 or more Surveys (present in the selected plat) with different tag values
-	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
-	 *	- - Add View with base map value: map
-	 *	- - Click on OK and click Compliance Viewer button
-	 *	- - Download PDF, ZIP (PDF)
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - Percent Service Coverage Values should be calculated for both With/Without LISAs
-	 *	- - Prediction table will not show any records as 4 or more surveys with different tag values are not supported.
-	 *	- - "No Coverage Forecast Available" message is displayed
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1352, location = ComplianceReportDataProvider.class)
-	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags ..." +
-			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 4 or more surveys with different tags");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1),false));
-
-		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags
-	 * Test Description: - Generate Compliance Report as Customer Admin using Copy functionality, include Percent Coverage Forecast and 2 surveys with different tags
-	 * Script: -
-	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
-	 *	- - Click on Copy button of above generated report
-	 *	- - Click on OK and click Compliance Viewer button
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - Values should match with above report values
-	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1363, location = ComplianceReportDataProvider.class)
-	public void TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags ..." +
-			 "\nTest Description: Generate Compliance Report as Customer Admin using Copy functionality, include Percent Coverage Forecast and 2 surveys with different tags");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_30MIN_IN_SECONDS), reportDataRowID1);
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForComplianceViewerDialogToClose(EMPTY, getReportRowID(reportDataRowID1));
-		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsEntity.get().getRptTitle(), getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
-	}
-
-	/**
-	 * Test Case ID: TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags
-	 * Test Description: - Generate Compliance Report as Picarro Support user using Reprocess functionality, include Percent Coverage Forecast and 3 surveys with different tags
-	 * Script: -
-	 *	- - Log in as Picarro Support user
-	 *	- - Click on Reprocess button of above generated report
-	 *	- - Click Compliance Viewer button
-	 *	- - Download PDF, ZIP (PDF)
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - Values should match with above report values
-	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1364, location = ComplianceReportDataProvider.class)
-	public void TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Support user using Reprocess functionality, include Percent Coverage Forecast and 3 surveys with different tags");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForComplianceViewerDialogToClose(EMPTY, getReportRowID(reportDataRowID1));
-		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
-	}
-
-	/**
-	 * Test Case ID: TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags
-	 * Test Description: - Generate Compliance Report as Picarro Admin using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags
-	 * Script: -
-	 *	- - Log in as Picarro Admin user
-	 *	- - Click on Copy button of above generated report
-	 *	- - Click Compliance Viewer button
-	 *	- - Download PDF, ZIP (PDF)
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - Values should match with above report values
-	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1365, location = ComplianceReportDataProvider.class)
-	public void TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Admin using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForComplianceViewerDialogToClose(EMPTY, getReportRowID(reportDataRowID1));
-		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
-	}
-
-	/**
-	 * Test Case ID: TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags
-	 * Test Description: - Generate Compliance Report as Picarro Admin using Reprocess functionality, include Percent Coverage Forecast and 2 surveys with different tags
-	 * Script: -
-	 *	- - Log in as Picarro Admin user
-	 *	- - Click on Reprocess button of above generated report
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - Values should match with above report values
-	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1366, location = ComplianceReportDataProvider.class)
-	public void TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Admin using Reprocess functionality, include Percent Coverage Forecast and 2 surveys with different tags");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForComplianceViewerDialogToClose(EMPTY, getReportRowID(reportDataRowID1));
-		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
-	}
-
-	/**
-	 * Test Case ID: TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags
-	 * Test Description: - Generate Compliance Report as Customer Supervisor user using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags
-	 * Script: -
-	 *	- - Log in as Customer Supervisor user (Eg. PG&amp;E Supervisor)
-	 *	- - Click on Copy button of above generated report
-	 *	- - Click on OK and click Compliance Viewer button
-	 *  - - Download PDF, ZIP(PDF)
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - Values should match with above report values
-	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1367, location = ComplianceReportDataProvider.class)
-	public void TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
-			 "\nTest Description: Generate Compliance Report as Customer Supervisor user using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForComplianceViewerDialogToClose(EMPTY, getReportRowID(reportDataRowID1));
-		Map<String, List<String[]>> preCoverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
-	}
-
-	/**
-	 * Test Case ID: TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys
-	 * Test Description: - Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and multiple surveys
+	 * Test Case ID: TC1370_GenerateComplianceReportCustomerAdminIncludeMultipleSurveys
+	 * Test Description: - Generate Compliance Report as Customer Admin, include multiple surveys
 	 * Script: -
 	 *	- - Log in as Customer Admin user (Eg. PG&E Util Admin)
 	 *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
@@ -500,21 +111,19 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Add 4 Surveys (present in the selected plat) with different tag values (try to include approx 8 hours surveys)
 	 *	    (eg. 2 surveys with same tag and other surveys with other tag)
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
 	 * Results: -
 	 *	- - Report generated successfully
 	 *  - - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1370, location = ComplianceReportDataProvider.class)
-	public void TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys(
+	public void TC1370_GenerateComplianceReportCustomerAdminIncludeMultipleSurveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys ..." +
-			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and multiple surveys");
+		Log.info("\nRunning TC1370_GenerateComplianceReportCustomerAdminIncludeMultipleSurveys ..." +
+			 "\nTest Description: Generate Compliance Report as Customer Admin, include multiple surveys");
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
@@ -524,54 +133,11 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
-	 * Test Case ID: TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys
-	 * Test Description: - Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and multiple surveys
-	 * Script: -
-	 *	- - Log in as Picarro Admin user
-	 *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
-	 *	- - Time Zone : PST, Survey Mode: Rapid Response
-	 *	- - Select Customer boundary and select any Plat
-	 *	- - Add 4 Surveys (present in the selected plat) with different tag values (try to include approx 8 hours surveys)
-	 *	    (eg. 2 surveys with same tag and other surveys with other tag)
-	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
-	 *	- - Add View with base map value: map
-	 *	- - Click on OK and click Compliance Viewer button
-	 *	- - Download PDF, ZIP (PDF)
-	 * Results: -
-	 *	- - Report generated successfully
-	 *  - - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1371, location = ComplianceReportDataProvider.class)
-	public void TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and multiple surveys");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Change to Utility Admin when customer boundary is available */
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea
-	 * Test Description: - Generate Compliance Report as Picarro Admin and include Percent Coverage Forecast, Assets and Report Area
+	 * Test Case ID: TC1373_GenerateComplianceReportPicarroAdminAssetsReportArea
+	 * Test Description: - Generate Compliance Report as Picarro Admin, Assets and Report Area
 	 * Script: -
 	 *	- -  Log in as Picarro Admin
 	 *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
@@ -579,7 +145,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Add 2 or 3 surveys with different tag values
 	 *	- - Select Customer boundary and select any Plat
 	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Assets, Report Area and Forecast check box
+	 *	- - Select Percent Coverage Assets, Report Area check box
 	 *	- - Add View with base map value: map
 	 *	- - Click on OK and click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
@@ -587,14 +153,13 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Report generated successfully
 	 *	- - Percent Coverage Assets and Report Area value is displayed
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1373, location = ComplianceReportDataProvider.class)
-	public void TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea(
+	public void TC1373_GenerateComplianceReportPicarroAdminAssetsReportArea(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Admin and include Percent Coverage Forecast, Assets and Report Area");
+		Log.info("\nRunning TC1373_GenerateComplianceReportPicarroAdminAssetsReportArea ..." +
+			 "\nTest Description: Generate Compliance Report as Picarro Admin, Assets and Report Area");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -609,7 +174,6 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
 		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**

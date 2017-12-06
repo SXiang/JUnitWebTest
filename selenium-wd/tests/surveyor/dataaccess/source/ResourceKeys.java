@@ -53,8 +53,6 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_CGIInvestigationComplete = "ComplianceReportSSRS_CGIInvestigationComplete";
 	public static final String ComplianceReportSSRS_ComplianceReportSSRS = "ComplianceReportSSRS_ComplianceReportSSRS";
 	public static final String ComplianceReportSSRS_Concentration = "ComplianceReportSSRS_Concentration(ppm)";
-	public static final String ComplianceReportSSRS_CoverageForecast = "ComplianceReportSSRS_CoverageForecast";
-	public static final String ComplianceReportSSRS_CoverageForecastTable = "ComplianceReportSSRS_CoverageForecastTable";
 	public static final String ComplianceReportSSRS_CoverageValues = "ComplianceReportSSRS_CoverageValues";
 	public static final String ComplianceReportSSRS_DateTime = "ComplianceReportSSRS_DateTime";
 	public static final String ComplianceReportSSRS_ExclusionRadius = "ComplianceReportSSRS_ExclusionRadius";
@@ -73,7 +71,6 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_NELatNELong = "ComplianceReportSSRS_NELat&NELong";
 	public static final String ComplianceReportSSRS_NoIsotopicMsg = "ComplianceReportSSRS_NoIsotopicMsg";
 	public static final String ComplianceReportSSRS_PercentCoverageAssets = "ComplianceReportSSRS_PercentCoverageAssets";
-	public static final String ComplianceReportSSRS_PercentCoverageForecast = "ComplianceReportSSRS_PercentCoverageForecast";
 	public static final String ComplianceReportSSRS_PercentCoverageReportArea = "ComplianceReportSSRS_PercentCoverageReportArea";
 	public static final String ComplianceReportSSRS_PercentServiceCoveragewithLISAs = "ComplianceReportSSRS_PercentServiceCoveragewithLISAs";
 	public static final String ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs = "ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs";
@@ -286,9 +283,6 @@ public class ResourceKeys {
 
 
     // Constants for Compliance Report
-    public static final String ComplianceReport_CoverageForecastAreaInvalidMessage = "ComplianceReport_CoverageForecastAreaInvalidMessage";
-	public static final String ComplianceReport_CoverageForecastAssetsInvalidMessage = "ComplianceReport_CoverageForecastAssetsInvalidMessage";
-	public static final String ComplianceReport_CoverageForecastBoundaryInvalidMessage = "ComplianceReport_CoverageForecastBoundaryInvalidMessage";
 	public static final String Dialog_SelectedArealsTooLarge = "Dialog_SelectedArealsTooLarge";
 	public static final String Dialog_SelectedArealsTooSmall = "Dialog_SelectedArealsTooSmall";
 
