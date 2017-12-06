@@ -200,16 +200,12 @@ $files | ? { $_.LastWriteTime -gt $StartDate } | %{
     [String] $fileFullpath = $file.FullName
     $lastWriteTime = $file.LastWriteTime.ToShortDateString() + " " + $file.LastWriteTime.ToLongTimeString()
 
-    # ($filename.StartsWith("loadmetrics")
-    #if ($filename.StartsWith("ab.output")) {
     if ($filename.StartsWith("LoadTest")) {
         Write-Host "Processing file -> $fileFullpath"                if ($filename -match "LoadTest\-\d+\-(.+)\.result") {            $TestName = $Matches[1]        }        $OutputResultFile = ""        $OutputResultDataFile = ""        gc $fileFullpath | %{            $line = $_            if ($line -match "OutputResultFile\s+=\s+(.+)") {                $OutputResultFile = $Matches[1]            } elseif ($line -match "OutputResultDataFile\s+=\s+(.+)") {                $OutputResultDataFile = $Matches[1]            }        }        $scCountPositives = 0        $scCountNegatives = 0        $ResponseLength = ""        $TimeForTests = ""        $CompleteRequests = ""        $FailedRequests = ""        if (Test-path $OutputResultFile) {            gc $OutputResultFile | %{                [string]$line = $_                if ($line.StartsWith("HTTP/")) {                    if ($line -match "HTTP/\d+\.\d+ 200 OK") {                        $scCountPositives++                            } else {                        $scCountNegatives++                        $null = $negStatusCodes.Add("[$filename]: $line")                    }                } elseif ($line.StartsWith("Document Length:")) {                    if ($line -match "Document Length:\s+(\d+.+)") {                        $ResponseLength = $Matches[1]                    }                } elseif ($line.StartsWith("Time taken for tests:")) {                    if ($line -match "Time taken for tests:\s+(\d+\.?\d+.+)") {                        $TimeForTests = $Matches[1]                    }                } elseif ($line.StartsWith("Complete requests:")) {                    if ($line -match "Complete requests:\s+(\d+)") {                        $CompleteRequests = $Matches[1]                    }                } elseif ($line.StartsWith("Failed requests:")) {                    if ($line -match "Failed requests:\s+(\d+)") {                        $FailedRequests = $Matches[1]                    }                }            }        }        $StatusCodeCounts = "HTTP/1.1 200 OK = [$scCountPositives], OTHER = [$scCountNegatives]"        $rowObj = New-Object PSObject -Property @{                            TestName         = $TestName                StatusCodeCounts = $StatusCodeCounts                ResponseLength   = $ResponseLength                TimeForTests     = $TimeForTests                CompleteRequests = $CompleteRequests                FailedRequests   = $FailedRequests                RawFileFullPath  = $OutputResultFile            }  
         
         Write-host "Writing row result -> $rowObj"
 
         Write-ResultRow -resultRow $rowObj
-        
-        #Write-Host "[$lastWriteTime] $fileFullpath"
     }
 }
 
