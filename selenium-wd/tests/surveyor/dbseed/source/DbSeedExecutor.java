@@ -1,5 +1,6 @@
 package surveyor.dbseed.source;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,6 +32,9 @@ import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerWithGisDataPool;
 import surveyor.dataaccess.source.SqlCmdUtility;
+import surveyor.dataaccess.source.Survey;
+import surveyor.dbseed.source.DbStateCorrector.TableName;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 public class DbSeedExecutor {
@@ -74,6 +78,88 @@ public class DbSeedExecutor {
 			/* Surveys below do NOT contain raw data */
 			"assessment-sqacus-2", "EthaneOpertor1-sqacus", "EthaneOpertor2-sqacus", "EthaneRR-sqacus", "EthaneStnd-sqacus", "EthaneStnd2-sqacus", "EthaneStnd3-sqacus",
 			"stnd-sqacudr-sqacus-3", "stnd-sqacudr-sqacus-4", "stnd-sqacudr-sqacus-5" };
+
+	/* Method to detect/fix polluted survey seed data. */
+
+	/**
+	 * Detects if any of the specified surveys have been polluted during test executions (ie have different survey result data compared to what is specified in seed data).
+	 * Fixes polluted surveys and adds logs for investigation.
+	 * @param surveyFileTags - surveys to detect/fix
+	 * @throws Exception
+	 * @return - whether pollution was detected and correction was applied.
+	 */
+	public static boolean detectFixSurveySeed(String[] surveyFileTags) throws Exception {
+		Log.method("DbSeedExecutor.detectFixSurveySeed", LogHelper.arrayToString(surveyFileTags));
+
+		Connection connection = null;
+		boolean applyCorrection = false;
+		try {
+			connection = ConnectionFactory.createConnection();
+			DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
+			DbStateCorrector dbStateCorrector = DbStateCorrector.newInstance(connection);
+
+			if (surveyFileTags != null && surveyFileTags.length > 0) {
+				for (String surveyFileTag : surveyFileTags) {
+					List<Map<String, String>> surveyFileLines = getSurveyFileLines(surveyFileTag);
+
+					// Get survey tag and AnalyzerId from Survey-*.csv
+					String surveyTag = surveyFileLines.get(0).get("Tag");
+					String analyzerId = surveyFileLines.get(0).get("AnalyzerId");
+					String analyzerSerialNumber = Analyzer.getAnalyzer(analyzerId).getSerialNumber();
+					String surveyId = null;
+					Survey survey = Survey.getSurveys(surveyTag).stream().filter(s -> s.getAnalyzerId().equalsIgnoreCase(analyzerId)).findFirst().orElse(null);
+					if (survey != null) {
+						surveyId = survey.getId();
+					}
+
+					if (surveyId == null) {
+						throw new Exception(String.format("Did NOT find survey for tag='%s' and AnalyzerId='%s'", surveyTag, analyzerId));
+					}
+
+					// Detect/fix survey results data.
+					if (!dbStateVerifier.isSegmentSeedMatch(SegmentDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
+						dbStateCorrector.append(TableName.SEGMENT);
+						applyCorrection = true;
+					}
+
+					if (!dbStateVerifier.isSurveyResultSeedMatch(SurveyResultDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
+						dbStateCorrector.append(TableName.SEGMENT);     // segment has FK to SurveyResult table.
+						dbStateCorrector.append(TableName.SURVEYRESULT);
+						applyCorrection = true;
+					}
+
+					if (!dbStateVerifier.isPeakSeedMatch(PeakDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyTag, analyzerSerialNumber)) {
+						dbStateCorrector.append(TableName.PEAK);
+						applyCorrection = true;
+					}
+
+					if (!dbStateVerifier.isCaptureEventSeedMatch(CaptureEventDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyTag, analyzerSerialNumber)) {
+						dbStateCorrector.append(TableName.CAPTUREEVENT);
+						applyCorrection = true;
+					}
+
+					if (!dbStateVerifier.isFieldOfViewSeedMatch(FieldOfViewDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
+						dbStateCorrector.append(TableName.FIELDOFVIEW);
+						applyCorrection = true;
+					}
+
+					if (applyCorrection) {
+						Log.warn(String.format("Found polluted survey. surveyFileTag=[%s], surveyTag=[%s], surveyId=[%s], analyzerId=[%s]", surveyFileTag, surveyTag, surveyId, analyzerId));
+						dbStateCorrector.correctSurveySeedData(surveyFileTag, surveyId, analyzerId);
+					}
+				}
+			}
+		} finally {
+			connection.close();
+		}
+
+		return applyCorrection;
+	}
+
+	private static List<Map<String, String>> getSurveyFileLines(String surveyFileTag) throws FileNotFoundException, IOException {
+		String surveySeedKey = String.format("Survey-%s.csv", surveyFileTag);
+		return new SurveyDbSeedBuilder(surveySeedKey).getSeedFileLines();
+	}
 
 	/* Method to push all the seed data required for automation. */
 

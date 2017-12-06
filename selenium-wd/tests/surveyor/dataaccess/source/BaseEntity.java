@@ -104,13 +104,13 @@ public class BaseEntity {
 		return (Boolean)columnValue;
 	}
 
-	public static float getFloatColumnValue(ResultSet resultSet, String columnName) throws SQLException
+	public static Float getFloatColumnValue(ResultSet resultSet, String columnName) throws SQLException
 	{
 		Object columnValue = resultSet.getFloat(columnName);
 		if (resultSet.wasNull()){
 			return Float.MIN_VALUE;
 		}
-		return (float)columnValue;
+		return (Float)columnValue;
 	}
 
 	public static Date getDateColumnValue(ResultSet resultSet, String columnName) throws SQLException
@@ -168,6 +168,10 @@ public class BaseEntity {
 
 	public static String emptyOrValue(String str){
 		return str==null?"":str;
+	}
+
+	public static String nullOrUpper(Object obj){
+		return obj==null?"NULL":obj.toString().toUpperCase();
 	}
 
 	public Integer floatCompare(Float value1, Float value2) {

@@ -56,6 +56,7 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
  */
 public class TestSetup {
 
+	private static final String[] SURVEYS_TO_TRACK_FOR_SEED_DATA_POLLUTION = { "op-pic-1" };
 	private static final String ANALYZER_DEBUG_LOG_FILE = "c:\\Logs\\AnalyzerDebugAutomationLog.log";
 	private static final String NETWORKADDRESS_CACHE_TTL = "networkaddress.cache.ttl";
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
@@ -909,6 +910,13 @@ public class TestSetup {
 			} catch (Exception e) {
 				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 			}
+		}
+
+		// Detect/fix survey seed data that could have been polluted during test executions.
+		try {
+			DbSeedExecutor.detectFixSurveySeed(SURVEYS_TO_TRACK_FOR_SEED_DATA_POLLUTION);
+		} catch (Exception e) {
+			Log.error(String.format("Error in DbSeedExecutor.detectFixSurveySeed. Exception -> %s", ExceptionUtility.getStackTraceString(e)));
 		}
 	}
 
