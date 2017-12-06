@@ -202,7 +202,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Assessment']")
 	protected WebElement inputSurModeFilterAssessment;
-	
+
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
@@ -2611,6 +2611,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForReportViewerDialogToOpen() {
+		waitForAJAXCallsToComplete();
 		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -3030,7 +3031,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean isAssessmentSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAssessment);
 	}
-	
+
 	/**
 	 * Verify the Type of Surveys in the resulted table are valid for the Survey
 	 * Mode Filter
