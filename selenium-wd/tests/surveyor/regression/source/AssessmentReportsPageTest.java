@@ -452,7 +452,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
-		String metadataZipFileVerifications = "True:True:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[TRUE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
+		String metadataZipFileVerifications = "True:False:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[FALSE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
 		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(metadataZipFileVerifications, getReportRowID(reportDataRowID1)));
 
 		// [Metadata verifications] ->
@@ -564,7 +564,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 			if (testCaseID.equals("TC1488-1")) {
 				return FunctionUtil.wrapException(reportsPageAction, r1 -> {
 					boolean retVal = false;
-					final Integer expectedLisasCount = 1;
+					final Integer expectedLisasCount = 0;
 					retVal = reportsPageAction.verifyNumberOfLISAsInShapeFilesEquals(String.valueOf(expectedLisasCount), reportDataRowID);
 					retVal = retVal && reportsPageAction.verifyNumberOfLISAsInMetaDataFileEquals(String.valueOf(expectedLisasCount), reportDataRowID);
 					return retVal;
