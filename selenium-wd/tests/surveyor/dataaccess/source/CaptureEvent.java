@@ -58,7 +58,7 @@ public class CaptureEvent extends BaseEntity implements Comparable {
 
 	@Override
 	public int compareTo(Object other) {
-		return Float.compare(this.getEpochTime(), ((CaptureEvent)other).getEpochTime());
+		return Integer.compare(this.hashCode(), other.hashCode());
 	}
 
     @Override
@@ -67,6 +67,7 @@ public class CaptureEvent extends BaseEntity implements Comparable {
         		.append(nullOrUpper(this.getSurveyId()))
         		.append(this.getDistance())
         		.append(this.getDelta())
+        		.append(this.getEpochTime())
         		.append(this.getGpsLatitude())
         		.append(this.getGpsLongitude())
         		.append(this.getConcentration())
@@ -87,6 +88,7 @@ public class CaptureEvent extends BaseEntity implements Comparable {
         return new EqualsBuilder().append(nullOrUpper(this.getAnalyzerId()), nullOrUpper(rhs.getAnalyzerId()))
         		.append(nullOrUpper(this.getSurveyId()), nullOrUpper(rhs.getSurveyId()))
         		.append(this.getDistance(), rhs.getDistance()).append(this.getDelta(), rhs.getDelta())
+        		.append(this.getEpochTime(), rhs.getEpochTime())
         		.append(this.getGpsLatitude(), rhs.getGpsLatitude()).append(this.getGpsLongitude(), rhs.getGpsLongitude())
         		.append(this.getConcentration(), rhs.getConcentration()).append(this.getClassificationConfidence(), rhs.getClassificationConfidence())
         		.append(this.getDisposition(), rhs.getDisposition())

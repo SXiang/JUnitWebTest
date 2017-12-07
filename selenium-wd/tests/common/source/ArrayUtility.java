@@ -66,7 +66,7 @@ public class ArrayUtility {
 
 		if (!retVal) {
 			// log if equals fails.
-			Log.method("listDeepEquals", LogHelper.collectionToString(list1, "list1"), LogHelper.collectionToString(list2, "list2"));
+			Log.info(String.format("Calling listDeepEquals. Array1 -> [%s], Array2 -> [%s]", LogHelper.arrayToString(arr1), LogHelper.arrayToString(arr2)));
 			Log.info("[ArrayUtility.listDeepEquals] Returning -> " + retVal);
 		}
 
