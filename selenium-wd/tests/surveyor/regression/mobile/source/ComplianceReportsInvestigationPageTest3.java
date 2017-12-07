@@ -125,12 +125,9 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+4);
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+2);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+5);
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
@@ -140,25 +137,18 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
-		
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
-		
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
 
 		// Mobile - add leak and complete
-		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4,  IndicationStatus.NOTINVESTIGATED, leakDetails);
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1,  IndicationStatus.NOTINVESTIGATED, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-4"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-1"));
 		mobileInvestigatePage.navigateBack();
 		mobileInvestigationPage.waitUntilPageLoad();
 		mobileInvestigatePage.refreshPage();
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4, IndicationStatus.INPROGRESS));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1, IndicationStatus.INPROGRESS));
 
 		// Mobile - login and investigate lisas - Supervisor
 		mobileLoginPage.open();
@@ -167,25 +157,18 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Supervisor can see all the lisas
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
-		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
-		
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
 
 		// Mobile - add leak and complete
-		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 8);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8,  IndicationStatus.NOTINVESTIGATED, leakDetails);
+		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2,  IndicationStatus.NOTINVESTIGATED, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-8"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-2"));
 		mobileInvestigatePage.navigateBack();
 		mobileInvestigationPage.waitUntilPageLoad();
 		mobileInvestigatePage.refreshPage();
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8,  IndicationStatus.INPROGRESS));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2,  IndicationStatus.INPROGRESS));
 
 		mobileLoginPage.logout();	
 	}
