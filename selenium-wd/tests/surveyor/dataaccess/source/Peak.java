@@ -59,13 +59,14 @@ public class Peak extends BaseEntity implements Comparable {
 
 	@Override
 	public int compareTo(Object other) {
-		return Float.compare(this.getEpochTime(), ((Peak)other).getEpochTime());
+		return Integer.compare(this.hashCode(), other.hashCode());
 	}
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(nullOrUpper(this.getAnalyzerId()))
         		.append(nullOrUpper(this.getSurveyId()))
+        		.append(this.getEpochTime())
         		.append(this.getCH4()).append(this.getAmplitude())
         		.append(nullOrUpper(this.getLisa())).append(this.getWindSpeedEast())
         		.append(this.getWindSpeedNorth()).append(this.getGpsLatitude())
@@ -84,6 +85,7 @@ public class Peak extends BaseEntity implements Comparable {
         Peak rhs = ((Peak) other);
         return new EqualsBuilder().append(nullOrUpper(this.getAnalyzerId()), nullOrUpper(rhs.getAnalyzerId()))
         		.append(nullOrUpper(this.getSurveyId()), nullOrUpper(rhs.getSurveyId()))
+        		.append(this.getEpochTime(), rhs.getEpochTime())
         		.append(this.getCH4(), rhs.getCH4()).append(this.getAmplitude(), rhs.getAmplitude())
         		.append(nullOrUpper(this.getLisa()), nullOrUpper(rhs.getLisa()))
         		.append(this.getWindSpeedEast(), rhs.getWindSpeedEast())
