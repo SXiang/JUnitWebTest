@@ -224,7 +224,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
 
-		// Add a new user customer with Report ShapeFile first disabled and then enable it.
+		// Add a new user customer.
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createOrFetchNewGisCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 
