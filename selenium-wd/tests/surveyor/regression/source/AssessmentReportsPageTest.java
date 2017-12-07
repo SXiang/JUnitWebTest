@@ -384,7 +384,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *  [Y] - Data present in ReportLisa.csv should be same as SSRS PDF indication table
 	 *	[Y] - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
 	 */
-	@Test
+	@Test /* Need assessment survey with lisas SUR-457 */
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1488, location = AssessmentReportDataProvider.class)
 	public void TC1488_GenerateAssessmentReportAllDefaultValuesFiltersSelectedUsingCustomBoundaryCustomerSupervisorUserWtihNonZeroExclusionValueDownloadIt(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
