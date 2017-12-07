@@ -384,7 +384,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *  [Y] - Data present in ReportLisa.csv should be same as SSRS PDF indication table
 	 *	[Y] - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
 	 */
-	@Test
+	@Test /* Need assessment survey with lisas SUR-457 */
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1488, location = AssessmentReportDataProvider.class)
 	public void TC1488_GenerateAssessmentReportAllDefaultValuesFiltersSelectedUsingCustomBoundaryCustomerSupervisorUserWtihNonZeroExclusionValueDownloadIt(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -452,7 +452,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
-		String metadataZipFileVerifications = "True:True:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[TRUE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
+		String metadataZipFileVerifications = "True:False:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[FALSE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
 		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(metadataZipFileVerifications, getReportRowID(reportDataRowID1)));
 
 		// [Metadata verifications] ->
@@ -564,7 +564,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 			if (testCaseID.equals("TC1488-1")) {
 				return FunctionUtil.wrapException(reportsPageAction, r1 -> {
 					boolean retVal = false;
-					final Integer expectedLisasCount = 1;
+					final Integer expectedLisasCount = 0;
 					retVal = reportsPageAction.verifyNumberOfLISAsInShapeFilesEquals(String.valueOf(expectedLisasCount), reportDataRowID);
 					retVal = retVal && reportsPageAction.verifyNumberOfLISAsInMetaDataFileEquals(String.valueOf(expectedLisasCount), reportDataRowID);
 					return retVal;
