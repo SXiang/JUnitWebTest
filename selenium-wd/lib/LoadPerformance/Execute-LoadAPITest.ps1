@@ -3,6 +3,10 @@
 #   Use script to trigger API and record test results in automation reporting DB.
 #
 # SAMPLE USAGE:
+#   This script uses Apache Benchmark tool which will be installed by tests as part of checking whether load testing tools are present on machine.
+#   ab.exe requires VC++ 2015 redistributable to function correctly
+#
+# SAMPLE USAGE:
 #   .\Execute-LoadAPITest.ps1 -BaseWorkingDir "c:\Repositories\surveyor-qa" `
 #       -AutomationReportingAPIBaseUrl "http://localhost:63087" `
 #       -ABExeFolder "C:\Tools\Apache Benchmark\Apache24\bin" `
@@ -195,7 +199,7 @@ if ($UseBasicAuthentication) {
 }
 
 if ($Method -eq "POST") {
-    $ReqBodyFile = New-Item "$BuildWorkingDir\selenium-wd\data\reqbody-$guid.txt"
+    $ReqBodyFile = New-Item "$BuildWorkingDir\selenium-wd\data\reqbody-$guid.txt" -ItemType File
     Write-Host "Creating request body file - '$ReqBodyFile' with content -> $RequestBody"
     Add-Content $ReqBodyFile $RequestBody
     Write-Host "Created request body file - '$ReqBodyFile'"
@@ -312,7 +316,7 @@ Write-Host "Posting load API stats data successful! Response -> $responseContent
 # 5. Record test result in success marker file.
 # ----------------------------------------------------------------------------------------------
 
-$successMarkerFile = New-Item $LOAD_TEST_RESULT_FILE -Force
+$successMarkerFile = New-Item $LOAD_TEST_RESULT_FILE -ItemType File -Force
 Add-Content $successMarkerFile "LoadStatAPITestCaseResultId = $apiResultId"
 Add-Content $successMarkerFile "OutputResultFile = $outResultFile"
 Add-Content $successMarkerFile "OutputResultDataFile = $OutDataFile"
