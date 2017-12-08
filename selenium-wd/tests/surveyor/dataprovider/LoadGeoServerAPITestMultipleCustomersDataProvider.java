@@ -3648,7 +3648,6 @@ public class LoadGeoServerAPITestMultipleCustomersDataProvider extends ReportDat
 
 
 		// Asset API calls for - 'GRDF:Asset'
-		// Commented for now. To be added when data becomes available.
 
 		final String apiName_141 = "GeoServer-MultipleCustomersAPI-High-141";
 		final String apiURL_141 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8720703125+40.9218144123785%2c+-73.861083984375+40.9218144123785%2c+-73.861083984375+40.9135125761276%2c+-73.8720703125+40.9135125761276%2c+-73.8720703125+40.9218144123785)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
@@ -6426,6 +6425,246 @@ public class LoadGeoServerAPITestMultipleCustomersDataProvider extends ReportDat
 				.setPassword(password_140)
 				.setRequestsInOneSession(requestsInOneSession)
 				.setTestCaseName(apiName_140);
+
+		LoadTestJob testJob141 = new LoadTestJob();
+		testJob141.setApiURL(apiURL_141)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_141)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_141)
+				.setPassword(password_141)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_141);
+
+		LoadTestJob testJob142 = new LoadTestJob();
+		testJob142.setApiURL(apiURL_142)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_142)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_142)
+				.setPassword(password_142)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_142);
+
+		LoadTestJob testJob143 = new LoadTestJob();
+		testJob143.setApiURL(apiURL_143)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_143)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_143)
+				.setPassword(password_143)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_143);
+
+		LoadTestJob testJob144 = new LoadTestJob();
+		testJob144.setApiURL(apiURL_144)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_144)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_144)
+				.setPassword(password_144)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_144);
+
+		LoadTestJob testJob145 = new LoadTestJob();
+		testJob145.setApiURL(apiURL_145)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_145)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_145)
+				.setPassword(password_145)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_145);
+
+		LoadTestJob testJob146 = new LoadTestJob();
+		testJob146.setApiURL(apiURL_146)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_146)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_146)
+				.setPassword(password_146)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_146);
+
+		LoadTestJob testJob147 = new LoadTestJob();
+		testJob147.setApiURL(apiURL_147)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_147)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_147)
+				.setPassword(password_147)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_147);
+
+		LoadTestJob testJob148 = new LoadTestJob();
+		testJob148.setApiURL(apiURL_148)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_148)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_148)
+				.setPassword(password_148)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_148);
+
+		LoadTestJob testJob149 = new LoadTestJob();
+		testJob149.setApiURL(apiURL_149)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_149)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_149)
+				.setPassword(password_149)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_149);
+
+		LoadTestJob testJob150 = new LoadTestJob();
+		testJob150.setApiURL(apiURL_150)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_150)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_150)
+				.setPassword(password_150)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_150);
+
+		LoadTestJob testJob151 = new LoadTestJob();
+		testJob151.setApiURL(apiURL_151)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_151)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_151)
+				.setPassword(password_151)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_151);
+
+		LoadTestJob testJob152 = new LoadTestJob();
+		testJob152.setApiURL(apiURL_152)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_152)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_152)
+				.setPassword(password_152)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_152);
+
+		LoadTestJob testJob153 = new LoadTestJob();
+		testJob153.setApiURL(apiURL_153)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_153)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_153)
+				.setPassword(password_153)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_153);
+
+		LoadTestJob testJob154 = new LoadTestJob();
+		testJob154.setApiURL(apiURL_154)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_154)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_154)
+				.setPassword(password_154)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_154);
+
+		LoadTestJob testJob155 = new LoadTestJob();
+		testJob155.setApiURL(apiURL_155)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_155)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_155)
+				.setPassword(password_155)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_155);
+
+		LoadTestJob testJob156 = new LoadTestJob();
+		testJob156.setApiURL(apiURL_156)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_156)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_156)
+				.setPassword(password_156)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_156);
+
+		LoadTestJob testJob157 = new LoadTestJob();
+		testJob157.setApiURL(apiURL_157)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_157)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_157)
+				.setPassword(password_157)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_157);
+
+		LoadTestJob testJob158 = new LoadTestJob();
+		testJob158.setApiURL(apiURL_158)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_158)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_158)
+				.setPassword(password_158)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_158);
+
+		LoadTestJob testJob159 = new LoadTestJob();
+		testJob159.setApiURL(apiURL_159)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_159)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_159)
+				.setPassword(password_159)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_159);
+
+		LoadTestJob testJob160 = new LoadTestJob();
+		testJob160.setApiURL(apiURL_160)
+				.setConcurrentRequests(concurrentRequests)
+				.setContentType(contentType)
+				.setExpectedResponseContentLength(expectedResponseContentLength_160)
+				.setMethod(method)
+				.setNumPrimingRuns(numPrimingRuns)
+				.setUsername(username_160)
+				.setPassword(password_160)
+				.setRequestsInOneSession(requestsInOneSession)
+				.setTestCaseName(apiName_160);
 
 		LoadTestJob testJob161 = new LoadTestJob();
 		testJob161.setApiURL(apiURL_161)
