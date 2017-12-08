@@ -134,21 +134,22 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	}
 
 	/** MandatoryRegression
-	 * Test Case ID: TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp 
-	 * Script: 
-	 * 	- - On Home Page, click on Picarro Surveyors -& Online -& Status 
-	 * 	- - Click on Display button 
-	 * 	- - Click on Map button 
-	 * 	- - Click on GIS button 
-	 * 	- - Click on Status button 
-	 * Results: 
-	 *  - Analyzer Warming Up message and analyzer info is displayed 
-	 * 	- Position button is by default selected and car icon is	displayed 
-	 * 	- All the Display options like Indications, LISA, FoV, Concentration Chart, WindRose, Field Notes and Isotopic Analysis are ON 
-	 * 	- Satellite View is by default ON and Map view is OFF 
-	 * 	- All Asset types and boundaries level are OFF (if customer has assets associated to them) 
-	 * 		or no assets and boundaries options are displayed to user 
+	 * Test Case ID: TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp
+	 * Script:
+	 * 	- - On Home Page, click on Picarro Surveyors -& Online -& Status
+	 * 	- - Click on Display button
+	 * 	- - Click on Map button
+	 * 	- - Click on GIS button
+	 * 	- - Click on Status button
+	 * Results:
+	 *  - Analyzer Warming Up message and analyzer info is displayed
+	 * 	- Position button is by default selected and car icon is	displayed
+	 * 	- All the Display options like Indications, LISA, FoV, Concentration Chart, WindRose, Field Notes and Isotopic Analysis are ON
+	 * 	- Satellite View is by default ON and Map view is OFF
+	 * 	- All Asset types and boundaries level are OFF (if customer has assets associated to them)
+	 * 		or no assets and boundaries options are displayed to user
 	 * 	- Status should display same info as in driver view. Status is red and on expanding flow, temp gauges, etc are also red
+	 *    (The HB Temp gauge should be red, but the WB Temp gauge should be green as long as it is in the range of 20 to 60)
 	 */
 	@Test
 	public void TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp() throws Exception {
@@ -165,9 +166,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		
+
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_WARMINGUP, NOTSET));
-		
+
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIndicationsButtonIsVisible("ON", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchLisasButtonIsVisible("ON", NOTSET));
@@ -192,12 +193,12 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifyStatusButtonIsRed(EMPTY, NOTSET));
 		assertTrue(driverViewPageAction.verifyPressureButtonIsRed(EMPTY, NOTSET));
 		assertTrue(driverViewPageAction.verifyHBTempButtonIsRed(EMPTY, NOTSET));
-		assertTrue(driverViewPageAction.verifyWBTempButtonIsRed(EMPTY, NOTSET));
-		
+		assertTrue(driverViewPageAction.verifyWBTempButtonIsGreen(EMPTY, NOTSET));                      // WB Temp gauge in range 20-60 is Green
+
 		assertTrue(observerViewPageActionList.get(0).verifyStatusButtonIsRed(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyPressureButtonIsRed(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyHBTempButtonIsRed(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyWBTempButtonIsRed(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWBTempButtonIsGreen(EMPTY, NOTSET));  		// WB Temp gauge in range 20-60 is Green
 
 		assertTrue(observerViewPageActionList.get(0).verifyPositionButtonIsSelected(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap("Gray", NOTSET));
@@ -667,7 +668,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND * 3);
 		driverViewPageAction.getBaseDrivingViewPage().setZoomLevel(15);
 		 getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
-		 getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);	
+		 getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);
 		String firstTag = DriverViewPageActions.workingDataRow.get().surveyTag;
 		assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(firstTag, NOTSET));
 		stopSurvey();
