@@ -24,7 +24,7 @@ public class PDFTableUtility extends PDFUtility{
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
 		LISAINVESTIGATIONPDFTABLE ("LISA#"+wordSeparator+"Status"+wordSeparator+"Investigation Date/Time"+wordSeparator+"Investigator"+wordSeparator+"Duration",0,"Investigation Marker Results",true,-1,5),
 		GAPINVESTIGATIONPDFTABLE ("Gap #"+wordSeparator+"Status"+wordSeparator+"Investigation Date/Time"+wordSeparator+"Investigator"+wordSeparator+"Duration",0,"Date Printed:",true,-1,5),
-		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)",0,"",true,-1,9),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)",0,"",true,-1),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
