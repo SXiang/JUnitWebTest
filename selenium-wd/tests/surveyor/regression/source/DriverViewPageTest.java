@@ -128,6 +128,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 * 4. Satellite View is by default ON and Map view is OFF
 	 * 5. All Asset types and boundaries level are OFF
 	 * 6. Status is red and on expanding flow, temp gauges are also red
+	 *    (The HB Temp gauge should be red, but the WB Temp gauge should be green as long as it is in the range of 20 to 60)
 	 * @throws Exception
 	 */
 	@Test
@@ -204,7 +205,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 			assertTrue(driverViewPage.isStatusButtonRed());
 			assertTrue(driverViewPage.isPressureButtonRed());
 			assertTrue(driverViewPage.isHBTempButtonRed());
-			assertTrue(driverViewPage.isWBTempButtonRed());
+			// WB Temp gauge in 20-60 range in Green
+			assertTrue(driverViewPage.isWBTempButtonGreen());
 			assertTrue(driverViewPage.isFlowButtonGrey());
 			assertTrue(driverViewPage.isRedArcShownOnFlowButton());
 
