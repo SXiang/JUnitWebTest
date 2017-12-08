@@ -14,7 +14,9 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.PollManager;
 import common.source.LoadTestExecutor.TestResult;
+import common.source.ExceptionUtility;
 import common.source.LoadTestJob;
 import common.source.LoadTestParallelExecutor;
 import surveyor.dataprovider.LoadGeoServerAPITestDataProvider;
@@ -24,6 +26,9 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class ProdGeoServerMultipleCustomerAPITest extends BaseTest {
+	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
+	private static final Integer RETRIES_PER_INDIVIDUAL_LOADJOB = 2;
+	private static final Integer MAX_RETRIES = 300;
 
 	private static LoadTestParallelExecutor parallelTestExecutor = null;
 
@@ -70,9 +75,9 @@ public class ProdGeoServerMultipleCustomerAPITest extends BaseTest {
 
 	private void assertResults(List<TestResult> results, Integer expectedResultsCount) {
 		assertTrue("Test results should NOT be empty!", results != null);
+		results.forEach(result -> logResult(result));
 		assertTrue(String.format("Actual and expected results count do NOT match. Expected=[%d], Actual=[%d]", expectedResultsCount, results.size()),
 				results.size() == expectedResultsCount);
-		results.forEach(result -> logResult(result));
 		results.forEach(result -> assertTrue(String.format("TestJob failed!. TestJob = [%s]", result), result.isTestPass()));
 	}
 
@@ -81,10 +86,25 @@ public class ProdGeoServerMultipleCustomerAPITest extends BaseTest {
 			Log.info(String.format("[ProdGeoServerMultipleCustomerAPITest.executeTest] job -> %s", job.toString()));
 			parallelTestExecutor.addTestJob(job);
 		});
-		return parallelTestExecutor.startTest().getTestResults();
+
+		// Wait for results to be published by threads under execution.
+		Integer maxRetries = RETRIES_PER_INDIVIDUAL_LOADJOB * loadTestJobs.size();
+		if (maxRetries > MAX_RETRIES) maxRetries = MAX_RETRIES;
+		LoadTestParallelExecutor executor = parallelTestExecutor.startTest();
+		PollManager.poll(() -> !testResultsReady(executor, loadTestJobs), DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, maxRetries);
+		return executor.getTestResults();
+	}
+
+	private Boolean testResultsReady(LoadTestParallelExecutor executor, List<LoadTestJob> loadTestJobs) {
+		try {
+			return executor.getTestResults().size() == loadTestJobs.size();
+		} catch (Exception e) {
+			Log.error(String.format("[Error in testResultsReady] Exception: %s", ExceptionUtility.getStackTraceString(e)));
+			return false;
+		}
 	}
 
 	private void logResult(TestResult result) {
-		Log.info(String.format("Test result -> %s", result.toString()));
+		Log.info(String.format("Logging Result -> %s", result.toString()));
 	}
 }
