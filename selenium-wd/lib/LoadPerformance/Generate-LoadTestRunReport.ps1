@@ -21,7 +21,7 @@ param(
    $TestDataProviderFile
 )
 
-$OUTFILE = New-item "C:\temp\LoadTestResult.html" -Force
+$OUTFILE = New-item "C:\temp\LoadTestResult.html" -ItemType File -Force
 
 $StartDate=[datetime] $TestStartTime
 $TEST_LOG_FOLDER = "C:\QATestLogs"
@@ -214,7 +214,7 @@ Write-ReportFooter
 ii $OUTFILE
 
 # print list of negative status codes.
-$ERRORLOG = New-Item "C:\temp\errorsInLoadTest.txt" -Force
+$ERRORLOG = New-Item "C:\temp\errorsInLoadTest.txt" -ItemType File -Force
 $negStatusCodes | %{
     $l = $_
     Add-Content $ERRORLOG $l

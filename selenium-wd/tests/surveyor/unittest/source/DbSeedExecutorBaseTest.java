@@ -40,7 +40,6 @@ import surveyor.dbseed.source.SurveyConditionDbSeedBuilder;
 import surveyor.dbseed.source.SurveyDbSeedBuilder;
 import surveyor.dbseed.source.SurveyResultDbSeedBuilder;
 import surveyor.scommon.source.BaseTest;
-import surveyor.scommon.source.SurveyorConstants;
 
 public class DbSeedExecutorBaseTest extends BaseTest {
 
@@ -61,15 +60,8 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 		final Integer expectedCount = 61;
 		final String gisCustomerNamePrefix = "AutomationSeedCustomer";
 		Integer actualCount = 0;
-		Connection connection = null;
-		try {
-			connection = ConnectionFactory.createConnection();
-			Customer customer = Customer.getCustomer(SurveyorConstants.CUSTOMER_PICARRO);
-			actualCount = customer.executeSingleInt("SELECT COUNT(*) FROM dbo.[Customer] WHERE Name LIKE '" + gisCustomerNamePrefix + "%'");
-		} finally {
-			connection.close();
-		}
-
+		Customer customer = new Customer();
+		actualCount = customer.executeSingleInt("SELECT COUNT(*) FROM dbo.[Customer] WHERE Name LIKE '" + gisCustomerNamePrefix + "%'");
 		Assert.assertTrue(actualCount == expectedCount);
 	}
 
