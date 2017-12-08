@@ -107,9 +107,26 @@ public class FileUtility {
 	 * @throws IOException
 	 */
 	public static List<String> readFileLinesToList(String filePath) throws IOException {
+		return readFileLinesToList(filePath, null /*fileEncoding*/);
+	}
+
+	/**
+	 * Reads content of the specified file into an ArrayList where each line in the file represents an entry in the List.
+	 * @param filePath - Path of the file.
+	 * @param fileEncoding - Encoding to use when reading the file.
+	 * @return - List containing file lines.
+	 * @throws IOException
+	 */
+	public static List<String> readFileLinesToList(String filePath, String fileEncoding) throws IOException {
 		String lineText = null;
 		List<String> list = Collections.synchronizedList(new ArrayList<String>());
-		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
+		BufferedReader buffReader = null;
+		if (BaseHelper.isNullOrEmpty(fileEncoding)) {
+			buffReader = new BufferedReader(new FileReader(filePath));
+		} else {
+			buffReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), fileEncoding));
+		}
+
 		try {
 			while ((lineText = buffReader.readLine()) != null) {
 				list.add(lineText);
@@ -120,6 +137,7 @@ public class FileUtility {
 
 		return list;
 	}
+
 
 	/*
 	 * Writes specified string to the file.

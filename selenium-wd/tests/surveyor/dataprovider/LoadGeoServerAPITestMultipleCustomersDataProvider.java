@@ -8,9 +8,9 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import common.source.LoadTestJob;
 import common.source.LoadTestExecutor.HttpMethod;
 
-public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider {
+public class LoadGeoServerAPITestMultipleCustomersDataProvider extends ReportDataProvider {
 
-	public LoadAPITestMultipleCustomersDataProvider(Class<?> klass) throws InitializationError {
+	public LoadGeoServerAPITestMultipleCustomersDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
 
@@ -28,31 +28,31 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 		final Integer numPrimingRuns = 1;
 
 		// API calls for - 'PGE:Asset'
-		final String apiName_1 = "GeoServer-MultipleCustomersAPI-1";
+		final String apiName_1 = "GeoServer-MultipleCustomersAPI-Low-1";
 		final String apiURL_1 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047119140625+37.6316347558065%2c+-122.041625976563+37.6316347558065%2c+-122.041625976563+37.6272843026801%2c+-122.047119140625+37.6272843026801%2c+-122.047119140625+37.6316347558065)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_1 = 374561;
 		final String username_1 = "PGE_VIEWER";
 		final String password_1 = "PGE_VIEWER";
 
-		final String apiName_2 = "GeoServer-MultipleCustomersAPI-2";
+		final String apiName_2 = "GeoServer-MultipleCustomersAPI-Low-2";
 		final String apiURL_2 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.931762695312+36.6089136671937%2c+-121.929016113281+36.6089136671937%2c+-121.929016113281+36.6067088864182%2c+-121.931762695312+36.6067088864182%2c+-121.931762695312+36.6089136671937)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_2 = 363625;
 		final String username_2 = "PGE_VIEWER";
 		final String password_2 = "PGE_VIEWER";
 
-		final String apiName_3 = "GeoServer-MultipleCustomersAPI-3";
+		final String apiName_3 = "GeoServer-MultipleCustomersAPI-Low-3";
 		final String apiURL_3 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6067088864182%2c+-121.923522949219+36.6067088864182%2c+-121.923522949219+36.6045040426166%2c+-121.92626953125+36.6045040426166%2c+-121.92626953125+36.6067088864182)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_3 = 323633;
 		final String username_3 = "PGE_VIEWER";
 		final String password_3 = "PGE_VIEWER";
 
-		final String apiName_4 = "GeoServer-MultipleCustomersAPI-4";
+		final String apiName_4 = "GeoServer-MultipleCustomersAPI-Low-4";
 		final String apiURL_4 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6067088864181%2c+-121.915283203125+36.6067088864181%2c+-121.915283203125+36.5978891330702%2c+-121.92626953125+36.5978891330702%2c+-121.92626953125+36.6067088864181)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_4 = 322126;
 		final String username_4 = "PGE_VIEWER";
 		final String password_4 = "PGE_VIEWER";
 
-		final String apiName_5 = "GeoServer-MultipleCustomersAPI-5";
+		final String apiName_5 = "GeoServer-MultipleCustomersAPI-Low-5";
 		final String apiURL_5 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.805419921875+36.6948509415623%2c+-121.799926757813+36.6948509415623%2c+-121.799926757813+36.6904462352348%2c+-121.805419921875+36.6904462352348%2c+-121.805419921875+36.6948509415623)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_5 = 316145;
 		final String username_5 = "PGE_VIEWER";
@@ -60,31 +60,31 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Centerpoint:Asset'
-		final String apiName_6 = "GeoServer-MultipleCustomersAPI-6";
+		final String apiName_6 = "GeoServer-MultipleCustomersAPI-Low-6";
 		final String apiURL_6 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.42724609375+29.7739138699922%2c+-95.416259765625+29.7739138699922%2c+-95.416259765625+29.7643773751631%2c+-95.42724609375+29.7643773751631%2c+-95.42724609375+29.7739138699922)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_6 = 896888;
 		final String username_6 = "CNP_VIEWER";
 		final String password_6 = "CNP_VIEWER";
 
-		final String apiName_7 = "GeoServer-MultipleCustomersAPI-7";
+		final String apiName_7 = "GeoServer-MultipleCustomersAPI-Low-7";
 		final String apiURL_7 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.42724609375+29.7834494568206%2c+-95.416259765625+29.7834494568206%2c+-95.416259765625+29.7739138699922%2c+-95.42724609375+29.7739138699922%2c+-95.42724609375+29.7834494568206)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_7 = 779591;
 		final String username_7 = "CNP_VIEWER";
 		final String password_7 = "CNP_VIEWER";
 
-		final String apiName_8 = "GeoServer-MultipleCustomersAPI-8";
+		final String apiName_8 = "GeoServer-MultipleCustomersAPI-Low-8";
 		final String apiURL_8 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.8120507675251%2c+-95.38330078125+29.8120507675251%2c+-95.38330078125+29.8025179057645%2c+-95.394287109375+29.8025179057645%2c+-95.394287109375+29.8120507675251)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_8 = 755265;
 		final String username_8 = "CNP_VIEWER";
 		final String password_8 = "CNP_VIEWER";
 
-		final String apiName_9 = "GeoServer-MultipleCustomersAPI-9";
+		final String apiName_9 = "GeoServer-MultipleCustomersAPI-Low-9";
 		final String apiURL_9 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.8025179057645%2c+-95.38330078125+29.8025179057645%2c+-95.38330078125+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_9 = 701971;
 		final String username_9 = "CNP_VIEWER";
 		final String password_9 = "CNP_VIEWER";
 
-		final String apiName_10 = "GeoServer-MultipleCustomersAPI-10";
+		final String apiName_10 = "GeoServer-MultipleCustomersAPI-Low-10";
 		final String apiURL_10 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.7834494568206%2c+-95.350341796875+29.7834494568206%2c+-95.350341796875+29.7739138699922%2c+-95.361328125+29.7739138699922%2c+-95.361328125+29.7834494568206)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_10 = 701057;
 		final String username_10 = "CNP_VIEWER";
@@ -92,31 +92,31 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'ATMOS:Asset'
-		final String apiName_11 = "GeoServer-MultipleCustomersAPI-11";
+		final String apiName_11 = "GeoServer-MultipleCustomersAPI-Low-11";
 		final String apiURL_11 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.7318408968657%2c+-96.85546875+32.7318408968657%2c+-96.85546875+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_11 = 5930997;
 		final String username_11 = "ATMOS_VIEWER";
 		final String password_11 = "ATMOS_VIEWER";
 
-		final String apiName_12 = "GeoServer-MultipleCustomersAPI-12";
+		final String apiName_12 = "GeoServer-MultipleCustomersAPI-Low-12";
 		final String apiURL_12 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8057447329069%2c+-96.8115234375+32.8057447329069%2c+-96.8115234375+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_12 = 5454275;
 		final String username_12 = "ATMOS_VIEWER";
 		final String password_12 = "ATMOS_VIEWER";
 
-		final String apiName_13 = "GeoServer-MultipleCustomersAPI-13";
+		final String apiName_13 = "GeoServer-MultipleCustomersAPI-Low-13";
 		final String apiURL_13 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8426736319543%2c+-96.7236328125+32.8426736319543%2c+-96.7236328125+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_13 = 5392839;
 		final String username_13 = "ATMOS_VIEWER";
 		final String password_13 = "ATMOS_VIEWER";
 
-		final String apiName_14 = "GeoServer-MultipleCustomersAPI-14";
+		final String apiName_14 = "GeoServer-MultipleCustomersAPI-Low-14";
 		final String apiURL_14 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8795871730663%2c+-96.767578125+32.8795871730663%2c+-96.767578125+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8795871730663)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_14 = 5017799;
 		final String username_14 = "ATMOS_VIEWER";
 		final String password_14 = "ATMOS_VIEWER";
 
-		final String apiName_15 = "GeoServer-MultipleCustomersAPI-15";
+		final String apiName_15 = "GeoServer-MultipleCustomersAPI-Low-15";
 		final String apiURL_15 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8057447329069%2c+-96.7236328125+32.8057447329069%2c+-96.7236328125+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.8057447329069)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_15 = 4508771;
 		final String username_15 = "ATMOS_VIEWER";
@@ -124,31 +124,31 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'PGE:Boundary'
-		final String apiName_16 = "GeoServer-MultipleCustomersAPI-16";
+		final String apiName_16 = "GeoServer-MultipleCustomersAPI-Low-16";
 		final String apiURL_16 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6904462352348%2c+-121.788940429688+36.6904462352348%2c+-121.788940429688+36.6860412765819%2c+-121.79443359375+36.6860412765819%2c+-121.79443359375+36.6904462352348)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_16 = 206943;
 		final String username_16 = "PGE_VIEWER";
 		final String password_16 = "PGE_VIEWER";
 
-		final String apiName_17 = "GeoServer-MultipleCustomersAPI-17";
+		final String apiName_17 = "GeoServer-MultipleCustomersAPI-Low-17";
 		final String apiURL_17 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6948509415623%2c+-121.783447265625+36.6948509415623%2c+-121.783447265625+36.6860412765819%2c+-121.79443359375+36.6860412765819%2c+-121.79443359375+36.6948509415623)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_17 = 206289;
 		final String username_17 = "PGE_VIEWER";
 		final String password_17 = "PGE_VIEWER";
 
-		final String apiName_18 = "GeoServer-MultipleCustomersAPI-18";
+		final String apiName_18 = "GeoServer-MultipleCustomersAPI-Low-18";
 		final String apiURL_18 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.01416015625+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.3876174997839%2c+-122.01416015625+37.3876174997839%2c+-122.01416015625+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_18 = 168048;
 		final String username_18 = "PGE_VIEWER";
 		final String password_18 = "PGE_VIEWER";
 
-		final String apiName_19 = "GeoServer-MultipleCustomersAPI-19";
+		final String apiName_19 = "GeoServer-MultipleCustomersAPI-Low-19";
 		final String apiURL_19 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6089136671937%2c+-121.923522949219+36.6089136671937%2c+-121.923522949219+36.6067088864182%2c+-121.92626953125+36.6067088864182%2c+-121.92626953125+36.6089136671937)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_19 = 164024;
 		final String username_19 = "PGE_VIEWER";
 		final String password_19 = "PGE_VIEWER";
 
-		final String apiName_20 = "GeoServer-MultipleCustomersAPI-20";
+		final String apiName_20 = "GeoServer-MultipleCustomersAPI-Low-20";
 		final String apiURL_20 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.929016113281+36.6089136671937%2c+-121.92626953125+36.6089136671937%2c+-121.92626953125+36.6067088864182%2c+-121.929016113281+36.6067088864182%2c+-121.929016113281+36.6089136671937)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_20 = 164014;
 		final String username_20 = "PGE_VIEWER";
@@ -156,31 +156,31 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Centerpoint:Boundary'
-		final String apiName_21 = "GeoServer-MultipleCustomersAPI-21";
+		final String apiName_21 = "GeoServer-MultipleCustomersAPI-Low-21";
 		final String apiURL_21 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4190063476562+30.1261243642246%2c+-95.416259765625+30.1261243642246%2c+-95.416259765625+30.1237487546004%2c+-95.4190063476562+30.1237487546004%2c+-95.4190063476562+30.1261243642246)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_21 = 322217;
 		final String username_21 = "CNP_VIEWER";
 		final String password_21 = "CNP_VIEWER";
 
-		final String apiName_22 = "GeoServer-MultipleCustomersAPI-22";
+		final String apiName_22 = "GeoServer-MultipleCustomersAPI-Low-22";
 		final String apiURL_22 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4327392578125+29.9073293768516%2c+-95.4299926757813+29.9073293768516%2c+-95.4299926757813+29.904948520528%2c+-95.4327392578125+29.904948520528%2c+-95.4327392578125+29.9073293768516)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_22 = 322217;
 		final String username_22 = "CNP_VIEWER";
 		final String password_22 = "CNP_VIEWER";
 
-		final String apiName_23 = "GeoServer-MultipleCustomersAPI-23";
+		final String apiName_23 = "GeoServer-MultipleCustomersAPI-Low-23";
 		final String apiURL_23 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.2512502670288+29.8472697860105%2c+-95.0872278213501+29.8472697860105%2c+-95.0872278213501+29.7708593103253%2c+-95.2512502670288+29.7708593103253%2c+-95.2512502670288+29.8472697860105)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_23 = 302995;
 		final String username_23 = "CNP_VIEWER";
 		final String password_23 = "CNP_VIEWER";
 
-		final String apiName_24 = "GeoServer-MultipleCustomersAPI-24";
+		final String apiName_24 = "GeoServer-MultipleCustomersAPI-Low-24";
 		final String apiURL_24 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.504150390625+30.3302126854327%2c+-95.4986572265625+30.3302126854327%2c+-95.4986572265625+30.3254712593281%2c+-95.504150390625+30.3254712593281%2c+-95.504150390625+30.3302126854327)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_24 = 295910;
 		final String username_24 = "CNP_VIEWER";
 		final String password_24 = "CNP_VIEWER";
 
-		final String apiName_25 = "GeoServer-MultipleCustomersAPI-25";
+		final String apiName_25 = "GeoServer-MultipleCustomersAPI-Low-25";
 		final String apiURL_25 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.7834494568206%2c+-95.4052734375+29.7834494568206%2c+-95.4052734375+29.7929841354705)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_25 = 289126;
 		final String username_25 = "CNP_VIEWER";
@@ -188,31 +188,31 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'ATMOS:Boundary'
-		final String apiName_26 = "GeoServer-MultipleCustomersAPI-26";
+		final String apiName_26 = "GeoServer-MultipleCustomersAPI-Low-26";
 		final String apiURL_26 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.7318408968657%2c+-96.85546875+32.7318408968657%2c+-96.85546875+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_26 = 62436;
 		final String username_26 = "ATMOS_VIEWER";
 		final String password_26 = "ATMOS_VIEWER";
 
-		final String apiName_27 = "GeoServer-MultipleCustomersAPI-27";
+		final String apiName_27 = "GeoServer-MultipleCustomersAPI-Low-27";
 		final String apiURL_27 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.8057447329069)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_27 = 54267;
 		final String username_27 = "ATMOS_VIEWER";
 		final String password_27 = "ATMOS_VIEWER";
 
-		final String apiName_28 = "GeoServer-MultipleCustomersAPI-28";
+		final String apiName_28 = "GeoServer-MultipleCustomersAPI-Low-28";
 		final String apiURL_28 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.7318408968657%2c+-96.8115234375+32.7318408968657%2c+-96.8115234375+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_28 = 50342;
 		final String username_28 = "ATMOS_VIEWER";
 		final String password_28 = "ATMOS_VIEWER";
 
-		final String apiName_29 = "GeoServer-MultipleCustomersAPI-29";
+		final String apiName_29 = "GeoServer-MultipleCustomersAPI-Low-29";
 		final String apiURL_29 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8426736319543%2c+-96.7236328125+32.8426736319543%2c+-96.7236328125+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_29 = 46032;
 		final String username_29 = "ATMOS_VIEWER";
 		final String password_29 = "ATMOS_VIEWER";
 
-		final String apiName_30 = "GeoServer-MultipleCustomersAPI-30";
+		final String apiName_30 = "GeoServer-MultipleCustomersAPI-Low-30";
 		final String apiURL_30 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.7688004848817%2c+-96.85546875+32.7688004848817%2c+-96.85546875+32.7318408968657%2c+-96.8994140625+32.7318408968657%2c+-96.8994140625+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_30 = 44602;
 		final String username_30 = "ATMOS_VIEWER";
@@ -594,61 +594,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 		final Integer numPrimingRuns = 1;
 
 		// API calls for - 'PGE:Asset'
-		final String apiName_1 = "GeoServer-MultipleCustomersAPI-1";
+		final String apiName_1 = "GeoServer-MultipleCustomersAPI-Medium-1";
 		final String apiURL_1 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047119140625+37.6316347558065%2c+-122.041625976563+37.6316347558065%2c+-122.041625976563+37.6272843026801%2c+-122.047119140625+37.6272843026801%2c+-122.047119140625+37.6316347558065)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_1 = 374561;
 		final String username_1 = "PGE_VIEWER";
 		final String password_1 = "PGE_VIEWER";
 
-		final String apiName_2 = "GeoServer-MultipleCustomersAPI-2";
+		final String apiName_2 = "GeoServer-MultipleCustomersAPI-Medium-2";
 		final String apiURL_2 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.931762695312+36.6089136671937%2c+-121.929016113281+36.6089136671937%2c+-121.929016113281+36.6067088864182%2c+-121.931762695312+36.6067088864182%2c+-121.931762695312+36.6089136671937)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_2 = 363625;
 		final String username_2 = "PGE_VIEWER";
 		final String password_2 = "PGE_VIEWER";
 
-		final String apiName_3 = "GeoServer-MultipleCustomersAPI-3";
+		final String apiName_3 = "GeoServer-MultipleCustomersAPI-Medium-3";
 		final String apiURL_3 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6067088864182%2c+-121.923522949219+36.6067088864182%2c+-121.923522949219+36.6045040426166%2c+-121.92626953125+36.6045040426166%2c+-121.92626953125+36.6067088864182)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_3 = 323633;
 		final String username_3 = "PGE_VIEWER";
 		final String password_3 = "PGE_VIEWER";
 
-		final String apiName_4 = "GeoServer-MultipleCustomersAPI-4";
+		final String apiName_4 = "GeoServer-MultipleCustomersAPI-Medium-4";
 		final String apiURL_4 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6067088864181%2c+-121.915283203125+36.6067088864181%2c+-121.915283203125+36.5978891330702%2c+-121.92626953125+36.5978891330702%2c+-121.92626953125+36.6067088864181)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_4 = 322126;
 		final String username_4 = "PGE_VIEWER";
 		final String password_4 = "PGE_VIEWER";
 
-		final String apiName_5 = "GeoServer-MultipleCustomersAPI-5";
+		final String apiName_5 = "GeoServer-MultipleCustomersAPI-Medium-5";
 		final String apiURL_5 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.805419921875+36.6948509415623%2c+-121.799926757813+36.6948509415623%2c+-121.799926757813+36.6904462352348%2c+-121.805419921875+36.6904462352348%2c+-121.805419921875+36.6948509415623)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_5 = 316145;
 		final String username_5 = "PGE_VIEWER";
 		final String password_5 = "PGE_VIEWER";
 
-		final String apiName_6 = "GeoServer-MultipleCustomersAPI-6";
+		final String apiName_6 = "GeoServer-MultipleCustomersAPI-Medium-6";
 		final String apiURL_6 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6948509415623%2c+-121.788940429688+36.6948509415623%2c+-121.788940429688+36.6904462352348%2c+-121.79443359375+36.6904462352348%2c+-121.79443359375+36.6948509415623)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_6 = 276141;
 		final String username_6 = "PGE_VIEWER";
 		final String password_6 = "PGE_VIEWER";
 
-		final String apiName_7 = "GeoServer-MultipleCustomersAPI-7";
+		final String apiName_7 = "GeoServer-MultipleCustomersAPI-Medium-7";
 		final String apiURL_7 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.049865722656+37.6294595610755%2c+-122.047119140625+37.6294595610755%2c+-122.047119140625+37.6272843026801%2c+-122.049865722656+37.6272843026801%2c+-122.049865722656+37.6294595610755)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_7 = 252519;
 		final String username_7 = "PGE_VIEWER";
 		final String password_7 = "PGE_VIEWER";
 
-		final String apiName_8 = "GeoServer-MultipleCustomersAPI-8";
+		final String apiName_8 = "GeoServer-MultipleCustomersAPI-Medium-8";
 		final String apiURL_8 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.799926757813+36.6772306023462%2c+-121.79443359375+36.6772306023462%2c+-121.79443359375+36.6728248867866%2c+-121.799926757813+36.6728248867866%2c+-121.799926757813+36.6772306023462)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_8 = 248072;
 		final String username_8 = "PGE_VIEWER";
 		final String password_8 = "PGE_VIEWER";
 
-		final String apiName_9 = "GeoServer-MultipleCustomersAPI-9";
+		final String apiName_9 = "GeoServer-MultipleCustomersAPI-Medium-9";
 		final String apiURL_9 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.81640625+36.6860412765819%2c+-121.805419921875+36.6860412765819%2c+-121.805419921875+36.6772306023462%2c+-121.81640625+36.6772306023462%2c+-121.81640625+36.6860412765819)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_9 = 244368;
 		final String username_9 = "PGE_VIEWER";
 		final String password_9 = "PGE_VIEWER";
 
-		final String apiName_10 = "GeoServer-MultipleCustomersAPI-10";
+		final String apiName_10 = "GeoServer-MultipleCustomersAPI-Medium-10";
 		final String apiURL_10 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6089136671937%2c+-121.923522949219+36.6089136671937%2c+-121.923522949219+36.6067088864182%2c+-121.92626953125+36.6067088864182%2c+-121.92626953125+36.6089136671937)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_10 = 237391;
 		final String username_10 = "PGE_VIEWER";
@@ -656,61 +656,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Centerpoint:Asset'
-		final String apiName_11 = "GeoServer-MultipleCustomersAPI-11";
+		final String apiName_11 = "GeoServer-MultipleCustomersAPI-Medium-11";
 		final String apiURL_11 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.42724609375+29.7739138699922%2c+-95.416259765625+29.7739138699922%2c+-95.416259765625+29.7643773751631%2c+-95.42724609375+29.7643773751631%2c+-95.42724609375+29.7739138699922)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_11 = 896888;
 		final String username_11 = "CNP_VIEWER";
 		final String password_11 = "CNP_VIEWER";
 
-		final String apiName_12 = "GeoServer-MultipleCustomersAPI-12";
+		final String apiName_12 = "GeoServer-MultipleCustomersAPI-Medium-12";
 		final String apiURL_12 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.42724609375+29.7834494568206%2c+-95.416259765625+29.7834494568206%2c+-95.416259765625+29.7739138699922%2c+-95.42724609375+29.7739138699922%2c+-95.42724609375+29.7834494568206)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_12 = 779591;
 		final String username_12 = "CNP_VIEWER";
 		final String password_12 = "CNP_VIEWER";
 
-		final String apiName_13 = "GeoServer-MultipleCustomersAPI-13";
+		final String apiName_13 = "GeoServer-MultipleCustomersAPI-Medium-13";
 		final String apiURL_13 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.8120507675251%2c+-95.38330078125+29.8120507675251%2c+-95.38330078125+29.8025179057645%2c+-95.394287109375+29.8025179057645%2c+-95.394287109375+29.8120507675251)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_13 = 755265;
 		final String username_13 = "CNP_VIEWER";
 		final String password_13 = "CNP_VIEWER";
 
-		final String apiName_14 = "GeoServer-MultipleCustomersAPI-14";
+		final String apiName_14 = "GeoServer-MultipleCustomersAPI-Medium-14";
 		final String apiURL_14 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.8025179057645%2c+-95.38330078125+29.8025179057645%2c+-95.38330078125+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_14 = 701971;
 		final String username_14 = "CNP_VIEWER";
 		final String password_14 = "CNP_VIEWER";
 
-		final String apiName_15 = "GeoServer-MultipleCustomersAPI-15";
+		final String apiName_15 = "GeoServer-MultipleCustomersAPI-Medium-15";
 		final String apiURL_15 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.7834494568206%2c+-95.350341796875+29.7834494568206%2c+-95.350341796875+29.7739138699922%2c+-95.361328125+29.7739138699922%2c+-95.361328125+29.7834494568206)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_15 = 701057;
 		final String username_15 = "CNP_VIEWER";
 		final String password_15 = "CNP_VIEWER";
 
-		final String apiName_16 = "GeoServer-MultipleCustomersAPI-16";
+		final String apiName_16 = "GeoServer-MultipleCustomersAPI-Medium-16";
 		final String apiURL_16 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.38330078125+29.7929841354705%2c+-95.372314453125+29.7929841354705%2c+-95.372314453125+29.7834494568206%2c+-95.38330078125+29.7834494568206%2c+-95.38330078125+29.7929841354705)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_16 = 694791;
 		final String username_16 = "CNP_VIEWER";
 		final String password_16 = "CNP_VIEWER";
 
-		final String apiName_17 = "GeoServer-MultipleCustomersAPI-17";
+		final String apiName_17 = "GeoServer-MultipleCustomersAPI-Medium-17";
 		final String apiURL_17 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+29.7739138699922%2c+-95.4052734375+29.7739138699922%2c+-95.4052734375+29.7643773751631%2c+-95.416259765625+29.7643773751631%2c+-95.416259765625+29.7739138699922)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_17 = 650919;
 		final String username_17 = "CNP_VIEWER";
 		final String password_17 = "CNP_VIEWER";
 
-		final String apiName_18 = "GeoServer-MultipleCustomersAPI-18";
+		final String apiName_18 = "GeoServer-MultipleCustomersAPI-Medium-18";
 		final String apiURL_18 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.7929841354705%2c+-95.38330078125+29.7929841354705%2c+-95.38330078125+29.7834494568206%2c+-95.394287109375+29.7834494568206%2c+-95.394287109375+29.7929841354705)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_18 = 643162;
 		final String username_18 = "CNP_VIEWER";
 		final String password_18 = "CNP_VIEWER";
 
-		final String apiName_19 = "GeoServer-MultipleCustomersAPI-19";
+		final String apiName_19 = "GeoServer-MultipleCustomersAPI-Medium-19";
 		final String apiURL_19 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+29.8025179057645%2c+-95.4052734375+29.8025179057645%2c+-95.4052734375+29.7929841354705%2c+-95.416259765625+29.7929841354705%2c+-95.416259765625+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_19 = 642778;
 		final String username_19 = "CNP_VIEWER";
 		final String password_19 = "CNP_VIEWER";
 
-		final String apiName_20 = "GeoServer-MultipleCustomersAPI-20";
+		final String apiName_20 = "GeoServer-MultipleCustomersAPI-Medium-20";
 		final String apiURL_20 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.821582720575%2c+-95.38330078125+29.821582720575%2c+-95.38330078125+29.8120507675251%2c+-95.394287109375+29.8120507675251%2c+-95.394287109375+29.821582720575)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_20 = 639635;
 		final String username_20 = "CNP_VIEWER";
@@ -718,61 +718,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'ATMOS:Asset'
-		final String apiName_21 = "GeoServer-MultipleCustomersAPI-21";
+		final String apiName_21 = "GeoServer-MultipleCustomersAPI-Medium-21";
 		final String apiURL_21 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.7318408968657%2c+-96.85546875+32.7318408968657%2c+-96.85546875+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_21 = 5930997;
 		final String username_21 = "ATMOS_VIEWER";
 		final String password_21 = "ATMOS_VIEWER";
 
-		final String apiName_22 = "GeoServer-MultipleCustomersAPI-22";
+		final String apiName_22 = "GeoServer-MultipleCustomersAPI-Medium-22";
 		final String apiURL_22 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8057447329069%2c+-96.8115234375+32.8057447329069%2c+-96.8115234375+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_22 = 5454275;
 		final String username_22 = "ATMOS_VIEWER";
 		final String password_22 = "ATMOS_VIEWER";
 
-		final String apiName_23 = "GeoServer-MultipleCustomersAPI-23";
+		final String apiName_23 = "GeoServer-MultipleCustomersAPI-Medium-23";
 		final String apiURL_23 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8426736319543%2c+-96.7236328125+32.8426736319543%2c+-96.7236328125+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_23 = 5392839;
 		final String username_23 = "ATMOS_VIEWER";
 		final String password_23 = "ATMOS_VIEWER";
 
-		final String apiName_24 = "GeoServer-MultipleCustomersAPI-24";
+		final String apiName_24 = "GeoServer-MultipleCustomersAPI-Medium-24";
 		final String apiURL_24 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8795871730663%2c+-96.767578125+32.8795871730663%2c+-96.767578125+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8795871730663)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_24 = 5017799;
 		final String username_24 = "ATMOS_VIEWER";
 		final String password_24 = "ATMOS_VIEWER";
 
-		final String apiName_25 = "GeoServer-MultipleCustomersAPI-25";
+		final String apiName_25 = "GeoServer-MultipleCustomersAPI-Medium-25";
 		final String apiURL_25 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8057447329069%2c+-96.7236328125+32.8057447329069%2c+-96.7236328125+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.8057447329069)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_25 = 4508771;
 		final String username_25 = "ATMOS_VIEWER";
 		final String password_25 = "ATMOS_VIEWER";
 
-		final String apiName_26 = "GeoServer-MultipleCustomersAPI-26";
+		final String apiName_26 = "GeoServer-MultipleCustomersAPI-Medium-26";
 		final String apiURL_26 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8795871730663%2c+-96.8115234375+32.8795871730663%2c+-96.8115234375+32.8426736319543%2c+-96.85546875+32.8426736319543%2c+-96.85546875+32.8795871730663)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_26 = 4355005;
 		final String username_26 = "ATMOS_VIEWER";
 		final String password_26 = "ATMOS_VIEWER";
 
-		final String apiName_27 = "GeoServer-MultipleCustomersAPI-27";
+		final String apiName_27 = "GeoServer-MultipleCustomersAPI-Medium-27";
 		final String apiURL_27 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.7688004848817%2c+-96.85546875+32.7688004848817%2c+-96.85546875+32.7318408968657%2c+-96.8994140625+32.7318408968657%2c+-96.8994140625+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_27 = 3980814;
 		final String username_27 = "ATMOS_VIEWER";
 		final String password_27 = "ATMOS_VIEWER";
 
-		final String apiName_28 = "GeoServer-MultipleCustomersAPI-28";
+		final String apiName_28 = "GeoServer-MultipleCustomersAPI-Medium-28";
 		final String apiURL_28 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.7688004848817%2c+-96.7236328125+32.7688004848817%2c+-96.7236328125+32.7318408968657%2c+-96.767578125+32.7318408968657%2c+-96.767578125+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_28 = 3828207;
 		final String username_28 = "ATMOS_VIEWER";
 		final String password_28 = "ATMOS_VIEWER";
 
-		final String apiName_29 = "GeoServer-MultipleCustomersAPI-29";
+		final String apiName_29 = "GeoServer-MultipleCustomersAPI-Medium-29";
 		final String apiURL_29 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8057447329069%2c+-96.85546875+32.8057447329069%2c+-96.85546875+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_29 = 3731355;
 		final String username_29 = "ATMOS_VIEWER";
 		final String password_29 = "ATMOS_VIEWER";
 
-		final String apiName_30 = "GeoServer-MultipleCustomersAPI-30";
+		final String apiName_30 = "GeoServer-MultipleCustomersAPI-Medium-30";
 		final String apiURL_30 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.8057447329069)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_30 = 3493513;
 		final String username_30 = "ATMOS_VIEWER";
@@ -780,61 +780,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Picarro:Asset'
-		final String apiName_31 = "GeoServer-MultipleCustomersAPI-31";
+		final String apiName_31 = "GeoServer-MultipleCustomersAPI-Medium-31";
 		final String apiURL_31 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5085772974394%2c+2.15332031249998+41.5085772974394%2c+2.15332031249998+41.5003495912893%2c+2.14233398437498+41.5003495912893%2c+2.14233398437498+41.5085772974394)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_31 = 350390;
 		final String username_31 = "PICARRO_VIEWER";
 		final String password_31 = "PICARRO_VIEWER";
 
-		final String apiName_32 = "GeoServer-MultipleCustomersAPI-32";
+		final String apiName_32 = "GeoServer-MultipleCustomersAPI-Medium-32";
 		final String apiURL_32 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.405073750177%2c+-121.986694335938+37.405073750177%2c+-121.986694335938+37.4007100687406%2c+-121.9921875+37.4007100687406%2c+-121.9921875+37.405073750177)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_32 = 301053;
 		final String username_32 = "PICARRO_VIEWER";
 		final String password_32 = "PICARRO_VIEWER";
 
-		final String apiName_33 = "GeoServer-MultipleCustomersAPI-33";
+		final String apiName_33 = "GeoServer-MultipleCustomersAPI-Medium-33";
 		final String apiURL_33 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5825796014304%2c+2.15332031249998+41.5825796014304%2c+2.15332031249998+41.5743613059891%2c+2.14233398437498+41.5743613059891%2c+2.14233398437498+41.5825796014304)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_33 = 221354;
 		final String username_33 = "PICARRO_VIEWER";
 		final String password_33 = "PICARRO_VIEWER";
 
-		final String apiName_34 = "GeoServer-MultipleCustomersAPI-34";
+		final String apiName_34 = "GeoServer-MultipleCustomersAPI-Medium-34";
 		final String apiURL_34 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5743613059891%2c+2.15332031249998+41.5743613059891%2c+2.15332031249998+41.5661419647684%2c+2.14233398437498+41.5661419647684%2c+2.14233398437498+41.5743613059891)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_34 = 143152;
 		final String username_34 = "PICARRO_VIEWER";
 		final String password_34 = "PICARRO_VIEWER";
 
-		final String apiName_35 = "GeoServer-MultipleCustomersAPI-35";
+		final String apiName_35 = "GeoServer-MultipleCustomersAPI-Medium-35";
 		final String apiURL_35 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.997680664063+37.4094371774879%2c+-121.9921875+37.4094371774879%2c+-121.9921875+37.4050737501769%2c+-121.997680664063+37.4050737501769%2c+-121.997680664063+37.4094371774879)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_35 = 136672;
 		final String username_35 = "PICARRO_VIEWER";
 		final String password_35 = "PICARRO_VIEWER";
 
-		final String apiName_36 = "GeoServer-MultipleCustomersAPI-36";
+		final String apiName_36 = "GeoServer-MultipleCustomersAPI-Medium-36";
 		final String apiURL_36 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5003495912893%2c+2.15332031249998+41.5003495912893%2c+2.15332031249998+41.4921208396878%2c+2.14233398437498+41.4921208396878%2c+2.14233398437498+41.5003495912893)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_36 = 109408;
 		final String username_36 = "PICARRO_VIEWER";
 		final String password_36 = "PICARRO_VIEWER";
 
-		final String apiName_37 = "GeoServer-MultipleCustomersAPI-37";
+		final String apiName_37 = "GeoServer-MultipleCustomersAPI-Medium-37";
 		final String apiURL_37 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.983947753906+37.3985281327286%2c+-121.981201171875+37.3985281327286%2c+-121.981201171875+37.3963461331892%2c+-121.983947753906+37.3963461331892%2c+-121.983947753906+37.3985281327286)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_37 = 107221;
 		final String username_37 = "PICARRO_VIEWER";
 		final String password_37 = "PICARRO_VIEWER";
 
-		final String apiName_38 = "GeoServer-MultipleCustomersAPI-38";
+		final String apiName_38 = "GeoServer-MultipleCustomersAPI-Medium-38";
 		final String apiURL_38 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.4138003506629%2c+-121.981201171875+37.4138003506629%2c+-121.981201171875+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.4138003506629)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_38 = 81431;
 		final String username_38 = "PICARRO_VIEWER";
 		final String password_38 = "PICARRO_VIEWER";
 
-		final String apiName_39 = "GeoServer-MultipleCustomersAPI-39";
+		final String apiName_39 = "GeoServer-MultipleCustomersAPI-Medium-39";
 		final String apiURL_39 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.003173828125+37.4138003506629%2c+-121.9921875+37.4138003506629%2c+-121.9921875+37.4050737501769%2c+-122.003173828125+37.4050737501769%2c+-122.003173828125+37.4138003506629)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_39 = 69743;
 		final String username_39 = "PICARRO_VIEWER";
 		final String password_39 = "PICARRO_VIEWER";
 
-		final String apiName_40 = "GeoServer-MultipleCustomersAPI-40";
+		final String apiName_40 = "GeoServer-MultipleCustomersAPI-Medium-40";
 		final String apiURL_40 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.986694335938+37.3985281327286%2c+-121.983947753906+37.3985281327286%2c+-121.983947753906+37.3963461331892%2c+-121.986694335938+37.3963461331892%2c+-121.986694335938+37.3985281327286)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_40 = 61902;
 		final String username_40 = "PICARRO_VIEWER";
@@ -842,61 +842,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SouthwestGas:Asset'
-		final String apiName_41 = "GeoServer-MultipleCustomersAPI-41";
+		final String apiName_41 = "GeoServer-MultipleCustomersAPI-Medium-41";
 		final String apiURL_41 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.257568359375+36.0046734867019%2c+-115.24658203125+36.0046734867019%2c+-115.24658203125+35.9957853864203%2c+-115.257568359375+35.9957853864203%2c+-115.257568359375+36.0046734867019)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_41 = 797634;
 		final String username_41 = "SWG_VIEWER";
 		final String password_41 = "SWG_VIEWER";
 
-		final String apiName_42 = "GeoServer-MultipleCustomersAPI-42";
+		final String apiName_42 = "GeoServer-MultipleCustomersAPI-Medium-42";
 		final String apiURL_42 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.301513671875+36.0135605851815%2c+-115.29052734375+36.0135605851815%2c+-115.29052734375+36.0046734867019%2c+-115.301513671875+36.0046734867019%2c+-115.301513671875+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_42 = 728180;
 		final String username_42 = "SWG_VIEWER";
 		final String password_42 = "SWG_VIEWER";
 
-		final String apiName_43 = "GeoServer-MultipleCustomersAPI-43";
+		final String apiName_43 = "GeoServer-MultipleCustomersAPI-Medium-43";
 		final String apiURL_43 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.257568359375+35.9957853864203%2c+-115.24658203125+35.9957853864203%2c+-115.24658203125+35.9868962844379%2c+-115.257568359375+35.9868962844379%2c+-115.257568359375+35.9957853864203)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_43 = 701823;
 		final String username_43 = "SWG_VIEWER";
 		final String password_43 = "SWG_VIEWER";
 
-		final String apiName_44 = "GeoServer-MultipleCustomersAPI-44";
+		final String apiName_44 = "GeoServer-MultipleCustomersAPI-Medium-44";
 		final String apiURL_44 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.29052734375+36.0135605851815%2c+-115.279541015625+36.0135605851815%2c+-115.279541015625+36.0046734867019%2c+-115.29052734375+36.0046734867019%2c+-115.29052734375+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_44 = 629208;
 		final String username_44 = "SWG_VIEWER";
 		final String password_44 = "SWG_VIEWER";
 
-		final String apiName_45 = "GeoServer-MultipleCustomersAPI-45";
+		final String apiName_45 = "GeoServer-MultipleCustomersAPI-Medium-45";
 		final String apiURL_45 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.279541015625+36.0135605851815%2c+-115.2685546875+36.0135605851815%2c+-115.2685546875+36.0046734867019%2c+-115.279541015625+36.0046734867019%2c+-115.279541015625+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_45 = 621232;
 		final String username_45 = "SWG_VIEWER";
 		final String password_45 = "SWG_VIEWER";
 
-		final String apiName_46 = "GeoServer-MultipleCustomersAPI-46";
+		final String apiName_46 = "GeoServer-MultipleCustomersAPI-Medium-46";
 		final String apiURL_46 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.0135605851815%2c+-115.257568359375+36.0135605851815%2c+-115.257568359375+36.0046734867019%2c+-115.2685546875+36.0046734867019%2c+-115.2685546875+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_46 = 598850;
 		final String username_46 = "SWG_VIEWER";
 		final String password_46 = "SWG_VIEWER";
 
-		final String apiName_47 = "GeoServer-MultipleCustomersAPI-47";
+		final String apiName_47 = "GeoServer-MultipleCustomersAPI-Medium-47";
 		final String apiURL_47 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1733569352216%2c+-115.235595703125+36.1733569352216%2c+-115.235595703125+36.1644878863206%2c+-115.24658203125+36.1644878863206%2c+-115.24658203125+36.1733569352216)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_47 = 538432;
 		final String username_47 = "SWG_VIEWER";
 		final String password_47 = "SWG_VIEWER";
 
-		final String apiName_48 = "GeoServer-MultipleCustomersAPI-48";
+		final String apiName_48 = "GeoServer-MultipleCustomersAPI-Medium-48";
 		final String apiURL_48 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.07080078125+36.057981047025%2c+-115.059814453125+36.057981047025%2c+-115.059814453125+36.0490989590656%2c+-115.07080078125+36.0490989590656%2c+-115.07080078125+36.057981047025)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_48 = 532564;
 		final String username_48 = "SWG_VIEWER";
 		final String password_48 = "SWG_VIEWER";
 
-		final String apiName_49 = "GeoServer-MultipleCustomersAPI-49";
+		final String apiName_49 = "GeoServer-MultipleCustomersAPI-Medium-49";
 		final String apiURL_49 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.257568359375+36.1733569352216%2c+-115.24658203125+36.1733569352216%2c+-115.24658203125+36.1644878863206%2c+-115.257568359375+36.1644878863206%2c+-115.257568359375+36.1733569352216)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_49 = 506395;
 		final String username_49 = "SWG_VIEWER";
 		final String password_49 = "SWG_VIEWER";
 
-		final String apiName_50 = "GeoServer-MultipleCustomersAPI-50";
+		final String apiName_50 = "GeoServer-MultipleCustomersAPI-Medium-50";
 		final String apiURL_50 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.1733569352216%2c+-115.257568359375+36.1733569352216%2c+-115.257568359375+36.1644878863206%2c+-115.2685546875+36.1644878863206%2c+-115.2685546875+36.1733569352216)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_50 = 500165;
 		final String username_50 = "SWG_VIEWER";
@@ -904,61 +904,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SIG:Asset'
-		final String apiName_51 = "GeoServer-MultipleCustomersAPI-51";
+		final String apiName_51 = "GeoServer-MultipleCustomersAPI-Medium-51";
 		final String apiURL_51 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((6.26220703125001+46.2634426717799%2c+6.27319335937501+46.2634426717799%2c+6.27319335937501+46.2558468184803%2c+6.26220703125001+46.2558468184803%2c+6.26220703125001+46.2634426717799)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_51 = 61905;
 		final String username_51 = "SIG_VIEWER";
 		final String password_51 = "SIG_VIEWER";
 
-		final String apiName_52 = "GeoServer-MultipleCustomersAPI-52";
+		final String apiName_52 = "GeoServer-MultipleCustomersAPI-Medium-52";
 		final String apiURL_52 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.2981567382813+29.9025676073023%2c+-95.29541015625+29.9025676073023%2c+-95.29541015625+29.9001866371774%2c+-95.2981567382813+29.9001866371774%2c+-95.2981567382813+29.9025676073023)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_52 = 61;
 		final String username_52 = "SIG_VIEWER";
 		final String password_52 = "SIG_VIEWER";
 
-		final String apiName_53 = "GeoServer-MultipleCustomersAPI-53";
+		final String apiName_53 = "GeoServer-MultipleCustomersAPI-Medium-53";
 		final String apiURL_53 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.29541015625+29.904948520528%2c+-95.2926635742188+29.904948520528%2c+-95.2926635742188+29.9025676073023%2c+-95.29541015625+29.9025676073023%2c+-95.29541015625+29.904948520528)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_53 = 61;
 		final String username_53 = "SIG_VIEWER";
 		final String password_53 = "SIG_VIEWER";
 
-		final String apiName_54 = "GeoServer-MultipleCustomersAPI-54";
+		final String apiName_54 = "GeoServer-MultipleCustomersAPI-Medium-54";
 		final String apiURL_54 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.29541015625+29.9025676073023%2c+-95.2926635742188+29.9025676073023%2c+-95.2926635742188+29.9001866371774%2c+-95.29541015625+29.9001866371774%2c+-95.29541015625+29.9025676073023)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_54 = 61;
 		final String username_54 = "SIG_VIEWER";
 		final String password_54 = "SIG_VIEWER";
 
-		final String apiName_55 = "GeoServer-MultipleCustomersAPI-55";
+		final String apiName_55 = "GeoServer-MultipleCustomersAPI-Medium-55";
 		final String apiURL_55 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.1416015625+29.878755346038%2c+-95.1361083984375+29.878755346038%2c+-95.1361083984375+29.8739922112357%2c+-95.1416015625+29.8739922112357%2c+-95.1416015625+29.878755346038)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_55 = 61;
 		final String username_55 = "SIG_VIEWER";
 		final String password_55 = "SIG_VIEWER";
 
-		final String apiName_56 = "GeoServer-MultipleCustomersAPI-56";
+		final String apiName_56 = "GeoServer-MultipleCustomersAPI-Medium-56";
 		final String apiURL_56 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.1470947265625+29.8739922112357%2c+-95.1416015625+29.8739922112357%2c+-95.1416015625+29.8692288489683%2c+-95.1470947265625+29.8692288489683%2c+-95.1470947265625+29.8739922112357)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_56 = 61;
 		final String username_56 = "SIG_VIEWER";
 		final String password_56 = "SIG_VIEWER";
 
-		final String apiName_57 = "GeoServer-MultipleCustomersAPI-57";
+		final String apiName_57 = "GeoServer-MultipleCustomersAPI-Medium-57";
 		final String apiURL_57 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.1470947265625+29.878755346038%2c+-95.1416015625+29.878755346038%2c+-95.1416015625+29.8739922112357%2c+-95.1470947265625+29.8739922112357%2c+-95.1470947265625+29.878755346038)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_57 = 61;
 		final String username_57 = "SIG_VIEWER";
 		final String password_57 = "SIG_VIEWER";
 
-		final String apiName_58 = "GeoServer-MultipleCustomersAPI-58";
+		final String apiName_58 = "GeoServer-MultipleCustomersAPI-Medium-58";
 		final String apiURL_58 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.306396484375+29.8597014421267%2c+-95.3009033203125+29.8597014421267%2c+-95.3009033203125+29.8549373975967%2c+-95.306396484375+29.8549373975967%2c+-95.306396484375+29.8597014421267)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_58 = 61;
 		final String username_58 = "SIG_VIEWER";
 		final String password_58 = "SIG_VIEWER";
 
-		final String apiName_59 = "GeoServer-MultipleCustomersAPI-59";
+		final String apiName_59 = "GeoServer-MultipleCustomersAPI-Medium-59";
 		final String apiURL_59 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.306396484375+29.864465259258%2c+-95.3009033203125+29.864465259258%2c+-95.3009033203125+29.8597014421267%2c+-95.306396484375+29.8597014421267%2c+-95.306396484375+29.864465259258)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_59 = 61;
 		final String username_59 = "SIG_VIEWER";
 		final String password_59 = "SIG_VIEWER";
 
-		final String apiName_60 = "GeoServer-MultipleCustomersAPI-60";
+		final String apiName_60 = "GeoServer-MultipleCustomersAPI-Medium-60";
 		final String apiURL_60 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.3118896484375+29.8597014421267%2c+-95.306396484375+29.8597014421267%2c+-95.306396484375+29.8549373975967%2c+-95.3118896484375+29.8549373975967%2c+-95.3118896484375+29.8597014421267)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_60 = 61;
 		final String username_60 = "SIG_VIEWER";
@@ -966,61 +966,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'PGE:Boundary'
-		final String apiName_61 = "GeoServer-MultipleCustomersAPI-61";
+		final String apiName_61 = "GeoServer-MultipleCustomersAPI-Medium-61";
 		final String apiURL_61 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6904462352348%2c+-121.788940429688+36.6904462352348%2c+-121.788940429688+36.6860412765819%2c+-121.79443359375+36.6860412765819%2c+-121.79443359375+36.6904462352348)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_61 = 206943;
 		final String username_61 = "PGE_VIEWER";
 		final String password_61 = "PGE_VIEWER";
 
-		final String apiName_62 = "GeoServer-MultipleCustomersAPI-62";
+		final String apiName_62 = "GeoServer-MultipleCustomersAPI-Medium-62";
 		final String apiURL_62 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6948509415623%2c+-121.783447265625+36.6948509415623%2c+-121.783447265625+36.6860412765819%2c+-121.79443359375+36.6860412765819%2c+-121.79443359375+36.6948509415623)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_62 = 206289;
 		final String username_62 = "PGE_VIEWER";
 		final String password_62 = "PGE_VIEWER";
 
-		final String apiName_63 = "GeoServer-MultipleCustomersAPI-63";
+		final String apiName_63 = "GeoServer-MultipleCustomersAPI-Medium-63";
 		final String apiURL_63 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.01416015625+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.3876174997839%2c+-122.01416015625+37.3876174997839%2c+-122.01416015625+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_63 = 168048;
 		final String username_63 = "PGE_VIEWER";
 		final String password_63 = "PGE_VIEWER";
 
-		final String apiName_64 = "GeoServer-MultipleCustomersAPI-64";
+		final String apiName_64 = "GeoServer-MultipleCustomersAPI-Medium-64";
 		final String apiURL_64 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6089136671937%2c+-121.923522949219+36.6089136671937%2c+-121.923522949219+36.6067088864182%2c+-121.92626953125+36.6067088864182%2c+-121.92626953125+36.6089136671937)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_64 = 164024;
 		final String username_64 = "PGE_VIEWER";
 		final String password_64 = "PGE_VIEWER";
 
-		final String apiName_65 = "GeoServer-MultipleCustomersAPI-65";
+		final String apiName_65 = "GeoServer-MultipleCustomersAPI-Medium-65";
 		final String apiURL_65 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.929016113281+36.6089136671937%2c+-121.92626953125+36.6089136671937%2c+-121.92626953125+36.6067088864182%2c+-121.929016113281+36.6067088864182%2c+-121.929016113281+36.6089136671937)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_65 = 164014;
 		final String username_65 = "PGE_VIEWER";
 		final String password_65 = "PGE_VIEWER";
 
-		final String apiName_66 = "GeoServer-MultipleCustomersAPI-66";
+		final String apiName_66 = "GeoServer-MultipleCustomersAPI-Medium-66";
 		final String apiURL_66 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.5890683713991%2c+-121.915283203125+36.5890683713991%2c+-121.915283203125+36.5802466014987%2c+-121.92626953125+36.5802466014987%2c+-121.92626953125+36.5890683713991)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_66 = 163782;
 		final String username_66 = "PGE_VIEWER";
 		final String password_66 = "PGE_VIEWER";
 
-		final String apiName_67 = "GeoServer-MultipleCustomersAPI-67";
+		final String apiName_67 = "GeoServer-MultipleCustomersAPI-Medium-67";
 		final String apiURL_67 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9482421875+37.4399740522706%2c+-121.904296875+37.4399740522706%2c+-121.904296875+37.4050737501769%2c+-121.9482421875+37.4050737501769%2c+-121.9482421875+37.4399740522706)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_67 = 163629;
 		final String username_67 = "PGE_VIEWER";
 		final String password_67 = "PGE_VIEWER";
 
-		final String apiName_68 = "GeoServer-MultipleCustomersAPI-68";
+		final String apiName_68 = "GeoServer-MultipleCustomersAPI-Medium-68";
 		final String apiURL_68 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9482421875+36.6331620955866%2c+-121.92626953125+36.6331620955866%2c+-121.92626953125+36.6155276313493%2c+-121.9482421875+36.6155276313493%2c+-121.9482421875+36.6331620955866)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_68 = 163552;
 		final String username_68 = "PGE_VIEWER";
 		final String password_68 = "PGE_VIEWER";
 
-		final String apiName_69 = "GeoServer-MultipleCustomersAPI-69";
+		final String apiName_69 = "GeoServer-MultipleCustomersAPI-Medium-69";
 		final String apiURL_69 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047119140625+37.6316347558065%2c+-122.041625976563+37.6316347558065%2c+-122.041625976563+37.6272843026801%2c+-122.047119140625+37.6272843026801%2c+-122.047119140625+37.6316347558065)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_69 = 163544;
 		final String username_69 = "PGE_VIEWER";
 		final String password_69 = "PGE_VIEWER";
 
-		final String apiName_70 = "GeoServer-MultipleCustomersAPI-70";
+		final String apiName_70 = "GeoServer-MultipleCustomersAPI-Medium-70";
 		final String apiURL_70 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.0361328125+37.4399740522706%2c+-121.9921875+37.4399740522706%2c+-121.9921875+37.4050737501769%2c+-122.0361328125+37.4050737501769%2c+-122.0361328125+37.4399740522706)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_70 = 163489;
 		final String username_70 = "PGE_VIEWER";
@@ -1028,61 +1028,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Centerpoint:Boundary'
-		final String apiName_71 = "GeoServer-MultipleCustomersAPI-71";
+		final String apiName_71 = "GeoServer-MultipleCustomersAPI-Medium-71";
 		final String apiURL_71 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4190063476562+30.1261243642246%2c+-95.416259765625+30.1261243642246%2c+-95.416259765625+30.1237487546004%2c+-95.4190063476562+30.1237487546004%2c+-95.4190063476562+30.1261243642246)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_71 = 322217;
 		final String username_71 = "CNP_VIEWER";
 		final String password_71 = "CNP_VIEWER";
 
-		final String apiName_72 = "GeoServer-MultipleCustomersAPI-72";
+		final String apiName_72 = "GeoServer-MultipleCustomersAPI-Medium-72";
 		final String apiURL_72 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4327392578125+29.9073293768516%2c+-95.4299926757813+29.9073293768516%2c+-95.4299926757813+29.904948520528%2c+-95.4327392578125+29.904948520528%2c+-95.4327392578125+29.9073293768516)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_72 = 322217;
 		final String username_72 = "CNP_VIEWER";
 		final String password_72 = "CNP_VIEWER";
 
-		final String apiName_73 = "GeoServer-MultipleCustomersAPI-73";
+		final String apiName_73 = "GeoServer-MultipleCustomersAPI-Medium-73";
 		final String apiURL_73 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.2512502670288+29.8472697860105%2c+-95.0872278213501+29.8472697860105%2c+-95.0872278213501+29.7708593103253%2c+-95.2512502670288+29.7708593103253%2c+-95.2512502670288+29.8472697860105)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_73 = 302995;
 		final String username_73 = "CNP_VIEWER";
 		final String password_73 = "CNP_VIEWER";
 
-		final String apiName_74 = "GeoServer-MultipleCustomersAPI-74";
+		final String apiName_74 = "GeoServer-MultipleCustomersAPI-Medium-74";
 		final String apiURL_74 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.504150390625+30.3302126854327%2c+-95.4986572265625+30.3302126854327%2c+-95.4986572265625+30.3254712593281%2c+-95.504150390625+30.3254712593281%2c+-95.504150390625+30.3302126854327)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_74 = 295910;
 		final String username_74 = "CNP_VIEWER";
 		final String password_74 = "CNP_VIEWER";
 
-		final String apiName_75 = "GeoServer-MultipleCustomersAPI-75";
+		final String apiName_75 = "GeoServer-MultipleCustomersAPI-Medium-75";
 		final String apiURL_75 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.7834494568206%2c+-95.4052734375+29.7834494568206%2c+-95.4052734375+29.7929841354705)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_75 = 289126;
 		final String username_75 = "CNP_VIEWER";
 		final String password_75 = "CNP_VIEWER";
 
-		final String apiName_76 = "GeoServer-MultipleCustomersAPI-76";
+		final String apiName_76 = "GeoServer-MultipleCustomersAPI-Medium-76";
 		final String apiURL_76 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+29.7739138699922%2c+-95.4052734375+29.7739138699922%2c+-95.4052734375+29.7643773751631%2c+-95.416259765625+29.7643773751631%2c+-95.416259765625+29.7739138699922)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_76 = 282186;
 		final String username_76 = "CNP_VIEWER";
 		final String password_76 = "CNP_VIEWER";
 
-		final String apiName_77 = "GeoServer-MultipleCustomersAPI-77";
+		final String apiName_77 = "GeoServer-MultipleCustomersAPI-Medium-77";
 		final String apiURL_77 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.7929841354705%2c+-95.350341796875+29.7929841354705%2c+-95.350341796875+29.7834494568206%2c+-95.361328125+29.7834494568206%2c+-95.361328125+29.7929841354705)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_77 = 217781;
 		final String username_77 = "CNP_VIEWER";
 		final String password_77 = "CNP_VIEWER";
 
-		final String apiName_78 = "GeoServer-MultipleCustomersAPI-78";
+		final String apiName_78 = "GeoServer-MultipleCustomersAPI-Medium-78";
 		final String apiURL_78 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4437255859375+29.8835182533532%2c+-95.438232421875+29.8835182533532%2c+-95.438232421875+29.878755346038%2c+-95.4437255859375+29.878755346038%2c+-95.4437255859375+29.8835182533532)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_78 = 211976;
 		final String username_78 = "CNP_VIEWER";
 		final String password_78 = "CNP_VIEWER";
 
-		final String apiName_79 = "GeoServer-MultipleCustomersAPI-79";
+		final String apiName_79 = "GeoServer-MultipleCustomersAPI-Medium-79";
 		final String apiURL_79 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7643773751631%2c+-95.394287109375+29.7643773751631%2c+-95.394287109375+29.7548399725109%2c+-95.4052734375+29.7548399725109%2c+-95.4052734375+29.7643773751631)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_79 = 211693;
 		final String username_79 = "CNP_VIEWER";
 		final String password_79 = "CNP_VIEWER";
 
-		final String apiName_80 = "GeoServer-MultipleCustomersAPI-80";
+		final String apiName_80 = "GeoServer-MultipleCustomersAPI-Medium-80";
 		final String apiURL_80 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7834494568206%2c+-95.394287109375+29.7834494568206%2c+-95.394287109375+29.7739138699922%2c+-95.4052734375+29.7739138699922%2c+-95.4052734375+29.7834494568206)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_80 = 207057;
 		final String username_80 = "CNP_VIEWER";
@@ -1090,61 +1090,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'ATMOS:Boundary'
-		final String apiName_81 = "GeoServer-MultipleCustomersAPI-81";
+		final String apiName_81 = "GeoServer-MultipleCustomersAPI-Medium-81";
 		final String apiURL_81 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.7318408968657%2c+-96.85546875+32.7318408968657%2c+-96.85546875+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_81 = 62436;
 		final String username_81 = "ATMOS_VIEWER";
 		final String password_81 = "ATMOS_VIEWER";
 
-		final String apiName_82 = "GeoServer-MultipleCustomersAPI-82";
+		final String apiName_82 = "GeoServer-MultipleCustomersAPI-Medium-82";
 		final String apiURL_82 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.8057447329069)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_82 = 54267;
 		final String username_82 = "ATMOS_VIEWER";
 		final String password_82 = "ATMOS_VIEWER";
 
-		final String apiName_83 = "GeoServer-MultipleCustomersAPI-83";
+		final String apiName_83 = "GeoServer-MultipleCustomersAPI-Medium-83";
 		final String apiURL_83 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.7318408968657%2c+-96.8115234375+32.7318408968657%2c+-96.8115234375+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_83 = 50342;
 		final String username_83 = "ATMOS_VIEWER";
 		final String password_83 = "ATMOS_VIEWER";
 
-		final String apiName_84 = "GeoServer-MultipleCustomersAPI-84";
+		final String apiName_84 = "GeoServer-MultipleCustomersAPI-Medium-84";
 		final String apiURL_84 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8426736319543%2c+-96.7236328125+32.8426736319543%2c+-96.7236328125+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_84 = 46032;
 		final String username_84 = "ATMOS_VIEWER";
 		final String password_84 = "ATMOS_VIEWER";
 
-		final String apiName_85 = "GeoServer-MultipleCustomersAPI-85";
+		final String apiName_85 = "GeoServer-MultipleCustomersAPI-Medium-85";
 		final String apiURL_85 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.7688004848817%2c+-96.85546875+32.7688004848817%2c+-96.85546875+32.7318408968657%2c+-96.8994140625+32.7318408968657%2c+-96.8994140625+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_85 = 44602;
 		final String username_85 = "ATMOS_VIEWER";
 		final String password_85 = "ATMOS_VIEWER";
 
-		final String apiName_86 = "GeoServer-MultipleCustomersAPI-86";
+		final String apiName_86 = "GeoServer-MultipleCustomersAPI-Medium-86";
 		final String apiURL_86 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8795871730663%2c+-96.8115234375+32.8795871730663%2c+-96.8115234375+32.8426736319543%2c+-96.85546875+32.8426736319543%2c+-96.85546875+32.8795871730663)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_86 = 43078;
 		final String username_86 = "ATMOS_VIEWER";
 		final String password_86 = "ATMOS_VIEWER";
 
-		final String apiName_87 = "GeoServer-MultipleCustomersAPI-87";
+		final String apiName_87 = "GeoServer-MultipleCustomersAPI-Medium-87";
 		final String apiURL_87 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8057447329069%2c+-96.85546875+32.8057447329069%2c+-96.85546875+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_87 = 42771;
 		final String username_87 = "ATMOS_VIEWER";
 		final String password_87 = "ATMOS_VIEWER";
 
-		final String apiName_88 = "GeoServer-MultipleCustomersAPI-88";
+		final String apiName_88 = "GeoServer-MultipleCustomersAPI-Medium-88";
 		final String apiURL_88 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8057447329069%2c+-96.8115234375+32.8057447329069%2c+-96.8115234375+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_88 = 42572;
 		final String username_88 = "ATMOS_VIEWER";
 		final String password_88 = "ATMOS_VIEWER";
 
-		final String apiName_89 = "GeoServer-MultipleCustomersAPI-89";
+		final String apiName_89 = "GeoServer-MultipleCustomersAPI-Medium-89";
 		final String apiURL_89 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8795871730663%2c+-96.7236328125+32.8795871730663%2c+-96.7236328125+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8795871730663)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_89 = 40614;
 		final String username_89 = "ATMOS_VIEWER";
 		final String password_89 = "ATMOS_VIEWER";
 
-		final String apiName_90 = "GeoServer-MultipleCustomersAPI-90";
+		final String apiName_90 = "GeoServer-MultipleCustomersAPI-Medium-90";
 		final String apiURL_90 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8795871730663%2c+-96.767578125+32.8795871730663%2c+-96.767578125+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8795871730663)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_90 = 38042;
 		final String username_90 = "ATMOS_VIEWER";
@@ -1152,61 +1152,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Picarro:Boundary'
-		final String apiName_91 = "GeoServer-MultipleCustomersAPI-91";
+		final String apiName_91 = "GeoServer-MultipleCustomersAPI-Medium-91";
 		final String apiURL_91 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.1147108078+37.4458346166504%2c+-121.950688362122+37.4458346166504%2c+-121.950688362122+37.3758867982335%2c+-122.1147108078+37.3758867982335%2c+-122.1147108078+37.4458346166504)))++AND+CustomerBo+IN+(%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_91 = 2987;
 		final String username_91 = "PICARRO_VIEWER";
 		final String password_91 = "PICARRO_VIEWER";
 
-		final String apiName_92 = "GeoServer-MultipleCustomersAPI-92";
+		final String apiName_92 = "GeoServer-MultipleCustomersAPI-Medium-92";
 		final String apiURL_92 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.080078125+37.5097258429375%2c+-121.9921875+37.5097258429375%2c+-121.9921875+37.4399740522706%2c+-122.080078125+37.4399740522706%2c+-122.080078125+37.5097258429375)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_92 = 2987;
 		final String username_92 = "PICARRO_VIEWER";
 		final String password_92 = "PICARRO_VIEWER";
 
-		final String apiName_93 = "GeoServer-MultipleCustomersAPI-93";
+		final String apiName_93 = "GeoServer-MultipleCustomersAPI-Medium-93";
 		final String apiURL_93 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.5794125134384%2c+-121.81640625+37.5794125134384%2c+-121.81640625+37.4399740522706%2c+-121.9921875+37.4399740522706%2c+-121.9921875+37.5794125134384)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_93 = 2985;
 		final String username_93 = "PICARRO_VIEWER";
 		final String password_93 = "PICARRO_VIEWER";
 
-		final String apiName_94 = "GeoServer-MultipleCustomersAPI-94";
+		final String apiName_94 = "GeoServer-MultipleCustomersAPI-Medium-94";
 		final String apiURL_94 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.5097258429375%2c+-121.904296875+37.5097258429375%2c+-121.904296875+37.4399740522706%2c+-121.9921875+37.4399740522706%2c+-121.9921875+37.5097258429375)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_94 = 2985;
 		final String username_94 = "PICARRO_VIEWER";
 		final String password_94 = "PICARRO_VIEWER";
 
-		final String apiName_95 = "GeoServer-MultipleCustomersAPI-95";
+		final String apiName_95 = "GeoServer-MultipleCustomersAPI-Medium-95";
 		final String apiURL_95 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.072396278381+37.4330225552755%2c+-121.908373832703+37.4330225552755%2c+-121.908373832703+37.363062769708%2c+-122.072396278381+37.363062769708%2c+-122.072396278381+37.4330225552755)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27)";
 		final Integer expectedResponseContentLength_95 = 2663;
 		final String username_95 = "PICARRO_VIEWER";
 		final String password_95 = "PICARRO_VIEWER";
 
-		final String apiName_96 = "GeoServer-MultipleCustomersAPI-96";
+		final String apiName_96 = "GeoServer-MultipleCustomersAPI-Medium-96";
 		final String apiURL_96 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047162055969+37.4299895920408%2c+-121.921763420105+37.4299895920408%2c+-121.921763420105+37.3629604415169%2c+-122.047162055969+37.3629604415169%2c+-122.047162055969+37.4299895920408)))++AND+CustomerBo+IN+(%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_96 = 2663;
 		final String username_96 = "PICARRO_VIEWER";
 		final String password_96 = "PICARRO_VIEWER";
 
-		final String apiName_97 = "GeoServer-MultipleCustomersAPI-97";
+		final String apiName_97 = "GeoServer-MultipleCustomersAPI-Medium-97";
 		final String apiURL_97 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.080078125+37.3701571840575%2c+-121.9921875+37.3701571840575%2c+-121.9921875+37.3002752813443%2c+-122.080078125+37.3002752813443%2c+-122.080078125+37.3701571840575)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_97 = 2663;
 		final String username_97 = "PICARRO_VIEWER";
 		final String password_97 = "PICARRO_VIEWER";
 
-		final String apiName_98 = "GeoServer-MultipleCustomersAPI-98";
+		final String apiName_98 = "GeoServer-MultipleCustomersAPI-Medium-98";
 		final String apiURL_98 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.97021484375+37.4050737501769%2c+-121.9482421875+37.4050737501769%2c+-121.9482421875+37.3876174997839%2c+-121.97021484375+37.3876174997839%2c+-121.97021484375+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_98 = 2305;
 		final String username_98 = "PICARRO_VIEWER";
 		final String password_98 = "PICARRO_VIEWER";
 
-		final String apiName_99 = "GeoServer-MultipleCustomersAPI-99";
+		final String apiName_99 = "GeoServer-MultipleCustomersAPI-Medium-99";
 		final String apiURL_99 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.405073750177%2c+-121.986694335938+37.405073750177%2c+-121.986694335938+37.4007100687406%2c+-121.9921875+37.4007100687406%2c+-121.9921875+37.405073750177)))++AND+CustomerBo+IN+(%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_99 = 2305;
 		final String username_99 = "PICARRO_VIEWER";
 		final String password_99 = "PICARRO_VIEWER";
 
-		final String apiName_100 = "GeoServer-MultipleCustomersAPI-100";
+		final String apiName_100 = "GeoServer-MultipleCustomersAPI-Medium-100";
 		final String apiURL_100 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.405073750177%2c+-121.986694335938+37.405073750177%2c+-121.986694335938+37.4007100687406%2c+-121.9921875+37.4007100687406%2c+-121.9921875+37.405073750177)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_100 = 2305;
 		final String username_100 = "PICARRO_VIEWER";
@@ -1214,61 +1214,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SouthwestGas:Boundary'
-		final String apiName_101 = "GeoServer-MultipleCustomersAPI-101";
+		final String apiName_101 = "GeoServer-MultipleCustomersAPI-Medium-101";
 		final String apiURL_101 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.11474609375+36.0135605851815%2c+-115.0927734375+36.0135605851815%2c+-115.0927734375+35.9957853864203%2c+-115.11474609375+35.9957853864203%2c+-115.11474609375+36.0135605851815)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_101 = 6639;
 		final String username_101 = "SWG_VIEWER";
 		final String password_101 = "SWG_VIEWER";
 
-		final String apiName_102 = "GeoServer-MultipleCustomersAPI-102";
+		final String apiName_102 = "GeoServer-MultipleCustomersAPI-Medium-102";
 		final String apiURL_102 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.11474609375+35.9957853864203%2c+-115.0927734375+35.9957853864203%2c+-115.0927734375+35.9780061808557%2c+-115.11474609375+35.9780061808557%2c+-115.11474609375+35.9957853864203)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_102 = 5335;
 		final String username_102 = "SWG_VIEWER";
 		final String password_102 = "SWG_VIEWER";
 
-		final String apiName_103 = "GeoServer-MultipleCustomersAPI-103";
+		final String apiName_103 = "GeoServer-MultipleCustomersAPI-Medium-103";
 		final String apiURL_103 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1733569352216%2c+-115.224609375+36.1733569352216%2c+-115.224609375+36.1556178338185%2c+-115.24658203125+36.1556178338185%2c+-115.24658203125+36.1733569352216)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_103 = 5016;
 		final String username_103 = "SWG_VIEWER";
 		final String password_103 = "SWG_VIEWER";
 
-		final String apiName_104 = "GeoServer-MultipleCustomersAPI-104";
+		final String apiName_104 = "GeoServer-MultipleCustomersAPI-Medium-104";
 		final String apiURL_104 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.0927734375+36.0135605851815%2c+-115.07080078125+36.0135605851815%2c+-115.07080078125+35.9957853864203%2c+-115.0927734375+35.9957853864203%2c+-115.0927734375+36.0135605851815)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_104 = 4996;
 		final String username_104 = "SWG_VIEWER";
 		final String password_104 = "SWG_VIEWER";
 
-		final String apiName_105 = "GeoServer-MultipleCustomersAPI-105";
+		final String apiName_105 = "GeoServer-MultipleCustomersAPI-Medium-105";
 		final String apiURL_105 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.13671875+36.0135605851815%2c+-115.11474609375+36.0135605851815%2c+-115.11474609375+35.9957853864203%2c+-115.13671875+35.9957853864203%2c+-115.13671875+36.0135605851815)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_105 = 4995;
 		final String username_105 = "SWG_VIEWER";
 		final String password_105 = "SWG_VIEWER";
 
-		final String apiName_106 = "GeoServer-MultipleCustomersAPI-106";
+		final String apiName_106 = "GeoServer-MultipleCustomersAPI-Medium-106";
 		final String apiURL_106 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.29052734375+36.1733569352216%2c+-115.2685546875+36.1733569352216%2c+-115.2685546875+36.1556178338185%2c+-115.29052734375+36.1556178338185%2c+-115.29052734375+36.1733569352216)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_106 = 4993;
 		final String username_106 = "SWG_VIEWER";
 		final String password_106 = "SWG_VIEWER";
 
-		final String apiName_107 = "GeoServer-MultipleCustomersAPI-107";
+		final String apiName_107 = "GeoServer-MultipleCustomersAPI-Medium-107";
 		final String apiURL_107 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.1733569352216%2c+-115.24658203125+36.1733569352216%2c+-115.24658203125+36.1556178338185%2c+-115.2685546875+36.1556178338185%2c+-115.2685546875+36.1733569352216)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_107 = 4988;
 		final String username_107 = "SWG_VIEWER";
 		final String password_107 = "SWG_VIEWER";
 
-		final String apiName_108 = "GeoServer-MultipleCustomersAPI-108";
+		final String apiName_108 = "GeoServer-MultipleCustomersAPI-Medium-108";
 		final String apiURL_108 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.0927734375+36.0668621325789%2c+-115.07080078125+36.0668621325789%2c+-115.07080078125+36.0490989590656%2c+-115.0927734375+36.0490989590656%2c+-115.0927734375+36.0668621325789)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_108 = 4645;
 		final String username_108 = "SWG_VIEWER";
 		final String password_108 = "SWG_VIEWER";
 
-		final String apiName_109 = "GeoServer-MultipleCustomersAPI-109";
+		final String apiName_109 = "GeoServer-MultipleCustomersAPI-Medium-109";
 		final String apiURL_109 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.29052734375+36.1910920218245%2c+-115.2685546875+36.1910920218245%2c+-115.2685546875+36.1733569352216%2c+-115.29052734375+36.1733569352216%2c+-115.29052734375+36.1910920218245)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_109 = 4034;
 		final String username_109 = "SWG_VIEWER";
 		final String password_109 = "SWG_VIEWER";
 
-		final String apiName_110 = "GeoServer-MultipleCustomersAPI-110";
+		final String apiName_110 = "GeoServer-MultipleCustomersAPI-Medium-110";
 		final String apiURL_110 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1556178338185%2c+-115.224609375+36.1556178338185%2c+-115.224609375+36.1378747184073%2c+-115.24658203125+36.1378747184073%2c+-115.24658203125+36.1556178338185)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_110 = 4021;
 		final String username_110 = "SWG_VIEWER";
@@ -1276,61 +1276,61 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SIG:Boundary'
-		final String apiName_111 = "GeoServer-MultipleCustomersAPI-111";
+		final String apiName_111 = "GeoServer-MultipleCustomersAPI-Medium-111";
 		final String apiURL_111 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1962890625+46.1950421086601%2c+6.240234375+46.1950421086601%2c+6.240234375+46.1646144968971%2c+6.1962890625+46.1646144968971%2c+6.1962890625+46.1950421086601)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_111 = 3316;
 		final String username_111 = "SIG_VIEWER";
 		final String password_111 = "SIG_VIEWER";
 
-		final String apiName_112 = "GeoServer-MultipleCustomersAPI-112";
+		final String apiName_112 = "GeoServer-MultipleCustomersAPI-Medium-112";
 		final String apiURL_112 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.3165841818222%2c+6.240234375+46.3165841818222%2c+6.240234375+46.2558468184803%2c+6.15234375+46.2558468184803%2c+6.15234375+46.3165841818222)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_112 = 3316;
 		final String username_112 = "SIG_VIEWER";
 		final String password_112 = "SIG_VIEWER";
 
-		final String apiName_113 = "GeoServer-MultipleCustomersAPI-113";
+		final String apiName_113 = "GeoServer-MultipleCustomersAPI-Medium-113";
 		final String apiURL_113 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.064453125+46.2254528822694%2c+6.1083984375+46.2254528822694%2c+6.1083984375+46.1950421086601%2c+6.064453125+46.1950421086601%2c+6.064453125+46.2254528822694)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_113 = 2824;
 		final String username_113 = "SIG_VIEWER";
 		final String password_113 = "SIG_VIEWER";
 
-		final String apiName_114 = "GeoServer-MultipleCustomersAPI-114";
+		final String apiName_114 = "GeoServer-MultipleCustomersAPI-Medium-114";
 		final String apiURL_114 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2558468184803%2c+6.240234375+46.2558468184803%2c+6.240234375+46.1950421086601%2c+6.15234375+46.1950421086601%2c+6.15234375+46.2558468184803)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_114 = 2532;
 		final String username_114 = "SIG_VIEWER";
 		final String password_114 = "SIG_VIEWER";
 
-		final String apiName_115 = "GeoServer-MultipleCustomersAPI-115";
+		final String apiName_115 = "GeoServer-MultipleCustomersAPI-Medium-115";
 		final String apiURL_115 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1083984375+46.2102496001872%2c+6.13037109375+46.2102496001872%2c+6.13037109375+46.1950421086601%2c+6.1083984375+46.1950421086601%2c+6.1083984375+46.2102496001872)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_115 = 2445;
 		final String username_115 = "SIG_VIEWER";
 		final String password_115 = "SIG_VIEWER";
 
-		final String apiName_116 = "GeoServer-MultipleCustomersAPI-116";
+		final String apiName_116 = "GeoServer-MultipleCustomersAPI-Medium-116";
 		final String apiURL_116 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1083984375+46.2406519550017%2c+6.13037109375+46.2406519550017%2c+6.13037109375+46.2254528822694%2c+6.1083984375+46.2254528822694%2c+6.1083984375+46.2406519550017)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_116 = 2134;
 		final String username_116 = "SIG_VIEWER";
 		final String password_116 = "SIG_VIEWER";
 
-		final String apiName_117 = "GeoServer-MultipleCustomersAPI-117";
+		final String apiName_117 = "GeoServer-MultipleCustomersAPI-Medium-117";
 		final String apiURL_117 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.064453125+46.2862239180671%2c+6.1083984375+46.2862239180671%2c+6.1083984375+46.2558468184803%2c+6.064453125+46.2558468184803%2c+6.064453125+46.2862239180671)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_117 = 2134;
 		final String username_117 = "SIG_VIEWER";
 		final String password_117 = "SIG_VIEWER";
 
-		final String apiName_118 = "GeoServer-MultipleCustomersAPI-118";
+		final String apiName_118 = "GeoServer-MultipleCustomersAPI-Medium-118";
 		final String apiURL_118 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2254528822694%2c+6.1962890625+46.2254528822694%2c+6.1962890625+46.1950421086601%2c+6.15234375+46.1950421086601%2c+6.15234375+46.2254528822694)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_118 = 2133;
 		final String username_118 = "SIG_VIEWER";
 		final String password_118 = "SIG_VIEWER";
 
-		final String apiName_119 = "GeoServer-MultipleCustomersAPI-119";
+		final String apiName_119 = "GeoServer-MultipleCustomersAPI-Medium-119";
 		final String apiURL_119 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2406519550017%2c+6.17431640625+46.2406519550017%2c+6.17431640625+46.2254528822694%2c+6.15234375+46.2254528822694%2c+6.15234375+46.2406519550017)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_119 = 2133;
 		final String username_119 = "SIG_VIEWER";
 		final String password_119 = "SIG_VIEWER";
 
-		final String apiName_120 = "GeoServer-MultipleCustomersAPI-120";
+		final String apiName_120 = "GeoServer-MultipleCustomersAPI-Medium-120";
 		final String apiURL_120 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2558468184803%2c+6.17431640625+46.2558468184803%2c+6.17431640625+46.2406519550017%2c+6.15234375+46.2406519550017%2c+6.15234375+46.2558468184803)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_120 = 1726;
 		final String username_120 = "SIG_VIEWER";
@@ -2792,121 +2792,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 		final Integer numPrimingRuns = 1;
 
 		// API calls for - 'PGE:Asset'
-		final String apiName_1 = "GeoServer-MultipleCustomersAPI-1";
+		final String apiName_1 = "GeoServer-MultipleCustomersAPI-High-1";
 		final String apiURL_1 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047119140625+37.6316347558065%2c+-122.041625976563+37.6316347558065%2c+-122.041625976563+37.6272843026801%2c+-122.047119140625+37.6272843026801%2c+-122.047119140625+37.6316347558065)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_1 = 374561;
 		final String username_1 = "PGE_VIEWER";
 		final String password_1 = "PGE_VIEWER";
 
-		final String apiName_2 = "GeoServer-MultipleCustomersAPI-2";
+		final String apiName_2 = "GeoServer-MultipleCustomersAPI-High-2";
 		final String apiURL_2 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.931762695312+36.6089136671937%2c+-121.929016113281+36.6089136671937%2c+-121.929016113281+36.6067088864182%2c+-121.931762695312+36.6067088864182%2c+-121.931762695312+36.6089136671937)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_2 = 363625;
 		final String username_2 = "PGE_VIEWER";
 		final String password_2 = "PGE_VIEWER";
 
-		final String apiName_3 = "GeoServer-MultipleCustomersAPI-3";
+		final String apiName_3 = "GeoServer-MultipleCustomersAPI-High-3";
 		final String apiURL_3 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6067088864182%2c+-121.923522949219+36.6067088864182%2c+-121.923522949219+36.6045040426166%2c+-121.92626953125+36.6045040426166%2c+-121.92626953125+36.6067088864182)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_3 = 323633;
 		final String username_3 = "PGE_VIEWER";
 		final String password_3 = "PGE_VIEWER";
 
-		final String apiName_4 = "GeoServer-MultipleCustomersAPI-4";
+		final String apiName_4 = "GeoServer-MultipleCustomersAPI-High-4";
 		final String apiURL_4 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6067088864181%2c+-121.915283203125+36.6067088864181%2c+-121.915283203125+36.5978891330702%2c+-121.92626953125+36.5978891330702%2c+-121.92626953125+36.6067088864181)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_4 = 322126;
 		final String username_4 = "PGE_VIEWER";
 		final String password_4 = "PGE_VIEWER";
 
-		final String apiName_5 = "GeoServer-MultipleCustomersAPI-5";
+		final String apiName_5 = "GeoServer-MultipleCustomersAPI-High-5";
 		final String apiURL_5 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.805419921875+36.6948509415623%2c+-121.799926757813+36.6948509415623%2c+-121.799926757813+36.6904462352348%2c+-121.805419921875+36.6904462352348%2c+-121.805419921875+36.6948509415623)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_5 = 316145;
 		final String username_5 = "PGE_VIEWER";
 		final String password_5 = "PGE_VIEWER";
 
-		final String apiName_6 = "GeoServer-MultipleCustomersAPI-6";
+		final String apiName_6 = "GeoServer-MultipleCustomersAPI-High-6";
 		final String apiURL_6 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6948509415623%2c+-121.788940429688+36.6948509415623%2c+-121.788940429688+36.6904462352348%2c+-121.79443359375+36.6904462352348%2c+-121.79443359375+36.6948509415623)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_6 = 276141;
 		final String username_6 = "PGE_VIEWER";
 		final String password_6 = "PGE_VIEWER";
 
-		final String apiName_7 = "GeoServer-MultipleCustomersAPI-7";
+		final String apiName_7 = "GeoServer-MultipleCustomersAPI-High-7";
 		final String apiURL_7 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.049865722656+37.6294595610755%2c+-122.047119140625+37.6294595610755%2c+-122.047119140625+37.6272843026801%2c+-122.049865722656+37.6272843026801%2c+-122.049865722656+37.6294595610755)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_7 = 252519;
 		final String username_7 = "PGE_VIEWER";
 		final String password_7 = "PGE_VIEWER";
 
-		final String apiName_8 = "GeoServer-MultipleCustomersAPI-8";
+		final String apiName_8 = "GeoServer-MultipleCustomersAPI-High-8";
 		final String apiURL_8 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.799926757813+36.6772306023462%2c+-121.79443359375+36.6772306023462%2c+-121.79443359375+36.6728248867866%2c+-121.799926757813+36.6728248867866%2c+-121.799926757813+36.6772306023462)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_8 = 248072;
 		final String username_8 = "PGE_VIEWER";
 		final String password_8 = "PGE_VIEWER";
 
-		final String apiName_9 = "GeoServer-MultipleCustomersAPI-9";
+		final String apiName_9 = "GeoServer-MultipleCustomersAPI-High-9";
 		final String apiURL_9 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.81640625+36.6860412765819%2c+-121.805419921875+36.6860412765819%2c+-121.805419921875+36.6772306023462%2c+-121.81640625+36.6772306023462%2c+-121.81640625+36.6860412765819)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_9 = 244368;
 		final String username_9 = "PGE_VIEWER";
 		final String password_9 = "PGE_VIEWER";
 
-		final String apiName_10 = "GeoServer-MultipleCustomersAPI-10";
+		final String apiName_10 = "GeoServer-MultipleCustomersAPI-High-10";
 		final String apiURL_10 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6089136671937%2c+-121.923522949219+36.6089136671937%2c+-121.923522949219+36.6067088864182%2c+-121.92626953125+36.6067088864182%2c+-121.92626953125+36.6089136671937)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_10 = 237391;
 		final String username_10 = "PGE_VIEWER";
 		final String password_10 = "PGE_VIEWER";
 
-		final String apiName_11 = "GeoServer-MultipleCustomersAPI-11";
+		final String apiName_11 = "GeoServer-MultipleCustomersAPI-High-11";
 		final String apiURL_11 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.929016113281+36.6067088864182%2c+-121.92626953125+36.6067088864182%2c+-121.92626953125+36.6045040426166%2c+-121.929016113281+36.6045040426166%2c+-121.929016113281+36.6067088864182)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_11 = 214709;
 		final String username_11 = "PGE_VIEWER";
 		final String password_11 = "PGE_VIEWER";
 
-		final String apiName_12 = "GeoServer-MultipleCustomersAPI-12";
+		final String apiName_12 = "GeoServer-MultipleCustomersAPI-High-12";
 		final String apiURL_12 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.10205078125+37.0990029438762%2c+-122.091064453125+37.0990029438762%2c+-122.091064453125+37.0902398030721%2c+-122.10205078125+37.0902398030721%2c+-122.10205078125+37.0990029438762)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_12 = 162106;
 		final String username_12 = "PGE_VIEWER";
 		final String password_12 = "PGE_VIEWER";
 
-		final String apiName_13 = "GeoServer-MultipleCustomersAPI-13";
+		final String apiName_13 = "GeoServer-MultipleCustomersAPI-High-13";
 		final String apiURL_13 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047119140625+37.6359849542696%2c+-122.041625976563+37.6359849542696%2c+-122.041625976563+37.6316347558064%2c+-122.047119140625+37.6316347558064%2c+-122.047119140625+37.6359849542696)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_13 = 161675;
 		final String username_13 = "PGE_VIEWER";
 		final String password_13 = "PGE_VIEWER";
 
-		final String apiName_14 = "GeoServer-MultipleCustomersAPI-14";
+		final String apiName_14 = "GeoServer-MultipleCustomersAPI-High-14";
 		final String apiURL_14 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6155276313493%2c+-121.915283203125+36.6155276313493%2c+-121.915283203125+36.6067088864182%2c+-121.92626953125+36.6067088864182%2c+-121.92626953125+36.6155276313493)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_14 = 158138;
 		final String username_14 = "PGE_VIEWER";
 		final String password_14 = "PGE_VIEWER";
 
-		final String apiName_15 = "GeoServer-MultipleCustomersAPI-15";
+		final String apiName_15 = "GeoServer-MultipleCustomersAPI-High-15";
 		final String apiURL_15 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.091064453125+37.0902398030721%2c+-122.080078125+37.0902398030721%2c+-122.080078125+37.0814756488605%2c+-122.091064453125+37.0814756488605%2c+-122.091064453125+37.0902398030721)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_15 = 141760;
 		final String username_15 = "PGE_VIEWER";
 		final String password_15 = "PGE_VIEWER";
 
-		final String apiName_16 = "GeoServer-MultipleCustomersAPI-16";
+		final String apiName_16 = "GeoServer-MultipleCustomersAPI-High-16";
 		final String apiURL_16 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.797180175781+36.6860412765819%2c+-121.79443359375+36.6860412765819%2c+-121.79443359375+36.6838387026371%2c+-121.797180175781+36.6838387026371%2c+-121.797180175781+36.6860412765819)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_16 = 125341;
 		final String username_16 = "PGE_VIEWER";
 		final String password_16 = "PGE_VIEWER";
 
-		final String apiName_17 = "GeoServer-MultipleCustomersAPI-17";
+		final String apiName_17 = "GeoServer-MultipleCustomersAPI-High-17";
 		final String apiURL_17 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.091064453125+37.0990029438762%2c+-122.080078125+37.0990029438762%2c+-122.080078125+37.0902398030721%2c+-122.091064453125+37.0902398030721%2c+-122.091064453125+37.0990029438762)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_17 = 109622;
 		final String username_17 = "PGE_VIEWER";
 		final String password_17 = "PGE_VIEWER";
 
-		final String apiName_18 = "GeoServer-MultipleCustomersAPI-18";
+		final String apiName_18 = "GeoServer-MultipleCustomersAPI-High-18";
 		final String apiURL_18 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.799926757813+36.6904462352348%2c+-121.79443359375+36.6904462352348%2c+-121.79443359375+36.6860412765819%2c+-121.799926757813+36.6860412765819%2c+-121.799926757813+36.6904462352348)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_18 = 103378;
 		final String username_18 = "PGE_VIEWER";
 		final String password_18 = "PGE_VIEWER";
 
-		final String apiName_19 = "GeoServer-MultipleCustomersAPI-19";
+		final String apiName_19 = "GeoServer-MultipleCustomersAPI-High-19";
 		final String apiURL_19 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.052612304688+37.6294595610755%2c+-122.049865722656+37.6294595610755%2c+-122.049865722656+37.6272843026801%2c+-122.052612304688+37.6272843026801%2c+-122.052612304688+37.6294595610755)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_19 = 97905;
 		final String username_19 = "PGE_VIEWER";
 		final String password_19 = "PGE_VIEWER";
 
-		final String apiName_20 = "GeoServer-MultipleCustomersAPI-20";
+		final String apiName_20 = "GeoServer-MultipleCustomersAPI-High-20";
 		final String apiURL_20 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.805419921875+36.6948509415623%2c+-121.79443359375+36.6948509415623%2c+-121.79443359375+36.6860412765819%2c+-121.805419921875+36.6860412765819%2c+-121.805419921875+36.6948509415623)))++AND+CustomerMa+IN+(%27%7b5FB149DC-0318-4E53-8E55-252C96634CE9%7d%27%2c%27%7bC37AA3CC-F41F-42B9-8C7D-3BEA58F6F495%7d%27%2c%27%7b9119E94C-B7CB-4E1D-AE92-57DD72CB41F7%7d%27%2c%27%7b69CEAB1E-77FC-47A2-A774-AE3554939C95%7d%27%2c%27%7b50987927-5724-4D0A-BD7E-BD770EBB911C%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53100%7d%27%2c%27%7b6FC8F1CF-614C-4107-8209-C40569D53193%7d%27)";
 		final Integer expectedResponseContentLength_20 = 84692;
 		final String username_20 = "PGE_VIEWER";
@@ -2914,121 +2914,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Centerpoint:Asset'
-		final String apiName_21 = "GeoServer-MultipleCustomersAPI-21";
+		final String apiName_21 = "GeoServer-MultipleCustomersAPI-High-21";
 		final String apiURL_21 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.42724609375+29.7739138699922%2c+-95.416259765625+29.7739138699922%2c+-95.416259765625+29.7643773751631%2c+-95.42724609375+29.7643773751631%2c+-95.42724609375+29.7739138699922)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_21 = 896888;
 		final String username_21 = "CNP_VIEWER";
 		final String password_21 = "CNP_VIEWER";
 
-		final String apiName_22 = "GeoServer-MultipleCustomersAPI-22";
+		final String apiName_22 = "GeoServer-MultipleCustomersAPI-High-22";
 		final String apiURL_22 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.42724609375+29.7834494568206%2c+-95.416259765625+29.7834494568206%2c+-95.416259765625+29.7739138699922%2c+-95.42724609375+29.7739138699922%2c+-95.42724609375+29.7834494568206)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_22 = 779591;
 		final String username_22 = "CNP_VIEWER";
 		final String password_22 = "CNP_VIEWER";
 
-		final String apiName_23 = "GeoServer-MultipleCustomersAPI-23";
+		final String apiName_23 = "GeoServer-MultipleCustomersAPI-High-23";
 		final String apiURL_23 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.8120507675251%2c+-95.38330078125+29.8120507675251%2c+-95.38330078125+29.8025179057645%2c+-95.394287109375+29.8025179057645%2c+-95.394287109375+29.8120507675251)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_23 = 755265;
 		final String username_23 = "CNP_VIEWER";
 		final String password_23 = "CNP_VIEWER";
 
-		final String apiName_24 = "GeoServer-MultipleCustomersAPI-24";
+		final String apiName_24 = "GeoServer-MultipleCustomersAPI-High-24";
 		final String apiURL_24 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.8025179057645%2c+-95.38330078125+29.8025179057645%2c+-95.38330078125+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_24 = 701971;
 		final String username_24 = "CNP_VIEWER";
 		final String password_24 = "CNP_VIEWER";
 
-		final String apiName_25 = "GeoServer-MultipleCustomersAPI-25";
+		final String apiName_25 = "GeoServer-MultipleCustomersAPI-High-25";
 		final String apiURL_25 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.7834494568206%2c+-95.350341796875+29.7834494568206%2c+-95.350341796875+29.7739138699922%2c+-95.361328125+29.7739138699922%2c+-95.361328125+29.7834494568206)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_25 = 701057;
 		final String username_25 = "CNP_VIEWER";
 		final String password_25 = "CNP_VIEWER";
 
-		final String apiName_26 = "GeoServer-MultipleCustomersAPI-26";
+		final String apiName_26 = "GeoServer-MultipleCustomersAPI-High-26";
 		final String apiURL_26 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.38330078125+29.7929841354705%2c+-95.372314453125+29.7929841354705%2c+-95.372314453125+29.7834494568206%2c+-95.38330078125+29.7834494568206%2c+-95.38330078125+29.7929841354705)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_26 = 694791;
 		final String username_26 = "CNP_VIEWER";
 		final String password_26 = "CNP_VIEWER";
 
-		final String apiName_27 = "GeoServer-MultipleCustomersAPI-27";
+		final String apiName_27 = "GeoServer-MultipleCustomersAPI-High-27";
 		final String apiURL_27 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+29.7739138699922%2c+-95.4052734375+29.7739138699922%2c+-95.4052734375+29.7643773751631%2c+-95.416259765625+29.7643773751631%2c+-95.416259765625+29.7739138699922)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_27 = 650919;
 		final String username_27 = "CNP_VIEWER";
 		final String password_27 = "CNP_VIEWER";
 
-		final String apiName_28 = "GeoServer-MultipleCustomersAPI-28";
+		final String apiName_28 = "GeoServer-MultipleCustomersAPI-High-28";
 		final String apiURL_28 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.7929841354705%2c+-95.38330078125+29.7929841354705%2c+-95.38330078125+29.7834494568206%2c+-95.394287109375+29.7834494568206%2c+-95.394287109375+29.7929841354705)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_28 = 643162;
 		final String username_28 = "CNP_VIEWER";
 		final String password_28 = "CNP_VIEWER";
 
-		final String apiName_29 = "GeoServer-MultipleCustomersAPI-29";
+		final String apiName_29 = "GeoServer-MultipleCustomersAPI-High-29";
 		final String apiURL_29 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+29.8025179057645%2c+-95.4052734375+29.8025179057645%2c+-95.4052734375+29.7929841354705%2c+-95.416259765625+29.7929841354705%2c+-95.416259765625+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_29 = 642778;
 		final String username_29 = "CNP_VIEWER";
 		final String password_29 = "CNP_VIEWER";
 
-		final String apiName_30 = "GeoServer-MultipleCustomersAPI-30";
+		final String apiName_30 = "GeoServer-MultipleCustomersAPI-High-30";
 		final String apiURL_30 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.821582720575%2c+-95.38330078125+29.821582720575%2c+-95.38330078125+29.8120507675251%2c+-95.394287109375+29.8120507675251%2c+-95.394287109375+29.821582720575)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_30 = 639635;
 		final String username_30 = "CNP_VIEWER";
 		final String password_30 = "CNP_VIEWER";
 
-		final String apiName_31 = "GeoServer-MultipleCustomersAPI-31";
+		final String apiName_31 = "GeoServer-MultipleCustomersAPI-High-31";
 		final String apiURL_31 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.38330078125+29.8025179057645%2c+-95.372314453125+29.8025179057645%2c+-95.372314453125+29.7929841354705%2c+-95.38330078125+29.7929841354705%2c+-95.38330078125+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_31 = 633853;
 		final String username_31 = "CNP_VIEWER";
 		final String password_31 = "CNP_VIEWER";
 
-		final String apiName_32 = "GeoServer-MultipleCustomersAPI-32";
+		final String apiName_32 = "GeoServer-MultipleCustomersAPI-High-32";
 		final String apiURL_32 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.8025179057645%2c+-95.350341796875+29.8025179057645%2c+-95.350341796875+29.7929841354705%2c+-95.361328125+29.7929841354705%2c+-95.361328125+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_32 = 614759;
 		final String username_32 = "CNP_VIEWER";
 		final String password_32 = "CNP_VIEWER";
 
-		final String apiName_33 = "GeoServer-MultipleCustomersAPI-33";
+		final String apiName_33 = "GeoServer-MultipleCustomersAPI-High-33";
 		final String apiURL_33 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.8120507675251%2c+-95.394287109375+29.8120507675251%2c+-95.394287109375+29.8025179057645%2c+-95.4052734375+29.8025179057645%2c+-95.4052734375+29.8120507675251)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_33 = 569369;
 		final String username_33 = "CNP_VIEWER";
 		final String password_33 = "CNP_VIEWER";
 
-		final String apiName_34 = "GeoServer-MultipleCustomersAPI-34";
+		final String apiName_34 = "GeoServer-MultipleCustomersAPI-High-34";
 		final String apiURL_34 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.7929841354705%2c+-95.350341796875+29.7929841354705%2c+-95.350341796875+29.7834494568206%2c+-95.361328125+29.7834494568206%2c+-95.361328125+29.7929841354705)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_34 = 557504;
 		final String username_34 = "CNP_VIEWER";
 		final String password_34 = "CNP_VIEWER";
 
-		final String apiName_35 = "GeoServer-MultipleCustomersAPI-35";
+		final String apiName_35 = "GeoServer-MultipleCustomersAPI-High-35";
 		final String apiURL_35 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.8025179057645%2c+-95.394287109375+29.8025179057645%2c+-95.394287109375+29.7929841354705%2c+-95.4052734375+29.7929841354705%2c+-95.4052734375+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_35 = 533059;
 		final String username_35 = "CNP_VIEWER";
 		final String password_35 = "CNP_VIEWER";
 
-		final String apiName_36 = "GeoServer-MultipleCustomersAPI-36";
+		final String apiName_36 = "GeoServer-MultipleCustomersAPI-High-36";
 		final String apiURL_36 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.372314453125+29.8025179057645%2c+-95.361328125+29.8025179057645%2c+-95.361328125+29.7929841354705%2c+-95.372314453125+29.7929841354705%2c+-95.372314453125+29.8025179057645)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_36 = 517853;
 		final String username_36 = "CNP_VIEWER";
 		final String password_36 = "CNP_VIEWER";
 
-		final String apiName_37 = "GeoServer-MultipleCustomersAPI-37";
+		final String apiName_37 = "GeoServer-MultipleCustomersAPI-High-37";
 		final String apiURL_37 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.8120507675251%2c+-95.350341796875+29.8120507675251%2c+-95.350341796875+29.8025179057645%2c+-95.361328125+29.8025179057645%2c+-95.361328125+29.8120507675251)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_37 = 512288;
 		final String username_37 = "CNP_VIEWER";
 		final String password_37 = "CNP_VIEWER";
 
-		final String apiName_38 = "GeoServer-MultipleCustomersAPI-38";
+		final String apiName_38 = "GeoServer-MultipleCustomersAPI-High-38";
 		final String apiURL_38 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.7834494568206%2c+-95.4052734375+29.7834494568206%2c+-95.4052734375+29.7929841354705)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_38 = 495305;
 		final String username_38 = "CNP_VIEWER";
 		final String password_38 = "CNP_VIEWER";
 
-		final String apiName_39 = "GeoServer-MultipleCustomersAPI-39";
+		final String apiName_39 = "GeoServer-MultipleCustomersAPI-High-39";
 		final String apiURL_39 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7739138699922%2c+-95.394287109375+29.7739138699922%2c+-95.394287109375+29.7643773751631%2c+-95.4052734375+29.7643773751631%2c+-95.4052734375+29.7739138699922)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_39 = 443615;
 		final String username_39 = "CNP_VIEWER";
 		final String password_39 = "CNP_VIEWER";
 
-		final String apiName_40 = "GeoServer-MultipleCustomersAPI-40";
+		final String apiName_40 = "GeoServer-MultipleCustomersAPI-High-40";
 		final String apiURL_40 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+29.7929841354705%2c+-95.4052734375+29.7929841354705%2c+-95.4052734375+29.7834494568206%2c+-95.416259765625+29.7834494568206%2c+-95.416259765625+29.7929841354705)))++AND+CustomerMa+IN+(%27%7b1B5BEFF8-2754-44A9-BE1A-0675B6BE4FD1%7d%27%2c%27%7b3869C45B-DA8F-4594-A358-301EA70BC0F1%7d%27%2c%27%7bFAB1C61C-392F-451A-BB5A-45002DD6AE25%7d%27%2c%27%7b8E20654F-CA8A-4041-9DB4-46E8AF369E93%7d%27%2c%27%7bACEF3C6D-49C3-42F0-BD2F-790963571BED%7d%27%2c%27%7b980095B1-B316-4357-9179-9A76D4C848FA%7d%27%2c%27%7b5CD4D93C-0154-4A4B-A4E8-BE69F5B80D40%7d%27%2c%27%7b9DA23FD0-9A41-46D1-9902-F204261005AB%7d%27)";
 		final Integer expectedResponseContentLength_40 = 436124;
 		final String username_40 = "CNP_VIEWER";
@@ -3036,121 +3036,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'ATMOS:Asset'
-		final String apiName_41 = "GeoServer-MultipleCustomersAPI-41";
+		final String apiName_41 = "GeoServer-MultipleCustomersAPI-High-41";
 		final String apiURL_41 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.7318408968657%2c+-96.85546875+32.7318408968657%2c+-96.85546875+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_41 = 5930997;
 		final String username_41 = "ATMOS_VIEWER";
 		final String password_41 = "ATMOS_VIEWER";
 
-		final String apiName_42 = "GeoServer-MultipleCustomersAPI-42";
+		final String apiName_42 = "GeoServer-MultipleCustomersAPI-High-42";
 		final String apiURL_42 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8057447329069%2c+-96.8115234375+32.8057447329069%2c+-96.8115234375+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_42 = 5454275;
 		final String username_42 = "ATMOS_VIEWER";
 		final String password_42 = "ATMOS_VIEWER";
 
-		final String apiName_43 = "GeoServer-MultipleCustomersAPI-43";
+		final String apiName_43 = "GeoServer-MultipleCustomersAPI-High-43";
 		final String apiURL_43 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8426736319543%2c+-96.7236328125+32.8426736319543%2c+-96.7236328125+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_43 = 5392839;
 		final String username_43 = "ATMOS_VIEWER";
 		final String password_43 = "ATMOS_VIEWER";
 
-		final String apiName_44 = "GeoServer-MultipleCustomersAPI-44";
+		final String apiName_44 = "GeoServer-MultipleCustomersAPI-High-44";
 		final String apiURL_44 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8795871730663%2c+-96.767578125+32.8795871730663%2c+-96.767578125+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8795871730663)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_44 = 5017799;
 		final String username_44 = "ATMOS_VIEWER";
 		final String password_44 = "ATMOS_VIEWER";
 
-		final String apiName_45 = "GeoServer-MultipleCustomersAPI-45";
+		final String apiName_45 = "GeoServer-MultipleCustomersAPI-High-45";
 		final String apiURL_45 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8057447329069%2c+-96.7236328125+32.8057447329069%2c+-96.7236328125+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.8057447329069)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_45 = 4508771;
 		final String username_45 = "ATMOS_VIEWER";
 		final String password_45 = "ATMOS_VIEWER";
 
-		final String apiName_46 = "GeoServer-MultipleCustomersAPI-46";
+		final String apiName_46 = "GeoServer-MultipleCustomersAPI-High-46";
 		final String apiURL_46 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8795871730663%2c+-96.8115234375+32.8795871730663%2c+-96.8115234375+32.8426736319543%2c+-96.85546875+32.8426736319543%2c+-96.85546875+32.8795871730663)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_46 = 4355005;
 		final String username_46 = "ATMOS_VIEWER";
 		final String password_46 = "ATMOS_VIEWER";
 
-		final String apiName_47 = "GeoServer-MultipleCustomersAPI-47";
+		final String apiName_47 = "GeoServer-MultipleCustomersAPI-High-47";
 		final String apiURL_47 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.7688004848817%2c+-96.85546875+32.7688004848817%2c+-96.85546875+32.7318408968657%2c+-96.8994140625+32.7318408968657%2c+-96.8994140625+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_47 = 3980814;
 		final String username_47 = "ATMOS_VIEWER";
 		final String password_47 = "ATMOS_VIEWER";
 
-		final String apiName_48 = "GeoServer-MultipleCustomersAPI-48";
+		final String apiName_48 = "GeoServer-MultipleCustomersAPI-High-48";
 		final String apiURL_48 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.7688004848817%2c+-96.7236328125+32.7688004848817%2c+-96.7236328125+32.7318408968657%2c+-96.767578125+32.7318408968657%2c+-96.767578125+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_48 = 3828207;
 		final String username_48 = "ATMOS_VIEWER";
 		final String password_48 = "ATMOS_VIEWER";
 
-		final String apiName_49 = "GeoServer-MultipleCustomersAPI-49";
+		final String apiName_49 = "GeoServer-MultipleCustomersAPI-High-49";
 		final String apiURL_49 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8057447329069%2c+-96.85546875+32.8057447329069%2c+-96.85546875+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_49 = 3731355;
 		final String username_49 = "ATMOS_VIEWER";
 		final String password_49 = "ATMOS_VIEWER";
 
-		final String apiName_50 = "GeoServer-MultipleCustomersAPI-50";
+		final String apiName_50 = "GeoServer-MultipleCustomersAPI-High-50";
 		final String apiURL_50 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.8057447329069)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_50 = 3493513;
 		final String username_50 = "ATMOS_VIEWER";
 		final String password_50 = "ATMOS_VIEWER";
 
-		final String apiName_51 = "GeoServer-MultipleCustomersAPI-51";
+		final String apiName_51 = "GeoServer-MultipleCustomersAPI-High-51";
 		final String apiURL_51 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.7318408968657%2c+-96.8115234375+32.7318408968657%2c+-96.8115234375+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_51 = 3249429;
 		final String username_51 = "ATMOS_VIEWER";
 		final String password_51 = "ATMOS_VIEWER";
 
-		final String apiName_52 = "GeoServer-MultipleCustomersAPI-52";
+		final String apiName_52 = "GeoServer-MultipleCustomersAPI-High-52";
 		final String apiURL_52 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8057447329069%2c+-96.8115234375+32.8057447329069%2c+-96.8115234375+32.7688004848817%2c+-96.85546875+32.7688004848817%2c+-96.85546875+32.8057447329069)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_52 = 3103882;
 		final String username_52 = "ATMOS_VIEWER";
 		final String password_52 = "ATMOS_VIEWER";
 
-		final String apiName_53 = "GeoServer-MultipleCustomersAPI-53";
+		final String apiName_53 = "GeoServer-MultipleCustomersAPI-High-53";
 		final String apiURL_53 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8795871730663%2c+-96.7236328125+32.8795871730663%2c+-96.7236328125+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8795871730663)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_53 = 2996005;
 		final String username_53 = "ATMOS_VIEWER";
 		final String password_53 = "ATMOS_VIEWER";
 
-		final String apiName_54 = "GeoServer-MultipleCustomersAPI-54";
+		final String apiName_54 = "GeoServer-MultipleCustomersAPI-High-54";
 		final String apiURL_54 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.8795871730663%2c+-96.85546875+32.8795871730663%2c+-96.85546875+32.8426736319543%2c+-96.8994140625+32.8426736319543%2c+-96.8994140625+32.8795871730663)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_54 = 1930206;
 		final String username_54 = "ATMOS_VIEWER";
 		final String password_54 = "ATMOS_VIEWER";
 
-		final String apiName_55 = "GeoServer-MultipleCustomersAPI-55";
+		final String apiName_55 = "GeoServer-MultipleCustomersAPI-High-55";
 		final String apiURL_55 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.8057447329069%2c+-96.85546875+32.8057447329069%2c+-96.85546875+32.7688004848817%2c+-96.8994140625+32.7688004848817%2c+-96.8994140625+32.8057447329069)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_55 = 1346153;
 		final String username_55 = "ATMOS_VIEWER";
 		final String password_55 = "ATMOS_VIEWER";
 
-		final String apiName_56 = "GeoServer-MultipleCustomersAPI-56";
+		final String apiName_56 = "GeoServer-MultipleCustomersAPI-High-56";
 		final String apiURL_56 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.8426736319543%2c+-96.85546875+32.8426736319543%2c+-96.85546875+32.8057447329069%2c+-96.8994140625+32.8057447329069%2c+-96.8994140625+32.8426736319543)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_56 = 1308910;
 		final String username_56 = "ATMOS_VIEWER";
 		final String password_56 = "ATMOS_VIEWER";
 
-		final String apiName_57 = "GeoServer-MultipleCustomersAPI-57";
+		final String apiName_57 = "GeoServer-MultipleCustomersAPI-High-57";
 		final String apiURL_57 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.712646484375+32.7780379853637%2c+-96.70166015625+32.7780379853637%2c+-96.70166015625+32.7688004848817%2c+-96.712646484375+32.7688004848817%2c+-96.712646484375+32.7780379853637)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bE933C590-6F90-4339-B6C9-7C4A0BD9416E%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_57 = 477443;
 		final String username_57 = "ATMOS_VIEWER";
 		final String password_57 = "ATMOS_VIEWER";
 
-		final String apiName_58 = "GeoServer-MultipleCustomersAPI-58";
+		final String apiName_58 = "GeoServer-MultipleCustomersAPI-High-58";
 		final String apiURL_58 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.7236328125+32.7780379853637%2c+-96.712646484375+32.7780379853637%2c+-96.712646484375+32.7688004848817%2c+-96.7236328125+32.7688004848817%2c+-96.7236328125+32.7780379853637)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bE933C590-6F90-4339-B6C9-7C4A0BD9416E%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_58 = 356242;
 		final String username_58 = "ATMOS_VIEWER";
 		final String password_58 = "ATMOS_VIEWER";
 
-		final String apiName_59 = "GeoServer-MultipleCustomersAPI-59";
+		final String apiName_59 = "GeoServer-MultipleCustomersAPI-High-59";
 		final String apiURL_59 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.800537109375+33.1375511923461%2c+-96.78955078125+33.1375511923461%2c+-96.78955078125+33.1283511916316%2c+-96.800537109375+33.1283511916316%2c+-96.800537109375+33.1375511923461)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bE933C590-6F90-4339-B6C9-7C4A0BD9416E%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_59 = 354212;
 		final String username_59 = "ATMOS_VIEWER";
 		final String password_59 = "ATMOS_VIEWER";
 
-		final String apiName_60 = "GeoServer-MultipleCustomersAPI-60";
+		final String apiName_60 = "GeoServer-MultipleCustomersAPI-High-60";
 		final String apiURL_60 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.712646484375+32.7688004848817%2c+-96.70166015625+32.7688004848817%2c+-96.70166015625+32.7595620256501%2c+-96.712646484375+32.7595620256501%2c+-96.712646484375+32.7688004848817)))++AND+CustomerMa+IN+(%27%7b12395B8D-11B4-47B7-A6B7-6B9AB3E4526D%7d%27%2c%27%7bE933C590-6F90-4339-B6C9-7C4A0BD9416E%7d%27%2c%27%7bB8E5576C-CE96-44F7-8A69-A25925EF5D1E%7d%27%2c%27%7b2A51DC8E-F343-4BFB-92D5-BDB4D34E225C%7d%27%2c%27%7b6E2B4091-6CBF-40D7-AE21-E7EB09845DA6%7d%27%2c%27%7b3E933F93-B155-4E77-837F-FFEECB8EFA5B%7d%27)";
 		final Integer expectedResponseContentLength_60 = 295732;
 		final String username_60 = "ATMOS_VIEWER";
@@ -3158,121 +3158,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Picarro:Asset'
-		final String apiName_61 = "GeoServer-MultipleCustomersAPI-61";
+		final String apiName_61 = "GeoServer-MultipleCustomersAPI-High-61";
 		final String apiURL_61 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5085772974394%2c+2.15332031249998+41.5085772974394%2c+2.15332031249998+41.5003495912893%2c+2.14233398437498+41.5003495912893%2c+2.14233398437498+41.5085772974394)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_61 = 350390;
 		final String username_61 = "PICARRO_VIEWER";
 		final String password_61 = "PICARRO_VIEWER";
 
-		final String apiName_62 = "GeoServer-MultipleCustomersAPI-62";
+		final String apiName_62 = "GeoServer-MultipleCustomersAPI-High-62";
 		final String apiURL_62 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.405073750177%2c+-121.986694335938+37.405073750177%2c+-121.986694335938+37.4007100687406%2c+-121.9921875+37.4007100687406%2c+-121.9921875+37.405073750177)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_62 = 301053;
 		final String username_62 = "PICARRO_VIEWER";
 		final String password_62 = "PICARRO_VIEWER";
 
-		final String apiName_63 = "GeoServer-MultipleCustomersAPI-63";
+		final String apiName_63 = "GeoServer-MultipleCustomersAPI-High-63";
 		final String apiURL_63 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5825796014304%2c+2.15332031249998+41.5825796014304%2c+2.15332031249998+41.5743613059891%2c+2.14233398437498+41.5743613059891%2c+2.14233398437498+41.5825796014304)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_63 = 221354;
 		final String username_63 = "PICARRO_VIEWER";
 		final String password_63 = "PICARRO_VIEWER";
 
-		final String apiName_64 = "GeoServer-MultipleCustomersAPI-64";
+		final String apiName_64 = "GeoServer-MultipleCustomersAPI-High-64";
 		final String apiURL_64 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5743613059891%2c+2.15332031249998+41.5743613059891%2c+2.15332031249998+41.5661419647684%2c+2.14233398437498+41.5661419647684%2c+2.14233398437498+41.5743613059891)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_64 = 143152;
 		final String username_64 = "PICARRO_VIEWER";
 		final String password_64 = "PICARRO_VIEWER";
 
-		final String apiName_65 = "GeoServer-MultipleCustomersAPI-65";
+		final String apiName_65 = "GeoServer-MultipleCustomersAPI-High-65";
 		final String apiURL_65 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.997680664063+37.4094371774879%2c+-121.9921875+37.4094371774879%2c+-121.9921875+37.4050737501769%2c+-121.997680664063+37.4050737501769%2c+-121.997680664063+37.4094371774879)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_65 = 136672;
 		final String username_65 = "PICARRO_VIEWER";
 		final String password_65 = "PICARRO_VIEWER";
 
-		final String apiName_66 = "GeoServer-MultipleCustomersAPI-66";
+		final String apiName_66 = "GeoServer-MultipleCustomersAPI-High-66";
 		final String apiURL_66 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((2.14233398437498+41.5003495912893%2c+2.15332031249998+41.5003495912893%2c+2.15332031249998+41.4921208396878%2c+2.14233398437498+41.4921208396878%2c+2.14233398437498+41.5003495912893)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_66 = 109408;
 		final String username_66 = "PICARRO_VIEWER";
 		final String password_66 = "PICARRO_VIEWER";
 
-		final String apiName_67 = "GeoServer-MultipleCustomersAPI-67";
+		final String apiName_67 = "GeoServer-MultipleCustomersAPI-High-67";
 		final String apiURL_67 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.983947753906+37.3985281327286%2c+-121.981201171875+37.3985281327286%2c+-121.981201171875+37.3963461331892%2c+-121.983947753906+37.3963461331892%2c+-121.983947753906+37.3985281327286)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_67 = 107221;
 		final String username_67 = "PICARRO_VIEWER";
 		final String password_67 = "PICARRO_VIEWER";
 
-		final String apiName_68 = "GeoServer-MultipleCustomersAPI-68";
+		final String apiName_68 = "GeoServer-MultipleCustomersAPI-High-68";
 		final String apiURL_68 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.4138003506629%2c+-121.981201171875+37.4138003506629%2c+-121.981201171875+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.4138003506629)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_68 = 81431;
 		final String username_68 = "PICARRO_VIEWER";
 		final String password_68 = "PICARRO_VIEWER";
 
-		final String apiName_69 = "GeoServer-MultipleCustomersAPI-69";
+		final String apiName_69 = "GeoServer-MultipleCustomersAPI-High-69";
 		final String apiURL_69 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.003173828125+37.4138003506629%2c+-121.9921875+37.4138003506629%2c+-121.9921875+37.4050737501769%2c+-122.003173828125+37.4050737501769%2c+-122.003173828125+37.4138003506629)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_69 = 69743;
 		final String username_69 = "PICARRO_VIEWER";
 		final String password_69 = "PICARRO_VIEWER";
 
-		final String apiName_70 = "GeoServer-MultipleCustomersAPI-70";
+		final String apiName_70 = "GeoServer-MultipleCustomersAPI-High-70";
 		final String apiURL_70 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.986694335938+37.3985281327286%2c+-121.983947753906+37.3985281327286%2c+-121.983947753906+37.3963461331892%2c+-121.986694335938+37.3963461331892%2c+-121.986694335938+37.3985281327286)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_70 = 61902;
 		final String username_70 = "PICARRO_VIEWER";
 		final String password_70 = "PICARRO_VIEWER";
 
-		final String apiName_71 = "GeoServer-MultipleCustomersAPI-71";
+		final String apiName_71 = "GeoServer-MultipleCustomersAPI-High-71";
 		final String apiURL_71 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.986694335938+37.3963461331892%2c+-121.983947753906+37.3963461331892%2c+-121.983947753906+37.3941640701238%2c+-121.986694335938+37.3941640701238%2c+-121.986694335938+37.3963461331892)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_71 = 61252;
 		final String username_71 = "PICARRO_VIEWER";
 		final String password_71 = "PICARRO_VIEWER";
 
-		final String apiName_72 = "GeoServer-MultipleCustomersAPI-72";
+		final String apiName_72 = "GeoServer-MultipleCustomersAPI-High-72";
 		final String apiURL_72 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.994934082031+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.4028919412238%2c+-121.994934082031+37.4028919412238%2c+-121.994934082031+37.4050737501769)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_72 = 37755;
 		final String username_72 = "PICARRO_VIEWER";
 		final String password_72 = "PICARRO_VIEWER";
 
-		final String apiName_73 = "GeoServer-MultipleCustomersAPI-73";
+		final String apiName_73 = "GeoServer-MultipleCustomersAPI-High-73";
 		final String apiURL_73 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.989440917969+37.4028919412238%2c+-121.986694335938+37.4028919412238%2c+-121.986694335938+37.4007100687406%2c+-121.989440917969+37.4007100687406%2c+-121.989440917969+37.4028919412238)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_73 = 28973;
 		final String username_73 = "PICARRO_VIEWER";
 		final String password_73 = "PICARRO_VIEWER";
 
-		final String apiName_74 = "GeoServer-MultipleCustomersAPI-74";
+		final String apiName_74 = "GeoServer-MultipleCustomersAPI-High-74";
 		final String apiURL_74 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.003173828125+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.3963461331892%2c+-122.003173828125+37.3963461331892%2c+-122.003173828125+37.4050737501769)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_74 = 22891;
 		final String username_74 = "PICARRO_VIEWER";
 		final String password_74 = "PICARRO_VIEWER";
 
-		final String apiName_75 = "GeoServer-MultipleCustomersAPI-75";
+		final String apiName_75 = "GeoServer-MultipleCustomersAPI-High-75";
 		final String apiURL_75 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.994934082031+37.4028919412238%2c+-121.9921875+37.4028919412238%2c+-121.9921875+37.4007100687406%2c+-121.994934082031+37.4007100687406%2c+-121.994934082031+37.4028919412238)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_75 = 18743;
 		final String username_75 = "PICARRO_VIEWER";
 		final String password_75 = "PICARRO_VIEWER";
 
-		final String apiName_76 = "GeoServer-MultipleCustomersAPI-76";
+		final String apiName_76 = "GeoServer-MultipleCustomersAPI-High-76";
 		final String apiURL_76 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.989440917969+37.3985281327286%2c+-121.986694335938+37.3985281327286%2c+-121.986694335938+37.3963461331892%2c+-121.989440917969+37.3963461331892%2c+-121.989440917969+37.3985281327286)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_76 = 16992;
 		final String username_76 = "PICARRO_VIEWER";
 		final String password_76 = "PICARRO_VIEWER";
 
-		final String apiName_77 = "GeoServer-MultipleCustomersAPI-77";
+		final String apiName_77 = "GeoServer-MultipleCustomersAPI-High-77";
 		final String apiURL_77 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.4050737501769%2c+-121.989440917969+37.4050737501769%2c+-121.989440917969+37.4028919412238%2c+-121.9921875+37.4028919412238%2c+-121.9921875+37.4050737501769)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_77 = 16275;
 		final String username_77 = "PICARRO_VIEWER";
 		final String password_77 = "PICARRO_VIEWER";
 
-		final String apiName_78 = "GeoServer-MultipleCustomersAPI-78";
+		final String apiName_78 = "GeoServer-MultipleCustomersAPI-High-78";
 		final String apiURL_78 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.986694335938+37.405073750177%2c+-121.981201171875+37.405073750177%2c+-121.981201171875+37.4007100687406%2c+-121.986694335938+37.4007100687406%2c+-121.986694335938+37.405073750177)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_78 = 13909;
 		final String username_78 = "PICARRO_VIEWER";
 		final String password_78 = "PICARRO_VIEWER";
 
-		final String apiName_79 = "GeoServer-MultipleCustomersAPI-79";
+		final String apiName_79 = "GeoServer-MultipleCustomersAPI-High-79";
 		final String apiURL_79 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.4050737501769%2c+-121.981201171875+37.4050737501769%2c+-121.981201171875+37.3963461331892%2c+-121.9921875+37.3963461331892%2c+-121.9921875+37.4050737501769)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_79 = 13641;
 		final String username_79 = "PICARRO_VIEWER";
 		final String password_79 = "PICARRO_VIEWER";
 
-		final String apiName_80 = "GeoServer-MultipleCustomersAPI-80";
+		final String apiName_80 = "GeoServer-MultipleCustomersAPI-High-80";
 		final String apiURL_80 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.003173828125+37.3963461331893%2c+-121.9921875+37.3963461331893%2c+-121.9921875+37.3876174997839%2c+-122.003173828125+37.3876174997839%2c+-122.003173828125+37.3963461331893)))++AND+CustomerMa+IN+(%27%7bD08FC87F-F979-4131-92A9-3D82F37F4BBA%7d%27%2c%27%7bF3955E82-DD13-4842-84F7-502BCDA6B57A%7d%27%2c%27%7b44353E68-0694-4F05-85CB-84D753EA278C%7d%27%2c%27%7b96CAF1F5-D5C5-461D-9CE3-D210C20A1BB0%7d%27%2c%27%7bAD701312-C470-482A-BE45-EF37770E2CE6%7d%27%2c%27%7bF14735DE-6C9B-4423-8533-F243A7FE4E90%7d%27)";
 		final Integer expectedResponseContentLength_80 = 13160;
 		final String username_80 = "PICARRO_VIEWER";
@@ -3280,121 +3280,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SouthwestGas:Asset'
-		final String apiName_81 = "GeoServer-MultipleCustomersAPI-81";
+		final String apiName_81 = "GeoServer-MultipleCustomersAPI-High-81";
 		final String apiURL_81 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.257568359375+36.0046734867019%2c+-115.24658203125+36.0046734867019%2c+-115.24658203125+35.9957853864203%2c+-115.257568359375+35.9957853864203%2c+-115.257568359375+36.0046734867019)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_81 = 797634;
 		final String username_81 = "SWG_VIEWER";
 		final String password_81 = "SWG_VIEWER";
 
-		final String apiName_82 = "GeoServer-MultipleCustomersAPI-82";
+		final String apiName_82 = "GeoServer-MultipleCustomersAPI-High-82";
 		final String apiURL_82 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.301513671875+36.0135605851815%2c+-115.29052734375+36.0135605851815%2c+-115.29052734375+36.0046734867019%2c+-115.301513671875+36.0046734867019%2c+-115.301513671875+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_82 = 728180;
 		final String username_82 = "SWG_VIEWER";
 		final String password_82 = "SWG_VIEWER";
 
-		final String apiName_83 = "GeoServer-MultipleCustomersAPI-83";
+		final String apiName_83 = "GeoServer-MultipleCustomersAPI-High-83";
 		final String apiURL_83 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.257568359375+35.9957853864203%2c+-115.24658203125+35.9957853864203%2c+-115.24658203125+35.9868962844379%2c+-115.257568359375+35.9868962844379%2c+-115.257568359375+35.9957853864203)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_83 = 701823;
 		final String username_83 = "SWG_VIEWER";
 		final String password_83 = "SWG_VIEWER";
 
-		final String apiName_84 = "GeoServer-MultipleCustomersAPI-84";
+		final String apiName_84 = "GeoServer-MultipleCustomersAPI-High-84";
 		final String apiURL_84 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.29052734375+36.0135605851815%2c+-115.279541015625+36.0135605851815%2c+-115.279541015625+36.0046734867019%2c+-115.29052734375+36.0046734867019%2c+-115.29052734375+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_84 = 629208;
 		final String username_84 = "SWG_VIEWER";
 		final String password_84 = "SWG_VIEWER";
 
-		final String apiName_85 = "GeoServer-MultipleCustomersAPI-85";
+		final String apiName_85 = "GeoServer-MultipleCustomersAPI-High-85";
 		final String apiURL_85 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.279541015625+36.0135605851815%2c+-115.2685546875+36.0135605851815%2c+-115.2685546875+36.0046734867019%2c+-115.279541015625+36.0046734867019%2c+-115.279541015625+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_85 = 621232;
 		final String username_85 = "SWG_VIEWER";
 		final String password_85 = "SWG_VIEWER";
 
-		final String apiName_86 = "GeoServer-MultipleCustomersAPI-86";
+		final String apiName_86 = "GeoServer-MultipleCustomersAPI-High-86";
 		final String apiURL_86 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.0135605851815%2c+-115.257568359375+36.0135605851815%2c+-115.257568359375+36.0046734867019%2c+-115.2685546875+36.0046734867019%2c+-115.2685546875+36.0135605851815)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_86 = 598850;
 		final String username_86 = "SWG_VIEWER";
 		final String password_86 = "SWG_VIEWER";
 
-		final String apiName_87 = "GeoServer-MultipleCustomersAPI-87";
+		final String apiName_87 = "GeoServer-MultipleCustomersAPI-High-87";
 		final String apiURL_87 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1733569352216%2c+-115.235595703125+36.1733569352216%2c+-115.235595703125+36.1644878863206%2c+-115.24658203125+36.1644878863206%2c+-115.24658203125+36.1733569352216)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_87 = 538432;
 		final String username_87 = "SWG_VIEWER";
 		final String password_87 = "SWG_VIEWER";
 
-		final String apiName_88 = "GeoServer-MultipleCustomersAPI-88";
+		final String apiName_88 = "GeoServer-MultipleCustomersAPI-High-88";
 		final String apiURL_88 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.07080078125+36.057981047025%2c+-115.059814453125+36.057981047025%2c+-115.059814453125+36.0490989590656%2c+-115.07080078125+36.0490989590656%2c+-115.07080078125+36.057981047025)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_88 = 532564;
 		final String username_88 = "SWG_VIEWER";
 		final String password_88 = "SWG_VIEWER";
 
-		final String apiName_89 = "GeoServer-MultipleCustomersAPI-89";
+		final String apiName_89 = "GeoServer-MultipleCustomersAPI-High-89";
 		final String apiURL_89 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.257568359375+36.1733569352216%2c+-115.24658203125+36.1733569352216%2c+-115.24658203125+36.1644878863206%2c+-115.257568359375+36.1644878863206%2c+-115.257568359375+36.1733569352216)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_89 = 506395;
 		final String username_89 = "SWG_VIEWER";
 		final String password_89 = "SWG_VIEWER";
 
-		final String apiName_90 = "GeoServer-MultipleCustomersAPI-90";
+		final String apiName_90 = "GeoServer-MultipleCustomersAPI-High-90";
 		final String apiURL_90 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.1733569352216%2c+-115.257568359375+36.1733569352216%2c+-115.257568359375+36.1644878863206%2c+-115.2685546875+36.1644878863206%2c+-115.2685546875+36.1733569352216)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_90 = 500165;
 		final String username_90 = "SWG_VIEWER";
 		final String password_90 = "SWG_VIEWER";
 
-		final String apiName_91 = "GeoServer-MultipleCustomersAPI-91";
+		final String apiName_91 = "GeoServer-MultipleCustomersAPI-High-91";
 		final String apiURL_91 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.048828125+36.0490989590656%2c+-115.037841796875+36.0490989590656%2c+-115.037841796875+36.0402158688011%2c+-115.048828125+36.0402158688011%2c+-115.048828125+36.0490989590656)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_91 = 469521;
 		final String username_91 = "SWG_VIEWER";
 		final String password_91 = "SWG_VIEWER";
 
-		final String apiName_92 = "GeoServer-MultipleCustomersAPI-92";
+		final String apiName_92 = "GeoServer-MultipleCustomersAPI-High-92";
 		final String apiURL_92 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.1644878863206%2c+-115.257568359375+36.1644878863206%2c+-115.257568359375+36.1556178338185%2c+-115.2685546875+36.1556178338185%2c+-115.2685546875+36.1644878863206)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_92 = 467187;
 		final String username_92 = "SWG_VIEWER";
 		final String password_92 = "SWG_VIEWER";
 
-		final String apiName_93 = "GeoServer-MultipleCustomersAPI-93";
+		final String apiName_93 = "GeoServer-MultipleCustomersAPI-High-93";
 		final String apiURL_93 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.235595703125+36.1290016556965%2c+-115.224609375+36.1290016556965%2c+-115.224609375+36.1201275897814%2c+-115.235595703125+36.1201275897814%2c+-115.235595703125+36.1290016556965)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_93 = 458248;
 		final String username_93 = "SWG_VIEWER";
 		final String password_93 = "SWG_VIEWER";
 
-		final String apiName_94 = "GeoServer-MultipleCustomersAPI-94";
+		final String apiName_94 = "GeoServer-MultipleCustomersAPI-High-94";
 		final String apiURL_94 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.07080078125+36.0490989590656%2c+-115.059814453125+36.0490989590656%2c+-115.059814453125+36.0402158688011%2c+-115.07080078125+36.0402158688011%2c+-115.07080078125+36.0490989590656)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_94 = 436594;
 		final String username_94 = "SWG_VIEWER";
 		final String password_94 = "SWG_VIEWER";
 
-		final String apiName_95 = "GeoServer-MultipleCustomersAPI-95";
+		final String apiName_95 = "GeoServer-MultipleCustomersAPI-High-95";
 		final String apiURL_95 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.059814453125+36.057981047025%2c+-115.048828125+36.057981047025%2c+-115.048828125+36.0490989590656%2c+-115.059814453125+36.0490989590656%2c+-115.059814453125+36.057981047025)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_95 = 408203;
 		final String username_95 = "SWG_VIEWER";
 		final String password_95 = "SWG_VIEWER";
 
-		final String apiName_96 = "GeoServer-MultipleCustomersAPI-96";
+		final String apiName_96 = "GeoServer-MultipleCustomersAPI-High-96";
 		final String apiURL_96 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.059814453125+36.075742215627%2c+-115.048828125+36.075742215627%2c+-115.048828125+36.0668621325789%2c+-115.059814453125+36.0668621325789%2c+-115.059814453125+36.075742215627)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_96 = 404877;
 		final String username_96 = "SWG_VIEWER";
 		final String password_96 = "SWG_VIEWER";
 
-		final String apiName_97 = "GeoServer-MultipleCustomersAPI-97";
+		final String apiName_97 = "GeoServer-MultipleCustomersAPI-High-97";
 		final String apiURL_97 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.07080078125+36.0668621325789%2c+-115.059814453125+36.0668621325789%2c+-115.059814453125+36.057981047025%2c+-115.07080078125+36.057981047025%2c+-115.07080078125+36.0668621325789)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_97 = 400953;
 		final String username_97 = "SWG_VIEWER";
 		final String password_97 = "SWG_VIEWER";
 
-		final String apiName_98 = "GeoServer-MultipleCustomersAPI-98";
+		final String apiName_98 = "GeoServer-MultipleCustomersAPI-High-98";
 		final String apiURL_98 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.037841796875+36.0846212960693%2c+-115.02685546875+36.0846212960693%2c+-115.02685546875+36.075742215627%2c+-115.037841796875+36.075742215627%2c+-115.037841796875+36.0846212960693)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_98 = 396435;
 		final String username_98 = "SWG_VIEWER";
 		final String password_98 = "SWG_VIEWER";
 
-		final String apiName_99 = "GeoServer-MultipleCustomersAPI-99";
+		final String apiName_99 = "GeoServer-MultipleCustomersAPI-High-99";
 		final String apiURL_99 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1290016556965%2c+-115.235595703125+36.1290016556965%2c+-115.235595703125+36.1201275897814%2c+-115.24658203125+36.1201275897814%2c+-115.24658203125+36.1290016556965)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_99 = 393676;
 		final String username_99 = "SWG_VIEWER";
 		final String password_99 = "SWG_VIEWER";
 
-		final String apiName_100 = "GeoServer-MultipleCustomersAPI-100";
+		final String apiName_100 = "GeoServer-MultipleCustomersAPI-High-100";
 		final String apiURL_100 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.257568359375+36.1644878863206%2c+-115.24658203125+36.1644878863206%2c+-115.24658203125+36.1556178338185%2c+-115.257568359375+36.1556178338185%2c+-115.257568359375+36.1644878863206)))++AND+CustomerMa+IN+(%27%7b2D642799-3843-4E43-ACA3-00547C7BFD5D%7d%27%2c%27%7b8DAFFA4D-E925-41E4-B7F0-3AC627434A28%7d%27%2c%27%7b3384FDCC-61E9-4F6E-BDB9-486B93E3A8E6%7d%27%2c%27%7b903479F8-81FB-4982-9A0E-51C36B45492B%7d%27%2c%27%7bC28DE15C-4201-4FA5-91F0-9956445B90D1%7d%27%2c%27%7bB8A143A4-F8EC-479D-BF1E-BA5CAF6163AD%7d%27%2c%27%7b9CB58D57-8444-402A-BF27-BD54B0A7D539%7d%27%2c%27%7b6DE815CC-0203-4EF8-9D59-C1D97BF026E6%7d%27%2c%27%7bD7146F4E-06B8-4F00-85B4-D58AEF8EA6D1%7d%27%2c%27%7b3320FE34-89DD-48F1-9FA5-E7722B289EFD%7d%27)";
 		final Integer expectedResponseContentLength_100 = 377155;
 		final String username_100 = "SWG_VIEWER";
@@ -3402,121 +3402,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SIG:Asset'
-		final String apiName_101 = "GeoServer-MultipleCustomersAPI-101";
+		final String apiName_101 = "GeoServer-MultipleCustomersAPI-High-101";
 		final String apiURL_101 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((6.26220703125001+46.2634426717799%2c+6.27319335937501+46.2634426717799%2c+6.27319335937501+46.2558468184803%2c+6.26220703125001+46.2558468184803%2c+6.26220703125001+46.2634426717799)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_101 = 61905;
 		final String username_101 = "SIG_VIEWER";
 		final String password_101 = "SIG_VIEWER";
 
-		final String apiName_102 = "GeoServer-MultipleCustomersAPI-102";
+		final String apiName_102 = "GeoServer-MultipleCustomersAPI-High-102";
 		final String apiURL_102 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.2981567382813+29.9025676073023%2c+-95.29541015625+29.9025676073023%2c+-95.29541015625+29.9001866371774%2c+-95.2981567382813+29.9001866371774%2c+-95.2981567382813+29.9025676073023)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_102 = 61;
 		final String username_102 = "SIG_VIEWER";
 		final String password_102 = "SIG_VIEWER";
 
-		final String apiName_103 = "GeoServer-MultipleCustomersAPI-103";
+		final String apiName_103 = "GeoServer-MultipleCustomersAPI-High-103";
 		final String apiURL_103 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.29541015625+29.904948520528%2c+-95.2926635742188+29.904948520528%2c+-95.2926635742188+29.9025676073023%2c+-95.29541015625+29.9025676073023%2c+-95.29541015625+29.904948520528)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_103 = 61;
 		final String username_103 = "SIG_VIEWER";
 		final String password_103 = "SIG_VIEWER";
 
-		final String apiName_104 = "GeoServer-MultipleCustomersAPI-104";
+		final String apiName_104 = "GeoServer-MultipleCustomersAPI-High-104";
 		final String apiURL_104 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.29541015625+29.9025676073023%2c+-95.2926635742188+29.9025676073023%2c+-95.2926635742188+29.9001866371774%2c+-95.29541015625+29.9001866371774%2c+-95.29541015625+29.9025676073023)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_104 = 61;
 		final String username_104 = "SIG_VIEWER";
 		final String password_104 = "SIG_VIEWER";
 
-		final String apiName_105 = "GeoServer-MultipleCustomersAPI-105";
+		final String apiName_105 = "GeoServer-MultipleCustomersAPI-High-105";
 		final String apiURL_105 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.1416015625+29.878755346038%2c+-95.1361083984375+29.878755346038%2c+-95.1361083984375+29.8739922112357%2c+-95.1416015625+29.8739922112357%2c+-95.1416015625+29.878755346038)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_105 = 61;
 		final String username_105 = "SIG_VIEWER";
 		final String password_105 = "SIG_VIEWER";
 
-		final String apiName_106 = "GeoServer-MultipleCustomersAPI-106";
+		final String apiName_106 = "GeoServer-MultipleCustomersAPI-High-106";
 		final String apiURL_106 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.1470947265625+29.8739922112357%2c+-95.1416015625+29.8739922112357%2c+-95.1416015625+29.8692288489683%2c+-95.1470947265625+29.8692288489683%2c+-95.1470947265625+29.8739922112357)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_106 = 61;
 		final String username_106 = "SIG_VIEWER";
 		final String password_106 = "SIG_VIEWER";
 
-		final String apiName_107 = "GeoServer-MultipleCustomersAPI-107";
+		final String apiName_107 = "GeoServer-MultipleCustomersAPI-High-107";
 		final String apiURL_107 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.1470947265625+29.878755346038%2c+-95.1416015625+29.878755346038%2c+-95.1416015625+29.8739922112357%2c+-95.1470947265625+29.8739922112357%2c+-95.1470947265625+29.878755346038)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_107 = 61;
 		final String username_107 = "SIG_VIEWER";
 		final String password_107 = "SIG_VIEWER";
 
-		final String apiName_108 = "GeoServer-MultipleCustomersAPI-108";
+		final String apiName_108 = "GeoServer-MultipleCustomersAPI-High-108";
 		final String apiURL_108 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.306396484375+29.8597014421267%2c+-95.3009033203125+29.8597014421267%2c+-95.3009033203125+29.8549373975967%2c+-95.306396484375+29.8549373975967%2c+-95.306396484375+29.8597014421267)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_108 = 61;
 		final String username_108 = "SIG_VIEWER";
 		final String password_108 = "SIG_VIEWER";
 
-		final String apiName_109 = "GeoServer-MultipleCustomersAPI-109";
+		final String apiName_109 = "GeoServer-MultipleCustomersAPI-High-109";
 		final String apiURL_109 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.306396484375+29.864465259258%2c+-95.3009033203125+29.864465259258%2c+-95.3009033203125+29.8597014421267%2c+-95.306396484375+29.8597014421267%2c+-95.306396484375+29.864465259258)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_109 = 61;
 		final String username_109 = "SIG_VIEWER";
 		final String password_109 = "SIG_VIEWER";
 
-		final String apiName_110 = "GeoServer-MultipleCustomersAPI-110";
+		final String apiName_110 = "GeoServer-MultipleCustomersAPI-High-110";
 		final String apiURL_110 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.3118896484375+29.8597014421267%2c+-95.306396484375+29.8597014421267%2c+-95.306396484375+29.8549373975967%2c+-95.3118896484375+29.8549373975967%2c+-95.3118896484375+29.8597014421267)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_110 = 61;
 		final String username_110 = "SIG_VIEWER";
 		final String password_110 = "SIG_VIEWER";
 
-		final String apiName_111 = "GeoServer-MultipleCustomersAPI-111";
+		final String apiName_111 = "GeoServer-MultipleCustomersAPI-High-111";
 		final String apiURL_111 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.2981567382813+29.904948520528%2c+-95.29541015625+29.904948520528%2c+-95.29541015625+29.9025676073023%2c+-95.2981567382813+29.9025676073023%2c+-95.2981567382813+29.904948520528)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_111 = 61;
 		final String username_111 = "SIG_VIEWER";
 		final String password_111 = "SIG_VIEWER";
 
-		final String apiName_112 = "GeoServer-MultipleCustomersAPI-112";
+		final String apiName_112 = "GeoServer-MultipleCustomersAPI-High-112";
 		final String apiURL_112 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.3009033203125+29.9025676073023%2c+-95.2981567382813+29.9025676073023%2c+-95.2981567382813+29.9001866371774%2c+-95.3009033203125+29.9001866371774%2c+-95.3009033203125+29.9025676073023)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_112 = 61;
 		final String username_112 = "SIG_VIEWER";
 		final String password_112 = "SIG_VIEWER";
 
-		final String apiName_113 = "GeoServer-MultipleCustomersAPI-113";
+		final String apiName_113 = "GeoServer-MultipleCustomersAPI-High-113";
 		final String apiURL_113 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.3009033203125+29.904948520528%2c+-95.2981567382813+29.904948520528%2c+-95.2981567382813+29.9025676073023%2c+-95.3009033203125+29.9025676073023%2c+-95.3009033203125+29.904948520528)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_113 = 61;
 		final String username_113 = "SIG_VIEWER";
 		final String password_113 = "SIG_VIEWER";
 
-		final String apiName_114 = "GeoServer-MultipleCustomersAPI-114";
+		final String apiName_114 = "GeoServer-MultipleCustomersAPI-High-114";
 		final String apiURL_114 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.1416015625+29.8739922112357%2c+-95.1361083984375+29.8739922112357%2c+-95.1361083984375+29.8692288489683%2c+-95.1416015625+29.8692288489683%2c+-95.1416015625+29.8739922112357)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_114 = 61;
 		final String username_114 = "SIG_VIEWER";
 		final String password_114 = "SIG_VIEWER";
 
-		final String apiName_115 = "GeoServer-MultipleCustomersAPI-115";
+		final String apiName_115 = "GeoServer-MultipleCustomersAPI-High-115";
 		final String apiURL_115 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((6.26220703125001+46.2558468184803%2c+6.27319335937501+46.2558468184803%2c+6.27319335937501+46.2482499128917%2c+6.26220703125001+46.2482499128917%2c+6.26220703125001+46.2558468184803)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_115 = 61;
 		final String username_115 = "SIG_VIEWER";
 		final String password_115 = "SIG_VIEWER";
 
-		final String apiName_116 = "GeoServer-MultipleCustomersAPI-116";
+		final String apiName_116 = "GeoServer-MultipleCustomersAPI-High-116";
 		final String apiURL_116 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.828125+40.9218144123785%2c+-73.817138671875+40.9218144123785%2c+-73.817138671875+40.9135125761276%2c+-73.828125+40.9135125761276%2c+-73.828125+40.9218144123785)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_116 = 61;
 		final String username_116 = "SIG_VIEWER";
 		final String password_116 = "SIG_VIEWER";
 
-		final String apiName_117 = "GeoServer-MultipleCustomersAPI-117";
+		final String apiName_117 = "GeoServer-MultipleCustomersAPI-High-117";
 		final String apiURL_117 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.828125+40.9301152059831%2c+-73.817138671875+40.9301152059831%2c+-73.817138671875+40.9218144123785%2c+-73.828125+40.9218144123785%2c+-73.828125+40.9301152059831)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_117 = 61;
 		final String username_117 = "SIG_VIEWER";
 		final String password_117 = "SIG_VIEWER";
 
-		final String apiName_118 = "GeoServer-MultipleCustomersAPI-118";
+		final String apiName_118 = "GeoServer-MultipleCustomersAPI-High-118";
 		final String apiURL_118 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.580322265625+29.4969875965358%2c+-98.5693359375+29.4969875965358%2c+-98.5693359375+29.4874248474848%2c+-98.580322265625+29.4874248474848%2c+-98.580322265625+29.4969875965358)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_118 = 61;
 		final String username_118 = "SIG_VIEWER";
 		final String password_118 = "SIG_VIEWER";
 
-		final String apiName_119 = "GeoServer-MultipleCustomersAPI-119";
+		final String apiName_119 = "GeoServer-MultipleCustomersAPI-High-119";
 		final String apiURL_119 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((6.25122070312499+46.2634426717799%2c+6.26220703124999+46.2634426717799%2c+6.26220703124999+46.2558468184803%2c+6.25122070312499+46.2558468184803%2c+6.25122070312499+46.2634426717799)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_119 = 61;
 		final String username_119 = "SIG_VIEWER";
 		final String password_119 = "SIG_VIEWER";
 
-		final String apiName_120 = "GeoServer-MultipleCustomersAPI-120";
+		final String apiName_120 = "GeoServer-MultipleCustomersAPI-High-120";
 		final String apiURL_120 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((6.26220703125001+46.2482499128917%2c+6.27319335937501+46.2482499128917%2c+6.27319335937501+46.2406519550017%2c+6.26220703125001+46.2406519550017%2c+6.26220703125001+46.2482499128917)))++AND+CustomerMa+IN+(%27%7b98D2DB82-C6E6-44DC-BE06-19452537296B%7d%27%2c%27%7b97630519-007E-4565-81CD-1B948B2CC0F9%7d%27%2c%27%7b1FA0EFAE-2D5D-4529-84A0-250D317C156B%7d%27%2c%27%7b5D05B846-FC96-4339-A445-255997B8DBB7%7d%27%2c%27%7b3FB027D9-04D2-4CD8-BBB4-7442D246E57B%7d%27%2c%27%7bF5A6F39E-39D3-4DDA-90C8-8754A38BE368%7d%27%2c%27%7b98E8CA90-C0C9-4758-80C0-CD7D3A2E35E3%7d%27%2c%27%7bC2DABB50-A068-4278-AAAB-D535D414A2BE%7d%27)";
 		final Integer expectedResponseContentLength_120 = 61;
 		final String username_120 = "SIG_VIEWER";
@@ -3524,121 +3524,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'CONED:Asset'
-		final String apiName_121 = "GeoServer-MultipleCustomersAPI-121";
+		final String apiName_121 = "GeoServer-MultipleCustomersAPI-High-121";
 		final String apiURL_121 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8638305664062+40.8138092305696%2c+-73.861083984375+40.8138092305696%2c+-73.861083984375+40.8117304815936%2c+-73.8638305664062+40.8117304815936%2c+-73.8638305664062+40.8138092305696)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_121 = 854047;
 		final String username_121 = "CONED_VIEWER";
 		final String password_121 = "CONED_VIEWER";
 
-		final String apiName_122 = "GeoServer-MultipleCustomersAPI-122";
+		final String apiName_122 = "GeoServer-MultipleCustomersAPI-High-122";
 		final String apiURL_122 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8638305664062+40.8117304815936%2c+-73.861083984375+40.8117304815936%2c+-73.861083984375+40.8096516674885%2c+-73.8638305664062+40.8096516674885%2c+-73.8638305664062+40.8117304815936)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_122 = 672631;
 		final String username_122 = "CONED_VIEWER";
 		final String password_122 = "CONED_VIEWER";
 
-		final String apiName_123 = "GeoServer-MultipleCustomersAPI-123";
+		final String apiName_123 = "GeoServer-MultipleCustomersAPI-High-123";
 		final String apiURL_123 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.9135125761276%2c+-73.85009765625+40.9135125761276%2c+-73.85009765625+40.9052096972736%2c+-73.861083984375+40.9052096972736%2c+-73.861083984375+40.9135125761276)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_123 = 668408;
 		final String username_123 = "CONED_VIEWER";
 		final String password_123 = "CONED_VIEWER";
 
-		final String apiName_124 = "GeoServer-MultipleCustomersAPI-124";
+		final String apiName_124 = "GeoServer-MultipleCustomersAPI-High-124";
 		final String apiURL_124 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.8221235751695%2c+-73.85009765625+40.8221235751695%2c+-73.85009765625+40.8138092305696%2c+-73.861083984375+40.8138092305696%2c+-73.861083984375+40.8221235751695)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_124 = 665522;
 		final String username_124 = "CONED_VIEWER";
 		final String password_124 = "CONED_VIEWER";
 
-		final String apiName_125 = "GeoServer-MultipleCustomersAPI-125";
+		final String apiName_125 = "GeoServer-MultipleCustomersAPI-High-125";
 		final String apiURL_125 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8775634765625+40.8221235751695%2c+-73.8720703125+40.8221235751695%2c+-73.8720703125+40.8179665331318%2c+-73.8775634765625+40.8179665331318%2c+-73.8775634765625+40.8221235751695)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_125 = 647316;
 		final String username_125 = "CONED_VIEWER";
 		final String password_125 = "CONED_VIEWER";
 
-		final String apiName_126 = "GeoServer-MultipleCustomersAPI-126";
+		final String apiName_126 = "GeoServer-MultipleCustomersAPI-High-126";
 		final String apiURL_126 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8665771484375+40.8117304815936%2c+-73.8638305664062+40.8117304815936%2c+-73.8638305664062+40.8096516674885%2c+-73.8665771484375+40.8096516674885%2c+-73.8665771484375+40.8117304815936)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_126 = 575665;
 		final String username_126 = "CONED_VIEWER";
 		final String password_126 = "CONED_VIEWER";
 
-		final String apiName_127 = "GeoServer-MultipleCustomersAPI-127";
+		final String apiName_127 = "GeoServer-MultipleCustomersAPI-High-127";
 		final String apiURL_127 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.85009765625+40.9135125761276%2c+-73.839111328125+40.9135125761276%2c+-73.839111328125+40.9052096972736%2c+-73.85009765625+40.9052096972736%2c+-73.85009765625+40.9135125761276)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_127 = 542095;
 		final String username_127 = "CONED_VIEWER";
 		final String password_127 = "CONED_VIEWER";
 
-		final String apiName_128 = "GeoServer-MultipleCustomersAPI-128";
+		final String apiName_128 = "GeoServer-MultipleCustomersAPI-High-128";
 		final String apiURL_128 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.8470603560712%2c+-73.85009765625+40.8470603560712%2c+-73.85009765625+40.8387491379646%2c+-73.861083984375+40.8387491379646%2c+-73.861083984375+40.8470603560712)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_128 = 535649;
 		final String username_128 = "CONED_VIEWER";
 		final String password_128 = "CONED_VIEWER";
 
-		final String apiName_129 = "GeoServer-MultipleCustomersAPI-129";
+		final String apiName_129 = "GeoServer-MultipleCustomersAPI-High-129";
 		final String apiURL_129 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.9218144123785%2c+-73.85009765625+40.9218144123785%2c+-73.85009765625+40.9135125761276%2c+-73.861083984375+40.9135125761276%2c+-73.861083984375+40.9218144123785)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_129 = 520842;
 		final String username_129 = "CONED_VIEWER";
 		final String password_129 = "CONED_VIEWER";
 
-		final String apiName_130 = "GeoServer-MultipleCustomersAPI-130";
+		final String apiName_130 = "GeoServer-MultipleCustomersAPI-High-130";
 		final String apiURL_130 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.85009765625+40.9301152059831%2c+-73.839111328125+40.9301152059831%2c+-73.839111328125+40.9218144123785%2c+-73.85009765625+40.9218144123785%2c+-73.85009765625+40.9301152059831)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_130 = 488284;
 		final String username_130 = "CONED_VIEWER";
 		final String password_130 = "CONED_VIEWER";
 
-		final String apiName_131 = "GeoServer-MultipleCustomersAPI-131";
+		final String apiName_131 = "GeoServer-MultipleCustomersAPI-High-131";
 		final String apiURL_131 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8720703125+40.8553705319249%2c+-73.861083984375+40.8553705319249%2c+-73.861083984375+40.8470603560712%2c+-73.8720703125+40.8470603560712%2c+-73.8720703125+40.8553705319249)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_131 = 482903;
 		final String username_131 = "CONED_VIEWER";
 		final String password_131 = "CONED_VIEWER";
 
-		final String apiName_132 = "GeoServer-MultipleCustomersAPI-132";
+		final String apiName_132 = "GeoServer-MultipleCustomersAPI-High-132";
 		final String apiURL_132 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.85009765625+40.9218144123785%2c+-73.839111328125+40.9218144123785%2c+-73.839111328125+40.9135125761276%2c+-73.85009765625+40.9135125761276%2c+-73.85009765625+40.9218144123785)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_132 = 462087;
 		final String username_132 = "CONED_VIEWER";
 		final String password_132 = "CONED_VIEWER";
 
-		final String apiName_133 = "GeoServer-MultipleCustomersAPI-133";
+		final String apiName_133 = "GeoServer-MultipleCustomersAPI-High-133";
 		final String apiURL_133 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8638305664062+40.8158879144159%2c+-73.861083984375+40.8158879144159%2c+-73.861083984375+40.8138092305696%2c+-73.8638305664062+40.8138092305696%2c+-73.8638305664062+40.8158879144159)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_133 = 461788;
 		final String username_133 = "CONED_VIEWER";
 		final String password_133 = "CONED_VIEWER";
 
-		final String apiName_134 = "GeoServer-MultipleCustomersAPI-134";
+		final String apiName_134 = "GeoServer-MultipleCustomersAPI-High-134";
 		final String apiURL_134 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.85009765625+40.8470603560712%2c+-73.839111328125+40.8470603560712%2c+-73.839111328125+40.8387491379646%2c+-73.85009765625+40.8387491379646%2c+-73.85009765625+40.8470603560712)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_134 = 419769;
 		final String username_134 = "CONED_VIEWER";
 		final String password_134 = "CONED_VIEWER";
 
-		final String apiName_135 = "GeoServer-MultipleCustomersAPI-135";
+		final String apiName_135 = "GeoServer-MultipleCustomersAPI-High-135";
 		final String apiURL_135 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.85009765625+40.8553705319249%2c+-73.839111328125+40.8553705319249%2c+-73.839111328125+40.8470603560712%2c+-73.85009765625+40.8470603560712%2c+-73.85009765625+40.8553705319249)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_135 = 407207;
 		final String username_135 = "CONED_VIEWER";
 		final String password_135 = "CONED_VIEWER";
 
-		final String apiName_136 = "GeoServer-MultipleCustomersAPI-136";
+		final String apiName_136 = "GeoServer-MultipleCustomersAPI-High-136";
 		final String apiURL_136 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.883056640625+40.8138092305696%2c+-73.8720703125+40.8138092305696%2c+-73.8720703125+40.8054938438942%2c+-73.883056640625+40.8054938438942%2c+-73.883056640625+40.8138092305696)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_136 = 397855;
 		final String username_136 = "CONED_VIEWER";
 		final String password_136 = "CONED_VIEWER";
 
-		final String apiName_137 = "GeoServer-MultipleCustomersAPI-137";
+		final String apiName_137 = "GeoServer-MultipleCustomersAPI-High-137";
 		final String apiURL_137 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.8138092305696%2c+-73.85009765625+40.8138092305696%2c+-73.85009765625+40.8054938438942%2c+-73.861083984375+40.8054938438942%2c+-73.861083984375+40.8138092305696)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_137 = 348157;
 		final String username_137 = "CONED_VIEWER";
 		final String password_137 = "CONED_VIEWER";
 
-		final String apiName_138 = "GeoServer-MultipleCustomersAPI-138";
+		final String apiName_138 = "GeoServer-MultipleCustomersAPI-High-138";
 		final String apiURL_138 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.8553705319249%2c+-73.85009765625+40.8553705319249%2c+-73.85009765625+40.8470603560712%2c+-73.861083984375+40.8470603560712%2c+-73.861083984375+40.8553705319249)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_138 = 240791;
 		final String username_138 = "CONED_VIEWER";
 		final String password_138 = "CONED_VIEWER";
 
-		final String apiName_139 = "GeoServer-MultipleCustomersAPI-139";
+		final String apiName_139 = "GeoServer-MultipleCustomersAPI-High-139";
 		final String apiURL_139 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8858032226563+40.7971774151877%2c+-73.883056640625+40.7971774151877%2c+-73.883056640625+40.7950981451989%2c+-73.8858032226563+40.7950981451989%2c+-73.8858032226563+40.7971774151877)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_139 = 200372;
 		final String username_139 = "CONED_VIEWER";
 		final String password_139 = "CONED_VIEWER";
 
-		final String apiName_140 = "GeoServer-MultipleCustomersAPI-140";
+		final String apiName_140 = "GeoServer-MultipleCustomersAPI-High-140";
 		final String apiURL_140 = "http://30.30.150.198:8080/geoserver/CONED/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CONED:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.883056640625+40.8221235751695%2c+-73.8720703125+40.8221235751695%2c+-73.8720703125+40.8138092305696%2c+-73.883056640625+40.8138092305696%2c+-73.883056640625+40.8221235751695)))++AND+CustomerMa+IN+(%27%7b1B20F666-BD5D-4BD2-A0DB-3B366246A1FE%7d%27%2c%27%7bEEB57279-501D-4C69-BDB5-67069DC05935%7d%27%2c%27%7b7590BCCD-A96A-4CE5-BDC6-8B948D3C3DC2%7d%27%2c%27%7bD3A46905-9E3B-46E3-BCD5-B0ED9DF06118%7d%27%2c%27%7b1B539939-0B12-4C9F-BF54-C42926D1C802%7d%27%2c%27%7b2564B277-EB34-4CA0-B393-C4D5DADAC1C6%7d%27)";
 		final Integer expectedResponseContentLength_140 = 195147;
 		final String username_140 = "CONED_VIEWER";
@@ -3646,121 +3646,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'CPSEnergy:Asset'
-		final String apiName_141 = "GeoServer-MultipleCustomersAPI-141";
+		final String apiName_141 = "GeoServer-MultipleCustomersAPI-High-141";
 		final String apiURL_141 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.5638427734375+29.4826431344666%2c+-98.558349609375+29.4826431344666%2c+-98.558349609375+29.4778611958169%2c+-98.5638427734375+29.4778611958169%2c+-98.5638427734375+29.4826431344666)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_141 = 153650;
 		final String username_141 = "CPS_VIEWER";
 		final String password_141 = "CPS_VIEWER";
 
-		final String apiName_142 = "GeoServer-MultipleCustomersAPI-142";
+		final String apiName_142 = "GeoServer-MultipleCustomersAPI-High-142";
 		final String apiURL_142 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.558349609375+29.4874248474848%2c+-98.54736328125+29.4874248474848%2c+-98.54736328125+29.4778611958169%2c+-98.558349609375+29.4778611958169%2c+-98.558349609375+29.4874248474848)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_142 = 79566;
 		final String username_142 = "CPS_VIEWER";
 		final String password_142 = "CPS_VIEWER";
 
-		final String apiName_143 = "GeoServer-MultipleCustomersAPI-143";
+		final String apiName_143 = "GeoServer-MultipleCustomersAPI-High-143";
 		final String apiURL_143 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.5638427734375+29.4778611958169%2c+-98.558349609375+29.4778611958169%2c+-98.558349609375+29.4730790315582%2c+-98.5638427734375+29.4730790315582%2c+-98.5638427734375+29.4778611958169)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_143 = 64062;
 		final String username_143 = "CPS_VIEWER";
 		final String password_143 = "CPS_VIEWER";
 
-		final String apiName_144 = "GeoServer-MultipleCustomersAPI-144";
+		final String apiName_144 = "GeoServer-MultipleCustomersAPI-High-144";
 		final String apiURL_144 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.580322265625+29.5065494427886%2c+-98.5693359375+29.5065494427886%2c+-98.5693359375+29.4969875965358%2c+-98.580322265625+29.4969875965358%2c+-98.580322265625+29.5065494427886)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_144 = 45764;
 		final String username_144 = "CPS_VIEWER";
 		final String password_144 = "CPS_VIEWER";
 
-		final String apiName_145 = "GeoServer-MultipleCustomersAPI-145";
+		final String apiName_145 = "GeoServer-MultipleCustomersAPI-High-145";
 		final String apiURL_145 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.580322265625+29.4969875965358%2c+-98.5693359375+29.4969875965358%2c+-98.5693359375+29.4874248474848%2c+-98.580322265625+29.4874248474848%2c+-98.580322265625+29.4969875965358)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_145 = 27960;
 		final String username_145 = "CPS_VIEWER";
 		final String password_145 = "CPS_VIEWER";
 
-		final String apiName_146 = "GeoServer-MultipleCustomersAPI-146";
+		final String apiName_146 = "GeoServer-MultipleCustomersAPI-High-146";
 		final String apiURL_146 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.5693359375+29.5065494427886%2c+-98.558349609375+29.5065494427886%2c+-98.558349609375+29.4969875965358%2c+-98.5693359375+29.4969875965358%2c+-98.5693359375+29.5065494427886)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_146 = 24243;
 		final String username_146 = "CPS_VIEWER";
 		final String password_146 = "CPS_VIEWER";
 
-		final String apiName_147 = "GeoServer-MultipleCustomersAPI-147";
+		final String apiName_147 = "GeoServer-MultipleCustomersAPI-High-147";
 		final String apiURL_147 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.558349609375+29.4969875965358%2c+-98.54736328125+29.4969875965358%2c+-98.54736328125+29.4874248474848%2c+-98.558349609375+29.4874248474848%2c+-98.558349609375+29.4969875965358)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_147 = 11457;
 		final String username_147 = "CPS_VIEWER";
 		final String password_147 = "CPS_VIEWER";
 
-		final String apiName_148 = "GeoServer-MultipleCustomersAPI-148";
+		final String apiName_148 = "GeoServer-MultipleCustomersAPI-High-148";
 		final String apiURL_148 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.558349609375+29.5065494427886%2c+-98.54736328125+29.5065494427886%2c+-98.54736328125+29.4969875965358%2c+-98.558349609375+29.4969875965358%2c+-98.558349609375+29.5065494427886)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_148 = 7523;
 		final String username_148 = "CPS_VIEWER";
 		final String password_148 = "CPS_VIEWER";
 
-		final String apiName_149 = "GeoServer-MultipleCustomersAPI-149";
+		final String apiName_149 = "GeoServer-MultipleCustomersAPI-High-149";
 		final String apiURL_149 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.5693359375+29.4969875965358%2c+-98.558349609375+29.4969875965358%2c+-98.558349609375+29.4874248474848%2c+-98.5693359375+29.4874248474848%2c+-98.5693359375+29.4969875965358)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_149 = 5118;
 		final String username_149 = "CPS_VIEWER";
 		final String password_149 = "CPS_VIEWER";
 
-		final String apiName_150 = "GeoServer-MultipleCustomersAPI-150";
+		final String apiName_150 = "GeoServer-MultipleCustomersAPI-High-150";
 		final String apiURL_150 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.580322265625+29.4874248474848%2c+-98.5693359375+29.4874248474848%2c+-98.5693359375+29.4778611958169%2c+-98.580322265625+29.4778611958169%2c+-98.580322265625+29.4874248474848)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_150 = 5118;
 		final String username_150 = "CPS_VIEWER";
 		final String password_150 = "CPS_VIEWER";
 
-		final String apiName_151 = "GeoServer-MultipleCustomersAPI-151";
+		final String apiName_151 = "GeoServer-MultipleCustomersAPI-High-151";
 		final String apiURL_151 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.558349609375+29.4826431344666%2c+-98.5528564453125+29.4826431344666%2c+-98.5528564453125+29.4778611958169%2c+-98.558349609375+29.4778611958169%2c+-98.558349609375+29.4826431344666)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_151 = 3984;
 		final String username_151 = "CPS_VIEWER";
 		final String password_151 = "CPS_VIEWER";
 
-		final String apiName_152 = "GeoServer-MultipleCustomersAPI-152";
+		final String apiName_152 = "GeoServer-MultipleCustomersAPI-High-152";
 		final String apiURL_152 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.492431640625+29.4395975666029%2c+-98.4814453125+29.4395975666029%2c+-98.4814453125+29.4300294045718%2c+-98.492431640625+29.4300294045718%2c+-98.492431640625+29.4395975666029)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_152 = 50;
 		final String username_152 = "CPS_VIEWER";
 		final String password_152 = "CPS_VIEWER";
 
-		final String apiName_153 = "GeoServer-MultipleCustomersAPI-153";
+		final String apiName_153 = "GeoServer-MultipleCustomersAPI-High-153";
 		final String apiURL_153 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.4814453125+29.4491648269247%2c+-98.470458984375+29.4491648269247%2c+-98.470458984375+29.4395975666029%2c+-98.4814453125+29.4395975666029%2c+-98.4814453125+29.4491648269247)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_153 = 50;
 		final String username_153 = "CPS_VIEWER";
 		final String password_153 = "CPS_VIEWER";
 
-		final String apiName_154 = "GeoServer-MultipleCustomersAPI-154";
+		final String apiName_154 = "GeoServer-MultipleCustomersAPI-High-154";
 		final String apiURL_154 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.492431640625+29.4491648269247%2c+-98.4814453125+29.4491648269247%2c+-98.4814453125+29.4395975666029%2c+-98.492431640625+29.4395975666029%2c+-98.492431640625+29.4491648269247)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_154 = 50;
 		final String username_154 = "CPS_VIEWER";
 		final String password_154 = "CPS_VIEWER";
 
-		final String apiName_155 = "GeoServer-MultipleCustomersAPI-155";
+		final String apiName_155 = "GeoServer-MultipleCustomersAPI-High-155";
 		final String apiURL_155 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.492431640625+29.4300294045718%2c+-98.4814453125+29.4300294045718%2c+-98.4814453125+29.4204603410131%2c+-98.492431640625+29.4204603410131%2c+-98.492431640625+29.4300294045718)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_155 = 50;
 		final String username_155 = "CPS_VIEWER";
 		final String password_155 = "CPS_VIEWER";
 
-		final String apiName_156 = "GeoServer-MultipleCustomersAPI-156";
+		final String apiName_156 = "GeoServer-MultipleCustomersAPI-High-156";
 		final String apiURL_156 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.492431640625+29.4204603410132%2c+-98.4814453125+29.4204603410132%2c+-98.4814453125+29.410890376109%2c+-98.492431640625+29.410890376109%2c+-98.492431640625+29.4204603410132)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_156 = 50;
 		final String username_156 = "CPS_VIEWER";
 		final String password_156 = "CPS_VIEWER";
 
-		final String apiName_157 = "GeoServer-MultipleCustomersAPI-157";
+		final String apiName_157 = "GeoServer-MultipleCustomersAPI-High-157";
 		final String apiURL_157 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.4814453125+29.4395975666029%2c+-98.470458984375+29.4395975666029%2c+-98.470458984375+29.4300294045718%2c+-98.4814453125+29.4300294045718%2c+-98.4814453125+29.4395975666029)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_157 = 50;
 		final String username_157 = "CPS_VIEWER";
 		final String password_157 = "CPS_VIEWER";
 
-		final String apiName_158 = "GeoServer-MultipleCustomersAPI-158";
+		final String apiName_158 = "GeoServer-MultipleCustomersAPI-High-158";
 		final String apiURL_158 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.4814453125+29.4204603410132%2c+-98.470458984375+29.4204603410132%2c+-98.470458984375+29.410890376109%2c+-98.4814453125+29.410890376109%2c+-98.4814453125+29.4204603410132)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_158 = 50;
 		final String username_158 = "CPS_VIEWER";
 		final String password_158 = "CPS_VIEWER";
 
-		final String apiName_159 = "GeoServer-MultipleCustomersAPI-159";
+		final String apiName_159 = "GeoServer-MultipleCustomersAPI-High-159";
 		final String apiURL_159 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.4814453125+29.4300294045718%2c+-98.470458984375+29.4300294045718%2c+-98.470458984375+29.4204603410131%2c+-98.4814453125+29.4204603410131%2c+-98.4814453125+29.4300294045718)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_159 = 50;
 		final String username_159 = "CPS_VIEWER";
 		final String password_159 = "CPS_VIEWER";
 
-		final String apiName_160 = "GeoServer-MultipleCustomersAPI-160";
+		final String apiName_160 = "GeoServer-MultipleCustomersAPI-High-160";
 		final String apiURL_160 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-98.45947265625+29.4300294045718%2c+-98.448486328125+29.4300294045718%2c+-98.448486328125+29.4204603410131%2c+-98.45947265625+29.4204603410131%2c+-98.45947265625+29.4300294045718)))++AND+CustomerMa+IN+(%27%7bF744629F-1036-4DE0-86FA-718A1F8D6C47%7d%27%2c%27%7b9C115B72-9424-4675-958F-9EDA8553A6B2%7d%27%2c%27%7b399A1614-3D44-4244-9BDE-CD16BF048D29%7d%27)";
 		final Integer expectedResponseContentLength_160 = 50;
 		final String username_160 = "CPS_VIEWER";
@@ -3768,242 +3768,242 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'GRDF:Asset'
-		final String apiName_161 = "GeoServer-MultipleCustomersAPI-161";
+		final String apiName_161 = "GeoServer-MultipleCustomersAPI-High-161";
 		final String apiURL_161 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8720703125+40.9218144123785%2c+-73.861083984375+40.9218144123785%2c+-73.861083984375+40.9135125761276%2c+-73.8720703125+40.9135125761276%2c+-73.8720703125+40.9218144123785)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_161 = 420;
 		final String username_161 = "GRDF_VIEWER";
 		final String password_161 = "GRDF_VIEWER";
 
-		final String apiName_162 = "GeoServer-MultipleCustomersAPI-162";
+		final String apiName_162 = "GeoServer-MultipleCustomersAPI-High-162";
 		final String apiURL_162 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.8720703125+40.9135125761276%2c+-73.861083984375+40.9135125761276%2c+-73.861083984375+40.9052096972736%2c+-73.8720703125+40.9052096972736%2c+-73.8720703125+40.9135125761276)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_162 = 420;
 		final String username_162 = "GRDF_VIEWER";
 		final String password_162 = "GRDF_VIEWER";
 
-		final String apiName_163 = "GeoServer-MultipleCustomersAPI-163";
+		final String apiName_163 = "GeoServer-MultipleCustomersAPI-High-163";
 		final String apiURL_163 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.800537109375+33.1375511923461%2c+-96.78955078125+33.1375511923461%2c+-96.78955078125+33.1283511916316%2c+-96.800537109375+33.1283511916316%2c+-96.800537109375+33.1375511923461)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_163 = 420;
 		final String username_163 = "GRDF_VIEWER";
 		final String password_163 = "GRDF_VIEWER";
 
-		final String apiName_164 = "GeoServer-MultipleCustomersAPI-164";
+		final String apiName_164 = "GeoServer-MultipleCustomersAPI-High-164";
 		final String apiURL_164 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.800537109375+33.1283511916316%2c+-96.78955078125+33.1283511916316%2c+-96.78955078125+33.1191502267689%2c+-96.800537109375+33.1191502267689%2c+-96.800537109375+33.1283511916316)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_164 = 420;
 		final String username_164 = "GRDF_VIEWER";
 		final String password_164 = "GRDF_VIEWER";
 
-		final String apiName_165 = "GeoServer-MultipleCustomersAPI-165";
+		final String apiName_165 = "GeoServer-MultipleCustomersAPI-High-165";
 		final String apiURL_165 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.9218144123785%2c+-73.85009765625+40.9218144123785%2c+-73.85009765625+40.9135125761276%2c+-73.861083984375+40.9135125761276%2c+-73.861083984375+40.9218144123785)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_165 = 420;
 		final String username_165 = "GRDF_VIEWER";
 		final String password_165 = "GRDF_VIEWER";
 
-		final String apiName_166 = "GeoServer-MultipleCustomersAPI-166";
+		final String apiName_166 = "GeoServer-MultipleCustomersAPI-High-166";
 		final String apiURL_166 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.85009765625+40.9135125761276%2c+-73.839111328125+40.9135125761276%2c+-73.839111328125+40.9052096972736%2c+-73.85009765625+40.9052096972736%2c+-73.85009765625+40.9135125761276)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_166 = 420;
 		final String username_166 = "GRDF_VIEWER";
 		final String password_166 = "GRDF_VIEWER";
 
-		final String apiName_167 = "GeoServer-MultipleCustomersAPI-167";
+		final String apiName_167 = "GeoServer-MultipleCustomersAPI-High-167";
 		final String apiURL_167 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((3.05419921875+50.6390102812587%2c+3.065185546875+50.6390102812587%2c+3.065185546875+50.6320421888423%2c+3.05419921875+50.6320421888423%2c+3.05419921875+50.6390102812587)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_167 = 420;
 		final String username_167 = "GRDF_VIEWER";
 		final String password_167 = "GRDF_VIEWER";
 
-		final String apiName_168 = "GeoServer-MultipleCustomersAPI-168";
+		final String apiName_168 = "GeoServer-MultipleCustomersAPI-High-168";
 		final String apiURL_168 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.861083984375+40.9135125761276%2c+-73.85009765625+40.9135125761276%2c+-73.85009765625+40.9052096972736%2c+-73.861083984375+40.9052096972736%2c+-73.861083984375+40.9135125761276)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_168 = 420;
 		final String username_168 = "GRDF_VIEWER";
 		final String password_168 = "GRDF_VIEWER";
 
-		final String apiName_169 = "GeoServer-MultipleCustomersAPI-169";
+		final String apiName_169 = "GeoServer-MultipleCustomersAPI-High-169";
 		final String apiURL_169 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-73.85009765625+40.9218144123785%2c+-73.839111328125+40.9218144123785%2c+-73.839111328125+40.9135125761276%2c+-73.85009765625+40.9135125761276%2c+-73.85009765625+40.9218144123785)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_169 = 420;
 		final String username_169 = "GRDF_VIEWER";
 		final String password_169 = "GRDF_VIEWER";
 
-		final String apiName_170 = "GeoServer-MultipleCustomersAPI-170";
+		final String apiName_170 = "GeoServer-MultipleCustomersAPI-High-170";
 		final String apiURL_170 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.042236328125+33.1467502287765%2c+-97.03125+33.1467502287765%2c+-97.03125+33.1375511923461%2c+-97.042236328125+33.1375511923461%2c+-97.042236328125+33.1467502287765)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_170 = 420;
 		final String username_170 = "GRDF_VIEWER";
 		final String password_170 = "GRDF_VIEWER";
 
-		final String apiName_171 = "GeoServer-MultipleCustomersAPI-171";
+		final String apiName_171 = "GeoServer-MultipleCustomersAPI-High-171";
 		final String apiURL_171 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.03125+33.1559483007865%2c+-97.020263671875+33.1559483007865%2c+-97.020263671875+33.1467502287765%2c+-97.03125+33.1467502287765%2c+-97.03125+33.1559483007865)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_171 = 420;
 		final String username_171 = "GRDF_VIEWER";
 		final String password_171 = "GRDF_VIEWER";
 
-		final String apiName_172 = "GeoServer-MultipleCustomersAPI-172";
+		final String apiName_172 = "GeoServer-MultipleCustomersAPI-High-172";
 		final String apiURL_172 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.05322265625+33.1467502287765%2c+-97.042236328125+33.1467502287765%2c+-97.042236328125+33.1375511923461%2c+-97.05322265625+33.1375511923461%2c+-97.05322265625+33.1467502287765)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_172 = 420;
 		final String username_172 = "GRDF_VIEWER";
 		final String password_172 = "GRDF_VIEWER";
 
-		final String apiName_173 = "GeoServer-MultipleCustomersAPI-173";
+		final String apiName_173 = "GeoServer-MultipleCustomersAPI-High-173";
 		final String apiURL_173 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.042236328125+33.1559483007865%2c+-97.03125+33.1559483007865%2c+-97.03125+33.1467502287765%2c+-97.042236328125+33.1467502287765%2c+-97.042236328125+33.1559483007865)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_173 = 420;
 		final String username_173 = "GRDF_VIEWER";
 		final String password_173 = "GRDF_VIEWER";
 
-		final String apiName_174 = "GeoServer-MultipleCustomersAPI-174";
+		final String apiName_174 = "GeoServer-MultipleCustomersAPI-High-174";
 		final String apiURL_174 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.03125+33.1467502287765%2c+-97.020263671875+33.1467502287765%2c+-97.020263671875+33.1375511923461%2c+-97.03125+33.1375511923461%2c+-97.03125+33.1467502287765)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_174 = 420;
 		final String username_174 = "GRDF_VIEWER";
 		final String password_174 = "GRDF_VIEWER";
 
-		final String apiName_175 = "GeoServer-MultipleCustomersAPI-175";
+		final String apiName_175 = "GeoServer-MultipleCustomersAPI-High-175";
 		final String apiURL_175 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+33.1375511923461%2c+-96.800537109375+33.1375511923461%2c+-96.800537109375+33.1283511916316%2c+-96.8115234375+33.1283511916316%2c+-96.8115234375+33.1375511923461)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_175 = 420;
 		final String username_175 = "GRDF_VIEWER";
 		final String password_175 = "GRDF_VIEWER";
 
-		final String apiName_176 = "GeoServer-MultipleCustomersAPI-176";
+		final String apiName_176 = "GeoServer-MultipleCustomersAPI-High-176";
 		final String apiURL_176 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+33.1283511916316%2c+-96.800537109375+33.1283511916316%2c+-96.800537109375+33.1191502267689%2c+-96.8115234375+33.1191502267689%2c+-96.8115234375+33.1283511916316)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_176 = 420;
 		final String username_176 = "GRDF_VIEWER";
 		final String password_176 = "GRDF_VIEWER";
 
-		final String apiName_177 = "GeoServer-MultipleCustomersAPI-177";
+		final String apiName_177 = "GeoServer-MultipleCustomersAPI-High-177";
 		final String apiURL_177 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.822509765625+33.1375511923461%2c+-96.8115234375+33.1375511923461%2c+-96.8115234375+33.1283511916316%2c+-96.822509765625+33.1283511916316%2c+-96.822509765625+33.1375511923461)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_177 = 420;
 		final String username_177 = "GRDF_VIEWER";
 		final String password_177 = "GRDF_VIEWER";
 
-		final String apiName_178 = "GeoServer-MultipleCustomersAPI-178";
+		final String apiName_178 = "GeoServer-MultipleCustomersAPI-High-178";
 		final String apiURL_178 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.822509765625+33.1283511916316%2c+-96.8115234375+33.1283511916316%2c+-96.8115234375+33.1191502267689%2c+-96.822509765625+33.1191502267689%2c+-96.822509765625+33.1283511916316)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_178 = 420;
 		final String username_178 = "GRDF_VIEWER";
 		final String password_178 = "GRDF_VIEWER";
 
-		final String apiName_179 = "GeoServer-MultipleCustomersAPI-179";
+		final String apiName_179 = "GeoServer-MultipleCustomersAPI-High-179";
 		final String apiURL_179 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.05322265625+33.1559483007865%2c+-97.042236328125+33.1559483007865%2c+-97.042236328125+33.1467502287765%2c+-97.05322265625+33.1467502287765%2c+-97.05322265625+33.1559483007865)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_179 = 420;
 		final String username_179 = "GRDF_VIEWER";
 		final String password_179 = "GRDF_VIEWER";
 
-		final String apiName_180 = "GeoServer-MultipleCustomersAPI-180";
+		final String apiName_180 = "GeoServer-MultipleCustomersAPI-High-180";
 		final String apiURL_180 = "http://30.30.150.198:8080/geoserver/GRDF/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=GRDF:Asset&cql_filter=Intersects(the_geom%2cPOLYGON+((3.02673339843749+50.6285577552579%2c+3.03222656249999+50.6285577552579%2c+3.03222656249999+50.6250730634144%2c+3.02673339843749+50.6250730634144%2c+3.02673339843749+50.6285577552579)))++AND+CustomerMa+IN+(%27%7bBF3F6E73-8FED-42AF-B26F-0D39992D3D46%7d%27%2c%27%7b92BC82AF-1E9B-4050-A114-15E6A9C871B8%7d%27%2c%27%7bE144BA7E-06DE-4C80-99B7-20544E896E04%7d%27%2c%27%7b37061EAE-2C67-408C-B804-7F6A1DA583CE%7d%27%2c%27%7b913D1348-314D-4C10-838D-99CEBE193E56%7d%27%2c%27%7b5B9BCF6B-31EF-47B9-9922-CAA9BB141427%7d%27%2c%27%7b13967F21-1181-46DD-A7A6-E5460C610E7D%7d%27%2c%27%7b2D7780A6-C0F2-4EE7-8BF3-F31D94D935A0%7d%27)";
 		final Integer expectedResponseContentLength_180 = 420;
 		final String username_180 = "GRDF_VIEWER";
 		final String password_180 = "GRDF_VIEWER";
 
 		// API calls for - 'PGE:Boundary'
-		final String apiName_181 = "GeoServer-MultipleCustomersAPI-181";
+		final String apiName_181 = "GeoServer-MultipleCustomersAPI-High-181";
 		final String apiURL_181 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6904462352348%2c+-121.788940429688+36.6904462352348%2c+-121.788940429688+36.6860412765819%2c+-121.79443359375+36.6860412765819%2c+-121.79443359375+36.6904462352348)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_181 = 206943;
 		final String username_181 = "PGE_VIEWER";
 		final String password_181 = "PGE_VIEWER";
 
-		final String apiName_182 = "GeoServer-MultipleCustomersAPI-182";
+		final String apiName_182 = "GeoServer-MultipleCustomersAPI-High-182";
 		final String apiURL_182 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6948509415623%2c+-121.783447265625+36.6948509415623%2c+-121.783447265625+36.6860412765819%2c+-121.79443359375+36.6860412765819%2c+-121.79443359375+36.6948509415623)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_182 = 206289;
 		final String username_182 = "PGE_VIEWER";
 		final String password_182 = "PGE_VIEWER";
 
-		final String apiName_183 = "GeoServer-MultipleCustomersAPI-183";
+		final String apiName_183 = "GeoServer-MultipleCustomersAPI-High-183";
 		final String apiURL_183 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.01416015625+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.3876174997839%2c+-122.01416015625+37.3876174997839%2c+-122.01416015625+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_183 = 168048;
 		final String username_183 = "PGE_VIEWER";
 		final String password_183 = "PGE_VIEWER";
 
-		final String apiName_184 = "GeoServer-MultipleCustomersAPI-184";
+		final String apiName_184 = "GeoServer-MultipleCustomersAPI-High-184";
 		final String apiURL_184 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6089136671937%2c+-121.923522949219+36.6089136671937%2c+-121.923522949219+36.6067088864182%2c+-121.92626953125+36.6067088864182%2c+-121.92626953125+36.6089136671937)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_184 = 164024;
 		final String username_184 = "PGE_VIEWER";
 		final String password_184 = "PGE_VIEWER";
 
-		final String apiName_185 = "GeoServer-MultipleCustomersAPI-185";
+		final String apiName_185 = "GeoServer-MultipleCustomersAPI-High-185";
 		final String apiURL_185 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.929016113281+36.6089136671937%2c+-121.92626953125+36.6089136671937%2c+-121.92626953125+36.6067088864182%2c+-121.929016113281+36.6067088864182%2c+-121.929016113281+36.6089136671937)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_185 = 164014;
 		final String username_185 = "PGE_VIEWER";
 		final String password_185 = "PGE_VIEWER";
 
-		final String apiName_186 = "GeoServer-MultipleCustomersAPI-186";
+		final String apiName_186 = "GeoServer-MultipleCustomersAPI-High-186";
 		final String apiURL_186 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.5890683713991%2c+-121.915283203125+36.5890683713991%2c+-121.915283203125+36.5802466014987%2c+-121.92626953125+36.5802466014987%2c+-121.92626953125+36.5890683713991)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_186 = 163782;
 		final String username_186 = "PGE_VIEWER";
 		final String password_186 = "PGE_VIEWER";
 
-		final String apiName_187 = "GeoServer-MultipleCustomersAPI-187";
+		final String apiName_187 = "GeoServer-MultipleCustomersAPI-High-187";
 		final String apiURL_187 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9482421875+37.4399740522706%2c+-121.904296875+37.4399740522706%2c+-121.904296875+37.4050737501769%2c+-121.9482421875+37.4050737501769%2c+-121.9482421875+37.4399740522706)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_187 = 163629;
 		final String username_187 = "PGE_VIEWER";
 		final String password_187 = "PGE_VIEWER";
 
-		final String apiName_188 = "GeoServer-MultipleCustomersAPI-188";
+		final String apiName_188 = "GeoServer-MultipleCustomersAPI-High-188";
 		final String apiURL_188 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9482421875+36.6331620955866%2c+-121.92626953125+36.6331620955866%2c+-121.92626953125+36.6155276313493%2c+-121.9482421875+36.6155276313493%2c+-121.9482421875+36.6331620955866)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_188 = 163552;
 		final String username_188 = "PGE_VIEWER";
 		final String password_188 = "PGE_VIEWER";
 
-		final String apiName_189 = "GeoServer-MultipleCustomersAPI-189";
+		final String apiName_189 = "GeoServer-MultipleCustomersAPI-High-189";
 		final String apiURL_189 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047119140625+37.6316347558065%2c+-122.041625976563+37.6316347558065%2c+-122.041625976563+37.6272843026801%2c+-122.047119140625+37.6272843026801%2c+-122.047119140625+37.6316347558065)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_189 = 163544;
 		final String username_189 = "PGE_VIEWER";
 		final String password_189 = "PGE_VIEWER";
 
-		final String apiName_190 = "GeoServer-MultipleCustomersAPI-190";
+		final String apiName_190 = "GeoServer-MultipleCustomersAPI-High-190";
 		final String apiURL_190 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.0361328125+37.4399740522706%2c+-121.9921875+37.4399740522706%2c+-121.9921875+37.4050737501769%2c+-122.0361328125+37.4050737501769%2c+-122.0361328125+37.4399740522706)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_190 = 163489;
 		final String username_190 = "PGE_VIEWER";
 		final String password_190 = "PGE_VIEWER";
 
-		final String apiName_191 = "GeoServer-MultipleCustomersAPI-191";
+		final String apiName_191 = "GeoServer-MultipleCustomersAPI-High-191";
 		final String apiURL_191 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.5978891330702%2c+-121.904296875+36.5978891330702%2c+-121.904296875+36.5802466014987%2c+-121.92626953125+36.5802466014987%2c+-121.92626953125+36.5978891330702)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_191 = 163406;
 		final String username_191 = "PGE_VIEWER";
 		final String password_191 = "PGE_VIEWER";
 
-		final String apiName_192 = "GeoServer-MultipleCustomersAPI-192";
+		final String apiName_192 = "GeoServer-MultipleCustomersAPI-High-192";
 		final String apiURL_192 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.931762695312+36.6089136671937%2c+-121.929016113281+36.6089136671937%2c+-121.929016113281+36.6067088864182%2c+-121.931762695312+36.6067088864182%2c+-121.931762695312+36.6089136671937)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_192 = 163150;
 		final String username_192 = "PGE_VIEWER";
 		final String password_192 = "PGE_VIEWER";
 
-		final String apiName_193 = "GeoServer-MultipleCustomersAPI-193";
+		final String apiName_193 = "GeoServer-MultipleCustomersAPI-High-193";
 		final String apiURL_193 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.5978891330702%2c+-121.915283203125+36.5978891330702%2c+-121.915283203125+36.5890683713991%2c+-121.92626953125+36.5890683713991%2c+-121.92626953125+36.5978891330702)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_193 = 162388;
 		final String username_193 = "PGE_VIEWER";
 		final String password_193 = "PGE_VIEWER";
 
-		final String apiName_194 = "GeoServer-MultipleCustomersAPI-194";
+		final String apiName_194 = "GeoServer-MultipleCustomersAPI-High-194";
 		final String apiURL_194 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.92626953125+36.6067088864181%2c+-121.915283203125+36.6067088864181%2c+-121.915283203125+36.5978891330702%2c+-121.92626953125+36.5978891330702%2c+-121.92626953125+36.6067088864181)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_194 = 162342;
 		final String username_194 = "PGE_VIEWER";
 		final String password_194 = "PGE_VIEWER";
 
-		final String apiName_195 = "GeoServer-MultipleCustomersAPI-195";
+		final String apiName_195 = "GeoServer-MultipleCustomersAPI-High-195";
 		final String apiURL_195 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.931762695312+36.6067088864182%2c+-121.929016113281+36.6067088864182%2c+-121.929016113281+36.6045040426166%2c+-121.931762695312+36.6045040426166%2c+-121.931762695312+36.6067088864182)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_195 = 162334;
 		final String username_195 = "PGE_VIEWER";
 		final String password_195 = "PGE_VIEWER";
 
-		final String apiName_196 = "GeoServer-MultipleCustomersAPI-196";
+		final String apiName_196 = "GeoServer-MultipleCustomersAPI-High-196";
 		final String apiURL_196 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.97021484375+36.6331620955866%2c+-121.9482421875+36.6331620955866%2c+-121.9482421875+36.6155276313493%2c+-121.97021484375+36.6155276313493%2c+-121.97021484375+36.6331620955866)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_196 = 162131;
 		final String username_196 = "PGE_VIEWER";
 		final String password_196 = "PGE_VIEWER";
 
-		final String apiName_197 = "GeoServer-MultipleCustomersAPI-197";
+		final String apiName_197 = "GeoServer-MultipleCustomersAPI-High-197";
 		final String apiURL_197 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.79443359375+36.6948509415623%2c+-121.788940429688+36.6948509415623%2c+-121.788940429688+36.6904462352348%2c+-121.79443359375+36.6904462352348%2c+-121.79443359375+36.6948509415623)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_197 = 161994;
 		final String username_197 = "PGE_VIEWER";
 		final String password_197 = "PGE_VIEWER";
 
-		final String apiName_198 = "GeoServer-MultipleCustomersAPI-198";
+		final String apiName_198 = "GeoServer-MultipleCustomersAPI-High-198";
 		final String apiURL_198 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9482421875+37.4050737501769%2c+-121.904296875+37.4050737501769%2c+-121.904296875+37.3701571840575%2c+-121.9482421875+37.3701571840575%2c+-121.9482421875+37.4050737501769)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_198 = 161949;
 		final String username_198 = "PGE_VIEWER";
 		final String password_198 = "PGE_VIEWER";
 
-		final String apiName_199 = "GeoServer-MultipleCustomersAPI-199";
+		final String apiName_199 = "GeoServer-MultipleCustomersAPI-High-199";
 		final String apiURL_199 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.97021484375+36.6155276313493%2c+-121.9482421875+36.6155276313493%2c+-121.9482421875+36.5978891330702%2c+-121.97021484375+36.5978891330702%2c+-121.97021484375+36.6155276313493)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_199 = 161686;
 		final String username_199 = "PGE_VIEWER";
 		final String password_199 = "PGE_VIEWER";
 
-		final String apiName_200 = "GeoServer-MultipleCustomersAPI-200";
+		final String apiName_200 = "GeoServer-MultipleCustomersAPI-High-200";
 		final String apiURL_200 = "http://30.30.150.198:8080/geoserver/PGE/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=PGE:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.799926757813+36.6838387026371%2c+-121.797180175781+36.6838387026371%2c+-121.797180175781+36.6816360656152%2c+-121.799926757813+36.6816360656152%2c+-121.799926757813+36.6838387026371)))++AND+CustomerBo+IN+(%27%7bB9E69B56-E43E-4F6C-AFB1-24C01C1DD9DC%7d%27%2c%27%7b3BB4B2AE-9591-4607-9CAD-FD2EB377760A%7d%27)";
 		final Integer expectedResponseContentLength_200 = 161680;
 		final String username_200 = "PGE_VIEWER";
@@ -4011,121 +4011,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Centerpoint:Boundary'
-		final String apiName_201 = "GeoServer-MultipleCustomersAPI-201";
+		final String apiName_201 = "GeoServer-MultipleCustomersAPI-High-201";
 		final String apiURL_201 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4190063476562+30.1261243642246%2c+-95.416259765625+30.1261243642246%2c+-95.416259765625+30.1237487546004%2c+-95.4190063476562+30.1237487546004%2c+-95.4190063476562+30.1261243642246)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_201 = 322217;
 		final String username_201 = "CNP_VIEWER";
 		final String password_201 = "CNP_VIEWER";
 
-		final String apiName_202 = "GeoServer-MultipleCustomersAPI-202";
+		final String apiName_202 = "GeoServer-MultipleCustomersAPI-High-202";
 		final String apiURL_202 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4327392578125+29.9073293768516%2c+-95.4299926757813+29.9073293768516%2c+-95.4299926757813+29.904948520528%2c+-95.4327392578125+29.904948520528%2c+-95.4327392578125+29.9073293768516)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_202 = 322217;
 		final String username_202 = "CNP_VIEWER";
 		final String password_202 = "CNP_VIEWER";
 
-		final String apiName_203 = "GeoServer-MultipleCustomersAPI-203";
+		final String apiName_203 = "GeoServer-MultipleCustomersAPI-High-203";
 		final String apiURL_203 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.2512502670288+29.8472697860105%2c+-95.0872278213501+29.8472697860105%2c+-95.0872278213501+29.7708593103253%2c+-95.2512502670288+29.7708593103253%2c+-95.2512502670288+29.8472697860105)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_203 = 302995;
 		final String username_203 = "CNP_VIEWER";
 		final String password_203 = "CNP_VIEWER";
 
-		final String apiName_204 = "GeoServer-MultipleCustomersAPI-204";
+		final String apiName_204 = "GeoServer-MultipleCustomersAPI-High-204";
 		final String apiURL_204 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.504150390625+30.3302126854327%2c+-95.4986572265625+30.3302126854327%2c+-95.4986572265625+30.3254712593281%2c+-95.504150390625+30.3254712593281%2c+-95.504150390625+30.3302126854327)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_204 = 295910;
 		final String username_204 = "CNP_VIEWER";
 		final String password_204 = "CNP_VIEWER";
 
-		final String apiName_205 = "GeoServer-MultipleCustomersAPI-205";
+		final String apiName_205 = "GeoServer-MultipleCustomersAPI-High-205";
 		final String apiURL_205 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.7834494568206%2c+-95.4052734375+29.7834494568206%2c+-95.4052734375+29.7929841354705)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_205 = 289126;
 		final String username_205 = "CNP_VIEWER";
 		final String password_205 = "CNP_VIEWER";
 
-		final String apiName_206 = "GeoServer-MultipleCustomersAPI-206";
+		final String apiName_206 = "GeoServer-MultipleCustomersAPI-High-206";
 		final String apiURL_206 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+29.7739138699922%2c+-95.4052734375+29.7739138699922%2c+-95.4052734375+29.7643773751631%2c+-95.416259765625+29.7643773751631%2c+-95.416259765625+29.7739138699922)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_206 = 282186;
 		final String username_206 = "CNP_VIEWER";
 		final String password_206 = "CNP_VIEWER";
 
-		final String apiName_207 = "GeoServer-MultipleCustomersAPI-207";
+		final String apiName_207 = "GeoServer-MultipleCustomersAPI-High-207";
 		final String apiURL_207 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.7929841354705%2c+-95.350341796875+29.7929841354705%2c+-95.350341796875+29.7834494568206%2c+-95.361328125+29.7834494568206%2c+-95.361328125+29.7929841354705)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_207 = 217781;
 		final String username_207 = "CNP_VIEWER";
 		final String password_207 = "CNP_VIEWER";
 
-		final String apiName_208 = "GeoServer-MultipleCustomersAPI-208";
+		final String apiName_208 = "GeoServer-MultipleCustomersAPI-High-208";
 		final String apiURL_208 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4437255859375+29.8835182533532%2c+-95.438232421875+29.8835182533532%2c+-95.438232421875+29.878755346038%2c+-95.4437255859375+29.878755346038%2c+-95.4437255859375+29.8835182533532)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_208 = 211976;
 		final String username_208 = "CNP_VIEWER";
 		final String password_208 = "CNP_VIEWER";
 
-		final String apiName_209 = "GeoServer-MultipleCustomersAPI-209";
+		final String apiName_209 = "GeoServer-MultipleCustomersAPI-High-209";
 		final String apiURL_209 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7643773751631%2c+-95.394287109375+29.7643773751631%2c+-95.394287109375+29.7548399725109%2c+-95.4052734375+29.7548399725109%2c+-95.4052734375+29.7643773751631)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_209 = 211693;
 		final String username_209 = "CNP_VIEWER";
 		final String password_209 = "CNP_VIEWER";
 
-		final String apiName_210 = "GeoServer-MultipleCustomersAPI-210";
+		final String apiName_210 = "GeoServer-MultipleCustomersAPI-High-210";
 		final String apiURL_210 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7834494568206%2c+-95.394287109375+29.7834494568206%2c+-95.394287109375+29.7739138699922%2c+-95.4052734375+29.7739138699922%2c+-95.4052734375+29.7834494568206)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_210 = 207057;
 		final String username_210 = "CNP_VIEWER";
 		final String password_210 = "CNP_VIEWER";
 
-		final String apiName_211 = "GeoServer-MultipleCustomersAPI-211";
+		final String apiName_211 = "GeoServer-MultipleCustomersAPI-High-211";
 		final String apiURL_211 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4437255859375+29.7405321667536%2c+-95.438232421875+29.7405321667536%2c+-95.438232421875+29.7357624444491%2c+-95.4437255859375+29.7357624444491%2c+-95.4437255859375+29.7405321667536)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_211 = 193475;
 		final String username_211 = "CNP_VIEWER";
 		final String password_211 = "CNP_VIEWER";
 
-		final String apiName_212 = "GeoServer-MultipleCustomersAPI-212";
+		final String apiName_212 = "GeoServer-MultipleCustomersAPI-High-212";
 		final String apiURL_212 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.8120507675251%2c+-95.350341796875+29.8120507675251%2c+-95.350341796875+29.8025179057645%2c+-95.361328125+29.8025179057645%2c+-95.361328125+29.8120507675251)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_212 = 187196;
 		final String username_212 = "CNP_VIEWER";
 		final String password_212 = "CNP_VIEWER";
 
-		final String apiName_213 = "GeoServer-MultipleCustomersAPI-213";
+		final String apiName_213 = "GeoServer-MultipleCustomersAPI-High-213";
 		final String apiURL_213 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4052734375+29.7739138699922%2c+-95.394287109375+29.7739138699922%2c+-95.394287109375+29.7643773751631%2c+-95.4052734375+29.7643773751631%2c+-95.4052734375+29.7739138699922)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_213 = 183177;
 		final String username_213 = "CNP_VIEWER";
 		final String password_213 = "CNP_VIEWER";
 
-		final String apiName_214 = "GeoServer-MultipleCustomersAPI-214";
+		final String apiName_214 = "GeoServer-MultipleCustomersAPI-High-214";
 		final String apiURL_214 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.438232421875+29.7834494568206%2c+-95.42724609375+29.7834494568206%2c+-95.42724609375+29.7739138699922%2c+-95.438232421875+29.7739138699922%2c+-95.438232421875+29.7834494568206)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_214 = 181437;
 		final String username_214 = "CNP_VIEWER";
 		final String password_214 = "CNP_VIEWER";
 
-		final String apiName_215 = "GeoServer-MultipleCustomersAPI-215";
+		final String apiName_215 = "GeoServer-MultipleCustomersAPI-High-215";
 		final String apiURL_215 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.416259765625+30.1261243642246%2c+-95.4135131835938+30.1261243642246%2c+-95.4135131835938+30.1237487546004%2c+-95.416259765625+30.1237487546004%2c+-95.416259765625+30.1261243642246)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_215 = 180562;
 		final String username_215 = "CNP_VIEWER";
 		final String password_215 = "CNP_VIEWER";
 
-		final String apiName_216 = "GeoServer-MultipleCustomersAPI-216";
+		final String apiName_216 = "GeoServer-MultipleCustomersAPI-High-216";
 		final String apiURL_216 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4299926757813+29.9073293768516%2c+-95.42724609375+29.9073293768516%2c+-95.42724609375+29.904948520528%2c+-95.4299926757813+29.904948520528%2c+-95.4299926757813+29.9073293768516)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_216 = 180562;
 		final String username_216 = "CNP_VIEWER";
 		final String password_216 = "CNP_VIEWER";
 
-		final String apiName_217 = "GeoServer-MultipleCustomersAPI-217";
+		final String apiName_217 = "GeoServer-MultipleCustomersAPI-High-217";
 		final String apiURL_217 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.361328125+29.7834494568206%2c+-95.350341796875+29.7834494568206%2c+-95.350341796875+29.7739138699922%2c+-95.361328125+29.7739138699922%2c+-95.361328125+29.7834494568206)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_217 = 179410;
 		final String username_217 = "CNP_VIEWER";
 		final String password_217 = "CNP_VIEWER";
 
-		final String apiName_218 = "GeoServer-MultipleCustomersAPI-218";
+		final String apiName_218 = "GeoServer-MultipleCustomersAPI-High-218";
 		final String apiURL_218 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.4437255859375+29.7453016622136%2c+-95.438232421875+29.7453016622136%2c+-95.438232421875+29.7405321667536%2c+-95.4437255859375+29.7405321667536%2c+-95.4437255859375+29.7453016622136)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_218 = 178559;
 		final String username_218 = "CNP_VIEWER";
 		final String password_218 = "CNP_VIEWER";
 
-		final String apiName_219 = "GeoServer-MultipleCustomersAPI-219";
+		final String apiName_219 = "GeoServer-MultipleCustomersAPI-High-219";
 		final String apiURL_219 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.438232421875+29.7929841354705%2c+-95.42724609375+29.7929841354705%2c+-95.42724609375+29.7834494568206%2c+-95.438232421875+29.7834494568206%2c+-95.438232421875+29.7929841354705)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_219 = 178217;
 		final String username_219 = "CNP_VIEWER";
 		final String password_219 = "CNP_VIEWER";
 
-		final String apiName_220 = "GeoServer-MultipleCustomersAPI-220";
+		final String apiName_220 = "GeoServer-MultipleCustomersAPI-High-220";
 		final String apiURL_220 = "http://30.30.150.198:8080/geoserver/Centerpoint/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Centerpoint:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-95.394287109375+29.8025179057645%2c+-95.38330078125+29.8025179057645%2c+-95.38330078125+29.7929841354705%2c+-95.394287109375+29.7929841354705%2c+-95.394287109375+29.8025179057645)))++AND+CustomerBo+IN+(%27%7bA1A629BA-2003-43D0-9392-B43239F7BF54%7d%27)";
 		final Integer expectedResponseContentLength_220 = 177396;
 		final String username_220 = "CNP_VIEWER";
@@ -4133,121 +4133,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'ATMOS:Boundary'
-		final String apiName_221 = "GeoServer-MultipleCustomersAPI-221";
+		final String apiName_221 = "GeoServer-MultipleCustomersAPI-High-221";
 		final String apiURL_221 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.7318408968657%2c+-96.85546875+32.7318408968657%2c+-96.85546875+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_221 = 62436;
 		final String username_221 = "ATMOS_VIEWER";
 		final String password_221 = "ATMOS_VIEWER";
 
-		final String apiName_222 = "GeoServer-MultipleCustomersAPI-222";
+		final String apiName_222 = "GeoServer-MultipleCustomersAPI-High-222";
 		final String apiURL_222 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.7688004848817%2c+-96.8115234375+32.7688004848817%2c+-96.8115234375+32.8057447329069)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_222 = 54267;
 		final String username_222 = "ATMOS_VIEWER";
 		final String password_222 = "ATMOS_VIEWER";
 
-		final String apiName_223 = "GeoServer-MultipleCustomersAPI-223";
+		final String apiName_223 = "GeoServer-MultipleCustomersAPI-High-223";
 		final String apiURL_223 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.7318408968657%2c+-96.8115234375+32.7318408968657%2c+-96.8115234375+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_223 = 50342;
 		final String username_223 = "ATMOS_VIEWER";
 		final String password_223 = "ATMOS_VIEWER";
 
-		final String apiName_224 = "GeoServer-MultipleCustomersAPI-224";
+		final String apiName_224 = "GeoServer-MultipleCustomersAPI-High-224";
 		final String apiURL_224 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8426736319543%2c+-96.7236328125+32.8426736319543%2c+-96.7236328125+32.8057447329069%2c+-96.767578125+32.8057447329069%2c+-96.767578125+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_224 = 46032;
 		final String username_224 = "ATMOS_VIEWER";
 		final String password_224 = "ATMOS_VIEWER";
 
-		final String apiName_225 = "GeoServer-MultipleCustomersAPI-225";
+		final String apiName_225 = "GeoServer-MultipleCustomersAPI-High-225";
 		final String apiURL_225 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.7688004848817%2c+-96.85546875+32.7688004848817%2c+-96.85546875+32.7318408968657%2c+-96.8994140625+32.7318408968657%2c+-96.8994140625+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_225 = 44602;
 		final String username_225 = "ATMOS_VIEWER";
 		final String password_225 = "ATMOS_VIEWER";
 
-		final String apiName_226 = "GeoServer-MultipleCustomersAPI-226";
+		final String apiName_226 = "GeoServer-MultipleCustomersAPI-High-226";
 		final String apiURL_226 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8795871730663%2c+-96.8115234375+32.8795871730663%2c+-96.8115234375+32.8426736319543%2c+-96.85546875+32.8426736319543%2c+-96.85546875+32.8795871730663)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_226 = 43078;
 		final String username_226 = "ATMOS_VIEWER";
 		final String password_226 = "ATMOS_VIEWER";
 
-		final String apiName_227 = "GeoServer-MultipleCustomersAPI-227";
+		final String apiName_227 = "GeoServer-MultipleCustomersAPI-High-227";
 		final String apiURL_227 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8057447329069%2c+-96.85546875+32.8057447329069%2c+-96.85546875+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_227 = 42771;
 		final String username_227 = "ATMOS_VIEWER";
 		final String password_227 = "ATMOS_VIEWER";
 
-		final String apiName_228 = "GeoServer-MultipleCustomersAPI-228";
+		final String apiName_228 = "GeoServer-MultipleCustomersAPI-High-228";
 		final String apiURL_228 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8057447329069%2c+-96.8115234375+32.8057447329069%2c+-96.8115234375+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_228 = 42572;
 		final String username_228 = "ATMOS_VIEWER";
 		final String password_228 = "ATMOS_VIEWER";
 
-		final String apiName_229 = "GeoServer-MultipleCustomersAPI-229";
+		final String apiName_229 = "GeoServer-MultipleCustomersAPI-High-229";
 		final String apiURL_229 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8795871730663%2c+-96.7236328125+32.8795871730663%2c+-96.7236328125+32.8426736319543%2c+-96.767578125+32.8426736319543%2c+-96.767578125+32.8795871730663)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_229 = 40614;
 		final String username_229 = "ATMOS_VIEWER";
 		final String password_229 = "ATMOS_VIEWER";
 
-		final String apiName_230 = "GeoServer-MultipleCustomersAPI-230";
+		final String apiName_230 = "GeoServer-MultipleCustomersAPI-High-230";
 		final String apiURL_230 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+32.8795871730663%2c+-96.767578125+32.8795871730663%2c+-96.767578125+32.8426736319543%2c+-96.8115234375+32.8426736319543%2c+-96.8115234375+32.8795871730663)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_230 = 38042;
 		final String username_230 = "ATMOS_VIEWER";
 		final String password_230 = "ATMOS_VIEWER";
 
-		final String apiName_231 = "GeoServer-MultipleCustomersAPI-231";
+		final String apiName_231 = "GeoServer-MultipleCustomersAPI-High-231";
 		final String apiURL_231 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.8057447329069%2c+-96.7236328125+32.8057447329069%2c+-96.7236328125+32.7688004848817%2c+-96.767578125+32.7688004848817%2c+-96.767578125+32.8057447329069)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_231 = 35144;
 		final String username_231 = "ATMOS_VIEWER";
 		final String password_231 = "ATMOS_VIEWER";
 
-		final String apiName_232 = "GeoServer-MultipleCustomersAPI-232";
+		final String apiName_232 = "GeoServer-MultipleCustomersAPI-High-232";
 		final String apiURL_232 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.85546875+32.8057447329069%2c+-96.8115234375+32.8057447329069%2c+-96.8115234375+32.7688004848817%2c+-96.85546875+32.7688004848817%2c+-96.85546875+32.8057447329069)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_232 = 34775;
 		final String username_232 = "ATMOS_VIEWER";
 		final String password_232 = "ATMOS_VIEWER";
 
-		final String apiName_233 = "GeoServer-MultipleCustomersAPI-233";
+		final String apiName_233 = "GeoServer-MultipleCustomersAPI-High-233";
 		final String apiURL_233 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.8795871730663%2c+-96.85546875+32.8795871730663%2c+-96.85546875+32.8426736319543%2c+-96.8994140625+32.8426736319543%2c+-96.8994140625+32.8795871730663)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_233 = 30618;
 		final String username_233 = "ATMOS_VIEWER";
 		final String password_233 = "ATMOS_VIEWER";
 
-		final String apiName_234 = "GeoServer-MultipleCustomersAPI-234";
+		final String apiName_234 = "GeoServer-MultipleCustomersAPI-High-234";
 		final String apiURL_234 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.8426736319543%2c+-96.85546875+32.8426736319543%2c+-96.85546875+32.8057447329069%2c+-96.8994140625+32.8057447329069%2c+-96.8994140625+32.8426736319543)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_234 = 28466;
 		final String username_234 = "ATMOS_VIEWER";
 		final String password_234 = "ATMOS_VIEWER";
 
-		final String apiName_235 = "GeoServer-MultipleCustomersAPI-235";
+		final String apiName_235 = "GeoServer-MultipleCustomersAPI-High-235";
 		final String apiURL_235 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8994140625+32.8057447329069%2c+-96.85546875+32.8057447329069%2c+-96.85546875+32.7688004848817%2c+-96.8994140625+32.7688004848817%2c+-96.8994140625+32.8057447329069)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_235 = 28182;
 		final String username_235 = "ATMOS_VIEWER";
 		final String password_235 = "ATMOS_VIEWER";
 
-		final String apiName_236 = "GeoServer-MultipleCustomersAPI-236";
+		final String apiName_236 = "GeoServer-MultipleCustomersAPI-High-236";
 		final String apiURL_236 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.767578125+32.7688004848817%2c+-96.7236328125+32.7688004848817%2c+-96.7236328125+32.7318408968657%2c+-96.767578125+32.7318408968657%2c+-96.767578125+32.7688004848817)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_236 = 22750;
 		final String username_236 = "ATMOS_VIEWER";
 		final String password_236 = "ATMOS_VIEWER";
 
-		final String apiName_237 = "GeoServer-MultipleCustomersAPI-237";
+		final String apiName_237 = "GeoServer-MultipleCustomersAPI-High-237";
 		final String apiURL_237 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.14111328125+32.7318408968657%2c+-97.119140625+32.7318408968657%2c+-97.119140625+32.7133553531775%2c+-97.14111328125+32.7133553531775%2c+-97.14111328125+32.7318408968657)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_237 = 5516;
 		final String username_237 = "ATMOS_VIEWER";
 		final String password_237 = "ATMOS_VIEWER";
 
-		final String apiName_238 = "GeoServer-MultipleCustomersAPI-238";
+		final String apiName_238 = "GeoServer-MultipleCustomersAPI-High-238";
 		final String apiURL_238 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-97.14111328125+32.7133553531775%2c+-97.119140625+32.7133553531775%2c+-97.119140625+32.6948659778751%2c+-97.14111328125+32.6948659778751%2c+-97.14111328125+32.7133553531775)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_238 = 5516;
 		final String username_238 = "ATMOS_VIEWER";
 		final String password_238 = "ATMOS_VIEWER";
 
-		final String apiName_239 = "GeoServer-MultipleCustomersAPI-239";
+		final String apiName_239 = "GeoServer-MultipleCustomersAPI-High-239";
 		final String apiURL_239 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.83349609375+33.1191502267689%2c+-96.8115234375+33.1191502267689%2c+-96.8115234375+33.1007454051443%2c+-96.83349609375+33.1007454051443%2c+-96.83349609375+33.1191502267689)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_239 = 5194;
 		final String username_239 = "ATMOS_VIEWER";
 		final String password_239 = "ATMOS_VIEWER";
 
-		final String apiName_240 = "GeoServer-MultipleCustomersAPI-240";
+		final String apiName_240 = "GeoServer-MultipleCustomersAPI-High-240";
 		final String apiURL_240 = "http://30.30.150.198:8080/geoserver/ATMOS/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=ATMOS:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-96.8115234375+33.1375511923461%2c+-96.78955078125+33.1375511923461%2c+-96.78955078125+33.1191502267689%2c+-96.8115234375+33.1191502267689%2c+-96.8115234375+33.1375511923461)))++AND+CustomerBo+IN+(%27%7bF1489A72-304A-4BC7-8779-5B736ED9ECBE%7d%27)";
 		final Integer expectedResponseContentLength_240 = 5128;
 		final String username_240 = "ATMOS_VIEWER";
@@ -4255,121 +4255,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'Picarro:Boundary'
-		final String apiName_241 = "GeoServer-MultipleCustomersAPI-241";
+		final String apiName_241 = "GeoServer-MultipleCustomersAPI-High-241";
 		final String apiURL_241 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.1147108078+37.4458346166504%2c+-121.950688362122+37.4458346166504%2c+-121.950688362122+37.3758867982335%2c+-122.1147108078+37.3758867982335%2c+-122.1147108078+37.4458346166504)))++AND+CustomerBo+IN+(%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_241 = 2987;
 		final String username_241 = "PICARRO_VIEWER";
 		final String password_241 = "PICARRO_VIEWER";
 
-		final String apiName_242 = "GeoServer-MultipleCustomersAPI-242";
+		final String apiName_242 = "GeoServer-MultipleCustomersAPI-High-242";
 		final String apiURL_242 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.080078125+37.5097258429375%2c+-121.9921875+37.5097258429375%2c+-121.9921875+37.4399740522706%2c+-122.080078125+37.4399740522706%2c+-122.080078125+37.5097258429375)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_242 = 2987;
 		final String username_242 = "PICARRO_VIEWER";
 		final String password_242 = "PICARRO_VIEWER";
 
-		final String apiName_243 = "GeoServer-MultipleCustomersAPI-243";
+		final String apiName_243 = "GeoServer-MultipleCustomersAPI-High-243";
 		final String apiURL_243 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.5794125134384%2c+-121.81640625+37.5794125134384%2c+-121.81640625+37.4399740522706%2c+-121.9921875+37.4399740522706%2c+-121.9921875+37.5794125134384)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_243 = 2985;
 		final String username_243 = "PICARRO_VIEWER";
 		final String password_243 = "PICARRO_VIEWER";
 
-		final String apiName_244 = "GeoServer-MultipleCustomersAPI-244";
+		final String apiName_244 = "GeoServer-MultipleCustomersAPI-High-244";
 		final String apiURL_244 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.5097258429375%2c+-121.904296875+37.5097258429375%2c+-121.904296875+37.4399740522706%2c+-121.9921875+37.4399740522706%2c+-121.9921875+37.5097258429375)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_244 = 2985;
 		final String username_244 = "PICARRO_VIEWER";
 		final String password_244 = "PICARRO_VIEWER";
 
-		final String apiName_245 = "GeoServer-MultipleCustomersAPI-245";
+		final String apiName_245 = "GeoServer-MultipleCustomersAPI-High-245";
 		final String apiURL_245 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.072396278381+37.4330225552755%2c+-121.908373832703+37.4330225552755%2c+-121.908373832703+37.363062769708%2c+-122.072396278381+37.363062769708%2c+-122.072396278381+37.4330225552755)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27)";
 		final Integer expectedResponseContentLength_245 = 2663;
 		final String username_245 = "PICARRO_VIEWER";
 		final String password_245 = "PICARRO_VIEWER";
 
-		final String apiName_246 = "GeoServer-MultipleCustomersAPI-246";
+		final String apiName_246 = "GeoServer-MultipleCustomersAPI-High-246";
 		final String apiURL_246 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047162055969+37.4299895920408%2c+-121.921763420105+37.4299895920408%2c+-121.921763420105+37.3629604415169%2c+-122.047162055969+37.3629604415169%2c+-122.047162055969+37.4299895920408)))++AND+CustomerBo+IN+(%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_246 = 2663;
 		final String username_246 = "PICARRO_VIEWER";
 		final String password_246 = "PICARRO_VIEWER";
 
-		final String apiName_247 = "GeoServer-MultipleCustomersAPI-247";
+		final String apiName_247 = "GeoServer-MultipleCustomersAPI-High-247";
 		final String apiURL_247 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.080078125+37.3701571840575%2c+-121.9921875+37.3701571840575%2c+-121.9921875+37.3002752813443%2c+-122.080078125+37.3002752813443%2c+-122.080078125+37.3701571840575)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_247 = 2663;
 		final String username_247 = "PICARRO_VIEWER";
 		final String password_247 = "PICARRO_VIEWER";
 
-		final String apiName_248 = "GeoServer-MultipleCustomersAPI-248";
+		final String apiName_248 = "GeoServer-MultipleCustomersAPI-High-248";
 		final String apiURL_248 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.97021484375+37.4050737501769%2c+-121.9482421875+37.4050737501769%2c+-121.9482421875+37.3876174997839%2c+-121.97021484375+37.3876174997839%2c+-121.97021484375+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_248 = 2305;
 		final String username_248 = "PICARRO_VIEWER";
 		final String password_248 = "PICARRO_VIEWER";
 
-		final String apiName_249 = "GeoServer-MultipleCustomersAPI-249";
+		final String apiName_249 = "GeoServer-MultipleCustomersAPI-High-249";
 		final String apiURL_249 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.405073750177%2c+-121.986694335938+37.405073750177%2c+-121.986694335938+37.4007100687406%2c+-121.9921875+37.4007100687406%2c+-121.9921875+37.405073750177)))++AND+CustomerBo+IN+(%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_249 = 2305;
 		final String username_249 = "PICARRO_VIEWER";
 		final String password_249 = "PICARRO_VIEWER";
 
-		final String apiName_250 = "GeoServer-MultipleCustomersAPI-250";
+		final String apiName_250 = "GeoServer-MultipleCustomersAPI-High-250";
 		final String apiURL_250 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.405073750177%2c+-121.986694335938+37.405073750177%2c+-121.986694335938+37.4007100687406%2c+-121.9921875+37.4007100687406%2c+-121.9921875+37.405073750177)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_250 = 2305;
 		final String username_250 = "PICARRO_VIEWER";
 		final String password_250 = "PICARRO_VIEWER";
 
-		final String apiName_251 = "GeoServer-MultipleCustomersAPI-251";
+		final String apiName_251 = "GeoServer-MultipleCustomersAPI-High-251";
 		final String apiURL_251 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.9921875+37.4050737501769%2c+-121.981201171875+37.4050737501769%2c+-121.981201171875+37.3963461331892%2c+-121.9921875+37.3963461331892%2c+-121.9921875+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_251 = 2305;
 		final String username_251 = "PICARRO_VIEWER";
 		final String password_251 = "PICARRO_VIEWER";
 
-		final String apiName_252 = "GeoServer-MultipleCustomersAPI-252";
+		final String apiName_252 = "GeoServer-MultipleCustomersAPI-High-252";
 		final String apiURL_252 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.047162055969+37.4299895920408%2c+-121.921763420105+37.4299895920408%2c+-121.921763420105+37.3629604415169%2c+-122.047162055969+37.3629604415169%2c+-122.047162055969+37.4299895920408)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27)";
 		final Integer expectedResponseContentLength_252 = 1981;
 		final String username_252 = "PICARRO_VIEWER";
 		final String password_252 = "PICARRO_VIEWER";
 
-		final String apiName_253 = "GeoServer-MultipleCustomersAPI-253";
+		final String apiName_253 = "GeoServer-MultipleCustomersAPI-High-253";
 		final String apiURL_253 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.981201171875+37.4050737501769%2c+-121.97021484375+37.4050737501769%2c+-121.97021484375+37.3963461331892%2c+-121.981201171875+37.3963461331892%2c+-121.981201171875+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_253 = 1981;
 		final String username_253 = "PICARRO_VIEWER";
 		final String password_253 = "PICARRO_VIEWER";
 
-		final String apiName_254 = "GeoServer-MultipleCustomersAPI-254";
+		final String apiName_254 = "GeoServer-MultipleCustomersAPI-High-254";
 		final String apiURL_254 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.986694335938+37.405073750177%2c+-121.981201171875+37.405073750177%2c+-121.981201171875+37.4007100687406%2c+-121.986694335938+37.4007100687406%2c+-121.986694335938+37.405073750177)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_254 = 1981;
 		final String username_254 = "PICARRO_VIEWER";
 		final String password_254 = "PICARRO_VIEWER";
 
-		final String apiName_255 = "GeoServer-MultipleCustomersAPI-255";
+		final String apiName_255 = "GeoServer-MultipleCustomersAPI-High-255";
 		final String apiURL_255 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.214875221252+37.4833722230341%2c+-122.050852775574+37.4833722230341%2c+-122.050852775574+37.4134594869105%2c+-122.214875221252+37.4134594869105%2c+-122.214875221252+37.4833722230341)))++AND+CustomerBo+IN+(%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_255 = 1981;
 		final String username_255 = "PICARRO_VIEWER";
 		final String password_255 = "PICARRO_VIEWER";
 
-		final String apiName_256 = "GeoServer-MultipleCustomersAPI-256";
+		final String apiName_256 = "GeoServer-MultipleCustomersAPI-High-256";
 		final String apiURL_256 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.16796875+37.4399740522706%2c+-121.9921875+37.4399740522706%2c+-121.9921875+37.3002752813443%2c+-122.16796875+37.3002752813443%2c+-122.16796875+37.4399740522706)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_256 = 1981;
 		final String username_256 = "PICARRO_VIEWER";
 		final String password_256 = "PICARRO_VIEWER";
 
-		final String apiName_257 = "GeoServer-MultipleCustomersAPI-257";
+		final String apiName_257 = "GeoServer-MultipleCustomersAPI-High-257";
 		final String apiURL_257 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-122.0361328125+37.4050737501769%2c+-121.9921875+37.4050737501769%2c+-121.9921875+37.3701571840575%2c+-122.0361328125+37.3701571840575%2c+-122.0361328125+37.4050737501769)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_257 = 1981;
 		final String username_257 = "PICARRO_VIEWER";
 		final String password_257 = "PICARRO_VIEWER";
 
-		final String apiName_258 = "GeoServer-MultipleCustomersAPI-258";
+		final String apiName_258 = "GeoServer-MultipleCustomersAPI-High-258";
 		final String apiURL_258 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.97021484375+37.4225259345631%2c+-121.9482421875+37.4225259345631%2c+-121.9482421875+37.4050737501769%2c+-121.97021484375+37.4050737501769%2c+-121.97021484375+37.4225259345631)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_258 = 1692;
 		final String username_258 = "PICARRO_VIEWER";
 		final String password_258 = "PICARRO_VIEWER";
 
-		final String apiName_259 = "GeoServer-MultipleCustomersAPI-259";
+		final String apiName_259 = "GeoServer-MultipleCustomersAPI-High-259";
 		final String apiURL_259 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.994934082031+37.4028919412238%2c+-121.9921875+37.4028919412238%2c+-121.9921875+37.4007100687406%2c+-121.994934082031+37.4007100687406%2c+-121.994934082031+37.4028919412238)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_259 = 1692;
 		final String username_259 = "PICARRO_VIEWER";
 		final String password_259 = "PICARRO_VIEWER";
 
-		final String apiName_260 = "GeoServer-MultipleCustomersAPI-260";
+		final String apiName_260 = "GeoServer-MultipleCustomersAPI-High-260";
 		final String apiURL_260 = "http://30.30.150.198:8080/geoserver/Picarro/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=Picarro:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-121.981201171875+37.4138003506629%2c+-121.97021484375+37.4138003506629%2c+-121.97021484375+37.4050737501769%2c+-121.981201171875+37.4050737501769%2c+-121.981201171875+37.4138003506629)))++AND+CustomerBo+IN+(%27%7b551CB7C0-005B-4E3E-BFAE-D19DA0ED7EFE%7d%27%2c%27%7b024249AE-374B-4F6F-BD87-E8FDCACB48E1%7d%27)";
 		final Integer expectedResponseContentLength_260 = 1692;
 		final String username_260 = "PICARRO_VIEWER";
@@ -4377,121 +4377,121 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SouthwestGas:Boundary'
-		final String apiName_261 = "GeoServer-MultipleCustomersAPI-261";
+		final String apiName_261 = "GeoServer-MultipleCustomersAPI-High-261";
 		final String apiURL_261 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.11474609375+36.0135605851815%2c+-115.0927734375+36.0135605851815%2c+-115.0927734375+35.9957853864203%2c+-115.11474609375+35.9957853864203%2c+-115.11474609375+36.0135605851815)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_261 = 6639;
 		final String username_261 = "SWG_VIEWER";
 		final String password_261 = "SWG_VIEWER";
 
-		final String apiName_262 = "GeoServer-MultipleCustomersAPI-262";
+		final String apiName_262 = "GeoServer-MultipleCustomersAPI-High-262";
 		final String apiURL_262 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.11474609375+35.9957853864203%2c+-115.0927734375+35.9957853864203%2c+-115.0927734375+35.9780061808557%2c+-115.11474609375+35.9780061808557%2c+-115.11474609375+35.9957853864203)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_262 = 5335;
 		final String username_262 = "SWG_VIEWER";
 		final String password_262 = "SWG_VIEWER";
 
-		final String apiName_263 = "GeoServer-MultipleCustomersAPI-263";
+		final String apiName_263 = "GeoServer-MultipleCustomersAPI-High-263";
 		final String apiURL_263 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1733569352216%2c+-115.224609375+36.1733569352216%2c+-115.224609375+36.1556178338185%2c+-115.24658203125+36.1556178338185%2c+-115.24658203125+36.1733569352216)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_263 = 5016;
 		final String username_263 = "SWG_VIEWER";
 		final String password_263 = "SWG_VIEWER";
 
-		final String apiName_264 = "GeoServer-MultipleCustomersAPI-264";
+		final String apiName_264 = "GeoServer-MultipleCustomersAPI-High-264";
 		final String apiURL_264 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.0927734375+36.0135605851815%2c+-115.07080078125+36.0135605851815%2c+-115.07080078125+35.9957853864203%2c+-115.0927734375+35.9957853864203%2c+-115.0927734375+36.0135605851815)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_264 = 4996;
 		final String username_264 = "SWG_VIEWER";
 		final String password_264 = "SWG_VIEWER";
 
-		final String apiName_265 = "GeoServer-MultipleCustomersAPI-265";
+		final String apiName_265 = "GeoServer-MultipleCustomersAPI-High-265";
 		final String apiURL_265 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.13671875+36.0135605851815%2c+-115.11474609375+36.0135605851815%2c+-115.11474609375+35.9957853864203%2c+-115.13671875+35.9957853864203%2c+-115.13671875+36.0135605851815)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_265 = 4995;
 		final String username_265 = "SWG_VIEWER";
 		final String password_265 = "SWG_VIEWER";
 
-		final String apiName_266 = "GeoServer-MultipleCustomersAPI-266";
+		final String apiName_266 = "GeoServer-MultipleCustomersAPI-High-266";
 		final String apiURL_266 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.29052734375+36.1733569352216%2c+-115.2685546875+36.1733569352216%2c+-115.2685546875+36.1556178338185%2c+-115.29052734375+36.1556178338185%2c+-115.29052734375+36.1733569352216)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_266 = 4993;
 		final String username_266 = "SWG_VIEWER";
 		final String password_266 = "SWG_VIEWER";
 
-		final String apiName_267 = "GeoServer-MultipleCustomersAPI-267";
+		final String apiName_267 = "GeoServer-MultipleCustomersAPI-High-267";
 		final String apiURL_267 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.1733569352216%2c+-115.24658203125+36.1733569352216%2c+-115.24658203125+36.1556178338185%2c+-115.2685546875+36.1556178338185%2c+-115.2685546875+36.1733569352216)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_267 = 4988;
 		final String username_267 = "SWG_VIEWER";
 		final String password_267 = "SWG_VIEWER";
 
-		final String apiName_268 = "GeoServer-MultipleCustomersAPI-268";
+		final String apiName_268 = "GeoServer-MultipleCustomersAPI-High-268";
 		final String apiURL_268 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.0927734375+36.0668621325789%2c+-115.07080078125+36.0668621325789%2c+-115.07080078125+36.0490989590656%2c+-115.0927734375+36.0490989590656%2c+-115.0927734375+36.0668621325789)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_268 = 4645;
 		final String username_268 = "SWG_VIEWER";
 		final String password_268 = "SWG_VIEWER";
 
-		final String apiName_269 = "GeoServer-MultipleCustomersAPI-269";
+		final String apiName_269 = "GeoServer-MultipleCustomersAPI-High-269";
 		final String apiURL_269 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.29052734375+36.1910920218245%2c+-115.2685546875+36.1910920218245%2c+-115.2685546875+36.1733569352216%2c+-115.29052734375+36.1733569352216%2c+-115.29052734375+36.1910920218245)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_269 = 4034;
 		final String username_269 = "SWG_VIEWER";
 		final String password_269 = "SWG_VIEWER";
 
-		final String apiName_270 = "GeoServer-MultipleCustomersAPI-270";
+		final String apiName_270 = "GeoServer-MultipleCustomersAPI-High-270";
 		final String apiURL_270 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1556178338185%2c+-115.224609375+36.1556178338185%2c+-115.224609375+36.1378747184073%2c+-115.24658203125+36.1378747184073%2c+-115.24658203125+36.1556178338185)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_270 = 4021;
 		final String username_270 = "SWG_VIEWER";
 		final String password_270 = "SWG_VIEWER";
 
-		final String apiName_271 = "GeoServer-MultipleCustomersAPI-271";
+		final String apiName_271 = "GeoServer-MultipleCustomersAPI-High-271";
 		final String apiURL_271 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.048828125+36.0490989590656%2c+-115.02685546875+36.0490989590656%2c+-115.02685546875+36.0313317763319%2c+-115.048828125+36.0313317763319%2c+-115.048828125+36.0490989590656)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_271 = 4021;
 		final String username_271 = "SWG_VIEWER";
 		final String password_271 = "SWG_VIEWER";
 
-		final String apiName_272 = "GeoServer-MultipleCustomersAPI-272";
+		final String apiName_272 = "GeoServer-MultipleCustomersAPI-High-272";
 		final String apiURL_272 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.0927734375+36.0490989590656%2c+-115.07080078125+36.0490989590656%2c+-115.07080078125+36.0313317763319%2c+-115.0927734375+36.0313317763319%2c+-115.0927734375+36.0490989590656)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_272 = 4013;
 		final String username_272 = "SWG_VIEWER";
 		final String password_272 = "SWG_VIEWER";
 
-		final String apiName_273 = "GeoServer-MultipleCustomersAPI-273";
+		final String apiName_273 = "GeoServer-MultipleCustomersAPI-High-273";
 		final String apiURL_273 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.13671875+35.9957853864203%2c+-115.11474609375+35.9957853864203%2c+-115.11474609375+35.9780061808557%2c+-115.13671875+35.9780061808557%2c+-115.13671875+35.9957853864203)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_273 = 4008;
 		final String username_273 = "SWG_VIEWER";
 		final String password_273 = "SWG_VIEWER";
 
-		final String apiName_274 = "GeoServer-MultipleCustomersAPI-274";
+		final String apiName_274 = "GeoServer-MultipleCustomersAPI-High-274";
 		final String apiURL_274 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.07080078125+36.0490989590656%2c+-115.048828125+36.0490989590656%2c+-115.048828125+36.0313317763319%2c+-115.07080078125+36.0313317763319%2c+-115.07080078125+36.0490989590656)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_274 = 4003;
 		final String username_274 = "SWG_VIEWER";
 		final String password_274 = "SWG_VIEWER";
 
-		final String apiName_275 = "GeoServer-MultipleCustomersAPI-275";
+		final String apiName_275 = "GeoServer-MultipleCustomersAPI-High-275";
 		final String apiURL_275 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.1556178338185%2c+-115.24658203125+36.1556178338185%2c+-115.24658203125+36.1378747184073%2c+-115.2685546875+36.1378747184073%2c+-115.2685546875+36.1556178338185)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_275 = 4000;
 		final String username_275 = "SWG_VIEWER";
 		final String password_275 = "SWG_VIEWER";
 
-		final String apiName_276 = "GeoServer-MultipleCustomersAPI-276";
+		final String apiName_276 = "GeoServer-MultipleCustomersAPI-High-276";
 		final String apiURL_276 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.24658203125+36.1910920218245%2c+-115.224609375+36.1910920218245%2c+-115.224609375+36.1733569352216%2c+-115.24658203125+36.1733569352216%2c+-115.24658203125+36.1910920218245)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_276 = 3997;
 		final String username_276 = "SWG_VIEWER";
 		final String password_276 = "SWG_VIEWER";
 
-		final String apiName_277 = "GeoServer-MultipleCustomersAPI-277";
+		final String apiName_277 = "GeoServer-MultipleCustomersAPI-High-277";
 		final String apiURL_277 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.048828125+36.0668621325789%2c+-115.02685546875+36.0668621325789%2c+-115.02685546875+36.0490989590656%2c+-115.048828125+36.0490989590656%2c+-115.048828125+36.0668621325789)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_277 = 3996;
 		final String username_277 = "SWG_VIEWER";
 		final String password_277 = "SWG_VIEWER";
 
-		final String apiName_278 = "GeoServer-MultipleCustomersAPI-278";
+		final String apiName_278 = "GeoServer-MultipleCustomersAPI-High-278";
 		final String apiURL_278 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.2685546875+36.1910920218245%2c+-115.24658203125+36.1910920218245%2c+-115.24658203125+36.1733569352216%2c+-115.2685546875+36.1733569352216%2c+-115.2685546875+36.1910920218245)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_278 = 3987;
 		final String username_278 = "SWG_VIEWER";
 		final String password_278 = "SWG_VIEWER";
 
-		final String apiName_279 = "GeoServer-MultipleCustomersAPI-279";
+		final String apiName_279 = "GeoServer-MultipleCustomersAPI-High-279";
 		final String apiURL_279 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.29052734375+36.1556178338185%2c+-115.2685546875+36.1556178338185%2c+-115.2685546875+36.1378747184073%2c+-115.29052734375+36.1378747184073%2c+-115.29052734375+36.1556178338185)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_279 = 3973;
 		final String username_279 = "SWG_VIEWER";
 		final String password_279 = "SWG_VIEWER";
 
-		final String apiName_280 = "GeoServer-MultipleCustomersAPI-280";
+		final String apiName_280 = "GeoServer-MultipleCustomersAPI-High-280";
 		final String apiURL_280 = "http://30.30.150.198:8080/geoserver/SouthwestGas/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SouthwestGas:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-115.07080078125+36.0668621325789%2c+-115.048828125+36.0668621325789%2c+-115.048828125+36.0490989590656%2c+-115.07080078125+36.0490989590656%2c+-115.07080078125+36.0668621325789)))++AND+CustomerBo+IN+(%27%7b96680FD9-BE7E-46E0-92F1-39AA087C435D%7d%27%2c%27%7b480D267F-E31F-474B-9612-751709BEE889%7d%27)";
 		final Integer expectedResponseContentLength_280 = 3971;
 		final String username_280 = "SWG_VIEWER";
@@ -4499,242 +4499,242 @@ public class LoadAPITestMultipleCustomersDataProvider extends ReportDataProvider
 
 
 		// API calls for - 'SIG:Boundary'
-		final String apiName_281 = "GeoServer-MultipleCustomersAPI-281";
+		final String apiName_281 = "GeoServer-MultipleCustomersAPI-High-281";
 		final String apiURL_281 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1962890625+46.1950421086601%2c+6.240234375+46.1950421086601%2c+6.240234375+46.1646144968971%2c+6.1962890625+46.1646144968971%2c+6.1962890625+46.1950421086601)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_281 = 3316;
 		final String username_281 = "SIG_VIEWER";
 		final String password_281 = "SIG_VIEWER";
 
-		final String apiName_282 = "GeoServer-MultipleCustomersAPI-282";
+		final String apiName_282 = "GeoServer-MultipleCustomersAPI-High-282";
 		final String apiURL_282 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.3165841818222%2c+6.240234375+46.3165841818222%2c+6.240234375+46.2558468184803%2c+6.15234375+46.2558468184803%2c+6.15234375+46.3165841818222)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_282 = 3316;
 		final String username_282 = "SIG_VIEWER";
 		final String password_282 = "SIG_VIEWER";
 
-		final String apiName_283 = "GeoServer-MultipleCustomersAPI-283";
+		final String apiName_283 = "GeoServer-MultipleCustomersAPI-High-283";
 		final String apiURL_283 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.064453125+46.2254528822694%2c+6.1083984375+46.2254528822694%2c+6.1083984375+46.1950421086601%2c+6.064453125+46.1950421086601%2c+6.064453125+46.2254528822694)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_283 = 2824;
 		final String username_283 = "SIG_VIEWER";
 		final String password_283 = "SIG_VIEWER";
 
-		final String apiName_284 = "GeoServer-MultipleCustomersAPI-284";
+		final String apiName_284 = "GeoServer-MultipleCustomersAPI-High-284";
 		final String apiURL_284 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2558468184803%2c+6.240234375+46.2558468184803%2c+6.240234375+46.1950421086601%2c+6.15234375+46.1950421086601%2c+6.15234375+46.2558468184803)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_284 = 2532;
 		final String username_284 = "SIG_VIEWER";
 		final String password_284 = "SIG_VIEWER";
 
-		final String apiName_285 = "GeoServer-MultipleCustomersAPI-285";
+		final String apiName_285 = "GeoServer-MultipleCustomersAPI-High-285";
 		final String apiURL_285 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1083984375+46.2102496001872%2c+6.13037109375+46.2102496001872%2c+6.13037109375+46.1950421086601%2c+6.1083984375+46.1950421086601%2c+6.1083984375+46.2102496001872)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_285 = 2445;
 		final String username_285 = "SIG_VIEWER";
 		final String password_285 = "SIG_VIEWER";
 
-		final String apiName_286 = "GeoServer-MultipleCustomersAPI-286";
+		final String apiName_286 = "GeoServer-MultipleCustomersAPI-High-286";
 		final String apiURL_286 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1083984375+46.2406519550017%2c+6.13037109375+46.2406519550017%2c+6.13037109375+46.2254528822694%2c+6.1083984375+46.2254528822694%2c+6.1083984375+46.2406519550017)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_286 = 2134;
 		final String username_286 = "SIG_VIEWER";
 		final String password_286 = "SIG_VIEWER";
 
-		final String apiName_287 = "GeoServer-MultipleCustomersAPI-287";
+		final String apiName_287 = "GeoServer-MultipleCustomersAPI-High-287";
 		final String apiURL_287 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.064453125+46.2862239180671%2c+6.1083984375+46.2862239180671%2c+6.1083984375+46.2558468184803%2c+6.064453125+46.2558468184803%2c+6.064453125+46.2862239180671)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_287 = 2134;
 		final String username_287 = "SIG_VIEWER";
 		final String password_287 = "SIG_VIEWER";
 
-		final String apiName_288 = "GeoServer-MultipleCustomersAPI-288";
+		final String apiName_288 = "GeoServer-MultipleCustomersAPI-High-288";
 		final String apiURL_288 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2254528822694%2c+6.1962890625+46.2254528822694%2c+6.1962890625+46.1950421086601%2c+6.15234375+46.1950421086601%2c+6.15234375+46.2254528822694)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_288 = 2133;
 		final String username_288 = "SIG_VIEWER";
 		final String password_288 = "SIG_VIEWER";
 
-		final String apiName_289 = "GeoServer-MultipleCustomersAPI-289";
+		final String apiName_289 = "GeoServer-MultipleCustomersAPI-High-289";
 		final String apiURL_289 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2406519550017%2c+6.17431640625+46.2406519550017%2c+6.17431640625+46.2254528822694%2c+6.15234375+46.2254528822694%2c+6.15234375+46.2406519550017)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_289 = 2133;
 		final String username_289 = "SIG_VIEWER";
 		final String password_289 = "SIG_VIEWER";
 
-		final String apiName_290 = "GeoServer-MultipleCustomersAPI-290";
+		final String apiName_290 = "GeoServer-MultipleCustomersAPI-High-290";
 		final String apiURL_290 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2558468184803%2c+6.17431640625+46.2558468184803%2c+6.17431640625+46.2406519550017%2c+6.15234375+46.2406519550017%2c+6.15234375+46.2558468184803)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_290 = 1726;
 		final String username_290 = "SIG_VIEWER";
 		final String password_290 = "SIG_VIEWER";
 
-		final String apiName_291 = "GeoServer-MultipleCustomersAPI-291";
+		final String apiName_291 = "GeoServer-MultipleCustomersAPI-High-291";
 		final String apiURL_291 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1083984375+46.2862239180671%2c+6.15234375+46.2862239180671%2c+6.15234375+46.2558468184803%2c+6.1083984375+46.2558468184803%2c+6.1083984375+46.2862239180671)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_291 = 1700;
 		final String username_291 = "SIG_VIEWER";
 		final String password_291 = "SIG_VIEWER";
 
-		final String apiName_292 = "GeoServer-MultipleCustomersAPI-292";
+		final String apiName_292 = "GeoServer-MultipleCustomersAPI-High-292";
 		final String apiURL_292 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.3014061543733%2c+6.17431640625+46.3014061543733%2c+6.17431640625+46.2862239180671%2c+6.15234375+46.2862239180671%2c+6.15234375+46.3014061543733)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_292 = 1656;
 		final String username_292 = "SIG_VIEWER";
 		final String password_292 = "SIG_VIEWER";
 
-		final String apiName_293 = "GeoServer-MultipleCustomersAPI-293";
+		final String apiName_293 = "GeoServer-MultipleCustomersAPI-High-293";
 		final String apiURL_293 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.064453125+46.3165841818222%2c+6.15234375+46.3165841818222%2c+6.15234375+46.2558468184803%2c+6.064453125+46.2558468184803%2c+6.064453125+46.3165841818222)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_293 = 1620;
 		final String username_293 = "SIG_VIEWER";
 		final String password_293 = "SIG_VIEWER";
 
-		final String apiName_294 = "GeoServer-MultipleCustomersAPI-294";
+		final String apiName_294 = "GeoServer-MultipleCustomersAPI-High-294";
 		final String apiURL_294 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.1083984375+46.2558468184803%2c+6.13037109375+46.2558468184803%2c+6.13037109375+46.2406519550017%2c+6.1083984375+46.2406519550017%2c+6.1083984375+46.2558468184803)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_294 = 1292;
 		final String username_294 = "SIG_VIEWER";
 		final String password_294 = "SIG_VIEWER";
 
-		final String apiName_295 = "GeoServer-MultipleCustomersAPI-295";
+		final String apiName_295 = "GeoServer-MultipleCustomersAPI-High-295";
 		final String apiURL_295 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((5.9765625+46.4378568950242%2c+6.15234375+46.4378568950242%2c+6.15234375+46.3165841818222%2c+5.9765625+46.3165841818222%2c+5.9765625+46.4378568950242)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_295 = 1278;
 		final String username_295 = "SIG_VIEWER";
 		final String password_295 = "SIG_VIEWER";
 
-		final String apiName_296 = "GeoServer-MultipleCustomersAPI-296";
+		final String apiName_296 = "GeoServer-MultipleCustomersAPI-High-296";
 		final String apiURL_296 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2558468184803%2c+6.1962890625+46.2558468184803%2c+6.1962890625+46.2254528822694%2c+6.15234375+46.2254528822694%2c+6.15234375+46.2558468184803)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_296 = 1263;
 		final String username_296 = "SIG_VIEWER";
 		final String password_296 = "SIG_VIEWER";
 
-		final String apiName_297 = "GeoServer-MultipleCustomersAPI-297";
+		final String apiName_297 = "GeoServer-MultipleCustomersAPI-High-297";
 		final String apiURL_297 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.15234375+46.2862239180671%2c+6.1962890625+46.2862239180671%2c+6.1962890625+46.2558468184803%2c+6.15234375+46.2558468184803%2c+6.15234375+46.2862239180671)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_297 = 1253;
 		final String username_297 = "SIG_VIEWER";
 		final String password_297 = "SIG_VIEWER";
 
-		final String apiName_298 = "GeoServer-MultipleCustomersAPI-298";
+		final String apiName_298 = "GeoServer-MultipleCustomersAPI-High-298";
 		final String apiURL_298 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.064453125+46.1950421086601%2c+6.1083984375+46.1950421086601%2c+6.1083984375+46.1646144968971%2c+6.064453125+46.1646144968971%2c+6.064453125+46.1950421086601)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_298 = 1200;
 		final String username_298 = "SIG_VIEWER";
 		final String password_298 = "SIG_VIEWER";
 
-		final String apiName_299 = "GeoServer-MultipleCustomersAPI-299";
+		final String apiName_299 = "GeoServer-MultipleCustomersAPI-High-299";
 		final String apiURL_299 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.13037109375002+46.2862239180671%2c+6.15234375000002+46.2862239180671%2c+6.15234375000002+46.2710374728026%2c+6.13037109375002+46.2710374728026%2c+6.13037109375002+46.2862239180671)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_299 = 908;
 		final String username_299 = "SIG_VIEWER";
 		final String password_299 = "SIG_VIEWER";
 
-		final String apiName_300 = "GeoServer-MultipleCustomersAPI-300";
+		final String apiName_300 = "GeoServer-MultipleCustomersAPI-High-300";
 		final String apiURL_300 = "http://30.30.150.198:8080/geoserver/SIG/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=SIG:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((6.064453125+46.2558468184803%2c+6.15234375+46.2558468184803%2c+6.15234375+46.1950421086601%2c+6.064453125+46.1950421086601%2c+6.064453125+46.2558468184803)))++AND+CustomerBo+IN+(%27%7b17818330-80AD-4920-AE77-E46BAC833F27%7d%27)";
 		final Integer expectedResponseContentLength_300 = 899;
 		final String username_300 = "SIG_VIEWER";
 		final String password_300 = "SIG_VIEWER";
 
 		// API calls for - 'CPSEnergy:Boundary'
-		final String apiName_301 = "GeoServer-MultipleCustomersAPI-301";
+		final String apiName_301 = "GeoServer-MultipleCustomersAPI-High-301";
 		final String apiURL_301 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-1.64794921875001+48.1221010281908%2c+-1.62597656250001+48.1221010281908%2c+-1.62597656250001+48.1074311884804%2c+-1.64794921875001+48.1074311884804%2c+-1.64794921875001+48.1221010281908)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_301 = 302595;
 		final String username_301 = "CPS_VIEWER";
 		final String password_301 = "CPS_VIEWER";
 
-		final String apiName_302 = "GeoServer-MultipleCustomersAPI-302";
+		final String apiName_302 = "GeoServer-MultipleCustomersAPI-High-302";
 		final String apiURL_302 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-1.64794921875001+48.1367666796927%2c+-1.62597656250001+48.1367666796927%2c+-1.62597656250001+48.1221010281908%2c+-1.64794921875001+48.1221010281908%2c+-1.64794921875001+48.1367666796927)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_302 = 30485;
 		final String username_302 = "CPS_VIEWER";
 		final String password_302 = "CPS_VIEWER";
 
-		final String apiName_303 = "GeoServer-MultipleCustomersAPI-303";
+		final String apiName_303 = "GeoServer-MultipleCustomersAPI-High-303";
 		final String apiURL_303 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-1.66992187499999+48.1221010281908%2c+-1.64794921874999+48.1221010281908%2c+-1.64794921874999+48.1074311884804%2c+-1.66992187499999+48.1074311884804%2c+-1.66992187499999+48.1221010281908)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_303 = 7447;
 		final String username_303 = "CPS_VIEWER";
 		final String password_303 = "CPS_VIEWER";
 
-		final String apiName_304 = "GeoServer-MultipleCustomersAPI-304";
+		final String apiName_304 = "GeoServer-MultipleCustomersAPI-High-304";
 		final String apiURL_304 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((-1.66992187499999+48.1367666796927%2c+-1.64794921874999+48.1367666796927%2c+-1.64794921874999+48.1221010281908%2c+-1.66992187499999+48.1221010281908%2c+-1.66992187499999+48.1367666796927)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_304 = 356;
 		final String username_304 = "CPS_VIEWER";
 		final String password_304 = "CPS_VIEWER";
 
-		final String apiName_305 = "GeoServer-MultipleCustomersAPI-305";
+		final String apiName_305 = "GeoServer-MultipleCustomersAPI-High-305";
 		final String apiURL_305 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.13134765624999+41.4921208396878%2c+2.15332031249999+41.4921208396878%2c+2.15332031249999+41.4756602002782%2c+2.13134765624999+41.4756602002782%2c+2.13134765624999+41.4921208396878)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_305 = 235;
 		final String username_305 = "CPS_VIEWER";
 		final String password_305 = "CPS_VIEWER";
 
-		final String apiName_306 = "GeoServer-MultipleCustomersAPI-306";
+		final String apiName_306 = "GeoServer-MultipleCustomersAPI-High-306";
 		final String apiURL_306 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.13134765624999+41.5003495912893%2c+2.14233398437499+41.5003495912893%2c+2.14233398437499+41.4921208396878%2c+2.13134765624999+41.4921208396878%2c+2.13134765624999+41.5003495912893)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_306 = 235;
 		final String username_306 = "CPS_VIEWER";
 		final String password_306 = "CPS_VIEWER";
 
-		final String apiName_307 = "GeoServer-MultipleCustomersAPI-307";
+		final String apiName_307 = "GeoServer-MultipleCustomersAPI-High-307";
 		final String apiURL_307 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.120361328125+41.5085772974394%2c+2.13134765625+41.5085772974394%2c+2.13134765625+41.5003495912893%2c+2.120361328125+41.5003495912893%2c+2.120361328125+41.5085772974394)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_307 = 235;
 		final String username_307 = "CPS_VIEWER";
 		final String password_307 = "CPS_VIEWER";
 
-		final String apiName_308 = "GeoServer-MultipleCustomersAPI-308";
+		final String apiName_308 = "GeoServer-MultipleCustomersAPI-High-308";
 		final String apiURL_308 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.13134765624999+41.4921208396878%2c+2.14233398437499+41.4921208396878%2c+2.14233398437499+41.4838910426718%2c+2.13134765624999+41.4838910426718%2c+2.13134765624999+41.4921208396878)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_308 = 235;
 		final String username_308 = "CPS_VIEWER";
 		final String password_308 = "CPS_VIEWER";
 
-		final String apiName_309 = "GeoServer-MultipleCustomersAPI-309";
+		final String apiName_309 = "GeoServer-MultipleCustomersAPI-High-309";
 		final String apiURL_309 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.13134765624999+41.5085772974394%2c+2.14233398437499+41.5085772974394%2c+2.14233398437499+41.5003495912893%2c+2.13134765624999+41.5003495912893%2c+2.13134765624999+41.5085772974394)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_309 = 235;
 		final String username_309 = "CPS_VIEWER";
 		final String password_309 = "CPS_VIEWER";
 
-		final String apiName_310 = "GeoServer-MultipleCustomersAPI-310";
+		final String apiName_310 = "GeoServer-MultipleCustomersAPI-High-310";
 		final String apiURL_310 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.15332031250001+41.5085772974394%2c+2.17529296875001+41.5085772974394%2c+2.17529296875001+41.4921208396878%2c+2.15332031250001+41.4921208396878%2c+2.15332031250001+41.5085772974394)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_310 = 235;
 		final String username_310 = "CPS_VIEWER";
 		final String password_310 = "CPS_VIEWER";
 
-		final String apiName_311 = "GeoServer-MultipleCustomersAPI-311";
+		final String apiName_311 = "GeoServer-MultipleCustomersAPI-High-311";
 		final String apiURL_311 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.15332031250001+41.5085772974394%2c+2.19726562500001+41.5085772974394%2c+2.19726562500001+41.4756602002782%2c+2.15332031250001+41.4756602002782%2c+2.15332031250001+41.5085772974394)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_311 = 235;
 		final String username_311 = "CPS_VIEWER";
 		final String password_311 = "CPS_VIEWER";
 
-		final String apiName_312 = "GeoServer-MultipleCustomersAPI-312";
+		final String apiName_312 = "GeoServer-MultipleCustomersAPI-High-312";
 		final String apiURL_312 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.13134765624999+41.5085772974394%2c+2.15332031249999+41.5085772974394%2c+2.15332031249999+41.4921208396878%2c+2.13134765624999+41.4921208396878%2c+2.13134765624999+41.5085772974394)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_312 = 235;
 		final String username_312 = "CPS_VIEWER";
 		final String password_312 = "CPS_VIEWER";
 
-		final String apiName_313 = "GeoServer-MultipleCustomersAPI-313";
+		final String apiName_313 = "GeoServer-MultipleCustomersAPI-High-313";
 		final String apiURL_313 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.15332031250001+41.4921208396878%2c+2.17529296875001+41.4921208396878%2c+2.17529296875001+41.4756602002782%2c+2.15332031250001+41.4756602002782%2c+2.15332031250001+41.4921208396878)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_313 = 235;
 		final String username_313 = "CPS_VIEWER";
 		final String password_313 = "CPS_VIEWER";
 
-		final String apiName_314 = "GeoServer-MultipleCustomersAPI-314";
+		final String apiName_314 = "GeoServer-MultipleCustomersAPI-High-314";
 		final String apiURL_314 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.120361328125+41.5003495912893%2c+2.13134765625+41.5003495912893%2c+2.13134765625+41.4921208396878%2c+2.120361328125+41.4921208396878%2c+2.120361328125+41.5003495912893)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_314 = 235;
 		final String username_314 = "CPS_VIEWER";
 		final String password_314 = "CPS_VIEWER";
 
-		final String apiName_315 = "GeoServer-MultipleCustomersAPI-315";
+		final String apiName_315 = "GeoServer-MultipleCustomersAPI-High-315";
 		final String apiURL_315 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.10937500000001+41.4921208396878%2c+2.12036132812501+41.4921208396878%2c+2.12036132812501+41.4838910426718%2c+2.10937500000001+41.4838910426718%2c+2.10937500000001+41.4921208396878)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_315 = 235;
 		final String username_315 = "CPS_VIEWER";
 		final String password_315 = "CPS_VIEWER";
 
-		final String apiName_316 = "GeoServer-MultipleCustomersAPI-316";
+		final String apiName_316 = "GeoServer-MultipleCustomersAPI-High-316";
 		final String apiURL_316 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.10937500000001+41.5003495912893%2c+2.12036132812501+41.5003495912893%2c+2.12036132812501+41.4921208396878%2c+2.10937500000001+41.4921208396878%2c+2.10937500000001+41.5003495912893)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_316 = 235;
 		final String username_316 = "CPS_VIEWER";
 		final String password_316 = "CPS_VIEWER";
 
-		final String apiName_317 = "GeoServer-MultipleCustomersAPI-317";
+		final String apiName_317 = "GeoServer-MultipleCustomersAPI-High-317";
 		final String apiURL_317 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.10937500000001+41.3768085657024%2c+2.19726562500001+41.3768085657024%2c+2.19726562500001+41.3108238809182%2c+2.10937500000001+41.3108238809182%2c+2.10937500000001+41.3768085657024)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_317 = 235;
 		final String username_317 = "CPS_VIEWER";
 		final String password_317 = "CPS_VIEWER";
 
-		final String apiName_318 = "GeoServer-MultipleCustomersAPI-318";
+		final String apiName_318 = "GeoServer-MultipleCustomersAPI-High-318";
 		final String apiURL_318 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.10937500000001+41.4427263776721%2c+2.19726562500001+41.4427263776721%2c+2.19726562500001+41.3768085657024%2c+2.10937500000001+41.3768085657024%2c+2.10937500000001+41.4427263776721)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_318 = 235;
 		final String username_318 = "CPS_VIEWER";
 		final String password_318 = "CPS_VIEWER";
 
-		final String apiName_319 = "GeoServer-MultipleCustomersAPI-319";
+		final String apiName_319 = "GeoServer-MultipleCustomersAPI-High-319";
 		final String apiURL_319 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.10937500000001+41.5085772974394%2c+2.12036132812501+41.5085772974394%2c+2.12036132812501+41.5003495912893%2c+2.10937500000001+41.5003495912893%2c+2.10937500000001+41.5085772974394)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_319 = 235;
 		final String username_319 = "CPS_VIEWER";
 		final String password_319 = "CPS_VIEWER";
 
-		final String apiName_320 = "GeoServer-MultipleCustomersAPI-320";
+		final String apiName_320 = "GeoServer-MultipleCustomersAPI-High-320";
 		final String apiURL_320 = "http://30.30.150.198:8080/geoserver/CPSEnergy/ows?service=WFS&outputFormat=csv&version=1.0.0&request=GetFeature&typeName=CPSEnergy:Boundary&cql_filter=Intersects(the_geom%2cPOLYGON+((2.10937500000001+41.5743613059891%2c+2.15332031250001+41.5743613059891%2c+2.15332031250001+41.5414776667903%2c+2.10937500000001+41.5414776667903%2c+2.10937500000001+41.5743613059891)))++AND+CustomerBo+IN+(%27%7b5B3F6A51-7D51-4C84-9F1C-FFD029C0CCCB%7d%27)";
 		final Integer expectedResponseContentLength_320 = 235;
 		final String username_320 = "CPS_VIEWER";

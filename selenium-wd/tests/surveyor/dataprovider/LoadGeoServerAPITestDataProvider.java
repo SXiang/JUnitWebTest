@@ -8,9 +8,9 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import common.source.LoadTestJob;
 import common.source.LoadTestExecutor.HttpMethod;
 
-public class LoadAPITestDataProvider extends ReportDataProvider {
+public class LoadGeoServerAPITestDataProvider extends ReportDataProvider {
 
-	public LoadAPITestDataProvider(Class<?> klass) throws InitializationError {
+	public LoadGeoServerAPITestDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
 

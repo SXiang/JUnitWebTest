@@ -14,7 +14,7 @@ import common.source.LoadTestExecutor;
 import common.source.Log;
 import common.source.LoadTestExecutor.HttpMethod;
 import common.source.LoadTestExecutor.TestResult;
-import surveyor.dataprovider.LoadAPITestDataProvider;
+import surveyor.dataprovider.LoadGeoServerAPITestDataProvider;
 import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -29,7 +29,7 @@ public class ProdGeoServerDriverViewAPITest extends BaseTest {
 	}
 
 	@Test
-	@UseDataProvider(value = LoadAPITestDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_DRIVERVIEW_API, location = LoadAPITestDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_DRIVERVIEW_API, location = LoadGeoServerAPITestDataProvider.class)
 	public void executeDriverViewAPITest(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerDriverViewAPITest.executeDriverViewAPITest", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
