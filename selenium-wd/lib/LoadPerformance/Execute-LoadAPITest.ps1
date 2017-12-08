@@ -3,13 +3,19 @@
 #   Use script to trigger API and record test results in automation reporting DB.
 #
 # SAMPLE USAGE:
+#   This script uses Apache Benchmark tool which will be installed by tests as part of checking whether load testing tools are present on machine.
+#   ab.exe requires VC++ 2015 redistributable to function correctly
+#
+# SAMPLE USAGE:
 #   .\Execute-LoadAPITest.ps1 -BaseWorkingDir "c:\Repositories\surveyor-qa" `
 #       -AutomationReportingAPIBaseUrl "http://localhost:63087" `
 #       -ABExeFolder "C:\Tools\Apache Benchmark\Apache24\bin" `
 #       -ApiEndpoint "http://30.30.150.198:8080/geoserver/PICARRO/ows?service=WFS&outputFormat=csv&version=1.0.0&service=WFS&request=GetFeature&typeName=PICARRO:Asset" `
 #       -Method "POST" `
 #       -ContentType "application/x-www-form-urlencoded" `
-#       -RequestBody "username=<replace_with_username>&password=<replace_with_password>" `
+#       -Username "<username>" `
+#       -Password "<password>" `
+#       -UseBasicAuthentication:1 `
 #       -ResponseContentLength 224299 `
 #       -NumConcurrentRequests 100 `
 #       -NumRequestsInOneSession 10 `

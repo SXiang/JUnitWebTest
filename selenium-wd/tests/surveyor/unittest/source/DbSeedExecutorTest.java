@@ -16,7 +16,11 @@ import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.source.BaseTest;
 
 public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
@@ -24,16 +28,34 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	private static final String OP_PIC_1_ANALZYER_ID_FROM_SEED = "34a34021-8814-8a01-9183-39d4b4de03be";
 	private static LoginPageActions loginPageAction;
 	private static ManageCustomerPageActions manageCustomerPageAction;
+	private static ManageUsersPageActions manageUsersPageAction;
+	private static ManageLocationPageActions manageLocationPageAction;
+	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
+	private static ManageSurveyorPageActions manageSurveyorPageAction;
 
 	private static final String EMPTY = BaseActions.EMPTY;
 	private static final Integer NOTSET = BaseActions.NOTSET;
 
 	@BeforeClass
-	public static void BeforeClass()	{
+	public static void BeforeClass() throws Exception	{
 		BaseTest.initializeTestObjects();
+		initializePageActions();
+	}
 
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
 		loginPageAction = ActionBuilder.createLoginPageAction();
 		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
+
+		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
+		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
+		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
+
+		manageAnalyzerPageAction = ActionBuilder.createManageAnalyzerPageAction();
+		manageSurveyorPageAction = ActionBuilder.createManageSurveyorPageAction();
 	}
 
 	@Test
@@ -70,7 +92,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
-		final String[] surveyTags = {"op-pic-1"};
+		final String[] surveyTags = {"op-pic-1", "stnd-pic-sqacus-1"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
 		verifySurveySeedDataIsPresent(surveyTags);
 	}
@@ -188,11 +210,41 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@Test
 	public void execute09_GisCustomerDataSeedSingleCustomerTest_CustomerWithReferenceTableEntries() throws Exception {
-		final String customerName = "sqacus";
+		// PREP: execute generic seed and GIS customer seed for customer.
+		DbSeedExecutor.executeGISCustomerDataSeed();
+		verifyGisCustomerSeedDataIsPresent();
 
-		// PREP: Ensure seed data present for 'sqacus'.
-		DbSeedExecutor.executeGenericDataSeed();
-		verifyGenericSeedDataIsPresent();
+		final int userDataRowID = 6;
+		final int newCustomerRowID = 6;
+		final int newLocationRowID = 9;
+		final int newCustomerUserRowID = 20;
+		final int newSurveyorRowID = 5;
+		final int newAnalyzerRowID = 4;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+
+		// Add a new user customer.
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createOrFetchNewGisCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+
+		String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+
+		// Create new location.
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID);
+
+		// Create new user.
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID /*userRowID*/);
+
+		// Create new surveyor.
+		manageSurveyorPageAction.open(EMPTY, NOTSET);
+		manageSurveyorPageAction.createNewSurveyor(EMPTY, newSurveyorRowID /*surveyorRowID*/);
+
+		// Create new analyzer.
+		manageAnalyzerPageAction.open(EMPTY, NOTSET);
+		manageAnalyzerPageAction.createNewAnalyzer(EMPTY, newAnalyzerRowID /*analyzerRowID*/);
 
 		String customerId = Customer.getCustomer(customerName).getId();
 		Customer customer = new Customer();
@@ -208,12 +260,11 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 			DbSeedExecutor.executeGISCustomerDataSeedForSingleCustomer(customerName);
 
 			// verify referenced table entries are deleted correctly.
-			verifyGisCustomerReferencedTableEntriesDeletedCorrectly(customerId);
+			verifyGisCustomerReferencedTableEntriesDeletedCorrectly(customerId, 1 /*expectedLocationCount - GIS seed customer seed location should be retained*/);
 		} finally {
-			// RE-ADD Generic seed data after cleaning up the added licenses.
-			customer.executeNonQuery(String.format("DELETE [dbo].[CustomerLicensedFeatureOptions] WHERE CustomerId='%s'", customerId));
-			DbSeedExecutor.executeGenericDataSeed();
-			verifyGenericSeedDataIsPresent();
+			// RE-ADD GIS customer seed data.
+			DbSeedExecutor.executeGISCustomerDataSeed();
+			verifyGisCustomerSeedDataIsPresent();
 		}
 	}
 
@@ -390,7 +441,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 		assertTrue(String.format("Expected [%d] licenses. Found=[%d]", expectedLicenseCount, actualLicenseCount), actualLicenseCount == expectedLicenseCount);
 	}
 
-	private void verifyGisCustomerReferencedTableEntriesDeletedCorrectly(String customerId) {
+	private void verifyGisCustomerReferencedTableEntriesDeletedCorrectly(String customerId, Integer expectedLocationCount) {
 		Customer customer = new Customer();
 
 		Integer anemometerCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[Anemometer]  WHERE CalibrationRecordId IN (SELECT [ID] FROM [dbo].[CalibrationRecord] WHERE [SurveyorUnitId] IN ((SELECT [Id] FROM [dbo].[SurveyorUnit] WHERE [LocationId] IN (SELECT [Id] FROM [dbo].[Location] WHERE CustomerID='" + customerId + "'))))");
@@ -421,7 +472,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 		assertTrue(String.format("[User] Expected Count=0, Actual=%d", userCount), userCount == 0);
 
 		Integer locationCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[Location] WHERE [CustomerId]='" + customerId + "'");
-		assertTrue(String.format("[Location] Expected Count=0, Actual=%d", locationCount), locationCount == 0);
+		assertTrue(String.format("[Location] Expected Count=%d, Actual=%d", expectedLocationCount, locationCount), locationCount == expectedLocationCount);
 
 		Integer customerSettingsCount = customer.executeSingleInt("SELECT COUNT(*) FROM [dbo].[CustomerSettings] WHERE CustomerId='" + customerId + "'");
 		assertTrue(String.format("[CustomerSettings] Expected Count=0, Actual=%d", customerSettingsCount), customerSettingsCount == 0);

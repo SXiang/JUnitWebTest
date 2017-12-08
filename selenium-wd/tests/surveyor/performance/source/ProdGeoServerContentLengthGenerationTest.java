@@ -148,19 +148,4 @@ public class ProdGeoServerContentLengthGenerationTest extends BaseTest {
 		Log.info(String.format("Writing to csv result file -> %s", csvResultFilePath));
 		FileUtility.writeToFile(csvResultFilePath, fileLines.toArray(new String[fileLines.size()]));
 	}
-
-//	public static void main(String[] args) throws IOException {
-//		List<String> fileLines = FileUtility.readFileLinesToList("C:\\QATestLogs\\ab.output-6B3197ED113B416A83AE6D9340F4C300.txt", FileUtility.ENCODING_UTF16LE);
-//		fileLines.stream()
-//			.forEach(line -> Log.info(line));
-//		final Integer contentLen = fileLines.stream()
-//			.filter(l -> l.startsWith("Document Length:"))
-//			.map(l -> extractContentLength(l))
-//			.collect(Collectors.toList()).get(0);
-//		Log.info(String.format("Got content length = %d", contentLen));
-//
-////		String line = "Document Length:        896888 bytes";
-////		Integer contentLen = extractContentLength(line);
-////		Log.info(String.format("Got content length = %d", contentLen));
-//	}
 }
