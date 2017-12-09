@@ -1022,7 +1022,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean checkAndGenerateBaselineShapeFiles(String unzipFolder, String testCaseID) throws Exception {
 		Log.method("ReportsCommonPage.checkAndGenerateBaselineShapeFiles", unzipFolder, testCaseID);
-		boolean isGenerateBaselineShapeFiles = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
+		boolean isGenerateBaselineShapeFiles = true;//changeback//true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		Path unzipDirectory = Paths.get(unzipFolder);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
 		for (String filePath : filesInDirectory) {
@@ -1037,7 +1037,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
 		Log.method("ReportsCommonPage.checkAndGenerateBaselineSSRSImage", reportName, testCaseID);
-		boolean isGenerateBaselineSSRSImages = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+		boolean isGenerateBaselineSSRSImages = true;//changeback//true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 		if (isGenerateBaselineSSRSImages) {
 			String htmlReportName = reportName + ".html";
 			String htmlReportPath = Paths.get(testSetup.getDownloadPath(), htmlReportName).toString();
@@ -3550,7 +3550,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				String pathToBaseImage = Paths
 						.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString()
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
-				boolean generateBaseline = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+				boolean generateBaseline = true;//changeback//true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
 					Log.info("Image verification failed");
 					return false;
@@ -3735,7 +3735,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 							+ viewName + "_"+numFiles + ".png").toString();
 				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
-				boolean generateBaseline = true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+				boolean generateBaseline = true;//changeback//true;//changeback//TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 				if (!verifyScreenshotWithBase(actualViewPath, baseViewFile, generateBaseline)) {
 					return false;
 				}

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -98,7 +99,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 * Results: 
 	 *	- Assets Intersecting LISA are not highlighted in mobile app
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961, location = InvestigationReportDataProvider.class)
 	public void TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -293,13 +294,13 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		/* 4.1 Mobile view */
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", new Rectangle(700, 200, 400, 300)));
 		
 		/* 4.2 Web view */
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(970, 470, 40, 40), true));
 
 		/* 5. Verify color/status of lisa indications - In progress (Violet)*/
 		/* 5.1 Web view - investigate */
@@ -315,7 +316,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+1);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(700, 200, 400, 300)));
 		
 		/* 5.2 Mobile view - investigate */
 		mobileReportsPage.open();
@@ -326,7 +327,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		//5.21 Mobile InProgress - color verification */
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8", new Rectangle(340, 560, 110, 60)));
         /*5.22 Web view InProgress - Status */
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -344,7 +345,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		/* 6.2 Mobile no leak - color verification */
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoLeak-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoLeak-8", new Rectangle(340, 560, 110, 60)));
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 	
@@ -519,7 +520,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - Investigation Data csv file should have LISANumber header and value as LISA 1, LISA 2,..
 	 *  - Lisa number, amplitude, status, Investigator, leak time, notes, investigation Date/Time, etc. values in CSV should match UI values
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC518, location = InvestigationReportDataProvider.class)
 	public void TC518_GenerateInvestigationReportAsCustomerSupervisorAndAssignLISAToMultiplePeople(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -680,7 +681,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - Supervisor user can see above investigated Lisa as Investigation Completed - Found Other Source
 	 *  - Status and other values displayed should persist
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1573, location = InvestigationReportDataProvider.class)
 	public void TC1573_DriverUserCannotViewUnassignedLISAOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,Integer mobileUserDataRowID2) throws Exception {
@@ -810,7 +811,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - On map, assets intersecting Lisa are highlighted
 	 *  - Lisa will be shown as Found Gas Leak on Lisa list screen
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1574, location = InvestigationReportDataProvider.class)
 	public void TC1574_UtilityAdminCanViewAssignedLISAOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {

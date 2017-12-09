@@ -15,6 +15,7 @@ import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -110,7 +111,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Second LISA should be marked as Investigated, Leak Found, with Status of In Progress
 	 * - Third LISA should be marked as Investigated, Leak Not Found, with Status of Found Other Source
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC219, location = InvestigationReportDataProvider.class)
 	public void TC219_LisaInvestigatedAndLeakFoundStatusShouldPersistOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -197,7 +198,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * Results:
 	 * -  Search result should display the lisa with that provided CH4 value
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC224, location = InvestigationReportDataProvider.class)
 	public void TC224_SearchValidLisaOnInvestigationReportScreen(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -244,7 +245,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Investigation status, Leak found, Date values should be updated
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, etc
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC807, location = InvestigationReportDataProvider.class)
 	public void TC807_InvestigateLisaAsNewUser(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -332,7 +333,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is logged out successfully
 	 * - Investigation report SSRS PDF is displaying correct LISA investigation status.  Lisa investigated: Yes  Leak Found: Yes
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1553, location = InvestigationReportDataProvider.class)
 	public void TC1553_CheckCustomerDriverCanLogoutFromMapPageInMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -400,7 +401,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Report is searched successfully
 	 * - User can see LISA associated searched report
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1623, location = InvestigationReportDataProvider.class)
 	public void TC1623_CustomerUserCanSearchValidInvestigationReportOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -454,7 +455,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * Results:
 	 * -  "No matching records found" or user friendly message should be displayed to the user
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1624, location = InvestigationReportDataProvider.class)
 	public void TC1624_MessageToUserInvalidInvestigationReportOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -516,7 +517,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is navigated to a map showing user's location
 	 * - On map, assets intersecting Classic LISAs are highlighted
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1628, location = InvestigationReportDataProvider.class)
 	public void TC1628_MobileViewClassicLISAshape(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -600,7 +601,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-		int workingLisa = 8;
+		int workingLisa = 1;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
@@ -613,8 +614,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap", new Rectangle(0, 700, 0, 0)));
-
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap", new Rectangle(600, 200, 600, 500)));
 		mobileLoginPage.logout();
 	}
 
