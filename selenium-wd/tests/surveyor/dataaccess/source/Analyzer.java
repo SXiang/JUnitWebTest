@@ -268,6 +268,20 @@ public class Analyzer extends BaseEntity {
 		executeNonQuery(SQL);
 	}
 
+
+	public void addCapabilityType(CapabilityType capabilityType) {
+		String SQL = String.format("UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=%d WHERE [AnalyzerId]=N'%s' AND [HardwareCapabilityTypeId]=%d; "
+				+ "IF @@ROWCOUNT=0 INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'%s', %d);",
+				capabilityType.getIndex(), getId(), capabilityType.getIndex(), getId(), capabilityType.getIndex());
+		executeNonQuery(SQL);
+	}
+
+	public void removeCapabilityType(CapabilityType capabilityType) {
+		String SQL = String.format("DELETE [dbo].[AnalyzerHardwareCapabilityType] WHERE [AnalyzerId]=N'%s' AND [HardwareCapabilityTypeId]=%d",
+				getId(), capabilityType.getIndex());
+		executeNonQuery(SQL);
+	}
+
 	private static CapabilityType loadCapabilityFrom(ResultSet resultSet) {
 		CapabilityType capability = CapabilityType.Ethane;
 		try {
