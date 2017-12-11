@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +32,8 @@ public class ProdGeoServerMultipleCustomerAPITest extends BaseTest {
 
 	private static LoadTestParallelExecutor parallelTestExecutor = null;
 
-	@BeforeClass
-	public static void beforeClass() throws IOException {
+	@Before
+	public void beforeTest() throws IOException {
 		parallelTestExecutor = LoadTestParallelExecutor.newParallelExecutor();
 	}
 
