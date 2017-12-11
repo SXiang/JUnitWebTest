@@ -273,6 +273,14 @@ public class TestEnvironmentActions extends BaseActions {
 		return TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
 	}
 
+	public String getAnalyzerSerialNumber(Integer dataRowID) throws NumberFormatException, Exception {
+		TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		StringBuffer outAnalyzerSerialNumber = new StringBuffer();
+		StringBuffer outAnalyzerSharedKey = new StringBuffer();
+		getAnalyzerInfo(dataRow, outAnalyzerSerialNumber, outAnalyzerSharedKey);
+		return outAnalyzerSerialNumber.toString();
+	}
+
 	public void getAnalyzerInfo(TestEnvironmentDataRow dataRow, StringBuffer outAnalyzerSerialNumber, StringBuffer outAnalyzerSharedKey) throws NumberFormatException, Exception {
 		String analyzerSerialNumber = null;
 		String analyzerSharedKey = null;

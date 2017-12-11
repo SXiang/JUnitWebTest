@@ -29,6 +29,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	public static final String STATUS_TEMP_CANVAS_CTX = "test_ctx = $(\"#status_temp_canvas\")[0].getContext('2d');";
 	public static final String STATUS_FLOW_CANVAS_CTX = "test_ctx = $(\"#status_flow_canvas\")[0].getContext('2d');";
 	public static final String STATUS_GPS_CANVAS_CTX = "test_ctx = $(\"#status_gps_canvas\")[0].getContext('2d');";
+	public static final String STATUS_IGPS_CANVAS_CTX = "test_ctx = $(\"#status_igps_canvas\")[0].getContext('2d');";
 	public static final String STATUS_ANEMOMETER_CANVAS_CTX = "test_ctx = $(\"#status_anemometer_canvas\")[0].getContext('2d');";
 	private static final String CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA = "centerX = 40;centerY = 40;fontY = 12;paddingY = 5;rectWidth = 1;rectHeight = 1;var imgData=test_ctx.getImageData(centerX,centerY-fontY-paddingY,rectWidth,rectHeight);";
 
@@ -235,6 +236,26 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	public boolean isGPSButtonGreen() {
 		OLMapUtility olMapUtility = new OLMapUtility(driver);
 		return olMapUtility.isButtonGreen(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isiGPSButtonRed() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonRed(STATUS_IGPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isiGPSButtonBlue() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonBlue(STATUS_IGPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isiGPSButtonYellow() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonYellow(STATUS_IGPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isiGPSButtonGreen() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonGreen(STATUS_IGPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
 	}
 
 	public boolean isAnemometerButtonRed() {
