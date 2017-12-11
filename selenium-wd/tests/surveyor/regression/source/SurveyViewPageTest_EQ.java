@@ -80,8 +80,7 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
-		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
-		//assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}
 
 	/**
@@ -145,7 +144,6 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
-		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
-		//assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}
 }
