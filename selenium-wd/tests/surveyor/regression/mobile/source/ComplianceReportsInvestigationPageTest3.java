@@ -100,7 +100,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * - At top of screen, next to LISA ID, "In Progress" will be displayed.
 	 * - LISA will be marked "In Progress"
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1722, location = InvestigationReportDataProvider.class)
 	public void TC1722_InProgressStateForInvestigationsInMobileApp(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -205,7 +205,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  The app will display all LISAs for that report regardless of assignment. All unassigned LISAs should be light orange (Not Investigated)
 	 * -  All assigned bot not investigated LISA should be displayed in light grey color (Not Investigated (Light Grey))
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1723, location = InvestigationReportDataProvider.class)
 	public void TC1723_MakeColorsOfInvestigationConsistentForDisposition(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -399,7 +399,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  All drop-down menus should drop DOWN, not go UP. The user will be navigated to the previous screen showing the list of leaks
 	 * -  The edited details should persist
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1761, location = InvestigationReportDataProvider.class)
 	public void TC1761_MoibleUserIsAbleToEditLeakDetails(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -742,7 +742,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  A confirmation will appear
 	 * -  The deleted leak will no longer appear in the list
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1764, location = InvestigationReportDataProvider.class)
 	public void TC1764_MobileUserIsAbleToDeleteLeaks(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -902,7 +902,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  The deleted leak will no longer appear in the list
 	 * -  No leaks will appear for that LISA
 	 */
-	@Test
+	@Ignore@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1767, location = InvestigationReportDataProvider.class)
 	public void TC1767_MobileUserIsAbleToDeleteAllOtherSource(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
