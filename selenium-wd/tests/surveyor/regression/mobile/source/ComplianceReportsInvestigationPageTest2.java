@@ -294,13 +294,13 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		/* 4.1 Mobile view */
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", new Rectangle(700, 200, 400, 300)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", new Rectangle(200, 615, 350, 200)));
 		
 		/* 4.2 Web view */
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(970, 470, 40, 40), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(750, 380, 100, 50), true));
 
 		/* 5. Verify color/status of lisa indications - In progress (Violet)*/
 		/* 5.1 Web view - investigate */
@@ -316,7 +316,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+1);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(700, 200, 400, 300)));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(700, 200, 250, 250)));
 		
 		/* 5.2 Mobile view - investigate */
 		mobileReportsPage.open();
@@ -366,7 +366,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webNoLeak-8", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webNoLeak-8", new Rectangle(750, 380, 100, 50), true));
 		
 		/*** Test for user role - supervisor ***/
 		mobileLoginPage.open();

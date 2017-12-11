@@ -205,7 +205,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  The app will display all LISAs for that report regardless of assignment. All unassigned LISAs should be light orange (Not Investigated)
 	 * -  All assigned bot not investigated LISA should be displayed in light grey color (Not Investigated (Light Grey))
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1723, location = InvestigationReportDataProvider.class)
 	public void TC1723_MakeColorsOfInvestigationConsistentForDisposition(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -399,7 +399,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  All drop-down menus should drop DOWN, not go UP. The user will be navigated to the previous screen showing the list of leaks
 	 * -  The edited details should persist
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1761, location = InvestigationReportDataProvider.class)
 	public void TC1761_MoibleUserIsAbleToEditLeakDetails(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -536,7 +536,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.FOUNDGASLEAK);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowLeak-8", getStndSQACusLisaRectangle(1)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowLeak-8", getStndSQACusLisaRectangle(8)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsLeak-8", new Rectangle(0,120,0,-1000)));
@@ -1044,10 +1044,10 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		case 1: return new Rectangle(200, 615, 350, 200);
 		case 3: return new Rectangle(200, 450, 350, 200);
 		case 6: return new Rectangle(200, 600, 350, 200);
-		case 7: return new Rectangle(400, 590, 50, 20);
+		case 7: return new Rectangle(400, 590, 50, 30);
 		case 8: return new Rectangle(340, 560, 110, 60);
-		case 5: return new Rectangle(350,590,50,20);
-		default: return new Rectangle(350,590,50,20);
+		case 5: return new Rectangle(350,590,50,30);
+		default: return new Rectangle(350,590,50,30);
 		}
 	}
 }

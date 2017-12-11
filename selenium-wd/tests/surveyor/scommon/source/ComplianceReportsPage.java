@@ -2476,9 +2476,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 		final String datePrinted = Resources.getResource(ResourceKeys.ReportSSRS_DatePrinted);
 		reportId = reportId.substring(0, 6).toUpperCase();	
-		 String[] reportHeaders = {"^LISAInvestigation Table\\s*$","^"+datePrinted+".+$","^[A-Z]{3}$","^"+reportId+"\\s*$","^"+reportTitle+"\\s*$",
-				 "^"+LisaInvestigationReportSSRS_InvestigationReport+"\\s*$", "^"+_HEADERS_Investigator + "\\s"+ _HEADERS_Duration+"\\s$"};
-		 for(String rptHeader:reportHeaders){
+		 String[] reportHeadersAndFooter = {"^LISAInvestigation Table\\s*$","^"+reportId+"\\s*$","^"+reportTitle+"\\s*$",
+				 "^"+LisaInvestigationReportSSRS_InvestigationReport+"\\s*$", "^"+_HEADERS_Investigator + "\\s"+ _HEADERS_Duration+"\\s$",
+				 "^Report Author:.*$","^"+datePrinted+".+$","^[A-Z]{3}$"};
+		 for(String rptHeader:reportHeadersAndFooter){
 			 investigationResultTable = investigationResultTable.replaceAll("(?m)"+rptHeader+"\r\n", "");
 		 }
 		 
