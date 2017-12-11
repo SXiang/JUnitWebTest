@@ -25,6 +25,8 @@ import common.source.HostSimInstructions.Selector;
 import common.source.OLMapEntities.Indication;
 import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.RegexUtility;
+import surveyor.dataaccess.source.Analyzer;
+import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -544,7 +546,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Disconnect the GPS cable from the GPS antenna
 	 *	- Drive in an area where indications reliably appear
 	 *	Verifications:
-	 *	- Once the cable is disconnected from the GPS antenna, the "GPS" indicator text should change to "iGPS" and the color of the indicator should change from green to blue
+	 *	- The color of the indicator will be green after the cable is disconnected. It will turn yellow, then red as it starts to drift off course. The indicator will no longer turn blue under any conditions)
 	 *	- Breadcrumb should be blue and closely follow the path of the car with minimal straying off the actual course and indications/LISAs should appear as normal
 	 * @throws Exception
 	**/
@@ -579,7 +581,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		// collect indications shown during the survey.
 		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
 
-		assertTrue(driverViewPageAction.verifyGPSButtonIsBlue(EMPTY, NOTSET));
+		assertFalse(driverViewPageAction.verifyGPSButtonIsBlue(EMPTY, NOTSET));      // should NOT be blue.
 		assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Blue.toString(), NOTSET));
 
 		// stop survey.
@@ -606,11 +608,11 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Enter a survey tag, fill out the environmental conditions and select "Analytics" as the survey mode and click Start Survey
 	 *	- Drive for a short distance to produce a blue breadcrumb
 	 *	- Disconnect the GPS cable from the GPS antenna
-	 *	- Drive until the iGPS indicator turns from blue to yellow to red
+	 *	- Drive until the iGPS indicator turns from green to yellow to red
 	 *	- Drive in an area where indications reliably appear
 	 *	Verifications:
-	 *	- Once the cable is disconnected from the GPS antenna, the "GPS" indicator text should change to "iGPS" and the color of the indicator should change from green to blue
-	 *	- When the iGPS indicator turns from blue to yellow to red, a warning message should appear at the top left in red font
+	 *	- Once the cable is disconnected from the GPS antenna, the "GPS" indicator text should change to "iGPS"
+	 *  - The gauge goes from green to yellow to red. It will no longer turn blue under any conditions
 	 *	- While the iGPS indicator is red, there should be no breadcrumb drawn in any color. FOV and indications/LISAs should also be absent from the survey where the iGPS indicator was red
 	**/
 	@Test
@@ -626,53 +628,66 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, userDataRowID);   /* Customer Driver */
 
-		Log.info("Starting Analyzer...");
-		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
-		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+		String analyzerSerialNumber = ActionBuilder.createTestEnvironmentAction().getAnalyzerSerialNumber(analyzerDb3DataRowID);
+		Analyzer analyzer = Analyzer.getAnalyzerBySerialNumber(analyzerSerialNumber);
+		try {
+			Log.info("Adding capability type - [InertialGPS] ...");
+			analyzer.addCapabilityType(CapabilityType.InertialGPS);
 
-		String[] ch4Values = {"9.5", "10.5"};
-		String[] c2h6Values = {"3.5", "3.5"};
-		getTestEnvironmentAction().generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForEthaneSurvey(ch4Values, c2h6Values);
+			Log.info("Starting Analyzer...");
+			getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		Log.info("Starting Replay...");
-		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+			String[] ch4Values = {"9.5", "10.5"};
+			String[] c2h6Values = {"3.5", "3.5"};
+			getTestEnvironmentAction().generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForEthaneSurvey(ch4Values, c2h6Values);
 
-		// start survey.
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		assertTrue(driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID));
+			Log.info("Starting Replay...");
+			getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 
-		// collect indications shown during the survey.
-		Set<Indication> indicationsOnDriverView1 = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeToGetDegradediGPS);
-		assertTrue(driverViewPageAction.verifyGPSButtonIsYellow(EMPTY, NOTSET));
-		assertTrue(driverViewPageAction.verifyiGPSDriftWarningMessageIsShowing(EMPTY, NOTSET));
+			// start survey.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			assertTrue(driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID));
 
-		// blue breadcrumbs when iGPS blue or yellow
-		assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Blue.toString(), NOTSET));
+			// collect indications shown during the survey.
+			Set<Indication> indicationsOnDriverView1 = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeToGetDegradediGPS);
 
-		Set<Indication> indicationsOnDriverView2 = driverViewPageAction.collectIndicationsDuringSurvey(additionalSurveyRuntimeToGetBadiGPS);
-		assertTrue(driverViewPageAction.verifyGPSButtonIsRed(EMPTY, NOTSET));
-		assertTrue(driverViewPageAction.verifyiGPSDriftErrorMessageIsShowing(EMPTY, NOTSET));
+			assertFalse(driverViewPageAction.verifyiGPSButtonIsBlue(EMPTY, NOTSET));     // should NOT be blue
+			assertTrue(driverViewPageAction.verifyiGPSButtonIsYellow(EMPTY, NOTSET));    // should be yellow
+			assertTrue(driverViewPageAction.verifyiGPSDriftWarningMessageIsShowing(EMPTY, NOTSET));
 
-		// gray breadcrumbs when iGPS is red
-		assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Gray.toString(), NOTSET));
+			// blue breadcrumbs when iGPS blue or yellow
+			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Blue.toString(), NOTSET));
 
-		// stop survey.
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		assertTrue(driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET));
+			Set<Indication> indicationsOnDriverView2 = driverViewPageAction.collectIndicationsDuringSurvey(additionalSurveyRuntimeToGetBadiGPS);
+			assertTrue(driverViewPageAction.verifyiGPSButtonIsRed(EMPTY, NOTSET));
+			assertTrue(driverViewPageAction.verifyiGPSDriftErrorMessageIsShowing(EMPTY, NOTSET));
 
-		// stop simulator and PSA.
-		Log.info("Stopping Analyzer...");
-		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+			// gray breadcrumbs when iGPS is red
+			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Gray.toString(), NOTSET));
 
-		int totalIndications = indicationsOnDriverView2.size();   // Indications collected in the end will have all the indications shown in UI.
-		indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
-		Log.info(String.format("Indications detected in Driver view 2 = %d", totalIndications));
-		indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
+			// stop survey.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			assertTrue(driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET));
 
-		// confirm correct number of indication. Totally 6 peaks generated. 2 generated right after setting iGPS to bad.
-		// show 3 or 4 peaks when iGPS is blue or yellow. no peaks when iGPS set to bad.
-		assertTrue(totalIndications == 3 || totalIndications == 4);
+			// stop simulator and PSA.
+			Log.info("Stopping Analyzer...");
+			getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+
+			int totalIndications = indicationsOnDriverView2.size();   // Indications collected in the end will have all the indications shown in UI.
+			indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
+			Log.info(String.format("Indications detected in Driver view 2 = %d", totalIndications));
+			indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
+
+			// confirm correct number of indication. Totally 6 peaks generated. 2 generated right after setting iGPS to bad.
+			// show 3 or 4 peaks when iGPS is blue or yellow. no peaks when iGPS set to bad.
+			assertTrue(totalIndications == 3 || totalIndications == 4);
+
+		} finally {
+			Log.info("Removing capability type - [InertialGPS] ...");
+			analyzer.removeCapabilityType(CapabilityType.InertialGPS);
+		}
 	}
 
 	/* * Test Case ID: TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer

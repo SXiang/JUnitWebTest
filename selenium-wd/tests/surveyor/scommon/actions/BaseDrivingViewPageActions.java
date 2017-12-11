@@ -182,6 +182,26 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		return getBaseDrivingViewPage().isGPSButtonYellow();
 	}
 
+	public boolean verifyiGPSButtonIsGreen(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyiGPSButtonIsGreen", data, dataRowID);
+		return getBaseDrivingViewPage().isiGPSButtonGreen();
+	}
+
+	public boolean verifyiGPSButtonIsRed(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyiGPSButtonIsRed", data, dataRowID);
+		return getBaseDrivingViewPage().isiGPSButtonRed();
+	}
+
+	public boolean verifyiGPSButtonIsBlue(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyiGPSButtonIsBlue", data, dataRowID);
+		return getBaseDrivingViewPage().isiGPSButtonBlue();
+	}
+
+	public boolean verifyiGPSButtonIsYellow(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyiGPSButtonIsYellow", data, dataRowID);
+		return getBaseDrivingViewPage().isiGPSButtonYellow();
+	}
+
 	public boolean verifyHBTempButtonIsGreen(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyHBTempButtonIsGreen", data, dataRowID);
 		return getBaseDrivingViewPage().isHBTempButtonGreen();
