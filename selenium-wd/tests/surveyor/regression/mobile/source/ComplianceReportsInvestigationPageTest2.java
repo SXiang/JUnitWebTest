@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -99,7 +98,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 * Results: 
 	 *	- Assets Intersecting LISA are not highlighted in mobile app
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961, location = InvestigationReportDataProvider.class)
 	public void TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -520,7 +519,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - Investigation Data csv file should have LISANumber header and value as LISA 1, LISA 2,..
 	 *  - Lisa number, amplitude, status, Investigator, leak time, notes, investigation Date/Time, etc. values in CSV should match UI values
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC518, location = InvestigationReportDataProvider.class)
 	public void TC518_GenerateInvestigationReportAsCustomerSupervisorAndAssignLISAToMultiplePeople(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -681,7 +680,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - Supervisor user can see above investigated Lisa as Investigation Completed - Found Other Source
 	 *  - Status and other values displayed should persist
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1573, location = InvestigationReportDataProvider.class)
 	public void TC1573_DriverUserCannotViewUnassignedLISAOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,Integer mobileUserDataRowID2) throws Exception {
@@ -811,7 +810,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 *  - On map, assets intersecting Lisa are highlighted
 	 *  - Lisa will be shown as Found Gas Leak on Lisa list screen
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1574, location = InvestigationReportDataProvider.class)
 	public void TC1574_UtilityAdminCanViewAssignedLISAOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
