@@ -94,12 +94,12 @@ public class DbSeedExecutor {
 		Connection connection = null;
 		boolean applyCorrection = false;
 		try {
-			connection = ConnectionFactory.createConnection();
-			DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
-			DbStateCorrector dbStateCorrector = DbStateCorrector.newInstance(connection);
-
 			if (surveyFileTags != null && surveyFileTags.length > 0) {
 				for (String surveyFileTag : surveyFileTags) {
+					connection = ConnectionFactory.createConnection();
+					DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
+					DbStateCorrector dbStateCorrector = DbStateCorrector.newInstance(connection);
+
 					List<Map<String, String>> surveyFileLines = getSurveyFileLines(surveyFileTag);
 
 					// Get survey tag and AnalyzerId from Survey-*.csv
@@ -108,44 +108,42 @@ public class DbSeedExecutor {
 					String analyzerSerialNumber = Analyzer.getAnalyzer(analyzerId).getSerialNumber();
 					String surveyId = null;
 					Survey survey = Survey.getSurveys(surveyTag).stream().filter(s -> s.getAnalyzerId().equalsIgnoreCase(analyzerId)).findFirst().orElse(null);
-					if (survey != null) {
-						surveyId = survey.getId();
-					}
-
-					if (surveyId == null) {
-						throw new Exception(String.format("Did NOT find survey for tag='%s' and AnalyzerId='%s'", surveyTag, analyzerId));
-					}
-
-					// Detect/fix survey results data.
-					if (!dbStateVerifier.isSegmentSeedMatch(SegmentDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
-						dbStateCorrector.append(TableName.SEGMENT);
-						applyCorrection = true;
-					}
-
-					if (!dbStateVerifier.isSurveyResultSeedMatch(SurveyResultDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
-						dbStateCorrector.append(TableName.SEGMENT);     // segment has FK to SurveyResult table.
-						dbStateCorrector.append(TableName.SURVEYRESULT);
-						applyCorrection = true;
-					}
-
-					if (!dbStateVerifier.isPeakSeedMatch(PeakDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyTag, analyzerSerialNumber)) {
-						dbStateCorrector.append(TableName.PEAK);
-						applyCorrection = true;
-					}
-
-					if (!dbStateVerifier.isCaptureEventSeedMatch(CaptureEventDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyTag, analyzerSerialNumber)) {
-						dbStateCorrector.append(TableName.CAPTUREEVENT);
-						applyCorrection = true;
-					}
-
-					if (!dbStateVerifier.isFieldOfViewSeedMatch(FieldOfViewDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
-						dbStateCorrector.append(TableName.FIELDOFVIEW);
-						applyCorrection = true;
-					}
-
-					if (applyCorrection) {
-						Log.warn(String.format("Found polluted survey. surveyFileTag=[%s], surveyTag=[%s], surveyId=[%s], analyzerId=[%s]", surveyFileTag, surveyTag, surveyId, analyzerId));
+					if (survey == null) {
+						Log.info(String.format("Did NOT find expected seed survey for tag='%s' and AnalyzerId='%s'. Applying correction...", surveyTag, analyzerId));
 						dbStateCorrector.correctSurveySeedData(surveyFileTag, surveyId, analyzerId);
+					} else {
+						surveyId = survey.getId();
+						// Detect/fix survey results data.
+						if (!dbStateVerifier.isSegmentSeedMatch(SegmentDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
+							dbStateCorrector.append(TableName.SEGMENT);
+							applyCorrection = true;
+						}
+
+						if (!dbStateVerifier.isSurveyResultSeedMatch(SurveyResultDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
+							dbStateCorrector.append(TableName.SEGMENT);     // segment has FK to SurveyResult table.
+							dbStateCorrector.append(TableName.SURVEYRESULT);
+							applyCorrection = true;
+						}
+
+						if (!dbStateVerifier.isPeakSeedMatch(PeakDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyTag, analyzerSerialNumber)) {
+							dbStateCorrector.append(TableName.PEAK);
+							applyCorrection = true;
+						}
+
+						if (!dbStateVerifier.isCaptureEventSeedMatch(CaptureEventDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyTag, analyzerSerialNumber)) {
+							dbStateCorrector.append(TableName.CAPTUREEVENT);
+							applyCorrection = true;
+						}
+
+						if (!dbStateVerifier.isFieldOfViewSeedMatch(FieldOfViewDbSeedBuilder.readRowsFromSeed(surveyFileTag), surveyId)) {
+							dbStateCorrector.append(TableName.FIELDOFVIEW);
+							applyCorrection = true;
+						}
+
+						if (applyCorrection) {
+							Log.warn(String.format("Found polluted survey. surveyFileTag=[%s], surveyTag=[%s], surveyId=[%s], analyzerId=[%s]", surveyFileTag, surveyTag, surveyId, analyzerId));
+							dbStateCorrector.correctSurveySeedData(surveyFileTag, surveyId, analyzerId);
+						}
 					}
 				}
 			}

@@ -3,7 +3,6 @@ package surveyor.dbseed.source;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.List;
 
 import common.source.ArrayUtility;

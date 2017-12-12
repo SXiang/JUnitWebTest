@@ -183,8 +183,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		surveyViewPage.hideGisMenu();
 		surveyViewPage.setZoomLevelForAssets();
-		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
-		//assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
 
 		/* Verify  Reports */
 		homePage.open();
@@ -255,8 +254,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		surveyViewPage.hideGisMenu();
 		surveyViewPage.setZoomLevelForAssets();
-		// TBD: Enable this post automation GIS data published in Geoserver. Enabling test step tracked in SUR-403.
-		//assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
 
 		/* Verify  Reports */
 		homePage.open();
