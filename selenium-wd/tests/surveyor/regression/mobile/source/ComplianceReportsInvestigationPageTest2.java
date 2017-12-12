@@ -309,8 +309,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();		
 		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8-0", new Rectangle(0, 0, 0, 0), true));
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8-1", new Rectangle(750, 380, 100, 50), true));
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8-2", new Rectangle(630, 340, 50, 30), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8-2", new Rectangle(600, 320, 50, 30), true));
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -318,8 +317,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+1);
 		reportInvestigationsPage.clickOnFollow();
 		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-1-0", new Rectangle(0, 0, 0, 0)));
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-1-1", new Rectangle(850, 300, 300, 200)));
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-1-2", new Rectangle(680, 260, 300, 200)));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-1-2", new Rectangle(560, 320, 100, 50)));
 		
 		
 		
