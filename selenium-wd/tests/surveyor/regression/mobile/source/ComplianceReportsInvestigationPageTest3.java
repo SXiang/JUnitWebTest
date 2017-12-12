@@ -100,7 +100,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * - At top of screen, next to LISA ID, "In Progress" will be displayed.
 	 * - LISA will be marked "In Progress"
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1722, location = InvestigationReportDataProvider.class)
 	public void TC1722_InProgressStateForInvestigationsInMobileApp(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -742,7 +742,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  A confirmation will appear
 	 * -  The deleted leak will no longer appear in the list
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1764, location = InvestigationReportDataProvider.class)
 	public void TC1764_MobileUserIsAbleToDeleteLeaks(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -902,7 +902,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  The deleted leak will no longer appear in the list
 	 * -  No leaks will appear for that LISA
 	 */
-	@Ignore@Test
+	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1767, location = InvestigationReportDataProvider.class)
 	public void TC1767_MobileUserIsAbleToDeleteAllOtherSource(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
