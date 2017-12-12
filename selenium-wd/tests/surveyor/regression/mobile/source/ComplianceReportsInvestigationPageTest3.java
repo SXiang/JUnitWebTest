@@ -859,7 +859,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile - verify leak details
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-8", getStndSQACusLisaRectangle(8)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-8"));
 		mobileInvestigatePage.clickOnAddSource();
 		assertFalse(mobileInvestigatePage.isLeakShowing());
 		mobileLeakSourcePage.closeAddSourceDialog();
