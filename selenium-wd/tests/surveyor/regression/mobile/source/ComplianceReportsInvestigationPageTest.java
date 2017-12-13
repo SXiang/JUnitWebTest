@@ -613,7 +613,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap",new Rectangle(0,750,0,0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap", new Rectangle(0,750,0,0)));
 		mobileLoginPage.logout();
 	}
 
