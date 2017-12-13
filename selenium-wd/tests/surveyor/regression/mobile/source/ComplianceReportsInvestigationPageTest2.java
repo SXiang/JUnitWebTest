@@ -300,7 +300,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();
 		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(600, 320, 50, 30)));	
-	
+
 		/* 5. Verify color/status of lisa indications - In progress (Violet)*/
 		/* 5.1 Web view - investigate */
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
