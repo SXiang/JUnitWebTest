@@ -1038,7 +1038,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 	private Rectangle getStndSQACusLisaRectangle(int i){
 		switch(i){
-		case 1: return new Rectangle(200, 615, 350, 200);
+		case 1: return new Rectangle(200, 750, 350, 70);
 		case 3: return new Rectangle(200, 450, 350, 200);
 		case 6: return new Rectangle(200, 600, 350, 200);
 		case 7: return new Rectangle(400, 590, 50, 30);
