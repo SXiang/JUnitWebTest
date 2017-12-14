@@ -88,8 +88,7 @@ public class ReportJobPerformancePGELargeAreaTest2 extends BaseReportJobPerforma
 	 */
 	@Test
 	@UseDataProvider(value = PerformancePGEReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_PGE2, location = PerformancePGEReportJobDataProvider.class)
-	public void ReportJob_PerformancePGELargeAreaTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
-			Integer executionTimesForBaselines) throws Exception {
+	public void ReportJob_PerformancePGELargeAreaTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info(String.format("\nRunning [%s] Performance Test REPORT_JOB_PERFORMANCE_PROVIDER_PGE2 ...", rallyTestCaseID));
 
 		executeReportGenerationTest(userDataRowID, reportDataRowID);
