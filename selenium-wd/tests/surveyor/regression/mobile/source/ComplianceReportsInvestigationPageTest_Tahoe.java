@@ -471,7 +471,7 @@ public class ComplianceReportsInvestigationPageTest_Tahoe extends BaseReportsPag
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(reportName, workingLisa);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationLisaMap", new Rectangle(420, 700, 0, 0)));
 
 		mobileLoginPage.logout();
 	}
