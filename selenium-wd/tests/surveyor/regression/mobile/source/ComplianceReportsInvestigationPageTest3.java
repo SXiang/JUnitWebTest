@@ -3,16 +3,13 @@
  */
 package surveyor.regression.mobile.source;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -125,12 +122,9 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+4);
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+2);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8);
-		reportInvestigationsPage.selectLisas(lisaNumberPrefix+5);
 		reportInvestigationsPage.selectLisas(lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
@@ -140,25 +134,18 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
-		
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
 		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
-		
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
-		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
 
 		// Mobile - add leak and complete
-		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4,  IndicationStatus.NOTINVESTIGATED, leakDetails);
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1,  IndicationStatus.NOTINVESTIGATED, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-4"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-1"));
 		mobileInvestigatePage.navigateBack();
 		mobileInvestigationPage.waitUntilPageLoad();
 		mobileInvestigatePage.refreshPage();
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4, IndicationStatus.INPROGRESS));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1, IndicationStatus.INPROGRESS));
 
 		// Mobile - login and investigate lisas - Supervisor
 		mobileLoginPage.open();
@@ -167,25 +154,18 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Supervisor can see all the lisas
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
-		
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
-		
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
 
 		// Mobile - add leak and complete
-		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 8);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8,  IndicationStatus.NOTINVESTIGATED, leakDetails);
+		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2,  IndicationStatus.NOTINVESTIGATED, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-8"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-2"));
 		mobileInvestigatePage.navigateBack();
 		mobileInvestigationPage.waitUntilPageLoad();
 		mobileInvestigatePage.refreshPage();
-		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8,  IndicationStatus.INPROGRESS));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2,  IndicationStatus.INPROGRESS));
 
 		mobileLoginPage.logout();	
 	}
@@ -277,7 +257,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile Found no Leak - color verification: blue
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoGasFound-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoGasFound-1", getStndSQACusLisaRectangle(1)));
 		
 		// Mobile - add leak and complete
 		mobileReportsPage.open();
@@ -294,7 +274,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile FoundLeak - color verification: Red
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, IndicationStatus.FOUNDGASLEAK);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", getStndSQACusLisaRectangle(1)));
 		
 		// Mobile - add leak and pause
 		mobileReportsPage.open();
@@ -311,7 +291,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile Inprogress - color verification: violet
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, IndicationStatus.INPROGRESS);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-1", getStndSQACusLisaRectangle(1)));
 
 		// Mobile - not investigated
 		mobileReportsPage.open();
@@ -319,7 +299,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile not investigated - color verification: light grey
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+7, IndicationStatus.NOTINVESTIGATED);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotInvestigated-7", new Rectangle(0,500,0,0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotInvestigated-7", getStndSQACusLisaRectangle(7)));
 		
 		// Mobile - login and investigate lisas - Supervisor
 		mobileLoginPage.open();
@@ -348,7 +328,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile Found no Leak - color verification: blue
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoGasFound-8", new Rectangle(0,700,0,0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoGasFound-8", getStndSQACusLisaRectangle(8)));
 		
 		// Mobile - add leak and complete
 		mobileReportsPage.open();
@@ -365,7 +345,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile FoundLeak - color verification: Red
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.FOUNDGASLEAK);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-8",new Rectangle(0,700,0,0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-8",getStndSQACusLisaRectangle(8)));
 		
 		// Mobile - add leak and pause
 		mobileReportsPage.open();
@@ -382,7 +362,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile Inprogress - color verification: violet
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8",new Rectangle(0,700,0,0)));	
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8",getStndSQACusLisaRectangle(8)));
 
 		// Mobile - not assigned
 		mobileReportsPage.open();
@@ -390,7 +370,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile not assigned - color verification: orange
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, IndicationStatus.NOTINVESTIGATED);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-5", new Rectangle(0,640,0,-500)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-5", getStndSQACusLisaRectangle(5)));
 		mobileLoginPage.logout();
 	}
 
@@ -497,7 +477,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, IndicationStatus.FOUNDGASLEAK);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowLeak-1"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowLeak-1", getStndSQACusLisaRectangle(1)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsLeak-1", new Rectangle(0,120,0,-1000)));
@@ -553,7 +533,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.FOUNDGASLEAK);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowLeak-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowLeak-8", getStndSQACusLisaRectangle(8)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsLeak-8", new Rectangle(0,120,0,-1000)));
@@ -669,7 +649,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, IndicationStatus.FOUNDOTHERSOURCE);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowOtherSource-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowOtherSource-1", getStndSQACusLisaRectangle(1)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsOtherSource-1", new Rectangle(0,120,0,-1000)));
@@ -725,7 +705,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.FOUNDOTHERSOURCE);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowOtherSource-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowOtherSource-8", getStndSQACusLisaRectangle(8)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsOtherSource-8", new Rectangle(0,120,0,-1000)));
@@ -835,7 +815,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-1", getStndSQACusLisaRectangle(1)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsNoGasFound-1", new Rectangle(0,120,0,-1000)));
@@ -879,7 +859,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile - verify leak details
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-8"));
 		mobileInvestigatePage.clickOnAddSource();
 		assertFalse(mobileInvestigatePage.isLeakShowing());
 		mobileLeakSourcePage.closeAddSourceDialog();
@@ -887,7 +867,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-8", getStndSQACusLisaRectangle(8)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsNoGasFound-8", new Rectangle(0,120,0,-1000)));
@@ -996,7 +976,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-1", getStndSQACusLisaRectangle(1)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsNoGasFound-1", new Rectangle(0,120,0,-1000)));
@@ -1048,7 +1028,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, IndicationStatus.NOGASFOUND);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFollowNoGasFound-8", getStndSQACusLisaRectangle(8)));
 		
 		mobileInvestigatePage.clickOnDirections();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileDirectionsNoGasFound-8", new Rectangle(0,120,0,-1000)));
@@ -1056,4 +1036,15 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		mobileLoginPage.logout();	
 	}
 
+	private Rectangle getStndSQACusLisaRectangle(int i){
+		switch(i){
+		case 1: return new Rectangle(200, 750, 350, 70);
+		case 3: return new Rectangle(200, 450, 350, 200);
+		case 6: return new Rectangle(200, 600, 350, 200);
+		case 7: return new Rectangle(400, 590, 50, 30);
+		case 8: return new Rectangle(340, 560, 110, 60);
+		case 5: return new Rectangle(350,590,50,30);
+		default: return new Rectangle(350,590,50,30);
+		}
+	}
 }
