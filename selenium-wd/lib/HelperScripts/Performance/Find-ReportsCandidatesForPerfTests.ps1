@@ -66,6 +66,7 @@ $SINGLE_QUOTE_ENCODED = "%27"
 
 $script:reportsAll = @{}
 $script:reportExternalIdMap = @{}
+$script:reportUsersMap = @{}
 $script:reportsBySurveyCount = @{}
 $script:reportsByNumIndications = @{}
 $script:reportsBySelectedArea = @{}
@@ -290,6 +291,33 @@ function Build-ReportExternalIdMap() {
         $j++
     }
 }
+
+function Build-ReportUsersMap() {
+    $inClause = Generate-ReportInClause
+
+    $query = "SELECT R.ID, ISNULL(RA.ExternalID, 'NULL') AS ExternalID
+                 FROM [$DatabaseName].[dbo].[Report] AS R
+                 INNER JOIN [$DatabaseName].[dbo].[ReportArea] AS RA ON R.Id = RA.ReportId
+                 INNER JOIN [$DatabaseName].[dbo].[Customer] AS C on R.CustomerId=C.Id
+                 WHERE C.Name='$CustomerName' AND R.Id IN ($inClause)"
+    $objReports = Get-DatabaseData -connectionString $ConnString -query $query -isSQLServer:$true
+    $j = 0
+    $objReports | % {
+        if ($j -gt 0) {
+            $obj = $_
+            $reportId  = $obj.Id;
+            $ExternalID = $obj.ExternalID;
+
+            if ($ExternalID -ne "NULL") {
+                Write-Host "$reportId -> ExternalID = $ExternalID"
+                $script:reportExternalIdMap.set_item($reportId, $ExternalID)
+            }
+        }
+
+        $j++
+    }
+}
+
 
 Build-ReportExternalIdMap
 Build-ReportBySurveyCountMap

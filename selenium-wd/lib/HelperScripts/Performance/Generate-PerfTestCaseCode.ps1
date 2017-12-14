@@ -3,17 +3,24 @@ SAMPLE USAGE:
 
 .\Generate-PerfTestCaseCode.ps1 `
     -BaseScriptFolder "C:\Repositories\surveyor-qa"   `
+    -CustomerName "PGE"   `
     -DatabaseIP "30.30.124.110"   `
     -DatabaseName "SurveyorScale"   `
     -DatabaseUser "spulikkal"   `
     -DatabasePwd "<password>"   `
     -ReportIDCsvFile "C:\temp\reportsForPerfTest-Filtered.csv"   `
+    -DataProviderClassName "PerformancePGEReportJobDataProvider"   `
+    -TestCategoryName "PGEPerf"   `
+    -TestCategoryShortName  "PGE"   `
     -OutputFolder "C:\temp"
 #>
 
 param(
   [Parameter(Mandatory=$true)]
   [String] $BaseScriptFolder,
+
+  [Parameter(Mandatory=$true)]
+  [String] $CustomerName,
 
   [Parameter(Mandatory=$true)]
   [String] $DatabaseIP,
@@ -31,6 +38,15 @@ param(
   [String] $ReportIDCsvFile,
 
   [Parameter(Mandatory=$true)]
+  [String] $DataProviderClassName,
+
+  [Parameter(Mandatory=$true)]
+  [String] $TestCategoryName,
+
+  [Parameter(Mandatory=$true)]
+  [String] $TestCategoryShortName,
+
+  [Parameter(Mandatory=$true)]
   [String] $OutputFolder
 )
 
@@ -45,6 +61,12 @@ $StartingLayerRowID = 13
 $StartingAssetLayerRowID = 42
 $StartingBoundaryLayerRowID = 10
 $StartingOptTabRowID = 18
+$userIDToXLSXRowIDMap = @{
+    "8CBBA239-38C1-9869-5595-39D7CBF041E7"="34"           # userID in report and corresponding RowID in XLSX. this is list of unique users across all the reports in input reportIDCSVFile
+    "68E53CEE-4B70-5A37-9F8E-39D68F05EFC9"="35"
+    "4DF19C72-13BE-74E3-64B7-39D68F0988AF"="36"
+    "14DD2F4F-465D-2D29-8B88-39D68F195F12"="37"
+}
 
 ### ----------------------------------------------------------------------------------------------------------
 
@@ -53,18 +75,25 @@ $StartingOptTabRowID = 18
 
 $ConnString="Server=$DatabaseIP;Database=$DatabaseName;User Id=$DatabaseUser;Password=$DatabasePwd;"
 
+$OUTFILE_PROVIDER_CODE = New-Item "$OutputFolder\ProviderCode.txt" -ItemType File -Force
+
 $OUTFILE_RPT = New-Item "$OutputFolder\Perf_ComplianceReportXLSXData.txt" -ItemType File -Force
 $OUTFILE_CBT = New-Item "$OutputFolder\Perf_CBTXLSXData.txt" -ItemType File -Force
 $OUTFILE_CMT = New-Item "$OutputFolder\Perf_CMTXLSXData.txt" -ItemType File -Force
 $OUTFILE_LAYERS = New-Item "$OutputFolder\Perf_LayersXLSXData.txt" -ItemType File -Force
 $OUTFILE_VIEWS = New-Item "$OutputFolder\Perf_ViewsXLSXData.txt" -ItemType File -Force
 $OUTFILE_OPTTAB = New-Item "$OutputFolder\Perf_OptTabXLSXData.txt" -ItemType File -Force
-
-# FIX this. Only created survey rows currently.
 $OUTFILE_SURVEYS = New-Item "$OutputFolder\Perf_SurveysXLSXData.txt" -ItemType File -Force
 
 $reportIdList = New-Object System.Collections.ArrayList
+$reportInfoList = New-Object System.Collections.ArrayList
 
+# all values list
+$surveysAllList = New-Object System.Collections.ArrayList
+$materialLayerAllList = New-Object System.Collections.ArrayList
+$boundaryLayerAllList = New-Object System.Collections.ArrayList
+ 
+# report specific maps
 $boundaryLayerMap = @{}
 $materialLayerMap = @{}
 $layerMap = @{}
@@ -149,62 +178,96 @@ function BaseMapTypeId-To-BaseMap($baseMapTypeId) {
     $baseMap
 }
 
-function Populate-Map($map, $reportID, $rptData) 
+function Populate-MapAndList($map, $list, $reportID, $rptData) 
 {
     if (-not $map.ContainsKey($reportID)) {
         $dataList = New-Object System.Collections.ArrayList
         $null = $dataList.Add($rptData)
+        if ($list -eq $null) { <# handles explicit NULL passed case #> }
+        else {
+            $null = $list.Add($rptData)
+        }
         $map.Add($reportID, $dataList)
     } else {
         $dataList = [System.Collections.ArrayList]$map.Get_Item($reportID)
         if (-not $dataList.Contains($rptData)) {
             $null = $dataList.Add($rptData)
+            if ($list -eq $null) { <# handles explicit NULL passed case #> }
+            else {
+                $null = $list.Add($rptData)
+            }
         }
         $map.Set_Item($reportID, $dataList)
     }        
 }
 
+function Populate-Map($map, $reportID, $rptData) 
+{
+    Populate-MapAndList -map $map -list $null -reportId $reportID -rptData $rptData
+}
+
 function Is-InMaterialLayerList($custMaterialId) {
-    [Int64]$retId = -1
-    $materialLayerMap.Keys | %{
-        $rptId = $_
-        $objList = $materialLayerMap.get_item($rptId)
-        $found = $false
-        $objList | % {
+    $objMatLayer = $null
+    $found = $false
+    $MaterialLayerAllList | %{
+        if (-not $found) {
             $obj = $_
-            $CustomerMaterialId = $obj.CustomerMaterialId;
-            [Int64]$RowID = $obj.RowID
-            if ($custMaterialId -eq $CustomerMaterialId) {
+            $matId = $obj.CustomerMaterialId;
+            if ($matId -eq $custMaterialId) {
                 $found = $true
-                $retId = $RowID + 1
+                $objMatLayer = New-Object PSObject -Property @{            
+                    CustomerMaterialId        = $obj.CustomerMaterialId              
+                    CustomerMaterialType      = $obj.CustomerMaterialType
+                    RowID                     = $obj.RowID
+                }
             }
         }
     }
 
-    $retId
+    $objMatLayer
 }
 
 function Is-InBoundaryLayerList($custBoundaryId) {
-    [Int64]$retId = -1
-    $boundaryLayerMap.Keys | %{
-        $rptId = $_
-        $objList = $boundaryLayerMap.get_item($rptId)
-        $found = $false
-        $objList | % {
+    $objBoundLayer = $null
+    $found = $false
+    $boundaryLayerAllList | %{
+        if (-not $found) {
             $obj = $_
-            $CustomerBoundaryId = $obj.CustomerBoundaryId;
-            [Int64]$RowID = $obj.RowID
-            if ($custBoundaryId -eq $CustomerBoundaryId) {
+            $boundId = $obj.CustomerBoundaryId;
+            if ($boundId -eq $custBoundaryId) {
                 $found = $true
-                $retId = $RowID + 1
+                $objBoundLayer = New-Object PSObject -Property @{            
+                    CustomerBoundaryId        = $obj.CustomerBoundaryId              
+                    CustomerBoundaryType      = $obj.CustomerBoundaryType
+                    RowID                     = $obj.RowID
+                }
             }
         }
     }
 
-    $retId
+    $objBoundLayer
 }
 
-function Is-InSurveyMapList($surveyId) {
+function Is-InAllSurveysList($surveyId) {
+    $objSrv = $null
+    $found = $false
+    $surveysAllList | %{
+        if (-not $found) {
+            $obj = $_
+            $SrvId = $obj.SurveyId;
+            if ($SrvId -eq $surveyId) {
+                $found = $true
+                $objSrv = New-Object PSObject -Property @{            
+                    SurveyId        = $obj.SurveyId              
+                    SurveyTag       = $obj.SurveyTag
+                    SurveyModeType  = $obj.SurveyModeType
+                    RowID           = $obj.RowID
+                }
+            }
+        }
+    }
+
+    $objSrv
 }
 
 
@@ -253,33 +316,23 @@ $objData | % {
         $CustomerBoundaryId = $obj.CustomerBoundaryId; 
         $CustomerBoundaryType = $obj.CustomerBoundaryType; 
 
-        $retId = Is-InBoundaryLayerList -custBoundaryId $CustomerBoundaryId
-        if ($retId -eq -1) {
-            # Not already present. Add entry for the report.
+        $isNew = $false
+        $Object = Is-InBoundaryLayerList -custBoundaryId $CustomerBoundaryId
+        if ($Object -eq $null) {
+            $isNew = $true
             $Object = New-Object PSObject -Property @{            
                     CustomerBoundaryId   = $CustomerBoundaryId              
                     CustomerBoundaryType = $CustomerBoundaryType
                     RowID                = $RowID
             }
-
-            Populate-Map -map $boundaryLayerMap -reportID $ReportId -rptData $Object
-            $RowID++           # only if NOT already present in Map we increment the rowID
-
-        } else {
-            # Entry present. If present for same report ID then skip. Else use the rowID and add entry to map.
-            if (!$boundaryLayerMap.ContainsKey($ReportId)) {
-                $RowID = $retId
-                $Object = New-Object PSObject -Property @{            
-                        CustomerBoundaryId   = $CustomerBoundaryId              
-                        CustomerBoundaryType = $CustomerBoundaryType
-                        RowID                = $RowID
-                }
-
-                Populate-Map -map $boundaryLayerMap -reportID $ReportId -rptData $Object
-            }
         }
 
-        #add-content $OUTFILE_CBT "$CustomerBoundaryId|$CustomerBoundaryType"
+        Populate-MapAndList -map $boundaryLayerMap -list $BoundaryLayerAllList -reportID $ReportId -rptData $Object
+        
+        if ($isNew) {
+            # increment RowID if new survey row.
+            $RowID++
+        }
     }
 
     $i++
@@ -305,32 +358,23 @@ $objData | % {
         $CustomerMaterialId = $obj.CustomerMaterialId; 
         $CustomerMaterialType = $obj.CustomerMaterialType; 
 
-        $retId = Is-InMaterialLayerList -custMaterialId $CustomerMaterialId
-        if ($retId -eq -1) {
-            # Not already present. Add entry for the report.
+        $isNew = $false
+        $Object = Is-InMaterialLayerList -custMaterialId $CustomerMaterialId
+        if ($Object -eq $null) {
+            $isNew = $true
             $Object = New-Object PSObject -Property @{            
                     CustomerMaterialId   = $CustomerMaterialId              
                     CustomerMaterialType = $CustomerMaterialType
                     RowID                = $RowID
             }
-
-            Populate-Map -map $materialLayerMap -reportID $ReportId -rptData $Object
-            $RowID++           # only if NOT already present in Map we increment the rowID
-
-        } else {
-            # Entry present. If present for same report ID then skip. Else use the rowID and add entry to map.
-            if (!$materialLayerMap.ContainsKey($ReportId)) {
-                $RowID = $retId
-                $Object = New-Object PSObject -Property @{            
-                        CustomerMaterialId   = $CustomerMaterialId              
-                        CustomerMaterialType = $CustomerMaterialType
-                        RowID                = $RowID
-                }
-
-                Populate-Map -map $materialLayerMap -reportID $ReportId -rptData $Object
-            }
         }
-        #add-content $OUTFILE_CMT "$CustomerMaterialId|$CustomerMaterialType"
+
+        Populate-MapAndList -map $materialLayerMap -list $MaterialLayerAllList -reportID $ReportId -rptData $Object
+        
+        if ($isNew) {
+            # increment RowID if new survey row.
+            $RowID++
+        }
     }
 
     $i++
@@ -340,27 +384,44 @@ $objData | % {
 # Populate report survey map
 #--------------------------------------#
 
-$sqlQuery = "SELECT R.ID AS ReportId, RDS.SurveyId, S.Tag AS SurveyTag, RDS.Snapped FROM [$DatabaseName].[dbo].[Report] AS R
-	INNER JOIN [$DatabaseName].[dbo].[ReportDrivingSurvey] AS RDS ON RDS.ReportId=R.Id
-	INNER JOIN [$DatabaseName].[dbo].[Survey] AS S ON RDS.SurveyId=S.Id
-WHERE R.Id IN ($ReportIDs)"
+$sqlQuery = "SELECT R.Id AS ReportId, S.Id AS SurveyId, S.Tag as SurveyTag, SMT.Description as SurveyModeType
+     FROM [$DatabaseName].[dbo].[Report] AS R
+       INNER JOIN [$DatabaseName].[dbo].[ReportDrivingSurvey] AS RDS ON R.Id=RDS.ReportId
+       INNER JOIN [$DatabaseName].[dbo].[Survey] AS S ON RDS.SurveyId=S.Id
+       INNER JOIN [$DatabaseName].[dbo].[SurveyModeType] AS SMT ON SMT.Id=S.SurveyModeTypeId
+       INNER JOIN [$DatabaseName].[dbo].[Customer] AS C on R.CustomerId=C.Id
+     WHERE R.Id IN ($ReportIDs)"
 Write-Host "Populating report survey map ... [DBQuery] -> $sqlQuery"
 $objData = Get-DatabaseData -connectionString $ConnString -query $sqlQuery -isSQLServer:$true
 
 $i = 0
+$RowID = $StartingSurveyRowID
 $objData | % {
     if ($i -gt 0) {
         $obj = $_
         $ReportId = $obj.ReportId;
-        $SurveyId = $obj.SurveyId; 
-        $SurveyTag = $obj.SurveyTag; 
-        $Snapped = $obj.Snapped; 
+        $SurveyId = $obj.SurveyId;
+        $SurveyTag = $obj.SurveyTag;
+        $SurveyModeType = $obj.SurveyModeType; 
 
-        add-content $OUTFILE_SURVEYS "$SurveyId|$SurveyTag|$Snapped"
+        $isNew = $false
+        $Object = Is-InAllSurveysList -surveyId $SurveyId
+        if ($Object -eq $null) {
+            $isNew = $true
+            $Object = New-Object PSObject -Property @{            
+                    SurveyId        = $SurveyId              
+                    SurveyTag       = $SurveyTag
+                    SurveyModeType  = $SurveyModeType
+                    RowID           = $RowID
+                }
+        }
 
-        # FIX: First round run create a list.
-        #      In second round run rename and fix mapping.
-
+        Populate-MapAndList -map $surveyMap -list $surveysAllList -reportID $ReportId -rptData $Object
+        
+        if ($isNew) {
+            # increment RowID if new survey row.
+            $RowID++
+        }
     }
 
     $i++
@@ -412,8 +473,6 @@ $objData | % {
 
         Populate-Map -map $viewMap -reportID $reportId -rptData $Object
         $RowID++
-        
-        #add-content $OUTFILE_VIEWS "$ViewName|$ShowLisa|$ShowFov|$ShowVehiclePath|$ShowIndications|$ShowIsotopicCaptures|$ShowGaps|$ShowAssets|$ShowBoundaries|$BaseMapId|$BaseMapType_Id|$HighlightLISAAssets|$HighlightGAPAssets|$ShowAssetBoxNumber"
     }
 
     $i++
@@ -525,53 +584,51 @@ $objData | % {
         $ReportOptTabularPDFContentRowIDs = Get-OptTabRowID -reportID $ReportId
         $ReportSurveyRowIDs = Get-SurveyRowIDs -reportID $ReportId
 
-        add-content $OUTFILE_RPT "$RowID|PerfTestPGE-$(Pad-Zeroes -value $i -width 4)|GenerateRandomString(20)|4|$TimeZone|$ExclusionRadius|$ReportMode|$MinimumAmplitude|$StartLat|$StartLong|$EndLat|$EndLong|$CustomerBoundaryType|$CustomerBoundaryName|$FovOpacity|$LisaOpacity|$MapWidth|$MapHeight|$ReportViewRowIDs|$ReportOptViewLayerRowIDs|$ReportOptTabularPDFContentRowIDs|$ReportSurveyRowIDs|$SearchAreaPreference"
+        $testCaseName = "PerfTest${CustomerName}-$(Pad-Zeroes -value $i -width 4)"
+
+        add-content $OUTFILE_RPT "$RowID|$testCaseName|GenerateRandomString(20)|4|$TimeZone|$ExclusionRadius|$ReportMode|$MinimumAmplitude|$StartLat|$StartLong|$EndLat|$EndLong|$CustomerBoundaryType|$CustomerBoundaryName|$FovOpacity|$LisaOpacity|$MapWidth|$MapHeight|$ReportViewRowIDs|$ReportOptViewLayerRowIDs|$ReportOptTabularPDFContentRowIDs|$ReportSurveyRowIDs|$SearchAreaPreference"
+
+        # Store report info for use with DataProvider code generation.
+        $ReportInfoObject = New-Object PSObject -Property @{                        ReportId          = $ReportId            UserId            = $UserId            ReportTitle       = $ReportTitle                          RowID             = $RowID            TestCaseName      = $testCaseName        }
+
+        $null = $reportInfoList.Add($ReportInfoObject)
+
         $RowID++
     }
 
     $i++
 }
 
-
 #--------------------------------------#
-# Print out all the referenced datas
+# Generate TestCase data
 #--------------------------------------#
 
 Write-Host "Building boundary layer test case data..."
-$boundaryLayerMapList = New-Object System.Collections.ArrayList
-$boundaryLayerMap.Keys | %{
-    $reportId = $_
-    $objList = $boundaryLayerMap.get_item($reportId)
-    $objList | %{
-        $null = $boundaryLayerMapList.Add($_)
-    }
-}
-
-$boundaryLayerMapList | Sort-Object -Property "RowID" | %{
+$printedBoundaryLayers = New-Object System.Collections.ArrayList
+$boundaryLayerAllList | Sort-Object -Property "RowID" | %{
     $obj = $_
     $RowID                = $obj.RowID
     $CustomerBoundaryId   = $obj.CustomerBoundaryId              
     $CustomerBoundaryType = $obj.CustomerBoundaryType
-    Add-Content $OUTFILE_CBT "$RowID|$CustomerBoundaryId|$CustomerBoundaryType|4|PERF|PGE"
-}
 
-Write-Host "Building asset layer test case data..."
-$materialLayerMapList = New-Object System.Collections.ArrayList
-$materialLayerMap.Keys | %{
-    $reportId = $_
-    $objList = $materialLayerMap.get_item($reportId)
-    $objList | %{
-        $null = $materialLayerMapList.add($_)
+    if (!$printedBoundaryLayers.Contains($CustomerBoundaryId)) {
+        $null = $printedBoundaryLayers.Add($CustomerBoundaryId)
+        Add-Content $OUTFILE_CBT "$RowID|$CustomerBoundaryId|$CustomerBoundaryType|4|PERF|${CustomerName}"
     }
 }
 
-$materialLayerMapList | Sort-Object -Property "RowID" | %{
+Write-Host "Building asset layer test case data..."
+$printedMaterialLayers = New-Object System.Collections.ArrayList
+$materialLayerAllList | Sort-Object -Property "RowID" | %{
     $obj = $_
     $RowID                = $obj.RowID
     $CustomerMaterialId   = $obj.CustomerMaterialId              
     $CustomerMaterialType = $obj.CustomerMaterialType
 
-    Add-Content $OUTFILE_CMT "$RowID|$CustomerMaterialId|$CustomerMaterialType|4|PERF|PGE"
+    if (!$printedMaterialLayers.Contains($CustomerMaterialId)) {
+        $null = $printedMaterialLayers.Add($CustomerMaterialId)
+        Add-Content $OUTFILE_CMT "$RowID|$CustomerMaterialId|$CustomerMaterialType|4|PERF|${CustomerName}"
+    }
 }
 
 Write-Host "Building layers test case data..."
@@ -590,13 +647,19 @@ $layerMapList | Sort-Object -Property "RowID" | %{
     $AssetRowIDs          = $obj.AssetRowIDs              
     $BoundaryRowIDs       = $obj.BoundaryRowIDs
 
-    Add-Content $OUTFILE_LAYERS "$RowID|$AssetRowIDs|$BoundaryRowIDs|PGE - Perf Test assets and boundaries"
+    Add-Content $OUTFILE_LAYERS "$RowID|$AssetRowIDs|$BoundaryRowIDs|${CustomerName} - Perf Test assets and boundaries"
 }
 
 Write-Host "Building report survey test case data..."
-$surveyMapList = New-Object System.Collections.ArrayList 
-$surveyMap.Keys | %{
-    $reportId = $_
+$surveysAllList | Sort-Object -Property "RowID" | %{
+    $obj = $_
+    $SurveyId        = $obj.SurveyId              
+    $SurveyTag       = $obj.SurveyTag
+    $SurveyModeType  = $obj.SurveyModeType
+    $RowID           = $obj.RowID
+
+    Add-Content $OUTFILE_SURVEYS "$RowID|||$SurveyTag|||$SurveyModeType|FALSE|1|TRUE|0"
+
 }
 
 Write-Host "Building report views test case data..."
@@ -645,6 +708,66 @@ $optTabMapList | Sort-Object -Property "RowID" | %{
     Add-Content $OUTFILE_OPTTAB "$RowID|$Indications|$ShowIsotopicAnalysis|$ShowGaps|$ShowPercentCoverageAssets|$ShowPercentCoverageReportArea"
 }
 
+
+#--------------------------------------#
+# Generate Test Case Provider code
+#--------------------------------------#
+
+function Generate-DataProviderTestClassCode() {
+    add-content $OUTFILE_PROVIDER_CODE "package surveyor.dataprovider;"
+    add-content $OUTFILE_PROVIDER_CODE ""
+    add-content $OUTFILE_PROVIDER_CODE "import org.junit.runner.notification.RunNotifier;"
+    add-content $OUTFILE_PROVIDER_CODE "import org.junit.runners.model.InitializationError;"
+    add-content $OUTFILE_PROVIDER_CODE ""
+    add-content $OUTFILE_PROVIDER_CODE "import com.tngtech.java.junit.dataprovider.DataProvider;"
+    add-content $OUTFILE_PROVIDER_CODE ""
+    add-content $OUTFILE_PROVIDER_CODE "public class $DataProviderClassName extends ReportDataProvider {"
+    add-content $OUTFILE_PROVIDER_CODE ""
+    
+    $TestCategoryShortNameToUpper = $TestCategoryShortName.ToUpper()
+
+    $total = $reportInfoList.Count
+    $tcsInEachProviderMethod = [Int64]($total / 5) + 1
+        1..5 | %{        $idx = $_
+        $providerConst = "REPORT_JOB_PERFORMANCE_PROVIDER_${TestCategoryShortNameToUpper}${idx}"
+        $providerMethod = "dataProviderReportJobPerformance${TestCategoryShortName}${idx}"        add-content $OUTFILE_PROVIDER_CODE "	public static final String $providerConst = ""$providerMethod"";"
+        $idx++
+    }
+
+    $TestCategoryNameToUpper = $TestCategoryName.ToUpper()
+
+    $idx = 1    $reportInfoList | %{        $obj = $_        $RowID = $obj.RowID                $reportDataRowIDConst = "${TestCategoryNameToUpper}$(Pad-Zeroes -value $idx -width 4)_REPORT_DATA_ROW_ID"
+        add-content $OUTFILE_PROVIDER_CODE "	private static final int $reportDataRowIDConst = $RowID;"
+        $idx++
+    }
+    $idx = 1    $reportInfoList | %{        $obj = $_                $originalUserId = $obj.UserId.ToString().ToUpper()        $xlsxUserId = $userIDToXLSXRowIDMap.get_item($originalUserId)        $userRowIDConst = "${TestCategoryNameToUpper}$(Pad-Zeroes -value $idx -width 4)_USER_ROW_ID"
+        add-content $OUTFILE_PROVIDER_CODE "	private static final int $userRowIDConst = $xlsxUserId;"
+        $idx++
+    }    
+    1..5 | %{
+        $idx = $_
+        $providerMethod = "dataProviderReportJobPerformance${TestCategoryShortName}${idx}"
+        add-content $OUTFILE_PROVIDER_CODE ""
+        add-content $OUTFILE_PROVIDER_CODE "	@DataProvider"
+        add-content $OUTFILE_PROVIDER_CODE "	public static Object[][] $providerMethod() {"
+        add-content $OUTFILE_PROVIDER_CODE ""
+        add-content $OUTFILE_PROVIDER_CODE "		return new Object[][] {"
+
+        $endIdx = $idx * $tcsInEachProviderMethod        $startIdx = $endIdx - $tcsInEachProviderMethod + 1        $i = 1        $reportInfoList | %{            if (($i -ge $startIdx) -and ($i -le $endIdx)) {                $obj = $_                        $ReportId          = $obj.ReportId                $ReportTitle       = $obj.ReportTitle                              $RowID             = $obj.RowID                $TestCaseName      = $obj.TestCaseName                $userRowIDConst = "${TestCategoryNameToUpper}$(Pad-Zeroes -value $i -width 4)_USER_ROW_ID"                $reportDataRowIDConst = "${TestCategoryNameToUpper}$(Pad-Zeroes -value $i -width 4)_REPORT_DATA_ROW_ID"                add-content $OUTFILE_PROVIDER_CODE "			{ ""$TestCaseName"", $userRowIDConst, $reportDataRowIDConst },"
+            }
+
+            $i++
+        }
+        add-content $OUTFILE_PROVIDER_CODE "		};"
+        add-content $OUTFILE_PROVIDER_CODE "	}"
+    }
+
+    add-content $OUTFILE_PROVIDER_CODE "}"
+}
+
+Generate-DataProviderTestClassCode
+
+
 #--------------------------------------#
 # Display results
 #--------------------------------------#
@@ -658,3 +781,5 @@ ii $OUTFILE_LAYERS
 ii $OUTFILE_VIEWS
 ii $OUTFILE_SURVEYS
 ii $OUTFILE_OPTTAB
+
+ii $OUTFILE_PROVIDER_CODE
