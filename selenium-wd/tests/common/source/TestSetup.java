@@ -56,7 +56,7 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
  */
 public class TestSetup {
 
-	private static final String[] SURVEYS_TO_TRACK_FOR_SEED_DATA_POLLUTION = { "op-pic-1", "stnd-pic-sqacus-1" };
+	private static final String[] SURVEYS_TO_TRACK_FOR_SEED_DATA_POLLUTION = { "op-pic-1", "op-pic-sqacus-1", "stnd-pic-1", "stnd-pic-sqacus-1" };
 	private static final String ANALYZER_DEBUG_LOG_FILE = "c:\\Logs\\AnalyzerDebugAutomationLog.log";
 	private static final String NETWORKADDRESS_CACHE_TTL = "networkaddress.cache.ttl";
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";

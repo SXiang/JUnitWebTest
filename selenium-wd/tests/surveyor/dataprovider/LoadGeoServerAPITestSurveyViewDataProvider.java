@@ -6,9 +6,9 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 
 import common.source.LoadTestExecutor.HttpMethod;
 
-public class LoadAPITestSurveyViewDataProvider extends ReportDataProvider {
+public class LoadGeoServerAPITestSurveyViewDataProvider extends ReportDataProvider {
 
-	public LoadAPITestSurveyViewDataProvider(Class<?> klass) throws InitializationError {
+	public LoadGeoServerAPITestSurveyViewDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
 

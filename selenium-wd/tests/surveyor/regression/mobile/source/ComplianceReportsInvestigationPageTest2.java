@@ -293,13 +293,13 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		/* 4.1 Mobile view */
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", new Rectangle(200, 615, 350, 200)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-1", new Rectangle(200, 750, 350, 70)));
 		
 		/* 4.2 Web view */
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(600, 320, 50, 30)));	
 
 		/* 5. Verify color/status of lisa indications - In progress (Violet)*/
 		/* 5.1 Web view - investigate */
@@ -315,7 +315,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+1);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(560, 320, 100, 50)));
 		
 		/* 5.2 Mobile view - investigate */
 		mobileReportsPage.open();
@@ -326,7 +326,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		//5.21 Mobile InProgress - color verification */
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8", new Rectangle(340, 560, 110, 60)));
         /*5.22 Web view InProgress - Status */
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -344,7 +344,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		/* 6.2 Mobile no leak - color verification */
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoLeak-8", new Rectangle(0, 700, 0, 0)));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoLeak-8", new Rectangle(340, 560, 110, 60)));
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 	
@@ -365,7 +365,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webNoLeak-8", new Rectangle(500, 100, 500, 350), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webNoLeak-8", new Rectangle(600, 320, 50, 30)));
 		
 		/*** Test for user role - supervisor ***/
 		mobileLoginPage.open();

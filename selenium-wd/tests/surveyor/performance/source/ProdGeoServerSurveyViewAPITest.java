@@ -15,7 +15,7 @@ import common.source.LoadTestExecutor;
 import common.source.Log;
 import common.source.LoadTestExecutor.HttpMethod;
 import common.source.LoadTestExecutor.TestResult;
-import surveyor.dataprovider.LoadAPITestSurveyViewDataProvider;
+import surveyor.dataprovider.LoadGeoServerAPITestSurveyViewDataProvider;
 import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -30,7 +30,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Test
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_01, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_01, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest01(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest01", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
@@ -40,7 +40,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Test
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_02, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_02, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest02(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest02", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
@@ -50,7 +50,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Ignore
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_03, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_03, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest03(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest03", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
@@ -60,7 +60,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Ignore
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_04, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_04, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest04(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest04", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
@@ -70,7 +70,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Ignore
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_05, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_05, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest05(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest05", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
@@ -80,7 +80,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Ignore
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_06, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_06, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest06(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest06", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
@@ -90,7 +90,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Ignore
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_07, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_07, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest07(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest07", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);
@@ -100,7 +100,7 @@ public class ProdGeoServerSurveyViewAPITest extends BaseTest {
 	}
 
 	@Test
-	@UseDataProvider(value = LoadAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_08, location = LoadAPITestSurveyViewDataProvider.class)
+	@UseDataProvider(value = LoadGeoServerAPITestSurveyViewDataProvider.LOAD_TEST_API_PROVIDER_GEO_SERVER_SURVEYVIEW_API_08, location = LoadGeoServerAPITestSurveyViewDataProvider.class)
 	public void executeSurveyViewAPITest08(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method, Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		Log.method("ProdGeoServerSurveyViewAPITest.executeSurveyViewAPITest08", testCaseName, apiURL, contentType, username, password, method, concurrentRequests,
 				requestsInOneSession, numPrimingRuns, expectedResponseContentLength);

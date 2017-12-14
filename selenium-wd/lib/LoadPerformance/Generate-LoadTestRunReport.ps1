@@ -5,7 +5,7 @@
  Sample Run Script:
    .\Generate-LoadTestRunReport.ps1 `
         -TestStartTime "12/05/2017 5:45:56 PM"  `
-        -TestDataProviderFile "C:\Repositories\surveyor-qa\selenium-wd\tests\surveyor\dataprovider\LoadAPITestMultipleCustomersDataProvider.java"
+        -TestDataProviderFile "C:\Repositories\surveyor-qa\selenium-wd\tests\surveyor\dataprovider\LoadGeoServerAPITestMultipleCustomersDataProvider.java"
 
  NOTES:
    1. If the APIs being load tested give failures when running the load tests then pass result file will NOT be written.

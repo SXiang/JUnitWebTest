@@ -135,10 +135,18 @@ public class LoadTestExecutor {
 
 	public TestResult executeTest(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method,
 			Integer concurrentRequests, Integer requestsInOneSession, Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
+		return executeTest(testCaseName, apiURL, contentType, username, password, method,
+				concurrentRequests, requestsInOneSession, true /*verifyContentLength*/, true /*postResultsToAutomationDB*/,
+				numPrimingRuns, expectedResponseContentLength);
+	}
+
+	public TestResult executeTest(String testCaseName, String apiURL, String contentType, String username, String password, HttpMethod method,
+			Integer concurrentRequests, Integer requestsInOneSession, Boolean verifyContentLength, Boolean postResultsToAutomationDB,
+			Integer numPrimingRuns, Integer expectedResponseContentLength) throws IOException {
 		String apiCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + LoadPerformanceFolder;
 		String apiCmdFullPath = apiCmdFolder + File.separator + EXECUTE_LOAD_APITEST_CMD;
 		String command = "cd \"" + apiCmdFolder + "\" && " + apiCmdFullPath +
-				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d %d %d %d \"%s\" \"%s\"",
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d %d %d %d %d %d \"%s\" \"%s\"",
 						getWorkingFolder(),
 						getAutomationReportingAPIBaseUrl(),
 						getAbExeFolder(),
@@ -151,6 +159,8 @@ public class LoadTestExecutor {
 						expectedResponseContentLength,
 						concurrentRequests,
 						requestsInOneSession,
+						verifyContentLength ? 1 : 0,
+						postResultsToAutomationDB ? 1 : 0,
 						numPrimingRuns,
 						getRunTriggerId(),
 						testCaseName,
