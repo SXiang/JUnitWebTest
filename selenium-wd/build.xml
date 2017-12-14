@@ -861,7 +861,6 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ReportJobPerformanceAssetBoxHighlightTestSuite.class" />
           <include name="**/ReportJobPerformancePGELargeAreaTestSuite.class" />
         </fileset>
       </batchtest>
